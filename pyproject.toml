@@ -27,10 +27,7 @@ classifiers = [
 [tool.poetry.dependencies]
 
 python = "^3.7"
-
-# TODO: Remove these and add your library's requirements
-click = "^6.0"
-minilog = "^1.5"
+numpy = "^1.18.5"
 
 [tool.poetry.dev-dependencies]
 
