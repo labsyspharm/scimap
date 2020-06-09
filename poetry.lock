@@ -108,7 +108,7 @@ python-versions = "*"
 version = "3.0.4"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "A simple wrapper around optparse for powerful command line utilities."
 name = "click"
 optional = false
@@ -357,7 +357,7 @@ python-versions = "*"
 version = "0.6.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Minimalistic wrapper for Python logging."
 name = "minilog"
 optional = false
@@ -852,7 +852,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ffc4f391855ee80085490065da7a968c06bc1514ec0e1a69ad97ab8b4b3d9d3a"
+content-hash = "76bfbb77df191e69d40dd19e1f130c07313a062eb5a5a86a64b498b71b072f51"
 python-versions = "^3.7"
 
 [metadata.files]
