@@ -25,7 +25,6 @@ clone_depth: 5
 
 build: off
 
-init:
-- cmd: PATH=C:\Python%PYTHON_MAJOR%%PYTHON_MINOR%\Scripts;%PATH%
-
-test_script: pytest -rsv
+test_script:
+  - make check
+  - make test
