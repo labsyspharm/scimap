@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.0"
+version = "0.0.1"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -22,8 +22,6 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 0",
-    "Programming Language :: Python :: 0.0",
 ]
 
 [tool.poetry.dependencies]
