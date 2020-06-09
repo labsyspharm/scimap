@@ -7,3 +7,5 @@ Created on Tue Jun  9 18:21:07 2020
 
 import numpy as np
 
+def test_numpy ():
+    assert np.sum([0.5, 1.5]) == 2
