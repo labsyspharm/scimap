@@ -33,11 +33,11 @@ pandas = "^1.0.4"
 sklearn = "^0.0"
 scipy = "^1.4.1"
 seaborn = "^0.10.1"
-matplotlib = "^3.2.1"
 tifffile = "^2020.6.3"
 numpy = "^1.18.5"
 pytest-xvfb = "^2.0.0"
 napari = "^0.3.4"
+matplotlib = "^3.2.1"
 
 [tool.poetry.dev-dependencies]
 

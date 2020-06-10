@@ -10,7 +10,6 @@ import napari
 import pandas as pd
 import tifffile as tiff
 import numpy as np
-%gui qt
 
 def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=None, channel_names = 'default',
