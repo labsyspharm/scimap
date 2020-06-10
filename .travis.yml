@@ -15,8 +15,7 @@ python:
 #    - ${VIRTUAL_ENV}
 
 env:
-  global:
-    - RANDOM_SEED=0
+  - MPLBACKEND=Qt5
 
 before_install:
 #  - bash install_qt.sh
