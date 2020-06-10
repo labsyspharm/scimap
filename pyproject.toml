@@ -27,7 +27,6 @@ classifiers = [
 [tool.poetry.dependencies]
 
 python = "^3.7"
-numpy = "^1.18.5"
 pytest = "^5.4.3"
 anndata = "^0.7.3"
 pandas = "^1.0.4"
@@ -36,9 +35,8 @@ scipy = "^1.4.1"
 seaborn = "^0.10.1"
 matplotlib = "^3.2.1"
 tifffile = "^2020.6.3"
-#pyqt5 = "^5.15.0"
 napari = "^0.3.4"
-#napari = {extras = ["pyqt5"], version = "^0.3.4"}
+numpy = "^1.18.5"
 
 [tool.poetry.dev-dependencies]
 
