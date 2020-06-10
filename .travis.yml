@@ -1,5 +1,5 @@
-dist: trusty
-#dist: xenial
+#dist: trusty
+dist: xenial
 
 language: python
 sudo: required
