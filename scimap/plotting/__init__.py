@@ -1,1 +1,1 @@
-from ._gmm_gate import gmm_gate
+from ._gmm_gate import gmm_gatefrom ._gate_finder import gate_finder
