@@ -35,10 +35,8 @@ scipy = "^1.4.1"
 seaborn = "^0.10.1"
 matplotlib = "^3.2.1"
 tifffile = "^2020.6.3"
-napari = {extras = ["all"], version = "^0.3.4"}
 numpy = "^1.18.5"
 pytest-xvfb = "^2.0.0"
-#PyQt5 = "^5.15.0"
 
 [tool.poetry.dev-dependencies]
 
