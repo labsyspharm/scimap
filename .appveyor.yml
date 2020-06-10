@@ -26,6 +26,4 @@ clone_depth: 5
 build: off
 
 test_script:
-  - py.test
-  - make check
-  - make test
+  - "py.test"
