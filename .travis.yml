@@ -18,7 +18,7 @@ env:
 
 before_install:
   - sudo apt-get install -y libdbus-1-3 libxkbcommon-x11-0
-  - sudo apt-get install python-pyqt5 python-pyqt5.qtsvg python-pyqt5.qtwebkit
+  - sudo apt install python3-pyqt5 python3-pyqt5.{qtsvg,qtwebkit,qtopengl}
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
   - source $HOME/.poetry/env
   - make doctor
