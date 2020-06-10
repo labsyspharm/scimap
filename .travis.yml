@@ -2,7 +2,6 @@ dist: xenial
 
 language: python
 sudo: required
-dist: trusty
 python:
   - 3.7
   
