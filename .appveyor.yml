@@ -20,10 +20,11 @@ install:
   - make doctor
   # Install project dependencies
   - make install
+  - pip install tox
 
 clone_depth: 5
 
 build: off
 
 test_script:
-  - "py.test"
+  - tox
