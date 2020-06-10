@@ -37,6 +37,7 @@ matplotlib = "^3.2.1"
 tifffile = "^2020.6.3"
 numpy = "^1.18.5"
 pytest-xvfb = "^2.0.0"
+napari = "^0.3.4"
 
 [tool.poetry.dev-dependencies]
 
