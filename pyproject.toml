@@ -37,6 +37,7 @@ matplotlib = "^3.2.1"
 tifffile = "^2020.6.3"
 napari = "^0.3.4"
 numpy = "^1.18.5"
+PyQt5 = "^5.15.0"
 
 [tool.poetry.dev-dependencies]
 
