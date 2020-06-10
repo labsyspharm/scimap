@@ -1,6 +1,4 @@
-# Overview
-
-**Single-Cell Image Analysis Package**
+# Single-Cell Image Analysis Package
 
 Scimap is a scalable toolkit for analyzing single-cell imaging data using anndata data structuring framework. 
 It includes preprocessing, visualization, clustering, spatial analysis and differential expression testing. 

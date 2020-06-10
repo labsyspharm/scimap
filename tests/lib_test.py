@@ -9,3 +9,4 @@ import numpy as np
 
 def test_numpy ():
     assert np.sum([0.5, 1.5]) == 2
+
