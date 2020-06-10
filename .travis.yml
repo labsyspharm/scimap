@@ -21,7 +21,7 @@ before_install:
   - sudo apt-get install -y libdbus-1-3 libxkbcommon-x11-0
   - sudo apt-get install -y xvfb herbstluftwm
   - sudo apt-add-repository ppa:beineri/opt-qt551 -y
-  - sudo apt-get install qt5-latest
+  - sudo apt-get install qt5-default
   - source /opt/qt55/bin/qt55-env.sh
 #  - sudo apt-get install -y python3-pyqt5 python3-pyqt5.{qtsvg,qtwebkit,qtopengl}
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
