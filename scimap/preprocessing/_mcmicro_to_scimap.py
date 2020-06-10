@@ -2,19 +2,17 @@
 """
 Created on Mon Mar  2 09:12:35 2020
 @author: Ajit Johnson Nirmal
-Convert counts table to ANN object
-Added capability to take in multiple images and create a single AnnData Object
+Convert mcmicro output to AnnData object
 """
 
 # Import library
 import numpy as np
 import anndata as ad
 import pandas as pd
-import random
 
 def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
-                        islog=True,drop_markers=None,random_sample=None,
-                        CellId='CellId',split='Area',custom_imageid=None,
+                        log=True,drop_markers=None,random_sample=None,
+                        CellId='CellID',split='X_position',custom_imageid=None,
                         min_cells=None):
     """
     
@@ -34,10 +32,10 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     random_sample : int, optional
         Randomly sub-sample the data with the desired number of cells. The default is None.
     CellId : string, optional
-        Name of the column that contains the cell ID. The default is CellId.
+        Name of the column that contains the cell ID. The default is CellID.
     split : string, optional
         To split the CSV into counts table and meta data, pass in the name of the column
-        that immediately follows the marker quantification. The default is Area.
+        that immediately follows the marker quantification. The default is 'X_position'.
 
     Returns
     -------
@@ -47,8 +45,7 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     -------
     image_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
                   '/Users/aj/whole_sections/PTCL2_552.csv']
-    adata = histocat_to_object (image_path, marker_list= my_markers, islog=True, 
-    drop_markers= ['CD21', 'ACTIN'],remove_string_from_name='Cell_PTCL1_450', random_sample=5000)
+    adata = mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
 
     """
     
@@ -62,7 +59,8 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
             if custom_imageid is not None:
                 imid = custom_imageid
             else:
-                imid = random.randint(1000000,9999999)           
+                #imid = random.randint(1000000,9999999)  
+                imid = str(image.rsplit('/', 1)[-1]).replace('.csv','')
             d['ImageId'] = imid
         # Unique name for the data
         d.index = d['ImageId'].astype(str)+'_'+d[CellId].astype(str)
@@ -98,38 +96,37 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     # Step-2 (select only the expression values)
     entire_data = entire_data.iloc [:,:split_idx]
     
+    # Rename the columns of the data
+    if remove_string_from_name is not None:
+        entire_data.columns = entire_data.columns.str.replace(remove_string_from_name, '')
+
     # Save a copy of the column names in the uns space of ANNDATA
-    if remove_string_from_name != None:
-        markers = list(entire_data.columns.str.replace(remove_string_from_name, ''))
-    else:
-        markers = list(entire_data.columns)
+    markers = list(entire_data.columns)
     
     # Remove DNA channels
-    if remove_dna == True:
+    if remove_dna is True:
         entire_data = entire_data.loc[:,~entire_data.columns.str.contains('dna', case=False)] 
     
     # Drop unnecessary markers
-    if drop_markers != None:
+    if drop_markers is not None:
         for i in drop_markers:
             entire_data = entire_data.loc[:,~entire_data.columns.str.contains(i, case=False)] 
     
-    # Rename the columns of the data
-    if remove_string_from_name != None:
-        entire_data.columns = entire_data.columns.str.replace(remove_string_from_name, '')
-    
-    # Convert the data to natural scale
-    if islog==True:
-        entire_data= np.exp(entire_data)
-    
+
     # Randomly sample the data
-    if random_sample != None:
+    if random_sample is not None:
         entire_data = entire_data.sample(n=random_sample,replace=False)
     
-    
+
     # Create an anndata object
     adata = ad.AnnData(entire_data)
     adata.obs = meta
     adata.uns['all_markers'] = markers
+    
+    # Add log data
+    if log is True:
+        adata.raw = adata
+        adata.X = np.log1p(adata.X)
     
     
     # Return data
