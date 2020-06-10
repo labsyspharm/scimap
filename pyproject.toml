@@ -28,6 +28,7 @@ classifiers = [
 
 python = "^3.7"
 numpy = "^1.18.5"
+pytest = "^5.4.3"
 anndata = "^0.7.3"
 pandas = "^1.0.4"
 
@@ -36,7 +37,6 @@ pandas = "^1.0.4"
 # Formatters
 black = "19.10b0"
 isort = "4.3.21"
-pytest = "^5.4.3"
 
 # Linters
 mypy = "*"
