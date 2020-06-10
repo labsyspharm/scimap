@@ -7,10 +7,10 @@ python:
 services:
   - xvfb
 
-cache:
-  pip: true
-  directories:
-    - ${VIRTUAL_ENV}
+#cache:
+#  pip: true
+#  directories:
+#    - ${VIRTUAL_ENV}
 
 env:
   global:
