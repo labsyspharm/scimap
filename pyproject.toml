@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.0.9"
+version = "0.0.10"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -35,8 +35,8 @@ sklearn = "^0.0"
 scipy = "^1.4.1"
 seaborn = "^0.10.1"
 matplotlib = "^3.2.1"
-napari = "^0.3.4"
 tifffile = "^2020.6.3"
+napari = {extras = ["pyqt5"], version = "^0.3.4"}
 
 [tool.poetry.dev-dependencies]
 
