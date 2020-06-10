@@ -672,10 +672,6 @@ toolz = ">=0.10.0"
 vispy = ">=0.6.4"
 wrapt = ">=1.11.1"
 
-[package.dependencies.PyQt5]
-optional = true
-version = ">=5.12.3,<5.15.0"
-
 [package.dependencies.dask]
 extras = ["array"]
 version = ">=2.1.0"
@@ -975,10 +971,10 @@ description = "Python bindings for the Qt cross platform application toolkit"
 name = "pyqt5"
 optional = false
 python-versions = ">=3.5"
-version = "5.14.2"
+version = "5.15.0"
 
 [package.dependencies]
-PyQt5-sip = ">=12.7,<13"
+PyQt5-sip = ">=12.8,<13"
 
 [[package]]
 category = "main"
@@ -1511,7 +1507,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "9f8e52780549d79009b634051b1e74d851a7887b7603756678ea6f7c621728bf"
+content-hash = "dc45b8d166baddec3dec3a31118982646d1d2996afc1fc4624f61fa53021c61f"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -2042,11 +2038,11 @@ pyparsing = [
     {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
 ]
 pyqt5 = [
-    {file = "PyQt5-5.14.2-5.14.2-cp35.cp36.cp37.cp38-abi3-macosx_10_6_intel.whl", hash = "sha256:a9bdc46ab1f6397770e6b8dca84ac07a0250d26b1a31587f25619cf31a075532"},
-    {file = "PyQt5-5.14.2-5.14.2-cp35.cp36.cp37.cp38-abi3-manylinux2014_x86_64.whl", hash = "sha256:ee168a486c9a758511568147815e2959652cd0aabea832fa5e87cf6b241d2180"},
-    {file = "PyQt5-5.14.2-5.14.2-cp35.cp36.cp37.cp38-none-win32.whl", hash = "sha256:f61ddc78547d6ca763323ccd4a9e374c71b29feda1f5ce2d3e91e4f8d2cf1942"},
-    {file = "PyQt5-5.14.2-5.14.2-cp35.cp36.cp37.cp38-none-win_amd64.whl", hash = "sha256:3b91dd1d0cbfaea85ad057247ba621187e511434b0c9d6d40de69fd5e833b109"},
-    {file = "PyQt5-5.14.2.tar.gz", hash = "sha256:bd230c6fd699eabf1ceb51e13a8b79b74c00a80272c622427b80141a22269eb0"},
+    {file = "PyQt5-5.15.0-5.15.0-cp35.cp36.cp37.cp38-abi3-macosx_10_6_intel.whl", hash = "sha256:14be35c0c1bcc804791a096d2ef9950f12c6fd34dd11dbe61b8c769fefcdf98c"},
+    {file = "PyQt5-5.15.0-5.15.0-cp35.cp36.cp37.cp38-abi3-manylinux2014_x86_64.whl", hash = "sha256:3605d34ba6291b9194c46035e228d6d01f39d120cf5ecc70301c11e7900fed21"},
+    {file = "PyQt5-5.15.0-5.15.0-cp35.cp36.cp37.cp38-none-win32.whl", hash = "sha256:e05c86b8c4f02d62a5b355d426fd8d063781dd44c6a3f916640a5beb40efe60a"},
+    {file = "PyQt5-5.15.0-5.15.0-cp35.cp36.cp37.cp38-none-win_amd64.whl", hash = "sha256:5bac0fab1e9891d73400c2470a9cb810e6bdbc7027a84ae4d3ec83436f1109ec"},
+    {file = "PyQt5-5.15.0.tar.gz", hash = "sha256:c6f75488ffd5365a65893bc64ea82a6957db126fbfe33654bcd43ae1c30c52f9"},
 ]
 pyqt5-sip = [
     {file = "PyQt5_sip-12.8.0-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:9ef12754021bcc1246f97e00ea62b5594dd5c61192830639ab4a1640bd4b7940"},
