@@ -15,7 +15,7 @@ python:
 #    - ${VIRTUAL_ENV}
 
 env:
-  - MPLBACKEND=Qt5
+  - MPLBACKEND=Qt5Agg
 
 before_install:
 #  - bash install_qt.sh
