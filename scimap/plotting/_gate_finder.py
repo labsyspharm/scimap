@@ -122,6 +122,8 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     # Load the segmentation mask
     if seg_mask is not None:
         seg_m = tiff.imread(seg_mask)
+    else:
+        seg_m = None
     
     # Load the viewer
     viewer = napari.view_image(

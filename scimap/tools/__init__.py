@@ -1,1 +1,0 @@
-from ._mcmicro_to_scimap import mcmicro_to_scimap
