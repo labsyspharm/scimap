@@ -37,7 +37,7 @@ before_script:
   - sleep 1
 
 script:
-  - pytest --ignore=scimap/plotting/_gate_finder.py
+  - pytest
 
 
 notifications:
