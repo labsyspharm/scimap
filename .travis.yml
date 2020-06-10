@@ -26,14 +26,8 @@ install:
   - make install
 
 script:
-  - make check
-  - make test
   - pytest
 
-after_success:
-  - pip install coveralls scrutinizer-ocular
-  - coveralls
-  - ocular
 
 notifications:
   email:
