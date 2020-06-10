@@ -126,7 +126,7 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     # Load the viewer
     viewer = napari.view_image(
     image,
-    is_pyramid=False,
+    #is_pyramid=False,
     channel_axis=0,
     name = None if channel_names is None else channel_names,
     visible = False)
