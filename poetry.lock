@@ -300,6 +300,14 @@ six = "*"
 
 [[package]]
 category = "main"
+description = "Fast tools for functional programming"
+name = "functools"
+optional = false
+python-versions = "*"
+version = "0.5"
+
+[[package]]
+category = "main"
 description = "Read and write HDF5 files from Python"
 name = "h5py"
 optional = false
@@ -690,7 +698,7 @@ version = ">=1.5.0"
 
 [package.extras]
 all = ["PyQt5 (>=5.12.3,<5.15.0)"]
-pyqt5 = ["PyQt5 (>=5.12.3,<5.13.0)"]
+pyqt5 = ["PyQt5 (>=5.12.3,<5.15.0)"]
 pyside2 = ["PySide2 (>=5.12.3,<5.15.0)"]
 
 [[package]]
@@ -1519,7 +1527,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ef72bec001357b3094657b140bedb73f956c71d49016e330a4b8b0271aea87a9"
+content-hash = "9bfc2a0268c5357d4bc2244eb91cf8730c6a9107ee5b8b9ab57b6bd86341e5ef"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1664,6 +1672,9 @@ freetype-py = [
 freezegun = [
     {file = "freezegun-0.3.15-py2.py3-none-any.whl", hash = "sha256:82c757a05b7c7ca3e176bfebd7d6779fd9139c7cb4ef969c38a28d74deef89b2"},
     {file = "freezegun-0.3.15.tar.gz", hash = "sha256:e2062f2c7f95cc276a834c22f1a17179467176b624cc6f936e8bc3be5535ad1b"},
+]
+functools = [
+    {file = "functools-0.5.tar.gz", hash = "sha256:596ed8999dee419c0749a41bfdd82e4697e80ea27ee01c716003ef55be9a54c5"},
 ]
 h5py = [
     {file = "h5py-2.10.0-cp27-cp27m-macosx_10_6_intel.whl", hash = "sha256:ecf4d0b56ee394a0984de15bceeb97cbe1fe485f1ac205121293fc44dcf3f31f"},
