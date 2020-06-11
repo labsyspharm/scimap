@@ -20,9 +20,9 @@ env:
 before_install:
 #  - bash install_qt.sh
 #  - sudo apt-get install -y libdbus-1-3 libxkbcommon-x11-0
-  - sudo apt-get install -y libgl1-mesa-glx xvfb libqt5x11extras5 herbstluftwm
+#  - sudo apt-get install -y libgl1-mesa-glx xvfb libqt5x11extras5 herbstluftwm
 #  - sudo apt-get install -y xvfb herbstluftwm
-  - sudo apt-get install -y python3-pyqt5 python3-pyqt5.{qtsvg,qtwebkit,qtopengl}
+#  - sudo apt-get install -y python3-pyqt5 python3-pyqt5.{qtsvg,qtwebkit,qtopengl}
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
   - source $HOME/.poetry/env
   - make doctor
@@ -39,7 +39,6 @@ before_script:
   - sleep 1
 
 script:
-  - python -m pip install -e .[pyqt5]
   - pytest
 
 
