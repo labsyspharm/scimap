@@ -690,7 +690,7 @@ version = ">=1.5.0"
 
 [package.extras]
 all = ["PyQt5 (>=5.12.3,<5.15.0)"]
-pyqt5 = ["PyQt5 (>=5.12.3,<5.15.0)"]
+pyqt5 = ["PyQt5 (>=5.12.3,<5.13.0)"]
 pyside2 = ["PySide2 (>=5.12.3,<5.15.0)"]
 
 [[package]]
