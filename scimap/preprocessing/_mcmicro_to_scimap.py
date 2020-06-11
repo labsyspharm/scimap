@@ -45,7 +45,7 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     -------
     image_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
                   '/Users/aj/whole_sections/PTCL2_552.csv']
-    adata = mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
+    adata = sm.pp.mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
 
     """
     

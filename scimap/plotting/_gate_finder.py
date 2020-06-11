@@ -48,7 +48,7 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     Example
     -------
     image_path = '/Users/aj/Desktop/ptcl_tma/image.tif'
-    gate_finder (image_path, adata, marker_of_interest='CD45', 
+    sm.pl.gate_finder (image_path, adata, marker_of_interest='CD45', 
                  from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=['DNA10'], channel_names = 'default',
                  x='X_position',y='Y_position',point_size=10,

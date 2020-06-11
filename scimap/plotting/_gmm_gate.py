@@ -31,7 +31,7 @@ def gmm_gate (adata, marker_of_interest):
     
     Example
     -------
-    gmm_dist_plot (adata, marker_of_interest='CD45')
+    sm.pl.gmm_dist_plot (adata, marker_of_interest='CD45')
 
     """
     

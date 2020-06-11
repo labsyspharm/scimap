@@ -20,4 +20,12 @@ def adata():
 def test_mcmicro_to_scimap(adata):
     assert adata.shape == (3029, 33)
     
+def test_rescale(adata):
+    import pandas as pd
+    import numpy as np
+    from scimap.preprocessing._rescale import rescale
+    manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
+    adata = rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+    assert np.round(adata[:,'CD3D'].X[0],2) == 0.37
+    
     
