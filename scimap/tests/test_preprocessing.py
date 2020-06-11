@@ -29,12 +29,17 @@ def test_rescale_phenotype(adata):
     # test rescaling data
     manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
     adata = rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
-    assert np.round(adata[:,'CD3D'].X[0],2) == 0.37
+    #assert np.round(adata[:,'CD3D'].X[0],2) == 0.37
+    a = np.round(adata[:,'CD3D'].X[0],2)
     
     # Load phenotype and test phenotyping
     phenotype = pd.read_csv(os. getcwd() + '/scimap/tests/_data/phenotype_workflow.csv')
     adata = phenotype_cells (adata, phenotype=phenotype, gate = 0.5, label="phenotype") 
-    assert adata.obs['phenotype'][0] == 'M2 Macrophages'
+    #assert adata.obs['phenotype'][0] == 'M2 Macrophages'
+    b = adata.obs['phenotype'][0]
+    
+    # test
+    assert (a, b) == (0.37, 'M2 Macrophages')
     
 
     
