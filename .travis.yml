@@ -34,9 +34,9 @@ install:
   - make install
   - pip install PySide2
 
-before_script:
-  - "herbstluftwm &"
-  - sleep 1
+#before_script:
+#  - "herbstluftwm &"
+#  - sleep 1
 
 script:
   - pytest
