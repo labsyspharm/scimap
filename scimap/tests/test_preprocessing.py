@@ -20,12 +20,21 @@ def adata():
 def test_mcmicro_to_scimap(adata):
     assert adata.shape == (3029, 33)
     
-def test_rescale(adata):
+def test_rescale_phenotype(adata):
     import pandas as pd
     import numpy as np
     from scimap.preprocessing._rescale import rescale
+    from scimap.tools._phenotype_cells import phenotype_cells
+    
+    # test rescaling data
     manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
     adata = rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
     assert np.round(adata[:,'CD3D'].X[0],2) == 0.37
     
+    # Load phenotype and test phenotyping
+    phenotype = pd.read_csv(os. getcwd() + '/scimap/tests/_data/phenotype_workflow.csv')
+    adata = phenotype_cells (adata, phenotype=phenotype, gate = 0.5, label="phenotype") 
+    assert adata.obs['phenotype'][0] == 'M2 Macrophages'
+    
+
     
