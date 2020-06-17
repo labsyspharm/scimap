@@ -12,7 +12,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Advanced: advanced.md
+  - Usage Principles: usage_principles.md
   - About:
     - Release Notes: about/changelog.md
     - Contributing: about/contributing.md
