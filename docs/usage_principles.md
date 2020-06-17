@@ -2,7 +2,7 @@
 
 Import Scimap as:
 
-```python
+``` python
 import scimap as sm
 ```
 
@@ -14,7 +14,7 @@ At the most basic level, an `AnnData` object `adata` stores a data matrix `adata
 
 To initialize an AnnData object, do the following.
 
-```python
+``` python
 import anndata as ad
 import pandas as pd
 
@@ -30,7 +30,7 @@ adata.obs = meta
 
 If you had used the [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
 
-```python
+``` python
 filepath = ['/path/to/file.csv']
 adata = sm.pp.mcmicro_to_scimap (filepath)
 
