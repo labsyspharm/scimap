@@ -14,7 +14,7 @@ At the most basic level, an `AnnData` object `adata` stores a data matrix `adata
 
 To initialize an AnnData object, do the following.
 
-```
+```python
 import anndata as ad
 import pandas as pd
 
@@ -25,13 +25,15 @@ meta = pd.read_csv('something.csv') # MetaData regarding the single cells, such 
 # Create the AnnData object
 adata = ad.AnnData(data)
 adata.obs = meta
+
 ```
 
 If you had used the [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
 
-```
+```python
 filepath = ['/path/to/file.csv']
 adata = sm.pp.mcmicro_to_scimap (filepath)
+
 ```
 
 The typical workflow then consists of subsequent calls of `scimap` tools:
