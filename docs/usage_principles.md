@@ -2,7 +2,7 @@
 
 Import Scimap as:
 
-```
+```python
 import scimap as sm
 ```
 
