@@ -2,8 +2,26 @@
   display: block;
   overflow-x: auto;
   border-radius: 10px;
-  padding: 1.5em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
   background: #f6f8fa;
   color: #000000;
   -webkit-text-size-adjust: none;
+}
+
+.highlight .nn {
+    color: #0e84b5;
+    font-weight: bold;
+}
+
+.highlight .kn {
+    color: #284663;
+    font-weight: bold;
+}
+
+.highlight .k {
+    color: #284663;
+    font-weight: bold;
 }
