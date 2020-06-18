@@ -8,6 +8,7 @@ edit_uri: https://github.com/ajitjohnson/scimap/edit/master/docs
 theme: readthedocs
 
 markdown_extensions:
+  - admonition
   - codehilite
 
 nav:

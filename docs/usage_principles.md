@@ -2,11 +2,8 @@
 
 Import Scimap as:
 
-````
-``` python
-import scimap as sm
-```
-````
+    :::python
+    import scimap as sm
 
 # Workflow
 
@@ -29,8 +26,8 @@ adata = ad.AnnData(data)
 adata.obs = meta
 
 ```
-
-If you had used the [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
+!!! note
+    If you had used the [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
 
 ``` python
 filepath = ['/path/to/file.csv']
