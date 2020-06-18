@@ -1,7 +1,8 @@
-h1 {
-  color: red;
-}
-
-codehilite {
-  background-color: blue;
+.codehilite {
+  display: block;
+  overflow-x: auto;
+  /*padding: 0.5em;*/
+  background: #f6f8fa;
+  color: #000000;
+  -webkit-text-size-adjust: none;
 }
