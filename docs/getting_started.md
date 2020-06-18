@@ -2,11 +2,10 @@
 
 Import Scimap as:
 
-``` Python
+``` python
 pip install scimap
 import scimap as sm
 ```
-
 
 # Load Data
 
