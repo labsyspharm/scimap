@@ -1,8 +1,8 @@
 .codehilite {
   display: block;
   overflow-x: auto;
-  /*padding: 0.5em;*/
-  background: #f6f8fa;
+  padding: 0.5em;
+  background: #dddfe1;
   color: #000000;
   -webkit-text-size-adjust: none;
 }
