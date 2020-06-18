@@ -1,4 +1,4 @@
-# Usage Principles
+# Getting Started
 
 Import Scimap as:
 
@@ -7,7 +7,7 @@ pip install scimap
 import scimap as sm
 ```
 
-# Workflow
+# Load Data
 
 To make tools interoperable, scimap has adopted the the `AnnData` data structure. This allows users to use the wealth of single-cell analysis tools that are built by [scanpy](https://scanpy.readthedocs.io/en/stable/index.html).
 
@@ -36,6 +36,8 @@ filepath = ['/path/to/file.csv']
 adata = sm.pp.mcmicro_to_scimap (filepath)
 
 ```
+
+# Work Flow
 
 The typical workflow then consists of subsequent calls of `scimap` tools:
 

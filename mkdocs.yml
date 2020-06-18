@@ -13,7 +13,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Usage Principles: usage_principles.md
+  - Getting Started: getting_started.md
   - About:
     - Release Notes: about/changelog.md
     - Contributing: about/contributing.md
