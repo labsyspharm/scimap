@@ -12,6 +12,7 @@ markdown_extensions:
   - codehilite:
 #      linenums: true
 
+extra_css: [extra.css]
 
 nav:
   - Home: index.md
