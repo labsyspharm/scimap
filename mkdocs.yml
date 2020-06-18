@@ -9,7 +9,9 @@ theme: readthedocs
 
 markdown_extensions:
   - admonition
-  - codehilite
+  - codehilite:
+      linenums: true
+  
 
 nav:
   - Home: index.md
