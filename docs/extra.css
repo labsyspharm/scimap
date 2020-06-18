@@ -11,17 +11,17 @@
   -webkit-text-size-adjust: none;
 }
 
-.highlight .nn {
+.codehilite .nn {
     color: #0e84b5;
     font-weight: bold;
 }
 
-.highlight .kn {
+.codehilite .kn {
     color: #284663;
     font-weight: bold;
 }
 
-.highlight .k {
+.codehilite .k {
     color: #284663;
     font-weight: bold;
 }
