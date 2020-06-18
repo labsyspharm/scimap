@@ -2,8 +2,10 @@
 
 Import Scimap as:
 
-    :::python
-    import scimap as sm
+``` python linenums="1"
+pip install scimap
+import scimap as sm
+```
 
 # Workflow
 
@@ -18,8 +20,8 @@ import anndata as ad
 import pandas as pd
 
 # Load the data
-data = pd.read_csv('something.csv') # Single-Cell counts matrix
-meta = pd.read_csv('something.csv') # MetaData regarding the single cells, such as cellular coordinates
+data = pd.read_csv('counts_matrix.csv') # Single-Cell counts matrix
+meta = pd.read_csv('meta_data.csv') # MetaData
 
 # Create the AnnData object
 adata = ad.AnnData(data)
@@ -27,7 +29,7 @@ adata.obs = meta
 
 ```
 !!! note
-    If you had used the [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
+    If you used [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
 
 ``` python
 filepath = ['/path/to/file.csv']
