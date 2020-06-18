@@ -9,11 +9,11 @@ import scimap as sm
 
 # Load Data
 
-To make tools interoperable, scimap has adopted the the `AnnData` data structure. This allows users to use the wealth of single-cell analysis tools that are built by [scanpy](https://scanpy.readthedocs.io/en/stable/index.html).
+In order to make data analysis tools interoperable, `scimap` has adopted the the `AnnData` data structure. This allows users to use a wealth of single-cell analysis tools that works with AnnData structuring- including [scanpy](https://scanpy.readthedocs.io/en/stable/index.html).
 
 At the most basic level, an `AnnData` object `adata` stores a data matrix `adata.X`, annotation of observations `adata.obs` and variables `adata.var` as `pd.DataFrame` and unstructured annotation `adata.uns` as dict. Names of observations and variables can be accessed via `adata.obs_names` and `adata.var_names`, respectively. AnnData objects can be sliced like dataframes, for example, `adata_subset = adata[:, list_of_gene_names]`. For more, see the `AnnData` [page](https://anndata.readthedocs.io/en/stable/anndata.AnnData.html#anndata.AnnData).
 
-To initialize an AnnData object, do the following.
+To initialize an *AnnData object*, the following can be performed.
 
 ``` python
 import anndata as ad
@@ -30,6 +30,7 @@ adata.obs = meta
 ```
 !!! note
     If you used [mcmicro](https://github.com/labsyspharm/mcmicro-nf) pipeline to process your images, `scimap` provides a handy function to convert `mcmicro` output to `AnnData` object.
+
 
 ``` python
 filepath = ['/path/to/file.csv']
