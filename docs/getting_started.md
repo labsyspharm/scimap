@@ -2,10 +2,11 @@
 
 Import Scimap as:
 
-``` python linenums="1"
+``` Python
 pip install scimap
 import scimap as sm
 ```
+
 
 # Load Data
 
