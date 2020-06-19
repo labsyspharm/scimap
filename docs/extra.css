@@ -24,7 +24,6 @@
 
 .codehilite .k {
     color: #007020;
-    font-weight: bold;
 }
 
 .codehilite .n {
@@ -32,7 +31,7 @@
 }
 
 .codehilite .o {
-    color: #0e84b5;
+    color: #007020;
 }
 
 /*  background: #eeffcc;  */
