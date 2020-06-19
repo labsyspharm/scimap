@@ -20,7 +20,6 @@
 
 .codehilite .kn {
     color: #007020;
-    font-weight: bold;
 }
 
 .codehilite .k {
@@ -29,13 +28,11 @@
 }
 
 .codehilite .n {
-    color: #007020;
-    font-weight: bold;
+    color: #4070a0;
 }
 
 .codehilite .o {
     color: #0e84b5;
-    font-weight: bold;
 }
 
 /*  background: #eeffcc;  */
