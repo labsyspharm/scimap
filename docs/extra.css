@@ -28,4 +28,14 @@
     font-weight: bold;
 }
 
+.codehilite .n {
+    color: #007020;
+    font-weight: bold;
+}
+
+.codehilite .o {
+    color: #0e84b5;
+    font-weight: bold;
+}
+
 /*  background: #eeffcc;  */
