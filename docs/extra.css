@@ -4,8 +4,8 @@
   border-radius: 10px;
   padding-left: 1.5em;
   padding-right: 1.5em;
-  padding-top: 0.75em;
-  padding-bottom: 0.75em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
   background: #f6f8fa;
   color: #000000;
   -webkit-text-size-adjust: none;
@@ -17,11 +17,11 @@
 }
 
 .codehilite .kn {
-    color: #284663;
+    color: #007020;
     font-weight: bold;
 }
 
 .codehilite .k {
-    color: #284663;
+    color: #007020;
     font-weight: bold;
 }
