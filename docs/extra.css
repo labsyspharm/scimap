@@ -6,7 +6,7 @@
   padding-right: 1.5em;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
-  background: #f6f8fa;
+  background: #eeffcc;
   color: #000000;
   -webkit-text-size-adjust: none;
 }
@@ -25,3 +25,5 @@
     color: #007020;
     font-weight: bold;
 }
+
+/*   background: #f6f8fa; */
