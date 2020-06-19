@@ -9,14 +9,16 @@ theme: readthedocs
 
 markdown_extensions:
   - admonition
-  - codehilite:
-#      linenums: true
+  - codehilite
+  - toc:
+      permalink: true
 
 extra_css: [extra.css]
 
 nav:
   - Home: index.md
   - Getting Started: getting_started.md
+  - Tools: tools.md
   - About:
     - Release Notes: about/changelog.md
     - Contributing: about/contributing.md
