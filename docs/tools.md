@@ -1,6 +1,5 @@
 # Tools
 
-Import Scimap as:
 
 ``` python
 import scimap as sm
@@ -12,6 +11,6 @@ import scimap as sm
 
 |               Function               	|                  Description                 	|
 |:------------------------------------:	|:--------------------------------------------:	|
-| sm.pp.mcmicro_to_scimap (adata, ...) 	| mcmicro output to scimap compatible object   	|
-| sm.pp.rescale (adata, ...)           	| Manual/Auto gate based normalization of data 	|
+| `sm.pp.mcmicro_to_scimap (adata, ...)` 	| mcmicro output to scimap compatible object   	|
+| `sm.pp.rescale (adata, ...)`           	| Manual/Auto gate based normalization of data 	|
 |                                      	|                                              	|
