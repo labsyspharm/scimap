@@ -60,20 +60,20 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
         print("Loading " + str(image.rsplit('/', 1)[-1]))
         d = pd.read_csv(image)
         # If the data does not have a unique image ID column, add one.
-        if 'ImageId' not in d.columns:
+        if 'imageid' not in d.columns:
             if custom_imageid is not None:
                 imid = custom_imageid
             else:
                 #imid = random.randint(1000000,9999999)
                 imid = str(image.rsplit('/', 1)[-1]).replace('.csv','')
-            d['ImageId'] = imid
+            d['imageid'] = imid
         # Unique name for the data
-        d.index = d['ImageId'].astype(str)+'_'+d[CellId].astype(str)
-        # Drop ImageId and cell ID column
+        d.index = d['imageid'].astype(str)+'_'+d[CellId].astype(str)
+        # Drop imageid and cell ID column
         d.drop([CellId], axis=1, inplace=True)
         # Move Image ID to the last column
         cols = d.columns.tolist()
-        cols.insert(len(cols), cols.pop(cols.index('ImageId')))
+        cols.insert(len(cols), cols.pop(cols.index('imageid')))
         d = d.reindex(columns= cols)
         # If there is INF replace with zero
         d = d.replace([np.inf, -np.inf], 0)
@@ -90,8 +90,8 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
 
     #Remove the images that contain less than a defined threshold of cells (min_cells)
     if min_cells is not None:
-        to_drop = entire_data['ImageId'].value_counts()[entire_data['ImageId'].value_counts() < min_cells].index
-        entire_data = entire_data[~entire_data['ImageId'].isin(to_drop)]
+        to_drop = entire_data['imageid'].value_counts()[entire_data['imageid'].value_counts() < min_cells].index
+        entire_data = entire_data[~entire_data['imageid'].isin(to_drop)]
         print('Removed Images that contained less than '+str(min_cells)+' cells: '+ str(to_drop.values))
 
     # Split the data into expression data and meta data
