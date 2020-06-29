@@ -1,4 +1,4 @@
-**scimap.pp.mcmicro_to_scimap**
+`**scimap.pp.mcmicro_to_scimap**`
 
 !!! note "Function Call"
     `scimap.pp.mcmicro_to_scimap` (
