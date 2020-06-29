@@ -26,6 +26,7 @@ nav:
     - tl.phenotype_cells: tl/sm.tl.phenotype_cells.md
   - Plotting:
     - pl.gate_finder: pl/sm.pl.gate_finder.md
+    - pl.image_viewer: pl/sm.pl.image_viewer.md
   - Tutorials:
     - Load the Data: tutorials/scimap-tutorial-getting-started.md
     - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md

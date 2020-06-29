@@ -21,24 +21,26 @@ def image_viewer (image_path, adata, overlay=None,
     ----------
     image_path : string
         Location to the image file.
-    seg_mask: string
-        Location to the segmentation mask file. The default is None.
+    seg_mask: string (The default is None)
+        Location to the segmentation mask file.
     adata : AnnData Object
-    overlay : string, optional
-        Name of the column with any categorical data such as phenotypes or clusters. The default is None.
-    overlay_category : list, optional
+    overlay : string, optional (The default is None)
+        Name of the column with any categorical data such as phenotypes or clusters.
+    overlay_category : list, optional (The default is None)
         If only specfic categories within the overlay column is needed, pass their names as a list.
-        If None, all categories will be used. The default is None.
-    markers : list, optional
-        Markers to be included. If none, all markers will be displayed. The default is None.
-    channel_names : list, optional
-        List of channels in the image in the exact order as image. The default is adata.uns['all_markers'].
-    x : string, optional
-        X axis coordinate column name in AnnData object. The default is 'X_centroid'.
-    y : string, optional
-        Y axis coordinate column name in AnnData object. The default is 'Y_centroid'.
-    point_size : int, optional
-        point size in the napari plot. The default is 10.
+        If None, all categories will be used.
+    markers : list, optional (The default is None)
+        Markers to be included. If none, all markers will be displayed.
+    channel_names : list, optional (The default is `adata.uns['all_markers']`)
+        List of channels in the image in the exact order as image.
+    x : string, optional (The default is 'X_centroid')
+        X axis coordinate column name in AnnData object.
+    y : string, optional (The default is 'Y_centroid')
+        Y axis coordinate column name in AnnData object.
+    point_size : int, optional (The default is 10)
+        point size in the napari plot.
+    image_id: string, optional (The default is None)
+        The ID under 'imageid' to load the image of interest. Only useful when multiple images are being analyzed together.
 
     Returns
     -------

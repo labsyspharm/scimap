@@ -53,7 +53,7 @@ Y axis coordinate column name in AnnData object.
 point size in the napari plot.  
 
 `image_id` : string, optional *(The default is None)*  
-The ID under 'ImageId' for the image of interest.  
+The ID under 'imageid' to load the image of interest. Only useful when multiple images are being analyzed together.  
 
 `seg_mask` : string, optional *(The default is None)*  
 Location to the segmentation mask file.  
