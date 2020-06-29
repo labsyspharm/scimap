@@ -8,7 +8,7 @@ edit_uri: https://github.com/ajitjohnson/scimap/edit/master/docs
 theme: readthedocs
 
 plugins:
-  - mknotebooks
+  - nbconvert
 
 markdown_extensions:
   - admonition
