@@ -1,3 +1,6 @@
+# Getting Started with Scimap
+
+
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -9,15 +12,8 @@ Scimap Getting Started tutorial
 ```
 
 
-
-
-    '\nCreated on Fri Jun 26 23:11:32 2020\n@author: Ajit Johnson Nirmal\nScimap Getting Started tutorial\n'
-
-
-
-
 ```python
-# Install the following packages
+# Before you start make sure you have installed the following packages
 # pip install scimap
 # pip install scanpy
 # pip install leidenalg
@@ -42,6 +38,8 @@ import scimap as sm
 # Set the working directory
 os.chdir ("/Users/aj/Desktop/scimap_tutorial/")
 ```
+
+## Load data using AnnData
 
 
 ```python
@@ -324,20 +322,15 @@ adata.var[0:5] # prints the first 5 channel or marker names
 
 
 
-
-```python
-
-```
-
 You would have noticed that
 - the data is not in log scale
 - All the DNA channels are there
 - The background channels are there
 If we diretly perform clustering or any other type of analysis, the above mentioned factors may affect the results and so it is recommended to remove them.
 
-## Create the AnnData function using scimap's helper function
+## Load data using scimap's helper function
 
-Use this if the single-cell data was generated using mcmicro pipeline. With this function though many of the above limitations can be imediately addressed. By default it removes DNA channels and you can pass any channel name into `drop_markers` parameter inorder to not import them.
+Use this if the single-cell data was generated using **mcmicro pipeline**. With this function though many of the above limitations can be imediately addressed. By default it removes DNA channels and you can pass any channel name into `drop_markers` parameter inorder to not import them.
 
 
 ```python
@@ -609,7 +602,7 @@ sc.pl.highest_expr_genes(adata, n_top=20, ) # Most expressing proteins
 ```
 
 
-![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_21_0.png)
+![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_22_0.png)
 
 
 
@@ -622,7 +615,7 @@ sc.pl.pca(adata, color='KI67') # scatter plot in the PCA coordinates
 
 
 
-![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_22_1.png)
+![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_23_1.png)
 
 
 
@@ -631,7 +624,7 @@ sc.pl.pca_variance_ratio(adata) # PCs to the total variance in the data
 ```
 
 
-![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_23_0.png)
+![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_24_0.png)
 
 
 
@@ -640,4 +633,4 @@ sc.pl.pca_variance_ratio(adata) # PCs to the total variance in the data
 adata.write('tutorial_data.h5ad')
 ```
 
-This concludes the `getting started` tutorial, continue with the `phenotyping` tutorial.
+**This concludes the `getting started` tutorial, continue with the `phenotyping` tutorial.**

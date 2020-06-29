@@ -24,5 +24,4 @@ nav:
     - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md
   - About:
     - Release Notes: about/changelog.md
-    - Contributing: about/contributing.md
     - License: about/license.md
