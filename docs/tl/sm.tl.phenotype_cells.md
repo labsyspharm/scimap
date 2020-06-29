@@ -15,7 +15,7 @@
 The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` file to assign phenotype to each cell in the dataset.
 
 *Phenotype workflow file description:*
-An example of the `phenotype_workflow.csv` can be found [here](../../../scimap/tests/_data/phenotype_workflow.csv).  
+An example of the `phenotype_workflow.csv` can be found [here](../../scimap/tests/_data/phenotype_workflow.csv).  
 
 **Parameters**
 
