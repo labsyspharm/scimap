@@ -15,32 +15,37 @@
 The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` file to assign phenotype to each cell in the dataset.
 
 *Phenotype workflow file description:*
-An example of the `phenotype_workflow.csv` can be found [here](../).
+An example of the `phenotype_workflow.csv` can be found [here](../../../scimap/tests/_data/phenotype_workflow.csv).  
 
 **Parameters**
 
-`adata` : AnnData object  
+`adata` : AnnData Object  
 
-`gate` : dataframe, optional *(The default is None)*   
-DataFrame with first column as markers and second column as the gate values in log1p scale.  
+`phenotype` : DataFrame  
+A gating strategy for phenotyping the cells.  
 
-`failed_markers` : list, optional *(The default is None)*  
-list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D'].  
+`gate` : int, optional *(The default is 0.5)*  
+By default rescale function, scales the data such that values above 0.5 are considered positive cells.  
 
-`method` : string, optional *(The default is 'all')*  
-Two available option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid', users have the option to scale all data together or each image independently. Please be aware of batch effects when passing 'all' with multiple images.  
+`label` : string, optional *(The default is "phenotype")*  
+Name the column under which the final phenotype calling will be saved.  
 
-`save_fig` : boolian, optional *(The default is False)*  
-If True, the gates identified by the GMM method will be saved in a subdirectory within your working directory.  
+`unique_id` : string, optional *(The default is 'imageid')*  
+Name of the column that contains the unique imageid. This is only utilized when the user uses `pheno_threshold_percent` or `pheno_threshold_abs` parameters.  
 
+`pheno_threshold_percent` : float, optional *(The default is None)*  
+Accepts values between (0-100). If any particular phenotype is below the user defined threshold, it is re-categorized as `unknown`. Generally used to deal with low background false positives.  
+
+`pheno_threshold_abs` : int, optional *(The default is None)*  
+Serves the same purpose as that of `pheno_threshold_percent`. However, an absolute number can be passed. For example, if user passes in 10- any phenotype that contains less than 10 cells will be re-categorized as `unknown`.  
 
 **Returns**
 
-`AnnData` object with the rescaled data `adata.X`
+`AnnData` object with cell phenotypes added as a new column in `adata.obs`
 
 **Example**
 
 ```
-manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
-adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+phenotype = pd.read_csv('path/to/csv/file/')
+adata = sm.tl.phenotype_cells (adata, phenotype=phenotype, label="phenotype")
 ```

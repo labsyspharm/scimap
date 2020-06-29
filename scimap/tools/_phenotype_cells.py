@@ -21,23 +21,20 @@ def phenotype_cells (adata, phenotype, gate = 0.5, label="phenotype", unique_id=
     adata : AnnData Object
     phenotype : DataFrame
         A gating strategy for phenotyping the cells. Example provided here <add link>.
-    gate : int, optional
+    gate : int, optional (The default is 0.5)
         By default rescale function, scales the data such that values above 0.5 are considered positive cells.
-        The default is 0.5.
-    label : string, optional
+    label : string, optional (The default is "phenotype")
         Name the column underwhich the final phenotype calling will be saved.
-        check- adata.obs['phenotype'] for results. The default is "phenotype".
-    unique_id : string, optional
+    unique_id : string, optional (The default is 'imageid')
         Name of the column that contains the unique imageid. This is only utilized
-        when the user uses pheno_threshold_percent or pheno_threshold_abs parameters. The default is 'imageid'.
-    pheno_threshold_percent : float, optional
+        when the user uses `pheno_threshold_percent` or `pheno_threshold_abs` parameters.
+    pheno_threshold_percent : float, optional (The default is None)
         Accepts values between (0-100). If any particular phenotype is below the user defined threshold,
         it is recategorised as 'unknown. Generally used to deal with low background false positives.
-        The default is None.
-    pheno_threshold_abs : int, optional
+    pheno_threshold_abs : int, optional (The default is None)
         Serves the same purpose as that of pheno_threshold_percent. However, an absolute
         number can be passed. For example, if user passes in 10- any phenotype that contains
-        less than 10 cells will be recategorized as unknown. The default is None.
+        less than 10 cells will be recategorized as unknown.
 
     Returns
     -------
