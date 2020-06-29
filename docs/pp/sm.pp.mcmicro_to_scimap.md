@@ -1,4 +1,4 @@
-# scimap.pp.mcmicro_to_scimap
+**scimap.pp.mcmicro_to_scimap**
 
 !!! note "Function Call"
     `scimap.pp.mcmicro_to_scimap` (
@@ -13,11 +13,11 @@
       custom_imageid=None,
       min_cells=None)
 
-##### Short description
+**Short description**
 
 The function helps to convert `mcmicro` output to `AnnData` object.
 
-##### Parameters
+**Parameters**
 
 `image_path` : list  
 
@@ -63,11 +63,11 @@ If these many cells are not in the image, the image will be dropped.
 Particularly useful when importing multiple images.  
 
 
-##### Returns
+**Returns**
 
 `AnnData` object.
 
-##### Example
+**Example**
 
 ```
 image_path = ['/Users/aj/desktop/PTCL1_450.csv',
