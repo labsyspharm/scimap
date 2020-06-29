@@ -24,26 +24,26 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     adata : Ann Data Object
     marker_of_interest : string
         Marker for which gate is to be defined e.g. 'CD45'.
-    from_gate : int, optional
-        Start value gate of interest. The default is 6.
-    to_gate : int, optional
-        End value of the gate of interest. The default is 8.
-    increment : float, optional
-        Increments between the start and end values. The default is 0.1.
-    markers : string, optional
-        Additional markers to be included in the plot for evaluation. The default is None.
-    channel_names : list, optional
-        List of channels in the image in the exact order as image. The default is adata.uns['all_markers'].
-    x : string, optional
-        X axis coordinate column name in AnnData object. The default is 'X_position'.
-    y : string, optional
-        Y axis coordinate column name in AnnData object. The default is 'Y_position'.
-    point_size : int, optional
-        point size in the napari plot. The default is 10.
-    image_id : string, optional
-        The ID under 'ImageId' for the image of interest. The default is None.
-    seg_mask : string, optional
-        Location to the segmentation mask file. The default is None.
+    from_gate : int, optional (The default is 6)
+        Start value gate of interest.
+    to_gate : int, optional (The default is 8)
+        End value of the gate of interest.
+    increment : float, optional (The default is 0.1)
+        Increments between the start and end values.
+    markers : string, optional (The default is None)
+        Additional markers to be included in the plot for evaluation.
+    channel_names : list, optional (The default is `adata.uns['all_markers']`)
+        List of channels in the image in the exact order as image.
+    x : string, optional (The default is 'X_centroid')
+        X axis coordinate column name in AnnData object.
+    y : string, optional (The default is 'Y_centroid')
+        Y axis coordinate column name in AnnData object.
+    point_size : int, optional (The default is 10)
+        point size in the napari plot.
+    image_id : string, optional (The default is None)
+        The ID under 'ImageId' for the image of interest.
+    seg_mask : string, optional (The default is None)
+        Location to the segmentation mask file.
 
     Example
     -------

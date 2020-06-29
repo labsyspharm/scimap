@@ -18,11 +18,11 @@ extra_css: [extra.css]
 nav:
   - Home: index.md
   - Getting Started: getting_started.md
-  - Tools Overview: tools.md
+  - Available tools: tools.md
   - Pre-processing:
     - pp.mcmicro_to_scimap: pp/sm.pp.mcmicro_to_scimap.md
   - Tutorials:
-    - Getting Started: tutorials/scimap-tutorial-getting-started.md
+    - Load the Data: tutorials/scimap-tutorial-getting-started.md
     - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md
   - About:
     - Release Notes: about/changelog.md
