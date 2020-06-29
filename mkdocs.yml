@@ -22,6 +22,8 @@ nav:
   - Pre-processing:
     - pp.mcmicro_to_scimap: pp/sm.pp.mcmicro_to_scimap.md
     - pp.rescale: pp/sm.pp.rescale.md
+  - Tools:
+    - tl.phenotype_cells: tl/sm.tl.phenotype_cells.md
   - Plotting:
     - pl.gate_finder: pl/sm.pl.gate_finder.md
   - Tutorials:
