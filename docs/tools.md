@@ -5,7 +5,7 @@
 import scimap as sm
 ```
 
-# Preprocessing: `pp`
+### Preprocessing: `pp`
 
 `Scimap` provides a suite of tools to preprocess the data for subsequent analysis.
 
@@ -15,14 +15,14 @@ import scimap as sm
 |           [`sm.pp.rescale (adata, ...)`](../pp/sm.pp.rescale)           |    Manual/Auto gate based scaling of data    |
 |                                                                         |                                              |
 
-# Tools: `tl`
+### Tools: `tl`
 
 |                              Function                               |                Short Description                |
 |:-------------------------------------------------------------------:|:-----------------------------------------------:|
 | [`sm.tl.phenotype_cells (adata, ...)`](tl/sm.tl.phenotype_cells.md) | Probability distribution based cell phenotyping |
 
 
-# Plotting: `pl`
+### Plotting: `pl`
 
 |                          Function                           |                     Short Description                     |
 |:-----------------------------------------------------------:|:---------------------------------------------------------:|
