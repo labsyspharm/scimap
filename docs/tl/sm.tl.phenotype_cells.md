@@ -6,13 +6,16 @@
       phenotype,
       gate = 0.5,
       label="phenotype",
-      unique_id='ImageId',
+      unique_id='imageid',
       pheno_threshold_percent=None,
       pheno_threshold_abs=None**)
 
 **Short description**
 
-The function scales every marker between `0` and `1` such that cells that have a value less than `< 0.5` are considered negative  and cells with `> 0.5` are positive for the given marker. [`scimap.pl.gate_finder`](../pl/sm.pl.gate_finder) can be used to identify manual gates for each marker and passed through `gate`. If manual gates are not passed, the function would attempt to rescale the data based on fitting two gaussians for each marker.  
+The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` file to assign phenotype to each cell in the dataset.
+
+*Phenotype workflow file description:*
+An example of the `phenotype_workflow.csv` can be found [here](../).
 
 **Parameters**
 

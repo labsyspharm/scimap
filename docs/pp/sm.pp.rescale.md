@@ -10,7 +10,7 @@
 
 **Short description**
 
-The function scales every marker between `0` and `1` such that cells that have a value less than `< 0.5` are considered negative  and cells with `> 0.5` are positive for the given marker. [`scimap.pl.gate_finder`](../pl/sm.pl.gate_finder) can be used to identify manual gates for each marker and passed through `gate`. If manual gates are not passed, the function would attempt to rescale the data based on fitting two gaussians for each marker.  
+The function scales every marker between `0` and `1` such that cells that have a value less than `< 0.5` are considered negative  and cells with `> 0.5` are positive for the given marker. [`scimap.pl.gate_finder`](../../pl/sm.pl.gate_finder) can be used to identify manual gates for each marker and passed through `gate`. If manual gates are not passed, the function would attempt to rescale the data based on fitting two gaussians for each marker.  
 
 **Parameters**
 
