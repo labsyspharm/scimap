@@ -25,20 +25,19 @@ def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='
     Parameters
     ----------
     adata : AnnData object
-    gate : dataframe, optional
-        DataFrame with first column as markers and second column as the gate values in log1p scale. The default is None.
-    return_gates : boolian, optional
-        Internal parameter for checking. The default is False.
-    failed_markers : list, optional
-        list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D']. The default is None.
-    method : string, optional
+    gate : dataframe, optional (The default is None)
+        DataFrame with first column as markers and second column as the gate values in log1p scale.
+    return_gates : boolian, optional (The default is False)
+        Internal parameter for checking.
+    failed_markers : list, optional (The default is None)
+        list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D'].
+    method : string, optional (The default is 'all')
         Two avialble option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid',
         users have the option to scale all data togeather or each image independently. Please be aware of batch effects when
         passing 'all' with multiple images.
-        The default is 'all'.
-    save_fig : boolian, optional
+    save_fig : boolian, optional (The default is False)
         If True, the gates identified by the GMM method will be saved in a subdirectory
-        within your working directory.. The default is False.
+        within your working directory.
 
     Returns
     -------
