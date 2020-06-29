@@ -15,7 +15,24 @@
 The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` file to assign phenotype to each cell in the dataset.
 
 *Phenotype workflow file description:*  
-An example of the `phenotype_workflow.csv` can be found [here](../../scimap/scimap/tests/_data/phenotype_workflow.csv).  
+An example of the `phenotype_workflow.csv` can be found [here](https://github.com/ajitjohnson/scimap/blob/master/scimap/tests/_data/phenotype_workflow.csv).  
+
+The `phenotype_workflow` accepts six categories of gating strategy for performing phenotyping.
+
+- all_pos
+- all_neg
+- any_pos
+- any_neg
+- pos
+- neg
+
+`all_pos`- All of the defined markers should be positive.  
+`all_neg`- All of the defined markers should be negative.  
+`any_pos`- Any one of the defined marker is sufficient to be positive. (e.g) For defining macrophages, one could use a strategy in which a cell is defined as a macrophage if any of `CD68, CD163 or CD206` is positive.  
+`any_neg`- Any of the defined marker is negative.  
+`pos`- A given marker is positive. If this argument is passed to multiple markers. (e.g) If regulatory T cell is defined as `CD4+`, `FOXP3+` by passing `pos` to each the markers and the algorithm finds that for a few cells one of the two is not, the algorithm will assign the cell as likely-regulatory T cell and will allow the user to make the decision later.  
+`neg`- A given marker is negative.  
+*It is always advised to use positive markers over negative markers*  
 
 **Parameters**
 
