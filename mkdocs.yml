@@ -19,6 +19,8 @@ nav:
   - Home: index.md
   - Getting Started: getting_started.md
   - Tools: tools.md
+    - Pre-Processing:
+      - pp.mcmicro_to_scimap: pp/sm.pp.mcmicro_to_scimap.md
   - Tutorials:
     - Getting Started: tutorials/scimap-tutorial-getting-started.md
     - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md
