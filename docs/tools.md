@@ -11,6 +11,6 @@ import scimap as sm
 
 |               Function               	|                  Short Description                 	|
 |:------------------------------------:	|:--------------------------------------------:	|
-| `[sm.pp.mcmicro_to_scimap (adata, ...)](pp/sm.pp.mcmicro_to_scimap.md)` 	| mcmicro output to scimap compatible object   	|
+| [`sm.pp.mcmicro_to_scimap (adata, ...)`](pp/sm.pp.mcmicro_to_scimap.md) 	| mcmicro output to scimap compatible object   	|
 | `sm.pp.rescale (adata, ...)`           	| Manual/Auto gate based normalization of data 	|
 |                                      	|                                              	|
