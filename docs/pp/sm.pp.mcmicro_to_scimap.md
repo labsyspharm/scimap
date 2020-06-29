@@ -1,44 +1,53 @@
 # scimap.pp.mcmicro_to_scimap
 
 !!! abstract "Function"
-    scimap.pp.mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
-                        log=True,drop_markers=None,random_sample=None,
-                        CellId='CellID',split='X_centroid',custom_imageid=None,
-                        min_cells=None)
+    `scimap.pp.mcmicro_to_scimap` (
+      image_path,
+      remove_dna=True,
+      remove_string_from_name=None,
+      log=True,
+      drop_markers=None,
+      random_sample=None,
+      CellId='CellID',
+      split='X_centroid',
+      custom_imageid=None,
+      min_cells=None)
 
 #### Short description
 
+Function helps to convert `mcmicro` output to AnnData object, ready for analysis.
+
 ### Parameters
-image_path : string
-      Location to the image file..
-  adata : Ann Data Object
-  marker_of_interest : string
-      Marker for which gate is to be defined e.g. 'CD45'.
-  from_gate : int, optional
-      Start value gate of interest. The default is 6.
-  to_gate : int, optional
-      End value of the gate of interest. The default is 8.
-  increment : float, optional
-      Increments between the start and end values. The default is 0.1.
-  markers : string, optional
-      Additional markers to be included in the plot for evaluation. The default is None.
-  channel_names : list, optional
-      List of channels in the image in the exact order as image. The default is adata.uns['all_markers'].
-  x : string, optional
-      X axis coordinate column name in AnnData object. The default is 'X_position'.
-  y : string, optional
-      Y axis coordinate column name in AnnData object. The default is 'Y_position'.
-  point_size : int, optional
-      point size in the napari plot. The default is 10.
-  image_id : string, optional
-      The ID under 'ImageId' for the image of interest. The default is None.
-  seg_mask : string, optional
-      Location to the segmentation mask file. The default is None.
+
+`image_path` : list
+    List of path to the image or images. Each Image should have a unique path supplied.
+`remove_dna` : bool, optional
+    Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it. The default is True.
+`remove_string_from_name` : string, optional
+    Used to celan up channel names. If a string is given, that particular string will be removed from all marker names.
+    If multiple images are passed, just use the string that appears in the first image. The default is None.
+`log` : bool, optional
+    Log the data (log1p transformation will be applied). The default is True.
+`drop_markers` : list, optional
+    List of markers to drop from the analysis. e.g. ["CD3D", "CD20"]. The default is None.
+`random_sample` : int, optional
+    Randomly sub-sample the data with the desired number of cells. The default is None.
+`CellId` : string, optional
+    Name of the column that contains the cell ID. The default is CellID.
+`split` : string, optional
+    To split the CSV into counts table and meta data, pass in the name of the column
+    that immediately follows the marker quantification. The default is 'X_centroid'.
+`custom_imageid`: string, optional
+    Pass a user defined Image ID. By default the name of the CSV file is used.
+`min_cells`: int, optional
+    If these many cells are not in the image, the image will be dropped.
+    Particularly useful when importing multiple images.
 
 ### Example
-image_path = '/Users/aj/Desktop/ptcl_tma/image.tif'
-sm.pl.gate_finder (image_path, adata, marker_of_interest='CD45',
-               from_gate = 6, to_gate = 8, increment = 0.1,
-               markers=['DNA10'], channel_names = 'default',
-               x='X_position',y='Y_position',point_size=10,
-               image_id= '77', seg_mask=None)
+
+```
+image_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
+             '/Users/aj/whole_sections/PTCL2_552.csv']
+
+adata = sm.pp.mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
+```
