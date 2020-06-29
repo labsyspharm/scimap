@@ -13,11 +13,11 @@
       custom_imageid=None,
       min_cells=None)
 
-#### Short description
+##### Short description
 
 Function helps to convert `mcmicro` output to AnnData object, ready for analysis.
 
-### Parameters
+##### Parameters
 
 `image_path` : list  
     List of path to the image or images. Each Image should have a unique path supplied.  
@@ -43,7 +43,7 @@ Function helps to convert `mcmicro` output to AnnData object, ready for analysis
     If these many cells are not in the image, the image will be dropped.  
     Particularly useful when importing multiple images.  
 
-### Example
+##### Example
 
 ```
 image_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
