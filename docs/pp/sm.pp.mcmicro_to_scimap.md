@@ -23,7 +23,7 @@ The function helps to convert `mcmicro` output to `AnnData` object.
 List of path to the image or images. Each Image should have a unique path supplied.
 
 `remove_dna` : bool, optional (The default is True)  
-Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it.    
+Remove the DNA channels from the final output. Looks for channels with the string 'DNA' in it.    
 
 `remove_string_from_name` : string, optional (The default is None)  
 Used to celan up channel names. If a string is given, that particular string will be removed from all marker names.  
