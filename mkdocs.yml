@@ -20,8 +20,8 @@ nav:
   - Getting Started: getting_started.md
   - Tools: tools.md
   - Tutorials:
-    - Getting Started: tutorials/scimap-tutorial-getting-started.ipynb
-    - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.ipynb
+    - Getting Started: tutorials/scimap-tutorial-getting-started.md
+    - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md
   - About:
     - Release Notes: about/changelog.md
     - Contributing: about/contributing.md
