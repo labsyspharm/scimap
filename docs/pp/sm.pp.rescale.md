@@ -16,7 +16,7 @@ The function scales every marker between `0` and `1` such that cells that have a
 
 `adata` : AnnData object  
 
-`gate` : dataframe, optional *(The default is None)   
+`gate` : dataframe, optional *(The default is None)*  
 DataFrame with first column as markers and second column as the gate values in log1p scale.  
 
 `failed_markers` : list, optional *(The default is None)*  
