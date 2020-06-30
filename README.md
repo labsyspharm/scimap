@@ -27,4 +27,4 @@ $ python
 >>> import scimap as sm
 ```
 
-To get started, read the [documentation](https://scimap-doc.readthedocs.io/en/latest/).
+### To get started, read the [documentation](https://scimap-doc.readthedocs.io/en/latest/).
