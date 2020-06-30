@@ -282,4 +282,70 @@ sm.pl.image_viewer (image_path, adata, overlay = 'phenotype', point_color='white
 sm.pl.image_viewer (image_path, adata, overlay = 'leiden', point_color='white', point_size=6)
 ```
 
+#### Heatmap and UMAP of the probability based phenotyping
+
+
+```python
+sc.pl.matrixplot(adata, var_names= adata.var.index, groupby='phenotype', dendrogram=True, use_raw=False, cmap="vlag", standard_scale='var')
+```
+
+    WARNING: dendrogram data not found (using key=dendrogram_phenotype). Running `sc.tl.dendrogram` with default parameters. For fine tuning it is recommended to run `sc.tl.dendrogram` independently.
+
+
+
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_35_1.png)
+
+
+
+
+
+    GridSpec(2, 3, height_ratios=[0, 10.5], width_ratios=[9.6, 0.8, 0.2])
+
+
+
+
+```python
+sc.pl.umap(adata, color=['leiden', 'phenotype']) # View the clustering
+```
+
+
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_36_0.png)
+
+
+
+```python
+sns.set(rc={'figure.figsize':(11.7,8.27)})
+sc.pl.umap(adata, color=['phenotype'],legend_loc='on data', title='', frameon=False, s = 100) # View the clustering
+```
+
+
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_37_0.png)
+
+
+
+```python
+sc.pl.umap(adata, color=['CD3D', 'PD1', 'CD20'],cmap= 'vlag', use_raw=False, frameon=False, s = 100) # View the clustering
+```
+
+
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_38_0.png)
+
+
+As it can be seen from above 3 UMAP's it would have been very difficult to find the Follicular helper T cells by a pure clustering approach. Also, the B cells as can be seen above does not from a nice seperate cluster. These among other illustrate the importance of using the probability based algorithm for deep phenotyping.
+
+
+```python
+# Confirm Follicular helper T cells in the image
+sm.pl.image_viewer (image_path, adata, 
+                    overlay = 'phenotype', overlay_category=['Follicular Helper T cells'], 
+                    markers = ['CD3D','CD20','PD1','CD8A','CD4','DNA11'],
+                    point_color='white', point_size=6)
+```
+
+
+```python
+# Save the results
+adata.write('tutorial_data.h5ad')
+```
+
 **This concludes this tutorial**
