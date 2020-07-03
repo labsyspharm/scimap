@@ -12,6 +12,33 @@ Scimap Cell Phenotyping Tutorial
 ```
 
 
+
+
+    '\nCreated on Fri Jun 28 18:10:06 2020\n@author: Ajit Johnson Nirmal\nScimap Cell Phenotyping Tutorial\n'
+
+
+
+## Tutorial material
+
+You can download the material for this tutorial from the following [link:](https://www.dropbox.com/s/rra13zir52o9hio/getting_started%20and%20phenotyping.zip?dl=0)  
+The presentation files are available [here:](https://github.com/ajitjohnson/Jupyter-Notebooks/blob/master/tutorials/scimap_tutorial/getting_started%20and%20phenotyping/scimap_tutorial.pdf)
+
+## Tutorial video
+
+
+```python
+from IPython.display import HTML
+HTML('<iframe width="871" height="490" src="https://www.youtube.com/embed/knh5elRksUk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
+```
+
+
+
+
+<iframe width="871" height="490" src="https://www.youtube.com/embed/knh5elRksUk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+
 ```python
 # Load necessary libraries
 import sys
@@ -57,7 +84,7 @@ sc.pl.umap(adata, color=['CD3D', 'CD20', 'CD163'], cmap= 'vlag', use_raw=False, 
 ```
 
 
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_9_0.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_13_0.png)
 
 
 We can already begin to spot issues with carrying out this mode of phenotyping approach. As you can see there is an area of co-expression of CD3D and CD20, which is likely because of segmentation errors. Additionally the boundaries are not distinct between cell-types and it is highly likely that errors will be introduced due to this reason. 
@@ -73,7 +100,7 @@ sc.pl.umap(adata, color=['leiden', 'CD3D', 'CD20'],cmap= 'vlag', use_raw=False) 
 ```
 
 
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_12_0.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_16_0.png)
 
 
 ### Finding marker genes
@@ -85,7 +112,7 @@ sc.pl.rank_genes_groups(adata, n_genes=10, sharey=False, fontsize=16)
 ```
 
 
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_14_0.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_18_0.png)
 
 
 From the above plots, it is likely that clusters 1, 2 and 7 could be combined to form a T cell cluster. However, as mentioned earlier the boundaries are not clear and it only get increasingly complex as one would want to perform deeper phenotyping such as CD4 helper T cells, CD8 T cells, regulatory T cells and so on. 
@@ -125,7 +152,7 @@ marker_of_interest = 'CD45'
 ```python
 sm.pl.gate_finder (image_path, adata, marker_of_interest, 
                    from_gate = 5, to_gate = 9, increment = 0.1, 
-                   markers=['ASMA','DNA11'], point_size=6)
+                   markers=['ASMA','DNA11', 'CD20', 'CD3D'], point_size=6)
 ```
 
 ### Step 2: Rescale the data based on the identified gates using `sm.pp.rescale`
@@ -181,18 +208,18 @@ adata.X
 
 
 
-    array([[0.17841106, 0.46035427, 0.49203653, ..., 0.15973007, 0.1665647 ,
+    array([[0.17841106, 0.45723783, 0.49234127, ..., 0.15973007, 0.1665647 ,
             0.20024123],
-           [0.155838  , 0.21522902, 0.34902406, ..., 0.1522421 , 0.0885678 ,
+           [0.155838  , 0.21377199, 0.34924023, ..., 0.1522421 , 0.0885678 ,
             0.15338667],
-           [0.29090098, 0.37711568, 0.50713067, ..., 0.21580293, 0.17788475,
+           [0.29090098, 0.37456273, 0.50752728, ..., 0.21580293, 0.17788475,
             0.18778977],
            ...,
-           [0.33621626, 0.70411329, 0.70335588, ..., 0.26182348, 0.60810172,
+           [0.33621626, 0.70161347, 0.70359459, ..., 0.26182348, 0.60810172,
             0.22068843],
-           [0.15324935, 0.51454234, 0.60846217, ..., 0.11845023, 0.26558105,
+           [0.15324935, 0.51044092, 0.60877724, ..., 0.11845023, 0.26558105,
             0.08391592],
-           [0.18923565, 0.43441886, 0.57985713, ..., 0.09423545, 0.24047052,
+           [0.18923565, 0.431478  , 0.58019522, ..., 0.09423545, 0.24047052,
             0.12733514]])
 
 
@@ -286,14 +313,16 @@ sm.pl.image_viewer (image_path, adata, overlay = 'leiden', point_color='white', 
 
 
 ```python
+sc.tl.dendrogram(adata, groupby='phenotype')
+```
+
+
+```python
 sc.pl.matrixplot(adata, var_names= adata.var.index, groupby='phenotype', dendrogram=True, use_raw=False, cmap="vlag", standard_scale='var')
 ```
 
-    WARNING: dendrogram data not found (using key=dendrogram_phenotype). Running `sc.tl.dendrogram` with default parameters. For fine tuning it is recommended to run `sc.tl.dendrogram` independently.
 
-
-
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_35_1.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_40_0.png)
 
 
 
@@ -309,7 +338,7 @@ sc.pl.umap(adata, color=['leiden', 'phenotype']) # View the clustering
 ```
 
 
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_36_0.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_41_0.png)
 
 
 
@@ -319,7 +348,7 @@ sc.pl.umap(adata, color=['phenotype'],legend_loc='on data', title='', frameon=Fa
 ```
 
 
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_37_0.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_42_0.png)
 
 
 
@@ -328,7 +357,7 @@ sc.pl.umap(adata, color=['CD3D', 'PD1', 'CD20'],cmap= 'vlag', use_raw=False, fra
 ```
 
 
-![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_38_0.png)
+![png](scimap-tutorial-cell-phenotyping_files/scimap-tutorial-cell-phenotyping_43_0.png)
 
 
 As it can be seen from above 3 UMAP's it would have been very difficult to find the Follicular helper T cells by a pure clustering approach. Also, the B cells as can be seen above does not from a nice seperate cluster. These among other illustrate the importance of using the probability based algorithm for deep phenotyping.

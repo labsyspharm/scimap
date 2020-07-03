@@ -12,12 +12,40 @@ Scimap Getting Started tutorial
 ```
 
 
+
+
+    '\nCreated on Fri Jun 26 23:11:32 2020\n@author: Ajit Johnson Nirmal\nScimap Getting Started tutorial\n'
+
+
+
+
 ```python
 # Before you start make sure you have installed the following packages
 # pip install scimap
 # pip install scanpy
 # pip install leidenalg
+# pip install PyQt5
 ```
+
+## Tutorial material
+
+You can download the material for this tutorial from the following [link:](https://www.dropbox.com/s/rra13zir52o9hio/getting_started%20and%20phenotyping.zip?dl=0)  
+The presentation files are available [here:](https://github.com/ajitjohnson/Jupyter-Notebooks/blob/master/tutorials/scimap_tutorial/getting_started%20and%20phenotyping/scimap_tutorial.pdf)
+
+## Tutorial video
+
+
+```python
+from IPython.display import HTML
+HTML('<iframe width="871" height="490" src="https://www.youtube.com/embed/knh5elRksUk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
+```
+
+
+
+
+<iframe width="871" height="490" src="https://www.youtube.com/embed/knh5elRksUk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 
 
 ```python
@@ -51,10 +79,6 @@ meta = pd.read_csv ('meta_data.csv') # Meta data like x and y coordinates
 adata = ad.AnnData (data)
 adata.obs = meta
 ```
-
-    /opt/anaconda3/envs/scimap/lib/python3.7/site-packages/anndata/_core/anndata.py:119: ImplicitModificationWarning: Transforming to str index.
-      warnings.warn("Transforming to str index.", ImplicitModificationWarning)
-
 
 Print adata to check for it's content
 
@@ -602,7 +626,7 @@ sc.pl.highest_expr_genes(adata, n_top=20, ) # Most expressing proteins
 ```
 
 
-![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_22_0.png)
+![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_26_0.png)
 
 
 
@@ -611,11 +635,8 @@ sc.tl.pca(adata, svd_solver='arpack') # peform PCA
 sc.pl.pca(adata, color='KI67') # scatter plot in the PCA coordinates
 ```
 
-    ... storing 'imageid' as categorical
 
-
-
-![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_23_1.png)
+![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_27_0.png)
 
 
 
@@ -624,7 +645,7 @@ sc.pl.pca_variance_ratio(adata) # PCs to the total variance in the data
 ```
 
 
-![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_24_0.png)
+![png](scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_28_0.png)
 
 
 
