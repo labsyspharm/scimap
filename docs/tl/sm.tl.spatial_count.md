@@ -16,9 +16,10 @@
 **Short description**
 
 The `spatial_count` function allows users to compute the proportion of a categorical variable (e.g. cell-types) within the local neighbourhood of each cell. 
-The function supports two methods to define a local neighbourhood-
-- Radius method: Can be used to identifies the neighbours within a user defined radius for every cell.
-- KNN method: Can be used to identifies the neighbours based on K nearest neigbours for every cell
+
+The function supports two methods to define a local neighbourhood <br>
+* **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
+* **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
 
 The resultant proportion matrix is saved with `adata.uns`. This can be further clustered to identify similar neighbourhoods.
 
