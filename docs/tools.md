@@ -20,7 +20,7 @@ import scimap as sm
 |                                                                     |                                                 |
 |:-------------------------------------------------------------------:|:-----------------------------------------------:|
 | [`sm.tl.phenotype_cells (adata, ...)`](tl/sm.tl.phenotype_cells.md) | Probability distribution based cell phenotyping |
-
+| [`sm.tl.spatial_count (adata, ...)`](tl/sm.tl.spatial_count.md)     | Distribution of cell-types with local neighbourhood |
 
 ### Plotting: `pl`
 
