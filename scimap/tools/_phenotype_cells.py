@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 
-def phenotype_cells (adata, phenotype, gate = 0.5, label="phenotype", unique_id='imageid',
+def phenotype_cells (adata, phenotype, gate = 0.5, label="phenotype", imageid='imageid',
                       pheno_threshold_percent=None, pheno_threshold_abs=None):
     """
 
@@ -25,7 +25,7 @@ def phenotype_cells (adata, phenotype, gate = 0.5, label="phenotype", unique_id=
         By default rescale function, scales the data such that values above 0.5 are considered positive cells.
     label : string, optional (The default is "phenotype")
         Name the column underwhich the final phenotype calling will be saved.
-    unique_id : string, optional (The default is 'imageid')
+    imageid : string, optional (The default is 'imageid')
         Name of the column that contains the unique imageid. This is only utilized
         when the user uses `pheno_threshold_percent` or `pheno_threshold_abs` parameters.
     pheno_threshold_percent : float, optional (The default is None)
@@ -259,12 +259,12 @@ def phenotype_cells (adata, phenotype, gate = 0.5, label="phenotype", unique_id=
     # Apply the phenotype threshold if given
     if pheno_threshold_percent or pheno_threshold_abs is not None:
         p = pd.DataFrame(phenotype_labels[label])
-        q = pd.DataFrame(adata.obs[unique_id])
+        q = pd.DataFrame(adata.obs[imageid])
         p = q.merge(p, how='outer', left_index=True, right_index=True)
 
         # Function to remove phenotypes that are less than the given threshold
         def remove_phenotype(p, ID, pheno_threshold_percent, pheno_threshold_abs):
-            d = p[p[unique_id] == ID]
+            d = p[p[imageid] == ID]
             x = pd.DataFrame(d.groupby([label]).size())
             x.columns = ['val']
             # FInd the phenotypes that are less than the given threshold
@@ -280,7 +280,7 @@ def phenotype_cells (adata, phenotype, gate = 0.5, label="phenotype", unique_id=
         r_remove_phenotype = lambda x: remove_phenotype (p=p, ID=x,
                                                          pheno_threshold_percent=pheno_threshold_percent,
                                                          pheno_threshold_abs=pheno_threshold_abs) # Create lamda function
-        final_phrnotypes= list(map(r_remove_phenotype, list(p[unique_id].unique()))) # Apply function
+        final_phrnotypes= list(map(r_remove_phenotype, list(p[imageid].unique()))) # Apply function
 
         final_phrnotypes = pd.concat(final_phrnotypes, join='outer')
         phenotype_labels = final_phrnotypes.reindex(adata.obs.index)

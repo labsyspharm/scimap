@@ -6,7 +6,7 @@
       phenotype,
       gate = 0.5,
       label="phenotype",
-      unique_id='imageid',
+      imageid='imageid',
       pheno_threshold_percent=None,
       pheno_threshold_abs=None**)
 
@@ -47,7 +47,7 @@ By default rescale function, scales the data such that values above 0.5 are cons
 `label` : string, optional *(The default is "phenotype")*  
 Name the column under which the final phenotype calling will be saved.  
 
-`unique_id` : string, optional *(The default is 'imageid')*  
+`imageid` : string, optional *(The default is 'imageid')*  
 Name of the column that contains the unique imageid. This is only utilized when the user uses `pheno_threshold_percent` or `pheno_threshold_abs` parameters.  
 
 `pheno_threshold_percent` : float, optional *(The default is None)*  

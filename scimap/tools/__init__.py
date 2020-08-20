@@ -1,1 +1,1 @@
-from ._phenotype_cells import phenotype_cells
+from ._phenotype_cells import phenotype_cellsfrom ._spatial_count import spatial_count
