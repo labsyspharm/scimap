@@ -21,7 +21,6 @@ def adata():
 # Testing the phenotyping function
 def test_phenotype(adata):
     import pandas as pd
-    import numpy as np
     from scimap.tools._phenotype_cells import phenotype_cells
 
     # Load phenotype and test phenotyping
@@ -43,3 +42,27 @@ def test_spatial_count(adata):
     
     # test
     assert a == 330
+    
+# Testing the spatial_expression function
+def test_spatial_expression(adata):
+    from scimap.tools._spatial_expression import spatial_expression
+    
+    adata = spatial_expression (adata, x_coordinate='X_position',y_coordinate='Y_position',
+                                method='radius', radius=30, imageid='ImageId', 
+                                use_raw=True,subset=None,label='spatial_expression')
+    a = round(adata.uns['spatial_expression']['CD3D'].sum(),0)
+    
+    # test
+    assert a == 19920
+    
+# Testing the spatial_aggregate function
+def test_spatial_aggregate(adata):
+    from scimap.tools._spatial_aggregate import spatial_aggregate
+    
+    adata = spatial_aggregate (adata, x_coordinate='X_position',y_coordinate='Y_position',
+                           purity = 60, phenotype='phenotype', method='radius', radius=30,
+                           imageid='ImageId',subset=None,label='spatial_aggregate')
+    a = adata.obs['spatial_aggregate'].value_counts()['M2 Macrophages']
+    
+    # test
+    assert a == 20
