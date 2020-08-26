@@ -70,7 +70,7 @@ import plotly.express as px
 import plotly.io as pio
 pio.renderers.default = 'browser'
 
-data = pd.DataFrame({'x':adata.obs['X_centroid'], 'y':adata.obs['Y_centroid'],'col': adata.obs['spatial_aggregate_95']})
+data = pd.DataFrame({'x':adata.obs['X_centroid'], 'y':adata.obs['Y_centroid'],'col': adata.obs['spatial_aggregate_80']})
 fig = px.scatter(data, x="x", y="y", color="col")
 fig.update_traces(marker=dict(size=8),selector=dict(mode='markers'))
 fig.update_yaxes(autorange="reversed")
