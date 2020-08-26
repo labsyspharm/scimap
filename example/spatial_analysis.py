@@ -46,8 +46,8 @@ adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',y_coordinate=
 
 
 adata = sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        phenotype='phenotype', method='radius', radius=30, purity = 95,
-                        imageid='imageid',subset=None,label='spatial_aggregate_95')
+                        phenotype='phenotype', method='radius', radius=30, purity = 80,
+                        imageid='imageid',subset=None,label='spatial_aggregate_80')
 
 adata = sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
                         phenotype='phenotype', method='knn', radius=30, purity = 60,
