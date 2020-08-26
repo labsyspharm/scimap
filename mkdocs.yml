@@ -28,8 +28,8 @@ nav:
   - Tools:
     - tl.phenotype_cells: tl/sm.tl.phenotype_cells.md
     - tl.spatial_count: tl/sm.tl.spatial_count.md
-    - tl.spatial_count: tl/sm.tl.spatial_expression.md
-    - tl.spatial_count: tl/sm.tl.spatial_aggregate.md
+    - tl.spatial_expression: tl/sm.tl.spatial_expression.md
+    - tl.spatial_aggregate: tl/sm.tl.spatial_aggregate.md
   - Plotting:
     - pl.gate_finder: pl/sm.pl.gate_finder.md
     - pl.image_viewer: pl/sm.pl.image_viewer.md

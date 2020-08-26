@@ -20,8 +20,8 @@ The `spatial_aggregate` function allows users to find regions of aggregration of
 The `purity` parameter can be used to tune the granulatity of allowed cell-type heterogenity within local neighbourhood.
 
 The function supports two methods to define a local neighbourhood <br>
-* **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
-* **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
+**Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
+**KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
 
 The resultant proportion matrix is saved with `adata.obs`.
 
