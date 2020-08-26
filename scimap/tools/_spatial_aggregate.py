@@ -59,11 +59,11 @@ def spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid
     -------
     # Running the radius method
     adata = sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        phenotype='phenotype', method='radius', radius=30,
+                        phenotype='phenotype', method='radius', radius=30, purity = 60,
                         imageid='imageid',subset=None,label='spatial_aggregate_radius')
     # Running the knn method
     adata =  sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        phenotype='phenotype', method='knn', knn=10, 
+                        phenotype='phenotype', method='knn', knn=10, purity = 60,
                         imageid='imageid',subset=None,label='spatial_aggregate_knn')
 
     """
