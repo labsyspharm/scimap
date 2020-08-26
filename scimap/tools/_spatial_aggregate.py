@@ -130,7 +130,7 @@ def spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid
         #    return phenotype_name
         # Apply the iteration function
         #aggregate_pheno = pd.DataFrame(k.apply(lambda x: col_name_mapper(row_data=x,purity=purity), axis=1))
-        aggregate_pheno = pd.DataFrame(k[k>=0.6].idxmax(axis=1).fillna('non-significant'))
+        aggregate_pheno = pd.DataFrame(k[k>=purity].idxmax(axis=1).fillna('non-significant'))
         aggregate_pheno.columns = ['spatial_aggregate']
         
         # Return 
