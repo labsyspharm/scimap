@@ -62,26 +62,26 @@ If a cluster exceeds this share of the entire cell population, then the PARC wil
 `k` : int, optional *(The default is 10)*  
 Number of clusters to return when using K-Means clustering.
 
-`n_pcs` : int, optional *(The default is None)* 
+`n_pcs` : int, optional *(The default is None)*  
  Number of PC's to be used in leiden clustering. By default it uses all PC's.
 
-`resolution` : float, optional *(The default is 1)* 
+`resolution` : float, optional *(The default is 1)*  
 A parameter value controlling the coarseness of the clustering. Higher values lead to more clusters.
 
-`phenograph_clustering_metric` : string, optional *(The default is 'euclidean')* 
+`phenograph_clustering_metric` : string, optional *(The default is 'euclidean')*   
 Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. <br>
 Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’,  ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’,  ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
 
-`nearest_neighbors` : int, optional *(The default is 30)* 
+`nearest_neighbors` : int, optional *(The default is 30)*  
 Number of nearest neighbors to use in first step of graph construction. This parameter is used both in `leiden` and `phenograph` clustering.
 
-`use_raw` : bool, optional *(The default is True)* 
+`use_raw` : bool, optional *(The default is True)*  
 If True, log transformed raw data will be used for clustering. If False, normalized/scaled data within `adata.X` will be used.
 
-`random_state` : int, optional *(The default is 0)* 
+`random_state` : int, optional *(The default is 0)*  
 Change the initialization of the optimization. 
 
-`collapse_labels` : bool, optional *(The default is False)* 
+`collapse_labels` : bool, optional *(The default is False)*  
 While sub clustering only a few phenotypes/clusters, this argument helps to group all the other phenotypes/clusters into a single category -  Helps in visualisation.
 
 
@@ -100,7 +100,8 @@ adata = sm.tl.cluster (adata, method = 'leiden', resolution = 0.5,
         sub_cluster=True, sub_cluster_column='phenotype', sub_cluster_group='Tumor')
         
 # Run phenograph clustering by only using a subset of genes
-gene_subset = ['CD25', 'CD2', 'CD10', 'CD163', 'CD3D', 'CD5', 'CD30', 'ACTIN', 'CD45', 'CD206', 'CD68', 'PD1', 'KI67', 'CD11C', 'CD7', 'CD8A', 'FOXP3', 'CD20']
+gene_subset = ['CD25', 'CD2', 'CD10', 'CD163', 'CD3D', 'CD5', 'CD30', 'ACTIN', 'CD45', 
+                'CD206', 'CD68', 'PD1', 'KI67', 'CD11C', 'CD7', 'CD8A', 'FOXP3', 'CD20']
 adata = sm.tl.cluster (adata,  subset_genes = gene_subset, method = 'phenograph', 
         nearest_neighbors = 10, use_raw = True)
 
