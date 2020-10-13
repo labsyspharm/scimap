@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.3.6"
+version = "0.3.7"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -38,7 +38,8 @@ numpy = "^1.18.5"
 pytest-xvfb = "^2.0.0"
 napari = "^0.3.4"
 matplotlib = "^3.2.1"
-parc = "^0.30"
+parc = "^0.31"
+PhenoGraph = "^1.5.7"
 
 [tool.poetry.dev-dependencies]
 

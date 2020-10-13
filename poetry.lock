@@ -542,10 +542,10 @@ description = "Leiden is a general algorithm for methods of community detection 
 name = "leidenalg"
 optional = false
 python-versions = "*"
-version = "0.7.0"
+version = "0.8.2"
 
 [package.dependencies]
-python-igraph = ">=0.7.1.0"
+python-igraph = ">=0.8.0"
 
 [[package]]
 category = "dev"
@@ -842,11 +842,11 @@ description = ""
 name = "parc"
 optional = false
 python-versions = "*"
-version = "0.30"
+version = "0.31"
 
 [package.dependencies]
 hnswlib = "*"
-leidenalg = "0.7.0"
+leidenalg = ">=0.7.0"
 numpy = "*"
 pandas = "*"
 pybind11 = "*"
@@ -884,6 +884,22 @@ version = "4.8.0"
 
 [package.dependencies]
 ptyprocess = ">=0.5"
+
+[[package]]
+category = "main"
+description = "Graph-based clustering for high-dimensional single-cell data"
+name = "phenograph"
+optional = false
+python-versions = ">=3.6"
+version = "1.5.7"
+
+[package.dependencies]
+leidenalg = ">=0.8.2"
+numpy = ">=1.12"
+psutil = ">4"
+scikit-learn = ">=0.17"
+scipy = ">=1.5.1"
+setuptools = ">=18.0.1"
 
 [[package]]
 category = "main"
@@ -1289,11 +1305,11 @@ category = "main"
 description = "SciPy: Scientific Library for Python"
 name = "scipy"
 optional = false
-python-versions = ">=3.5"
-version = "1.4.1"
+python-versions = ">=3.6"
+version = "1.5.2"
 
 [package.dependencies]
-numpy = ">=1.13.3"
+numpy = ">=1.14.5"
 
 [[package]]
 category = "main"
@@ -1629,7 +1645,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "787ec79fc0470e7d6ec0a34acd938ebb3f66f0d48b2b7f88e34031240d9fc1ad"
+content-hash = "6696236162e3577d475f423ca2e63829516e194ef29a312e8a7c99135f77fdf8"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1907,9 +1923,25 @@ lazy-object-proxy = [
     {file = "lazy_object_proxy-1.4.3-cp38-cp38-win_amd64.whl", hash = "sha256:59f79fef100b09564bc2df42ea2d8d21a64fdcda64979c0fa3db7bdaabaf6239"},
 ]
 leidenalg = [
-    {file = "leidenalg-0.7.0-cp36-cp36m-win_amd64.whl", hash = "sha256:ff05e09319f7689c382a85586c0c144c9c14366b1252f4499397d71142594fc3"},
-    {file = "leidenalg-0.7.0-py3.6-linux-x86_64.egg", hash = "sha256:4d9af59b4c591dec7aa4d7153e8dc31c17c53602ea0e2d4245c55b545003d71b"},
-    {file = "leidenalg-0.7.0.tar.gz", hash = "sha256:c1c92c5638ef0ccf67ea89ed311cf19116a82e67bf1a015a3e65f00653a3dc95"},
+    {file = "leidenalg-0.8.2-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:3595b78d427b2d99363d520e1878ebec18f866d7fe4d96679cccdb7388540977"},
+    {file = "leidenalg-0.8.2-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:7a558788a5ad11943884ac25e2d06b1347072638b30b0bf31b33a2c8f604ef07"},
+    {file = "leidenalg-0.8.2-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:7c103ba36845dcd6533bd1cbdec313e19fa569356094648060ebc9ffbf20c1e7"},
+    {file = "leidenalg-0.8.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:c3e5d7a71148fe9be644179a6248ef7cf23646e3ea684e29b897811c63a703e4"},
+    {file = "leidenalg-0.8.2-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:e92a0d2594706f1bbc8f03d7c15b611c3f0e66a2c32006b9c013f4e3db1dcb40"},
+    {file = "leidenalg-0.8.2-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:fbdeb918cd365ac230272c14bb759f8b2f05061ad5e48a8f45d8f49739599448"},
+    {file = "leidenalg-0.8.2-cp36-cp36m-win32.whl", hash = "sha256:3bdcdc5204ef91d28df41a59b01a173781269f8da12fff7e4262e8959257c39c"},
+    {file = "leidenalg-0.8.2-cp36-cp36m-win_amd64.whl", hash = "sha256:63ad8d425d0af826351062e665ba634d282ab699713056d66d094ba0979971a0"},
+    {file = "leidenalg-0.8.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:8496bcbafbb50f1a16c5062982441fc96b848398b11697486a5ea2ffe5a55123"},
+    {file = "leidenalg-0.8.2-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:0484810f254a24dff1815b8251ef8fe82a36a5fed4f7104a97a24addd041dbe2"},
+    {file = "leidenalg-0.8.2-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:aac94628fef0cc9dd9f2356c9fb3b52e9fe076c91daa2988df1994f40a894f21"},
+    {file = "leidenalg-0.8.2-cp37-cp37m-win32.whl", hash = "sha256:ec65bbd555ad6700b71d75ad4c3c3fe60e931e77c89d4ee81398c5470a6832ae"},
+    {file = "leidenalg-0.8.2-cp37-cp37m-win_amd64.whl", hash = "sha256:8268a5793d374ddd6e1ae945759c2e89135425c8ca19ab10a5bf12b37d2c196a"},
+    {file = "leidenalg-0.8.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:90cb69852cba90553c8965a7eda22a3d3eee43b5372de0e2cd524dd1ef621af7"},
+    {file = "leidenalg-0.8.2-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:400c28b570ceb7efa542ec3bb72160ed4a72eb881a55af10a890bd6563fc8d0a"},
+    {file = "leidenalg-0.8.2-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:67eb49e60c8ac4bb5133fa61598ab016533fbb500411bcf1ef8e80860a9505a2"},
+    {file = "leidenalg-0.8.2-cp38-cp38-win32.whl", hash = "sha256:1689f9fc47cb0740e58aa00e51ad30b76c8641042e3c7bc4fb08075fbda05c50"},
+    {file = "leidenalg-0.8.2-cp38-cp38-win_amd64.whl", hash = "sha256:4ceb1eba8fe7ffb40b187232250f80e4e90915fdb54c1f8d68b4909c744523e3"},
+    {file = "leidenalg-0.8.2.tar.gz", hash = "sha256:02cc8e87d2000ea1da60e9efc9287764fe81e445ab9850ec728b006c37620289"},
 ]
 livereload = [
     {file = "livereload-2.6.2.tar.gz", hash = "sha256:d1eddcb5c5eb8d2ca1fa1f750e580da624c0f7fcb734aa5780dc81b7dcbd89be"},
@@ -2114,8 +2146,8 @@ pandas = [
     {file = "pandas-1.0.4.tar.gz", hash = "sha256:b35d625282baa7b51e82e52622c300a1ca9f786711b2af7cbe64f1e6831f4126"},
 ]
 parc = [
-    {file = "parc-0.30-py3-none-any.whl", hash = "sha256:c34363df46539a8fd08039aa3dc4afbcafef46404784a29c809ae967222469b6"},
-    {file = "parc-0.30.tar.gz", hash = "sha256:17b3a55fc5ec9742ff7f15129b83343673319dc1bf9643e9bdf23f51359cbe59"},
+    {file = "parc-0.31-py3-none-any.whl", hash = "sha256:0dea8a02e8766c9fd8801afe731e1c58d36e89a17732f454adc56ce17204d5ef"},
+    {file = "parc-0.31.tar.gz", hash = "sha256:ae12cdef896630472524a8fb653481b6064b9489ab4b052cd99b413e2db9f20f"},
 ]
 parso = [
     {file = "parso-0.7.0-py2.py3-none-any.whl", hash = "sha256:158c140fc04112dc45bca311633ae5033c2c2a7b732fa33d0955bad8152a8dd0"},
@@ -2128,6 +2160,10 @@ pathspec = [
 pexpect = [
     {file = "pexpect-4.8.0-py2.py3-none-any.whl", hash = "sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937"},
     {file = "pexpect-4.8.0.tar.gz", hash = "sha256:fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c"},
+]
+phenograph = [
+    {file = "PhenoGraph-1.5.7-py3-none-any.whl", hash = "sha256:62a0fb88e13e4409875da0d382f0783a63faa4913b79f61b99528eb79c93c2e2"},
+    {file = "PhenoGraph-1.5.7.tar.gz", hash = "sha256:46b28f9e043a00deba53bb5f35dd84793669ab2bd4ce78900bf7f15f1321515a"},
 ]
 pickleshare = [
     {file = "pickleshare-0.7.5-py2.py3-none-any.whl", hash = "sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"},
@@ -2399,27 +2435,22 @@ scikit-learn = [
     {file = "scikit_learn-0.23.1-cp38-cp38-win_amd64.whl", hash = "sha256:16feae4361be6b299d4d08df5a30956b4bfc8eadf173fe9258f6d59630f851d4"},
 ]
 scipy = [
-    {file = "scipy-1.4.1-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:c5cac0c0387272ee0e789e94a570ac51deb01c796b37fb2aad1fb13f85e2f97d"},
-    {file = "scipy-1.4.1-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:a144811318853a23d32a07bc7fd5561ff0cac5da643d96ed94a4ffe967d89672"},
-    {file = "scipy-1.4.1-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:71eb180f22c49066f25d6df16f8709f215723317cc951d99e54dc88020ea57be"},
-    {file = "scipy-1.4.1-cp35-cp35m-win32.whl", hash = "sha256:770254a280d741dd3436919d47e35712fb081a6ff8bafc0f319382b954b77802"},
-    {file = "scipy-1.4.1-cp35-cp35m-win_amd64.whl", hash = "sha256:a1aae70d52d0b074d8121333bc807a485f9f1e6a69742010b33780df2e60cfe0"},
-    {file = "scipy-1.4.1-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:bb517872058a1f087c4528e7429b4a44533a902644987e7b2fe35ecc223bc408"},
-    {file = "scipy-1.4.1-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:dba8306f6da99e37ea08c08fef6e274b5bf8567bb094d1dbe86a20e532aca088"},
-    {file = "scipy-1.4.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:386086e2972ed2db17cebf88610aab7d7f6e2c0ca30042dc9a89cf18dcc363fa"},
-    {file = "scipy-1.4.1-cp36-cp36m-win32.whl", hash = "sha256:8d3bc3993b8e4be7eade6dcc6fd59a412d96d3a33fa42b0fa45dc9e24495ede9"},
-    {file = "scipy-1.4.1-cp36-cp36m-win_amd64.whl", hash = "sha256:dc60bb302f48acf6da8ca4444cfa17d52c63c5415302a9ee77b3b21618090521"},
-    {file = "scipy-1.4.1-cp37-cp37m-macosx_10_6_intel.whl", hash = "sha256:787cc50cab3020a865640aba3485e9fbd161d4d3b0d03a967df1a2881320512d"},
-    {file = "scipy-1.4.1-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:0902a620a381f101e184a958459b36d3ee50f5effd186db76e131cbefcbb96f7"},
-    {file = "scipy-1.4.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:00af72998a46c25bdb5824d2b729e7dabec0c765f9deb0b504f928591f5ff9d4"},
-    {file = "scipy-1.4.1-cp37-cp37m-win32.whl", hash = "sha256:9508a7c628a165c2c835f2497837bf6ac80eb25291055f56c129df3c943cbaf8"},
-    {file = "scipy-1.4.1-cp37-cp37m-win_amd64.whl", hash = "sha256:a2d6df9eb074af7f08866598e4ef068a2b310d98f87dc23bd1b90ec7bdcec802"},
-    {file = "scipy-1.4.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:3092857f36b690a321a662fe5496cb816a7f4eecd875e1d36793d92d3f884073"},
-    {file = "scipy-1.4.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:8a07760d5c7f3a92e440ad3aedcc98891e915ce857664282ae3c0220f3301eb6"},
-    {file = "scipy-1.4.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:1e3190466d669d658233e8a583b854f6386dd62d655539b77b3fa25bfb2abb70"},
-    {file = "scipy-1.4.1-cp38-cp38-win32.whl", hash = "sha256:cc971a82ea1170e677443108703a2ec9ff0f70752258d0e9f5433d00dda01f59"},
-    {file = "scipy-1.4.1-cp38-cp38-win_amd64.whl", hash = "sha256:2cce3f9847a1a51019e8c5b47620da93950e58ebc611f13e0d11f4980ca5fecb"},
-    {file = "scipy-1.4.1.tar.gz", hash = "sha256:dee1bbf3a6c8f73b6b218cb28eed8dd13347ea2f87d572ce19b289d6fd3fbc59"},
+    {file = "scipy-1.5.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:cca9fce15109a36a0a9f9cfc64f870f1c140cb235ddf27fe0328e6afb44dfed0"},
+    {file = "scipy-1.5.2-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:1c7564a4810c1cd77fcdee7fa726d7d39d4e2695ad252d7c86c3ea9d85b7fb8f"},
+    {file = "scipy-1.5.2-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:07e52b316b40a4f001667d1ad4eb5f2318738de34597bd91537851365b6c61f1"},
+    {file = "scipy-1.5.2-cp36-cp36m-win32.whl", hash = "sha256:d56b10d8ed72ec1be76bf10508446df60954f08a41c2d40778bc29a3a9ad9bce"},
+    {file = "scipy-1.5.2-cp36-cp36m-win_amd64.whl", hash = "sha256:8e28e74b97fc8d6aa0454989db3b5d36fc27e69cef39a7ee5eaf8174ca1123cb"},
+    {file = "scipy-1.5.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:6e86c873fe1335d88b7a4bfa09d021f27a9e753758fd75f3f92d714aa4093768"},
+    {file = "scipy-1.5.2-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:a0afbb967fd2c98efad5f4c24439a640d39463282040a88e8e928db647d8ac3d"},
+    {file = "scipy-1.5.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:eecf40fa87eeda53e8e11d265ff2254729d04000cd40bae648e76ff268885d66"},
+    {file = "scipy-1.5.2-cp37-cp37m-win32.whl", hash = "sha256:315aa2165aca31375f4e26c230188db192ed901761390be908c9b21d8b07df62"},
+    {file = "scipy-1.5.2-cp37-cp37m-win_amd64.whl", hash = "sha256:ec5fe57e46828d034775b00cd625c4a7b5c7d2e354c3b258d820c6c72212a6ec"},
+    {file = "scipy-1.5.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:fc98f3eac993b9bfdd392e675dfe19850cc8c7246a8fd2b42443e506344be7d9"},
+    {file = "scipy-1.5.2-cp38-cp38-manylinux1_i686.whl", hash = "sha256:a785409c0fa51764766840185a34f96a0a93527a0ff0230484d33a8ed085c8f8"},
+    {file = "scipy-1.5.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:0a0e9a4e58a4734c2eba917f834b25b7e3b6dc333901ce7784fd31aefbd37b2f"},
+    {file = "scipy-1.5.2-cp38-cp38-win32.whl", hash = "sha256:dac09281a0eacd59974e24525a3bc90fa39b4e95177e638a31b14db60d3fa806"},
+    {file = "scipy-1.5.2-cp38-cp38-win_amd64.whl", hash = "sha256:92eb04041d371fea828858e4fff182453c25ae3eaa8782d9b6c32b25857d23bc"},
+    {file = "scipy-1.5.2.tar.gz", hash = "sha256:066c513d90eb3fd7567a9e150828d39111ebd88d3e924cdfc9f8ce19ab6f90c9"},
 ]
 seaborn = [
     {file = "seaborn-0.10.1-py3-none-any.whl", hash = "sha256:c901ce494541fb4714cfa7db79d0232dc3f4c4dfd3f273bacf17816084df5b53"},
