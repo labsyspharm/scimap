@@ -23,6 +23,7 @@ import scimap as sm
 | [`sm.tl.spatial_count (adata, ...)`](tl/sm.tl.spatial_count.md)     | Distribution of cell-types with local neighbourhood |
 | [`sm.tl.spatial_expression (adata, ...)`](tl/sm.tl.spatial_expression.md)     | Distribution of spatial expression with local neighbourhood |
 | [`sm.tl.spatial_aggregate (adata, ...)`](tl/sm.tl.spatial_aggregate.md)     | Agrregates of cell-types with local neighbourhood |
+| [`sm.tl.cluster (adata, ...)`](tl/sm.tl.cluster.md)     | Cluster or sub-cluster single-cells using a variety of algorithms |
 
 ### Plotting: `pl`
 
