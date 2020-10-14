@@ -66,3 +66,14 @@ def test_spatial_aggregate(adata):
     
     # test
     assert a == 20
+    
+# Testing cluster function
+def test_cluster(adata):
+    from scimap.tools._cluster import cluster
+    adata = cluster (adata,  method = 'kmeans', k= 5, use_raw = True)
+    a = adata.obs['kmeans'].value_counts()[4]
+    
+    #test
+    assert a == 252
+
+
