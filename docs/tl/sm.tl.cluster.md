@@ -27,7 +27,7 @@ The function currently supports four clustering algorithms- kmeans, phenograph, 
 The function also allows users to sub-cluster existing clusters by setting `sub_cluster=True`. Check arguments
 `sub_cluster_column` and `sub_cluster_group` for more information. <br>
 
-Additionally, if the user wishes to use only a subset of genes for purpose of clustering that can be
+Additionally, if the user wishes to use only a subset of genes for the purpose of clustering, it can be
 acheived by passing the genes as a list to `subset_genes`.
 
 The resultant clusters are saved under `adata.obs[method used]`.
