@@ -87,6 +87,10 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     for i in range(len(all_data)):
         all_data[i].columns = all_data[0].columns
     entire_data = pd.concat(all_data, axis=0, sort=False)
+    
+    # Randomly sample the data
+    if random_sample is not None:
+        entire_data = entire_data.sample(n=random_sample,replace=False)
 
     #Remove the images that contain less than a defined threshold of cells (min_cells)
     if min_cells is not None:
@@ -116,12 +120,6 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     if drop_markers is not None:
         for i in drop_markers:
             entire_data = entire_data.loc[:,~entire_data.columns.str.contains(i, case=False)]
-
-
-    # Randomly sample the data
-    if random_sample is not None:
-        entire_data = entire_data.sample(n=random_sample,replace=False)
-
 
     # Create an anndata object
     adata = ad.AnnData(entire_data)
