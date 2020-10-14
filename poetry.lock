@@ -20,14 +20,14 @@ description = "Annotated Data."
 name = "anndata"
 optional = false
 python-versions = ">=3.6"
-version = "0.7.3"
+version = "0.7.4"
 
 [package.dependencies]
 h5py = "*"
 natsort = "*"
-numpy = ">=1.14,<2.0"
+numpy = ">=1.15"
 packaging = "*"
-pandas = ">=0.23.0"
+pandas = ">=1.0"
 scipy = ">=1.0,<2.0"
 
 [package.dependencies.importlib-metadata]
@@ -1846,7 +1846,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "30e3d76927d2f15f8ecc6706871e4cd9ac8c451cc79930153771a94fafd9a911"
+content-hash = "17bca21e6e30304ae5467501d4c2b0e3d77b27189d6e13617871e2c16396665b"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1859,8 +1859,8 @@ altgraph = [
     {file = "altgraph-0.17.tar.gz", hash = "sha256:1f05a47122542f97028caf78775a095fbe6a2699b5089de8477eb583167d69aa"},
 ]
 anndata = [
-    {file = "anndata-0.7.3-py3-none-any.whl", hash = "sha256:a66fd94e567efe133105f5cde6d51f8b8959a45b33f7d4b1f74a809cec147764"},
-    {file = "anndata-0.7.3.tar.gz", hash = "sha256:7b3f9c0272370ac6aa531bfcddd8904282997f90f596142999098c6e7f82965d"},
+    {file = "anndata-0.7.4-py3-none-any.whl", hash = "sha256:b7f5a7163a52da1d9211fed7e546d5800c5964243a1ae581b4ffba28d0bcb7c0"},
+    {file = "anndata-0.7.4.tar.gz", hash = "sha256:da1c3a3ad8729907874fb464d4a22bab8d86d732e35d18adbfdfd8474fc75edb"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
