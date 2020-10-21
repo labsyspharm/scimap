@@ -27,10 +27,11 @@ nav:
     - pp.rescale: pp/sm.pp.rescale.md
   - Tools:
     - tl.phenotype_cells: tl/sm.tl.phenotype_cells.md
+    - tl.cluster: tl/sm.tl.cluster.md
+    - tl.spatial_interaction: tl/sm.tl.spatial_interaction.md
     - tl.spatial_count: tl/sm.tl.spatial_count.md
     - tl.spatial_expression: tl/sm.tl.spatial_expression.md
-    - tl.spatial_aggregate: tl/sm.tl.spatial_aggregate.md
-    - tl.cluster: tl/sm.tl.cluster.md
+    - tl.spatial_aggregate: tl/sm.tl.spatial_aggregate.md    
   - Plotting:
     - pl.gate_finder: pl/sm.pl.gate_finder.md
     - pl.image_viewer: pl/sm.pl.image_viewer.md

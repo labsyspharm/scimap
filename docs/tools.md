@@ -20,6 +20,7 @@ import scimap as sm
 |                                                                     |                                                 |
 |:-------------------------------------------------------------------:|:-----------------------------------------------:|
 | [`sm.tl.phenotype_cells (adata, ...)`](tl/sm.tl.phenotype_cells.md) | Probability distribution based cell phenotyping |
+| [`sm.tl.spatial_interaction (adata, ...)`](tl/sm.tl.spatial_interaction.md) | cell–cell interactions analysis |
 | [`sm.tl.spatial_count (adata, ...)`](tl/sm.tl.spatial_count.md)     | Distribution of cell-types with local neighbourhood |
 | [`sm.tl.spatial_expression (adata, ...)`](tl/sm.tl.spatial_expression.md)     | Distribution of spatial expression with local neighbourhood |
 | [`sm.tl.spatial_aggregate (adata, ...)`](tl/sm.tl.spatial_aggregate.md)     | Agrregates of cell-types with local neighbourhood |
