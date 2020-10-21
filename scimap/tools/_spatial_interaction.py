@@ -167,7 +167,7 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
         # Normalize based on total cell count
         k = n.groupby(['phenotype','neighbour_phenotype']).size().unstack().fillna(0)
         total_cell_count = data['phenotype'].value_counts()
-        total_cell_count = total_cell_count.reindex(k.columns).values    
+        total_cell_count = total_cell_count.reindex(k.columns).values
         k_max = k.div(total_cell_count, axis = 0)
         k_max = k_max.div(k_max.max(axis=1), axis=0).stack()
         
@@ -182,7 +182,7 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
         
         # return
         return neighbours
-      
+          
       
     # subset a particular subset of cells if the user wants else break the adata into list of anndata objects
     if subset is not None:
