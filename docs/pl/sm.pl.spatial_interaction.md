@@ -36,7 +36,7 @@ Cluster Columns.
 Color map to use for continous variables. Can be a name or a Colormap 
 instance (e.g. `'magma'`, `'viridis'`). 
 
-`**kwargs`: key:value pairs
+`**kwargs`: key:value pairs.  
 Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
  
 
