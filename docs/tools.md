@@ -32,4 +32,5 @@ import scimap as sm
 |:------------------------------------------------------------------:|:---------------------------------------------------------:|
 |  [`sm.pl.gate_finder (image_path, ...)`](pl/sm.pl.gate_finder.md)  | Overlays gating positivity on the image for manual gating |
 | [`sm.pl.image_viewer (image_path, ...)`](../pl/sm.pl.image_viewer) |    Opens the image with overlays on a `napari` browser    |
+| [`sm.pl.spatial_interaction (image_path, ...)`](../pl/sm.pl.spatial_interaction) |    Heatmap of cell–cell interaction analysis    |
 |                                                                    |                                                           |

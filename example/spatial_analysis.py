@@ -134,6 +134,10 @@ adata = sm.tl.cluster (adata,method = 'kmeans', k = 6,sub_cluster=True, sub_clus
 
 adata.obs['custom'].value_counts()
 
+# spatial interaction
+adata = sm.tl.spatial_interaction(adata, method='radius',radius=30,pval_method='histocat',
+                                      imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
+
 
 # Save data
 adata.write('tutorial_data.h5ad')

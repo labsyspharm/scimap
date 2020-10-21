@@ -177,7 +177,7 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
         neighbours.loc[neighbours[neighbours['p_val'] > p_val].index,'count'] = np.NaN
         del neighbours['p_val']
         neighbours.columns = adata_subset.obs[imageid].unique()
-        neighbours.reset_index(inplace=True)
+        neighbours = neighbours.reset_index()
         #neighbours = neighbours['count'].unstack()
         
         # return
