@@ -77,7 +77,7 @@ def spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid
     
 
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata.obs[x_coordinate], 'y': adata.obs[y_coordinate], 'phenotype': adata.obs[phenotype]})
+        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method

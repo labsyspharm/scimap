@@ -126,6 +126,14 @@ colo_map = {"kmeans-0":'#636EFA',
             }
 
 
+# cluster algorithm
+gene_subset = ['HHLA2', 'SOX10', 'S100B', 'KERATIN', 'CD1A','MITF', 'PDL1', 'KI67', 'LAG3', 'TIM3', 'PCNA',
+       'pSTAT1', 'cPARP', 'SNAIL', 'HLADPB1', 'S100A', 'PD1','LDH', 'PANCK', 'CCNA2', 'CCND1', 'CD63']
+
+adata = sm.tl.cluster (adata,method = 'kmeans', k = 6,sub_cluster=True, sub_cluster_column='phenotype', sub_cluster_group='Non-immune cells', use_raw = True, label='custom_2')
+
+adata.obs['custom'].value_counts()
+
 
 # Save data
 adata.write('tutorial_data.h5ad')

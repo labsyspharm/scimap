@@ -77,7 +77,7 @@ def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroi
                                      method, radius, knn, imageid, use_raw, subset,label):
          
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata.obs[x_coordinate], 'y': adata.obs[y_coordinate]})
+        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
@@ -159,9 +159,9 @@ def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroi
         
         # Calculation of spatial lag
         if use_raw==True:
-            spatial_lag = pd.DataFrame(wn_matrix_sparse * np.log1p(adata.raw.X), columns = adata.var.index, index=adata.obs.index)
+            spatial_lag = pd.DataFrame(wn_matrix_sparse * np.log1p(adata_subset.raw.X), columns = adata_subset.var.index, index=adata_subset.obs.index)
         else:
-            spatial_lag = pd.DataFrame(wn_matrix_sparse * adata.X, columns = adata.var.index, index=adata.obs.index)
+            spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
         
         # return value
         return spatial_lag

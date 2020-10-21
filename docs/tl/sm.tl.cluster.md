@@ -84,6 +84,9 @@ Change the initialization of the optimization.
 `collapse_labels` : bool, optional *(The default is False)*  
 While sub clustering only a few phenotypes/clusters, this argument helps to group all the other phenotypes/clusters into a single category -  Helps in visualisation.
 
+`label` : string, optional *(The default is None)*  
+Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs[method used].
+
 
 **Returns**
 `AnnData` object with the results stored in `adata.obs[method used]`.

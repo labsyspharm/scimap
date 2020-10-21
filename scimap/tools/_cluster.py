@@ -21,7 +21,8 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
              parc_small_pop= 50, parc_too_big_factor=0.4, 
              k= 10, n_pcs=None, resolution=1, 
              phenograph_clustering_metric='euclidean', nearest_neighbors= 30, 
-             use_raw = True, random_state=0, collapse_labels= False):
+             use_raw = True, random_state=0, collapse_labels= False,
+             label=None):
     """
     
     Parameters
@@ -74,6 +75,9 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
         While sub clustering only a few phenotypes/clusters, this argument helps to 
         group all the other phenotypes/clusters into a single category- 
         Helps in visualisation. The default is False.
+    label : string, optional
+        Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs[method used].
+
 
     Returns
     -------
@@ -245,15 +249,25 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
         
     # What cells to run the clustering on?
     if sub_cluster_group is not None:
-        pheno = list(sub_cluster_group)        
+        if isinstance(sub_cluster_group, list):
+            pheno = sub_cluster_group
+        else:
+            pheno = [sub_cluster_group]         
     else:
-        pheno = bdata.obs[sub_cluster_column].unique()
+        # Make sure number of clusters is not greater than number of cells available
+        if method == 'kmeans':
+            pheno = (bdata.obs[sub_cluster_column].value_counts() > k+1).index[bdata.obs[sub_cluster_column].value_counts() > k+1]
+        if method == 'phenograph':
+            pheno = (bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1).index[bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1]
+        if method == 'leiden':
+            pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
+        if method == 'parc':
+            pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
+            
         
     # Run the specified method
     if method == 'kmeans':
-        if sub_cluster == True:
-            # Make sure number of clusters is not greater than number of cells available
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > k+1).index[bdata.obs[sub_cluster_column].value_counts() > k+1]
+        if sub_cluster == True:  
             # Apply the Kmeans function
             r_k_clustering = lambda x: k_clustering(pheno=x, adata=bdata, k=k, sub_cluster_column=sub_cluster_column, use_raw=use_raw, random_state=random_state) # Create lamda function 
             all_cluster_labels = list(map(r_k_clustering, pheno)) # Apply function 
@@ -262,8 +276,6 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
             
     if method == 'phenograph':
         if sub_cluster == True:
-            # Make sure number of neighbours is not greater than number of cells available
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1).index[bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1]
             r_phenograph_clustering = lambda x: phenograph_clustering(pheno=x, adata=bdata, primary_metric=phenograph_clustering_metric, nearest_neighbors=nearest_neighbors) # Create lamda function 
             all_cluster_labels = list(map(r_phenograph_clustering, pheno)) # Apply function      
         else:
@@ -272,8 +284,6 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
             
     if method == 'leiden':
         if sub_cluster == True:
-            # Make sure number of neighbours is not greater than number of cells available
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
             r_leiden_clustering = lambda x: leiden_clustering(pheno=x, adata=bdata, nearest_neighbors=nearest_neighbors, n_pcs=n_pcs, resolution=resolution) # Create lamda function 
             all_cluster_labels = list(map(r_leiden_clustering, pheno)) # Apply function 
         else:
@@ -282,8 +292,6 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
             
     if method == 'parc':
         if sub_cluster == True:
-            # Make sure number of neighbours is not greater than number of cells available
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
             r_parc_clustering = lambda x: parc_clustering(pheno=x, adata=bdata, random_state=random_state,resolution=resolution,parc_too_big_factor=parc_too_big_factor,parc_small_pop=parc_small_pop) # Create lamda function 
             all_cluster_labels = list(map(r_parc_clustering, pheno)) # Apply function 
         else:
@@ -312,7 +320,11 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
     sub_clusters = sub_clusters.reindex(adata.obs.index)
     
     # Append to adata
-    adata.obs[method] = sub_clusters
+    if label is None:
+        adata.obs[method] = sub_clusters
+    else:
+        adata.obs[label] = sub_clusters
+
     
     # Return adata
     return adata

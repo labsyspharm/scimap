@@ -36,7 +36,7 @@ Column name containing the x-coordinates values.
 `y_coordinate` : float, required *(The default is 'Y_centroid')*  
 Column name containing the y-coordinates values.
 
-purity : int, required *(The default is 60)* 
+`purity` : int, required *(The default is 60)*  
 Supply a value between 1 and 100. It is the percent purity of neighbouring cells. <br>
 For e.g. if 60 is chosen, every neighbourhood is tested such that if a particular phenotype makes up greater than 60% of the total population it is annotated to be an aggregate of that particular phenotype. The default is 60.
 
