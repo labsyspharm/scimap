@@ -19,7 +19,7 @@ from functools import reduce
 def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroid',
                          phenotype='phenotype',
                          method='radius', radius=30, knn=10,
-                         permutation=1000, p_val=0.05,
+                         permutation=1000,
                          imageid='imageid',subset=None,
                          pval_method='histocat',
                          label='spatial_interaction'):
@@ -48,8 +48,6 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
         Number of cells considered for defining the local neighbhourhood. The default is 10.
     permutation : int, optional
         The number of permutations to be performed for calculating the P-Value. The default is 1000.
-    p_val : float, optional
-        P-value cut-off above which interactions are not considered significant. The default is 0.05.
     imageid : string, optional
         Column name of the column containing the image id. The default is 'imageid'.
     subset : string, optional
@@ -84,7 +82,7 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
     def spatial_interaction_internal (adata_subset,x_coordinate,y_coordinate,
                                       phenotype,
                                       method, radius, knn,
-                                      permutation, p_val,
+                                      permutation, 
                                       imageid,subset,
                                       pval_method):
         
@@ -162,7 +160,7 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
             p_values = p_values[~np.isnan(p_values)]
             
         # Compute Direction of interaction (interaction or avoidance)
-        direction = (n_freq.values - mean) / abs(n_freq.values - mean).fillna(1)
+        direction = ((n_freq.values - mean) / abs(n_freq.values - mean)).fillna(1)
 
         # Normalize based on total cell count
         k = n.groupby(['phenotype','neighbour_phenotype']).size().unstack().fillna(0)
@@ -174,9 +172,9 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
         # DataFrame with the neighbour frequency and P values
         count = (k_max.values * direction).values # adding directionallity to interaction
         neighbours = pd.DataFrame({'count': count,'p_val': p_values}, index = k_max.index)
-        neighbours.loc[neighbours[neighbours['p_val'] > p_val].index,'count'] = np.NaN
-        del neighbours['p_val']
-        neighbours.columns = adata_subset.obs[imageid].unique()
+        #neighbours.loc[neighbours[neighbours['p_val'] > p_val].index,'count'] = np.NaN
+        #del neighbours['p_val']
+        neighbours.columns = [adata_subset.obs[imageid].unique()[0], 'pvalue_' + str(adata_subset.obs[imageid].unique()[0])]
         neighbours = neighbours.reset_index()
         #neighbours = neighbours['count'].unstack()
         
@@ -193,7 +191,7 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
     
     # Apply function to all images and create a master dataframe
     # Create lamda function 
-    r_spatial_interaction_internal = lambda x: spatial_interaction_internal (adata_subset=x, x_coordinate=x_coordinate, y_coordinate=y_coordinate, phenotype=phenotype, method=method,  radius=radius, knn=knn, permutation=permutation, p_val=p_val, imageid=imageid,subset=subset,pval_method=pval_method) 
+    r_spatial_interaction_internal = lambda x: spatial_interaction_internal (adata_subset=x, x_coordinate=x_coordinate, y_coordinate=y_coordinate, phenotype=phenotype, method=method,  radius=radius, knn=knn, permutation=permutation, imageid=imageid,subset=subset,pval_method=pval_method) 
     all_data = list(map(r_spatial_interaction_internal, adata_list)) # Apply function 
     
 

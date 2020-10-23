@@ -26,6 +26,12 @@ label/columnname of `sm.tl.spatial_interaction` function. The default is 'spatia
 In the event of analyzing multiple images, this argument allows users to 
 plot the average cell-cell interaction across all images. The default is True.
 
+`p_val` : float, optional *(The default is 0.05.)*  
+P-value cut-off above which interactions are not considered significant. 
+
+`nonsig_color` : string, optional *(The default is 'grey')*  
+Color for non-significant interactions (Interactions above the P-value cut-off will use this color).
+
 `row_cluster` : bool, optional *(The default is False)*  
 Cluster Rows.
 

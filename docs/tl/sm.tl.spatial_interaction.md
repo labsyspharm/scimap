@@ -7,7 +7,7 @@
       y_coordinate='Y_centroid',
       phenotype='phenotype',
       method='radius', radius=30, knn=10,
-      permutation=1000, p_val=0.05,
+      permutation=1000,
       imageid='imageid',subset=None,
       pval_method='histocat',
       label='spatial_interaction'**)
@@ -55,11 +55,8 @@ Number of cells considered for defining the local neighbhourhood.
 `permutation` : int, optional *(The default is 1000)*  
 The number of permutations to be performed for calculating the P-Value. 
 
-`p_val` : float, optional *(The default is 0.05)*  
-P-value cut-off above which interactions are not considered significant.
-
 `pval_method` : string, optional *(The default is 'histocat')*  
-Two options are available: a) 'histocat', b) 'zscore'.
+Two options are available: a) 'histocat', b) 'zscore'.  
 a) P-values are calculated by subtracting the permuted mean from the observed mean
 divided by the number of permutations as described in the histoCAT manuscript (Denis et.al, Nature Methods 2017) <br>
 b) zscores are calculated from the mean and standard deviation and further p-values 
