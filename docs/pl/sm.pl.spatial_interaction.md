@@ -4,7 +4,7 @@
     `scimap.pl.spatial_interaction` (
       **adata, 
       spatial_interaction='spatial_interaction',
-      summarize_plot=True, 
+      summarize_plot=True, p_val=0.05, nonsig_color='grey',
       row_cluster=False, col_cluster=False,
       cmap = 'vlag', **kwargs**)
 
