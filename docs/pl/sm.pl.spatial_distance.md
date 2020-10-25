@@ -107,20 +107,20 @@ Heatmap or Numeric Plot or Distribution Plot.
 
 ```
 # summary heatmap
-spatial_distance (adata)
+sm.pl.spatial_distance (adata)
     
 # Heatmap without summarizing the individual images
-spatial_distance (adata, heatmap_summarize=False, imageid='ImageId')
+sm.pl.spatial_distance (adata, heatmap_summarize=False, imageid='ImageId')
     
 # Numeric plot of shortest distance of phenotypes from tumor cells
-spatial_distance (adata, method='numeric',distance_from='Tumor CD30+',imageid='ImageId')
+sm.pl.spatial_distance (adata, method='numeric',distance_from='Tumor CD30+',imageid='ImageId')
     
 # Distribution plot of shortest distance of phenotypes from tumor cells
-spatial_distance (adata, method='distribution',distance_from='Tumor CD30+',imageid='ImageId', x_axis="distance", y_axis="imageid", plot_type="kde")
+sm.pl.spatial_distance (adata, method='distribution',distance_from='Tumor CD30+',imageid='ImageId', x_axis="distance", y_axis="imageid", plot_type="kde")
     
 # Numeric plot of shortest distance of phenotypes from tumor cells to M2 Macrophages
-spatial_distance (adata, method='numeric',distance_from='Tumor CD30+',distance_to = 'M2 Macrophages', imageid='ImageId')
+sm.pl.spatial_distance (adata, method='numeric',distance_from='Tumor CD30+',distance_to = 'M2 Macrophages', imageid='ImageId')
     
 # Distribution plot of shortest distance of phenotypes from tumor cells to M2 Macrophages
-spatial_distance (adata, method='distribution',distance_from='Tumor CD30+',distance_to = 'M2 Macrophages',imageid='ImageId')
+sm.pl.spatial_distance (adata, method='distribution',distance_from='Tumor CD30+',distance_to = 'M2 Macrophages',imageid='ImageId')
 ```
