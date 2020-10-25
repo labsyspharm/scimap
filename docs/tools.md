@@ -21,7 +21,7 @@ import scimap as sm
 |:-------------------------------------------------------------------:|:-----------------------------------------------:|
 | [`sm.tl.phenotype_cells (adata, ...)`](tl/sm.tl.phenotype_cells.md) | Probability distribution based cell phenotyping |
 | [`sm.tl.cluster (adata, ...)`](tl/sm.tl.cluster.md)     | Cluster or sub-cluster single-cells using a variety of algorithms |
-| [`sm.tl.spatial_distance (adata, ...)`](tl/sm.tl.spatial_distance.md)     | Computes mearest distance between all phenotypes for every cell|
+| [`sm.tl.spatial_distance (adata, ...)`](tl/sm.tl.spatial_distance.md)     | Computes nearest distance between all phenotypes for every cell|
 | [`sm.tl.spatial_interaction (adata, ...)`](tl/sm.tl.spatial_interaction.md) | cell–cell interactions analysis |
 | [`sm.tl.spatial_count (adata, ...)`](tl/sm.tl.spatial_count.md)     | Distribution of cell-types with local neighbourhood |
 | [`sm.tl.spatial_expression (adata, ...)`](tl/sm.tl.spatial_expression.md)     | Distribution of spatial expression with local neighbourhood |

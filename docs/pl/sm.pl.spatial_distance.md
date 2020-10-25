@@ -36,9 +36,9 @@ Column name of the column containing the image id.
 
 `method` : string, optional *(The default is 'heatmap')*  
 Three options are available.  
-1) heatmap - generates a heatmap of average shortest distance between all phenotypes.  
-2) numeric - can be used to generate boxplot, violin plot etc between a given set of phenotypes.  
-3) distribution - can be used to generate distribution plots between a given set of phenotypes.  
+1) `heatmap` - generates a heatmap of average shortest distance between all phenotypes.  
+2) `numeric` - can be used to generate boxplot, violin plot etc between a given set of phenotypes.  
+3) `distribution` - can be used to generate distribution plots between a given set of phenotypes.  
 
 `heatmap_summarize` : bool, optional *(The default is True)*   
 In the event multiple images are present in the dataset, True allows to calculate the 
@@ -57,7 +57,7 @@ Cluster Columns.
 Color map to use for continous variables. Can be a name or a Colormap 
 instance (e.g. `'magma'`, `'viridis'`). 
 
-`heatmap_standard_scale` : int, optional *(The default is False)*  
+`heatmap_standard_scale` : int, optional *(The default is 0)*  
 Either 0 (rows) or 1 (columns). Whether or not to standardize that dimension, 
 meaning for each row or column, subtract the minimum and divide each by its maximum. The default is 0.
       
@@ -89,10 +89,10 @@ generate sub-plots. Allowed arguments are: 'group', 'imageid'.
 
 `plot_type` : string, optional *(The default is None)*  
 In the event of using method = 'numeric' or 'distribution', this argument is required.  
-For `numeric` plot, the following options are available: “strip”, “swarm”, “box”, “violin”, “boxen”, “point”, “bar”, or “count”.  
-For `distribution` plot, the following options are available: “hist”, “kde”, “ecdf”.  
-The default for `numeric` plot is 'boxen'.  
-The default for `distribution` plot is 'kde`.  
+- For `numeric` plot, the following options are available: “strip”, “swarm”, “box”, “violin”, “boxen”, “point”, “bar”, or “count”.  
+- For `distribution` plot, the following options are available: “hist”, “kde”, “ecdf”.  
+1) The default for `numeric` plot is 'boxen'.  
+2) The default for `distribution` plot is 'kde`.  
 
 `**kwargs`: key:value pairs.  
 Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`, `sns.catplot` or `sns.displot`
