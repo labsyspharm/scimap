@@ -20,11 +20,11 @@ and blank regions represent non-significant results.
 
 `spatial_interaction`: string *(The default is 'spatial_interaction')*  
 In order to locate the spatial_interaction data within the AnnData object please provide the output 
-label/columnname of `sm.tl.spatial_interaction` function. The default is 'spatial_interaction'.
+label/columnname of `sm.tl.spatial_interaction` function. 
 
 `summarize_plot` : bool, optional *(The default is True)*   
 In the event of analyzing multiple images, this argument allows users to 
-plot the average cell-cell interaction across all images. The default is True.
+plot the average cell-cell interaction across all images.
 
 `p_val` : float, optional *(The default is 0.05.)*  
 P-value cut-off above which interactions are not considered significant. 
@@ -35,7 +35,7 @@ Color for non-significant interactions (Interactions above the P-value cut-off w
 `row_cluster` : bool, optional *(The default is False)*  
 Cluster Rows.
 
-`col_cluster` : boo,, optional *(The default is False)*  
+`col_cluster` : bool, optional *(The default is False)*  
 Cluster Columns. 
 
 `cmap` : string, optional *(The default is `'vlag'`)*  

@@ -84,5 +84,14 @@ def test_spatial_interaction(adata):
     
     #test
     assert a is not None
+    
+# Testing spatial_distance function
+def test_spatial_distance(adata):
+    from scimap.tools._spatial_distance import spatial_distance
+    adata = spatial_distance (adata, imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
+    a = adata.uns['spatial_distance']
+    
+    #test
+    assert a is not None
 
 
