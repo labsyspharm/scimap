@@ -52,7 +52,14 @@ def classify (adata, pos=None, neg=None, classify_label='passed_classify',
     
     Example
     -------
+    # Classify all cells with both pos and neg markers (Identify cytotoxic T-cells)
+    adata = sm.hl.classify(adata, pos=['CD3D','CD8A'], neg=['ASMA'])
+    
+    # Classify specific sub-types of cells
     adata = sm.hl.classify(adata, pos=['CD3D','FOXP3'], neg=['ASMA'], subclassify_phenotype=['T cells','Regulatory T cells'])
+    
+    # Classify specific sub-types of cells and borrow labels from another column
+    adata = sm.hl.classify(adata, pos=['CD3D'], neg=['ASMA'], subclassify_phenotype=['T cells'], collapse_failed=False, phenotype='phenotype')
 
     """
     

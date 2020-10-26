@@ -147,6 +147,8 @@ sm.pl.spatial_distance (adata)
 sm.pl.spatial_distance (adata, method='numeric',distance_from='Tumor CD30+',imageid='ImageId')
 
 
+# classify cells
+adata = sm.hl.classify(adata, pos=['CD3D','CD8A'], neg=['ASMA'], label='testing')
 
 # Save data
 adata.write('tutorial_data.h5ad')
