@@ -43,4 +43,4 @@ import scimap as sm
 
 |                                                                    |                                                           |
 |:------------------------------------------------------------------:|:---------------------------------------------------------:|
-|  [`sm.hl.classify (image_path, ...)`](pl/sm.hl.classify.md)  | Quickly classify cells based on positivity/Negativity of specific markers |
+|  [`sm.hl.classify (image_path, ...)`](hl/sm.hl.classify.md)  | Quickly classify cells based on positivity/Negativity of specific markers |
