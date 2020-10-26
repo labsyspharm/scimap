@@ -12,8 +12,12 @@ import numpy as np
 import pandas as pd
 import scanpy as sc
 import scanpy.external as sce
-import parc
 from sklearn.cluster import KMeans
+try:
+    import parc
+except:
+    pass
+
 
 
 def cluster (adata, method = 'kmeans', subset_genes=None,

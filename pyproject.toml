@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.6.3"
+version = "0.6.4"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -14,8 +14,8 @@ homepage = "https://pypi.org/project/scimap"
 documentation = "https://scimap.readthedocs.io"
 repository = "https://github.com/ajitjohnson/scimap"
 
-keywords = ["image analysis","multiplex imaging","single cell analysis"
-]
+keywords = ["image analysis","multiplex imaging","single cell analysis"]
+
 classifiers = [
     # TODO: update this list to match your application: https://pypi.org/pypi?%3Aaction=list_classifiers
     "Development Status :: 2 - Pre-Alpha",
