@@ -141,6 +141,13 @@ sm.pl.spatial_interaction(adata, summarize_plot=False, row_cluster=True, col_clu
 
 adata.obs[imageid][1000:] = '300'
 
+# Spatial distance
+adata = sm.tl.spatial_distance (adata,x_coordinate='X_position',y_coordinate='Y_position',imageid='ImageId')
+sm.pl.spatial_distance (adata)
+sm.pl.spatial_distance (adata, method='numeric',distance_from='Tumor CD30+',imageid='ImageId')
+
+
+
 # Save data
 adata.write('tutorial_data.h5ad')
 

@@ -334,18 +334,6 @@ version = "1.0.1"
 
 [[package]]
 category = "main"
-description = "hnswlib"
-name = "hnswlib"
-optional = false
-python-versions = "*"
-version = "0.4.0"
-
-[package.dependencies]
-numpy = "*"
-pybind11 = ">=2.0"
-
-[[package]]
-category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 optional = false
@@ -902,24 +890,6 @@ test = ["pytest (>=4.0.2)", "pytest-xdist", "hypothesis (>=3.58)"]
 
 [[package]]
 category = "main"
-description = ""
-name = "parc"
-optional = false
-python-versions = "*"
-version = "0.31"
-
-[package.dependencies]
-hnswlib = "*"
-leidenalg = ">=0.7.0"
-numpy = "*"
-pandas = "*"
-pybind11 = "*"
-python-igraph = "*"
-scipy = "*"
-umap-learn = "*"
-
-[[package]]
-category = "main"
 description = "A Python Parser"
 name = "parso"
 optional = false
@@ -1047,14 +1017,6 @@ name = "py"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.8.1"
-
-[[package]]
-category = "main"
-description = "Seamless operability between C++11 and Python"
-name = "pybind11"
-optional = false
-python-versions = "*"
-version = "2.5.0"
 
 [[package]]
 category = "dev"
@@ -1846,7 +1808,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "7dd777647c92baa50a48d9d09bd4ac5e5366b0ae071bc0e7408e8347cf3351d5"
+content-hash = "67519f864bce3e6b26288094df74abcd42662ff65155d8a2f78a6b538b2a1295"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -2030,9 +1992,6 @@ h5py = [
 heapdict = [
     {file = "HeapDict-1.0.1-py3-none-any.whl", hash = "sha256:6065f90933ab1bb7e50db403b90cab653c853690c5992e69294c2de2b253fc92"},
     {file = "HeapDict-1.0.1.tar.gz", hash = "sha256:8495f57b3e03d8e46d5f1b2cc62ca881aca392fd5cc048dc0aa2e1a6d23ecdb6"},
-]
-hnswlib = [
-    {file = "hnswlib-0.4.0.tar.gz", hash = "sha256:12d93a2bfdc5dda21b91addab88cbf467078615ae3b36fecb79b1f8b1778e4d6"},
 ]
 idna = [
     {file = "idna-2.9-py2.py3-none-any.whl", hash = "sha256:a068a21ceac8a4d63dbfd964670474107f541babbd2250d61922f029858365fa"},
@@ -2387,10 +2346,6 @@ pandas = [
     {file = "pandas-1.0.4-cp38-cp38-win_amd64.whl", hash = "sha256:83af85c8e539a7876d23b78433d90f6a0e8aa913e37320785cf3888c946ee874"},
     {file = "pandas-1.0.4.tar.gz", hash = "sha256:b35d625282baa7b51e82e52622c300a1ca9f786711b2af7cbe64f1e6831f4126"},
 ]
-parc = [
-    {file = "parc-0.31-py3-none-any.whl", hash = "sha256:0dea8a02e8766c9fd8801afe731e1c58d36e89a17732f454adc56ce17204d5ef"},
-    {file = "parc-0.31.tar.gz", hash = "sha256:ae12cdef896630472524a8fb653481b6064b9489ab4b052cd99b413e2db9f20f"},
-]
 parso = [
     {file = "parso-0.7.0-py2.py3-none-any.whl", hash = "sha256:158c140fc04112dc45bca311633ae5033c2c2a7b732fa33d0955bad8152a8dd0"},
     {file = "parso-0.7.0.tar.gz", hash = "sha256:908e9fae2144a076d72ae4e25539143d40b8e3eafbaeae03c1bfe226f4cdf12c"},
@@ -2468,10 +2423,6 @@ ptyprocess = [
 py = [
     {file = "py-1.8.1-py2.py3-none-any.whl", hash = "sha256:c20fdd83a5dbc0af9efd622bee9a5564e278f6380fffcacc43ba6f43db2813b0"},
     {file = "py-1.8.1.tar.gz", hash = "sha256:5e27081401262157467ad6e7f851b7aa402c5852dbcb3dae06768434de5752aa"},
-]
-pybind11 = [
-    {file = "pybind11-2.5.0-py2.py3-none-any.whl", hash = "sha256:205d9f9615eac190811cb8c3c2b2f95f6844ddba0fa0a1d45d00793338741601"},
-    {file = "pybind11-2.5.0.tar.gz", hash = "sha256:ea5a4e7a880112915463826f1acbec5892df36dfe102ecb249229ac514fb54ad"},
 ]
 pydocstyle = [
     {file = "pydocstyle-5.0.2-py3-none-any.whl", hash = "sha256:da7831660b7355307b32778c4a0dbfb137d89254ef31a2b2978f50fc0b4d7586"},
