@@ -38,3 +38,9 @@ import scimap as sm
 | [`sm.pl.spatial_interaction (image_path, ...)`](../pl/sm.pl.spatial_interaction) |    Heatmap of cell–cell interaction analysis    |
 | [`sm.pl.spatial_distance (image_path, ...)`](../pl/sm.pl.spatial_distance) |    Heatmap, distribution and numeric plots to vizualize distance between phenotypes    |
 |                                                                    |                                                           |
+
+### Helper Functions: `hl`
+
+|                                                                    |                                                           |
+|:------------------------------------------------------------------:|:---------------------------------------------------------:|
+|  [`sm.hl.classify (image_path, ...)`](pl/sm.hl.classify.md)  | Quickly classify cells based on positivity/Negativity of specific markers |
