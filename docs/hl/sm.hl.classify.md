@@ -6,13 +6,12 @@
       pos=None, neg=None, 
       classify_label='passed_classify', 
       phenotype='phenotype', subclassify_phenotype=None, 
-      collapse_failed=True, label="classify")
+      collapse_failed=True, label="classify"**)
 
 **Short description**
 
-The function allows users to generate a heatmap to visualize spatial interaction output from
-`sm.hl.classify`. The intensity represents number of interactions (scaled) 
-and blank regions represent non-significant results.
+The function allows users to annotate cells based on positivity/negativity of defined markers. Users can classify
+the entire data or a subset of data that has been previously phenotyped or clustered.
 
 **Parameters**
 
@@ -46,7 +45,7 @@ Key for the returned data, stored in `adata.obs`.
 
 **Returns**
 
-`adata` : AnnData
+`adata` : AnnData  
 Updated AnnData Object.
 
 **Example**
