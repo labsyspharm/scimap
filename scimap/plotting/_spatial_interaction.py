@@ -59,6 +59,7 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
     """
     
     # set color for heatmap
+    #cmap = copy.copy(mpl.cm.get_cmap("vlag"))
     cmap_updated = matplotlib.cm.get_cmap(cmap)
     cmap_updated.set_bad(color=nonsig_color)
     
