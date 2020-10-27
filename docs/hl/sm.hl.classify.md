@@ -10,8 +10,9 @@
 
 **Short description**
 
-The function allows users to annotate cells based on positivity/negativity of defined markers. Users can classify
-the entire data or a subset of data that has been previously phenotyped or clustered.
+The function allows users to classify cells based on positivity/negativity of given markers. Users can classify
+the entire data or a subset of data that has been previously phenotyped or 
+clustered using the `subclassify_phenotype` parameter.
 
 **Parameters**
 
