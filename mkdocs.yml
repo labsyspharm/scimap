@@ -6,7 +6,7 @@ repo_url: https://github.com/ajitjohnson/scimap
 edit_uri: https://github.com/ajitjohnson/scimap/edit/master/docs
 
 theme:
-  name: readthedocs
+  name: material
   titles_only: true
   highlightjs: true
 
