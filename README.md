@@ -14,13 +14,22 @@ Scimap is a scalable toolkit for analyzing single-cell multiplex imaging data. T
 
 ## Installation
 
+We strongly recommend installing `scimap` in a fresh virtual environment.
+
+```
+# If you have conda installed
+conda create --name scimap python=3.7
+conda activate scimap
+```
+
 Install it directly into an activated virtual environment:
 
 ```python
 $ pip install scimap
+$ pip install napari[all] # For visualizing images
 ```
 
-After installation, the package can imported:
+After installation, the package can imported as:
 
 ```python
 $ python
