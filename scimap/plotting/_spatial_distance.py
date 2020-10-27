@@ -184,7 +184,7 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
         if distance_to is not None:
             data = data[distance_to] # drop columns that are not requested in distance_to
         else:
-            data = data.drop(['phenotype','imageid'], axis=1) # drop the phenotype column before stacking
+         data = data.drop(['phenotype','imageid'], axis=1) # drop the phenotype column before stacking
          d = data.stack().reset_index() # collapse everything to one column
          d.columns = ['cellid', 'group', 'distance']
          d = pd.merge(d, pheno_df, left_on='cellid', right_index=True) # bring back the imageid and phenotype
