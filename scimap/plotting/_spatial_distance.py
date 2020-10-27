@@ -10,11 +10,12 @@ Pre-run `sm.tl.spatial_distance` before running this function.
 # library
 import pandas as pd
 import matplotlib
+import numpy as np
 import seaborn as sns; sns.set(color_codes=True)
 sns.set_style("white")
 
 
-def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phenotype',imageid='imageid',
+def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phenotype',imageid='imageid',log=False,
                       method='heatmap',heatmap_summarize=True,heatmap_na_color='grey',heatmap_cmap='vlag_r',
                       heatmap_row_cluster=False,heatmap_col_cluster=False,heatmap_standard_scale=0,
                       distance_from=None,distance_to=None,x_axis = None,y_axis = None,facet_by = None,plot_type = None,
@@ -34,6 +35,8 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
         It could also be any categorical assignment given to single cells. The default is 'phenotype'.
     imageid : string, optional
         Column name of the column containing the image id. The default is 'imageid'.
+    log : bool, optional
+        Convert distance to log scale. The default is False.
     method : string, optional
         Three options are available.
         1) heatmap - generates a heatmap of average shortest distance between all phenotypes.
@@ -127,7 +130,11 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
         diatance_map = adata.uns[spatial_distance].copy()
     except KeyError:
         raise ValueError('spatial_distance not found- Please run sm.tl.spatial_distance first')
-        
+    
+    # Convert distance to log scale if user requests
+    if log is True:
+        np.log1p(diatance_map)
+            
     # Method
     if method=='heatmap':
         if heatmap_summarize is True:
@@ -159,65 +166,48 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
         # condition-1
         if distance_from is None and distance_to is None:
             raise ValueError('Please include distance_from and/or distance_to parameters to use this method')
-        
+                     
         # condition-2
-        if distance_from is not None and distance_to is None:
-            pheno_df = data = pd.DataFrame({'imageid': adata.obs[imageid], 'phenotype': adata.obs[phenotype]}) #image id and phenotype
-            data = pd.merge(pheno_df, diatance_map, how='outer',left_index=True, right_index=True) # merge with the distance map
-            data = data[data['phenotype'] == distance_from] # subset the pheno of interest
-            data = data.drop(['phenotype','imageid'], axis=1) # drop the phenotype column before stacking
-            d = data.stack().reset_index() # collapse everything to one column
-            d.columns = ['cellid', 'group', 'distance']
-            d = pd.merge(d, pheno_df, left_on='cellid', right_index=True) # bring back the imageid and phenotype
+        if distance_from is None and distance_to is not None:
+            raise ValueError('Please `distance_from` parameters to use this method')
             
-            # Convert columns to str
-            for col in ['imageid', 'group','phenotype']:
-                d[col] = d[col].astype(str)
-                
-            # Convert columns to categorical so that it drops unused categories
-            for col in ['imageid', 'group','phenotype']:
-                d[col] = d[col].astype('category')
-            
-            # Plotting
-            if method=='numeric':
-                if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
-                    sns.catplot(data=d, x="distance", y="group", col="imageid", kind="boxen", **kwargs)
-                else:
-                    sns.catplot(data=d, x=x_axis, y=y_axis, col=facet_by, kind=plot_type, **kwargs)
-            
-            if method=='distribution':
-                if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
-                    sns.displot(data=d, x="distance", hue="imageid",  col="group", kind="kde",col_wrap=5, **kwargs)
-                else:
-                    sns.displot(data=d, x=x_axis, hue=y_axis, col=facet_by, kind=plot_type,**kwargs)         
-        
         # condition-3
-        if distance_from is not None and distance_to is not None:
-            pheno_df = pd.DataFrame({'imageid': adata.obs[imageid], 'phenotype': adata.obs[phenotype]})
-            #g = diatance_map
-            dm = diatance_map[distance_to]
-            data = pd.merge(pheno_df, dm, how='outer',left_index=True, right_index=True)
-            d = data[data['phenotype'] == distance_from]
-            d.columns = ['imageid', 'group', 'distance']
-            
-            # Convert columns to str
-            for col in ['imageid', 'group']:
-                d[col] = d[col].astype(str)
+        if distance_to is not None:
+            # convert input to list if needed
+            if isinstance(distance_to, str):
+                distance_to = [distance_to]
+        
+        # Start
+        pheno_df = pd.DataFrame({'imageid': adata.obs[imageid], 'phenotype': adata.obs[phenotype]}) #image id and phenotype
+        data = pd.merge(pheno_df, diatance_map, how='outer',left_index=True, right_index=True) # merge with the distance map
+        data = data[data['phenotype'] == distance_from] # subset the pheno of interest
+        if distance_to is not None:
+            data = data[distance_to] # drop columns that are not requested in distance_to
+        else:
+            data = data.drop(['phenotype','imageid'], axis=1) # drop the phenotype column before stacking
+         d = data.stack().reset_index() # collapse everything to one column
+         d.columns = ['cellid', 'group', 'distance']
+         d = pd.merge(d, pheno_df, left_on='cellid', right_index=True) # bring back the imageid and phenotype
+         
+         # Convert columns to str
+         for col in ['imageid', 'group','phenotype']:
+             d[col] = d[col].astype(str)
                 
-            # Convert columns to categorical so that it drops unused categories
-            for col in ['imageid', 'group']:
-                d[col] = d[col].astype('category')
-                
-            # Plotting
-            if method=='numeric':
-                if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
-                    sns.catplot(data=d, x="distance", y="group", col="imageid", kind="boxen", **kwargs)
-                else:
-                    sns.catplot(data=d, x=x_axis, y=y_axis, col=facet_by, kind=plot_type, **kwargs)
+         # Convert columns to categorical so that it drops unused categories
+         for col in ['imageid', 'group','phenotype']:
+             d[col] = d[col].astype('category')
+        
+        
+        # Plotting
+        if method=='numeric':
+            if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
+                sns.catplot(data=d, x="distance", y="group", col="imageid", kind="boxen", **kwargs)
+            else:
+                sns.catplot(data=d, x=x_axis, y=y_axis, col=facet_by, kind=plot_type, **kwargs)
             
-            if method=='distribution':
-                if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
-                    sns.displot(data=d, x="distance", hue="group",  col="imageid", kind="kde",col_wrap=5, **kwargs)
-                else:
-                    sns.displot(data=d, x=x_axis, hue=y_axis,  col=facet_by, kind=plot_type,**kwargs)   
+        if method=='distribution':
+            if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
+                sns.displot(data=d, x="distance", hue="imageid",  col="group", kind="kde", **kwargs)
+            else:
+                sns.displot(data=d, x=x_axis, hue=y_axis, col=facet_by, kind=plot_type,**kwargs)    
             

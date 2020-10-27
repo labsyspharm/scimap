@@ -1,3 +1,8 @@
+# 0.7.6 (2020-10-27)
+
+ - Updated `hl.spatial_distance` to include option to convert to 
+   log scale and also pass multiple `distance_to` parameter.
+ 
 # 0.7.5 (2020-10-27)
 
  - Updated `hl.classify` to improve speed

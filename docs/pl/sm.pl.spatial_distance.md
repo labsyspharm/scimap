@@ -4,11 +4,11 @@
     `scimap.pl.spatial_distance` (
       **adata, 
       spatial_distance='spatial_distance', 
-      phenotype='phenotype', imageid='imageid', 
+      phenotype='phenotype', imageid='imageid', log=False, 
       method='heatmap', heatmap_summarize=True, 
       heatmap_na_color='grey',heatmap_cmap='vlag_r', 
       heatmap_row_cluster=False, heatmap_col_cluster=False, 
-      heatmap_standard_scale=0, distance_from=None, 
+      heatmap_standard_scale=0, distance_from=None,  
       distance_to=None, x_axis = None, y_axis = None, 
       facet_by = None, plot_type = None, 
       **kwargs **)
@@ -33,6 +33,9 @@ It could also be any categorical assignment given to single cells.
 
 `imageid` : string, optional *(The default is 'imageid')*  
 Column name of the column containing the image id.
+
+`log` : bool, optional *(The default is False)*  
+Convert distance to log scale.
 
 `method` : string, optional *(The default is 'heatmap')*  
 Three options are available.  
