@@ -137,7 +137,7 @@ adata.obs['custom'].value_counts()
 # spatial interaction
 adata = sm.tl.spatial_interaction(adata, method='radius',radius=30,pval_method='histocat',imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
 
-sm.pl.spatial_interaction(adata, summarize_plot=False, row_cluster=True, col_cluster=True, p_val = 0.01, linecolor='black', vmin=-1, vmax=1)
+sm.pl.spatial_interaction(adata, binary_view=True, row_cluster=True, col_cluster=True, p_val = 0.01, linecolor='black')
 
 adata.obs[imageid][1000:] = '300'
 
