@@ -12,13 +12,15 @@ import seaborn as sns; sns.set(color_codes=True)
 import numpy as np
 import pandas as pd
 import matplotlib
+import copy
 sns.set_style("white")
 
 # Function
 def spatial_interaction (adata, spatial_interaction='spatial_interaction',
                          summarize_plot=True, p_val=0.05,
                          row_cluster=False, col_cluster=False,
-                         cmap = 'vlag', nonsig_color='grey', **kwargs):
+                         cmap = 'vlag', nonsig_color='grey', 
+                         binary_view=False, **kwargs):
     """
 
     Parameters
@@ -43,6 +45,9 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
     nonsig_color : string, optional
         Color for non-significant interactions (Interactions above the P-value cut-off will use this color).
         The default is 'grey'.
+    binary_view : bool, optional
+        Removes the intensity of intreaction and plots significant interactions and avoidance in a binary format.
+        The default is 'False'.
 
     **kwargs : key:value pairs
         Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
@@ -59,7 +64,7 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
     """
     
     # set color for heatmap
-    #cmap = copy.copy(mpl.cm.get_cmap("vlag"))
+    cmap_updated = copy.copy(matplotlib.cm.get_cmap(cmap))
     cmap_updated = matplotlib.cm.get_cmap(cmap)
     cmap_updated.set_bad(color=nonsig_color)
     
@@ -73,13 +78,21 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
     # Seperate Interaction intensity from P-value
     p_value = interaction_map.filter(regex='pvalue_')    
     p_val_df = pd.concat([interaction_map[['phenotype','neighbour_phenotype']], p_value], axis=1, join='outer')
+    p_val_df = p_val_df.set_index(['phenotype','neighbour_phenotype'])
     interaction_map = interaction_map[interaction_map.columns.difference(p_value.columns)]
+    interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])
+    
+    # Binarize the values if user requests
+    if binary_view == True:
+        interaction_map[interaction_map > 0] = 1
+        interaction_map[interaction_map <= 0] = -1
+        
 
     
     if summarize_plot == True:
         # convert first two columns to multi-index column
-        interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])
-        p_val_df = p_val_df.set_index(['phenotype','neighbour_phenotype'])
+        #interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])
+        #p_val_df = p_val_df.set_index(['phenotype','neighbour_phenotype'])
         
         # If multiple images are present, take the average of interactions
         interaction_map['mean'] = interaction_map.mean(axis=1).values
@@ -96,14 +109,15 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         mask = p_val_df.isnull() # identify the NAN's for masking 
         interaction_map = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
         # heatmap
-        sns.clustermap(interaction_map, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
+        sns.clustermap(interaction_map, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
         
     else:
         if len(interaction_map.columns) <= 3:
             raise ValueError('Data for only a single image is available please set summarize_plot=True and try again')
         # convert first two columns to multi-index column
-        interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])
-        p_val_df = p_val_df.set_index(['phenotype','neighbour_phenotype'])
+        #interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])
+        #p_val_df = p_val_df.set_index(['phenotype','neighbour_phenotype'])
+        
         # P value threshold
         p_val_df = p_val_df.apply(lambda x: np.where(x > p_val,np.nan,x))
         

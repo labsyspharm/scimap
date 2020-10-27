@@ -1,3 +1,8 @@
+# 0.7.3 (2020-10-27)
+
+ - Addition of binary view in `pl.spatial_interaction`
+
+ 
 # 0.7.2 (2020-10-26)
 
  - Addition of `hl.classify` function.

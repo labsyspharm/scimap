@@ -5,7 +5,7 @@
       **adata, 
       spatial_interaction='spatial_interaction',
       summarize_plot=True, p_val=0.05, nonsig_color='grey',
-      row_cluster=False, col_cluster=False,
+      row_cluster=False, col_cluster=False, binary_view=False,
       cmap = 'vlag', **kwargs**)
 
 **Short description**
@@ -37,6 +37,9 @@ Cluster Rows.
 
 `col_cluster` : bool, optional *(The default is False)*  
 Cluster Columns. 
+
+`binary_view` : bool, optional *(The default is False)*  
+Removes the intensity of intreaction and plots significant interactions and avoidance in a binary format.
 
 `cmap` : string, optional *(The default is `'vlag'`)*  
 Color map to use for continous variables. Can be a name or a Colormap 
