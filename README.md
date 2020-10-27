@@ -39,4 +39,4 @@ $ python
 ## Get Started
 
 
-#### Detailed documentation of the `scimap` functions and tutorials are available [here](https://scimap-doc.readthedocs.io/en/latest/).
+#### Detailed documentation of `scimap` functions and tutorials are available [here](https://scimap-doc.readthedocs.io/en/latest/).
