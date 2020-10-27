@@ -22,7 +22,7 @@ conda create --name scimap python=3.7
 conda activate scimap
 ```
 
-Install it directly into an activated virtual environment:
+Install `scimap` directly into an activated virtual environment:
 
 ```python
 $ pip install scimap
@@ -36,4 +36,7 @@ $ python
 >>> import scimap as sm
 ```
 
-### To get started, read the [documentation](https://scimap-doc.readthedocs.io/en/latest/).
+## Get Started
+
+
+#### Detailed documentation of the `scimap` functions and tutorials are available [here](https://scimap-doc.readthedocs.io/en/latest/).

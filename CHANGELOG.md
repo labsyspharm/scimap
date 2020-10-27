@@ -1,3 +1,5 @@
-# 0.0.0 (YYYY-MM-DD)
+# 0.7.2 (2020-10-26)
 
- - TBD
+ - Addition of `hl.classify` function.
+ - Documentation for `hl.classify` function.
+ - Readme file modification
