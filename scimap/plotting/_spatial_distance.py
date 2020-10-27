@@ -181,21 +181,23 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
         pheno_df = pd.DataFrame({'imageid': adata.obs[imageid], 'phenotype': adata.obs[phenotype]}) #image id and phenotype
         data = pd.merge(pheno_df, diatance_map, how='outer',left_index=True, right_index=True) # merge with the distance map
         data = data[data['phenotype'] == distance_from] # subset the pheno of interest
+        
         if distance_to is not None:
             data = data[distance_to] # drop columns that are not requested in distance_to
         else:
-         data = data.drop(['phenotype','imageid'], axis=1) # drop the phenotype column before stacking
-         d = data.stack().reset_index() # collapse everything to one column
-         d.columns = ['cellid', 'group', 'distance']
-         d = pd.merge(d, pheno_df, left_on='cellid', right_index=True) # bring back the imageid and phenotype
+            data = data.drop(['phenotype','imageid'], axis=1) # drop the phenotype column before stacking
          
-         # Convert columns to str
-         for col in ['imageid', 'group','phenotype']:
-             d[col] = d[col].astype(str)
+        d = data.stack().reset_index() # collapse everything to one column
+        d.columns = ['cellid', 'group', 'distance']
+        d = pd.merge(d, pheno_df, left_on='cellid', right_index=True) # bring back the imageid and phenotype
+         
+        # Convert columns to str
+        for col in ['imageid', 'group','phenotype']:
+            d[col] = d[col].astype(str)
                 
-         # Convert columns to categorical so that it drops unused categories
-         for col in ['imageid', 'group','phenotype']:
-             d[col] = d[col].astype('category')
+        # Convert columns to categorical so that it drops unused categories
+        for col in ['imageid', 'group','phenotype']:
+            d[col] = d[col].astype('category')
         
         
         # Plotting
