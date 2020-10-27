@@ -29,7 +29,7 @@ $ pip install scimap
 $ pip install napari[all] # For visualizing images
 ```
 
-After installation, the package can imported as:
+After installation, the package can be imported as:
 
 ```python
 $ python

@@ -12,7 +12,6 @@ import seaborn as sns; sns.set(color_codes=True)
 import numpy as np
 import pandas as pd
 import matplotlib
-import copy
 sns.set_style("white")
 
 # Function
@@ -88,7 +87,6 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         interaction_map[interaction_map <= 0] = -1
         
 
-    
     if summarize_plot == True:
         # convert first two columns to multi-index column
         #interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])

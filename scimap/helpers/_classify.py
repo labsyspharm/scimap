@@ -98,23 +98,20 @@ def classify (adata, pos=None, neg=None, classify_label='passed_classify',
         raise TypeError("No cells were found to satisfy your `classify` criteria")
     else:
         classify_idx = data.index
-        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [label])
+        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
         
         
-    # Generate a df with the classified cells
-    meta = meta.merge(classified, how='outer', left_index=True, right_index=True)
-    
     if collapse_failed is True:
-        meta[label] = meta[label].fillna('failed_classify')
+        meta = meta.merge(classified, how='outer', left_index=True, right_index=True)
+        meta.columns=[label,phenotype]
+        meta[phenotype] = meta[phenotype].fillna('failed_classify')
     else:
-        meta = meta.fillna(method='ffill', axis = 1)
+        meta.update(classified)
     
     # Add to Anndata
     meta = meta.reindex(adata.obs.index)
-    adata.obs[label] = meta[label]
+    adata.obs[label] = meta[phenotype]
     
     # return
     return adata
-        
-    
-    
+
