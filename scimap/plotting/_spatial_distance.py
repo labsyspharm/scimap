@@ -133,7 +133,7 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
     
     # Convert distance to log scale if user requests
     if log is True:
-        np.log1p(diatance_map)
+        diatance_map = np.log1p(diatance_map)
             
     # Method
     if method=='heatmap':
