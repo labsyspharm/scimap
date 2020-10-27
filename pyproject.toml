@@ -40,6 +40,7 @@ napari = "^0.3.4"
 matplotlib = "^3.2.1"
 PhenoGraph = "^1.5.7"
 scanpy = "^1.6.0"
+mkdocs = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
 
@@ -64,7 +65,7 @@ freezegun = "*"
 coveragespace = "^3.1.1"
 
 # Documentation
-mkdocs = "~1.0"
+mkdocs = "^1.0"
 pygments = "^2.5.2"
 
 # Tooling
