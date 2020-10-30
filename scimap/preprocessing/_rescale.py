@@ -230,7 +230,7 @@ def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_mar
             def manual_gating (data,marker,gate):
              
                 # Work on processing manual gates
-                m = gate[gate.iloc[:,0] == marker].iloc[:,1] # gate of the marker passed in
+                m = gate[gate.iloc[:,0] == marker].iloc[:,1].values[0] # gate of the marker passed in
                 
                 if np.isnan(m):
                     # Find the mean value of the marker so that it is scaled right at the middle
