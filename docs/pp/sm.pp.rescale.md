@@ -18,11 +18,11 @@ The function scales every marker between `0` and `1` such that cells that have a
 `adata` : AnnData object  
 
 `gate` : dataframe, optional *(The default is None)*  
-DataFrame with first column as markers and second column as the gate values in log1p scale.
+DataFrame with first column as markers and second column as the gate values in `log1p` scale.  
 Note: If a marker is not included, the function will try to automatically identify a gate 
-based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but 
-no values are passed, the marker is simply scaled between 0-1 but does not alter the undelying 
-distribution. 
+based on gaussian mixture modeling of the data.  
+However, if a marker is included in the `gate.csv` file but no values were passed (i.e. empty), 
+the marker will be simply scaled between 0-1 and will print out a warning in the console.
 
 `failed_markers` : list, optional *(The default is None)*  
 list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D'].  

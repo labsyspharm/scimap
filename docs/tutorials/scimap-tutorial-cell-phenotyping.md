@@ -157,10 +157,11 @@ sm.pl.gate_finder (image_path, adata, marker_of_interest,
 
 ### Step 2: Rescale the data based on the identified gates using `sm.pp.rescale`
 
-Note that below we are passing a `manual_gates.csv` into the `gate` parameter.
+Note: Below we are passing a `manual_gates.csv` into the `gate` parameter.
 This contatins gates that were visually determined using the `sm.pl.gate_finder`
-function. For these markers the the function will scale the data in a way such that
-any cell that contains a value above the gate is considered positive and cells
+function. For the markers included in the `manual_gates.csv` file, 
+the function will scale the data such that cells with expression greater than the gate 
+will be considered as positive for that marker and cells
 with expression below the gate is considered negative. <br>
 
 For markers that are not included in the `manual_gates.csv` file, the function
@@ -168,7 +169,7 @@ will automatically try to determine a gate by running a gaussian mixture model
 algorithm on the data. <br>
 
 Finally, if a marker is included in the `manual_gates.csv` file but no gate value
-was provided- i.e. left empty. The function will do nothing. It will simply scale 
+was provided (i.e. left empty). The function will do nothing. It will simply scale 
 the data between 0 and 1 and print out a warning.
 
 ```python
