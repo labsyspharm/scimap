@@ -2,10 +2,11 @@
 
 !!! note "Function Call"
     `scimap.pp.rescale` (
-      **adata,
-      gate=None,
-      failed_markers=None,
-      method='all',
+      **adata, 
+      gate=None, 
+      failed_markers=None, 
+      method='all', 
+      imageid='imageid' 
       save_fig=False**)
 
 **Short description**
@@ -17,13 +18,21 @@ The function scales every marker between `0` and `1` such that cells that have a
 `adata` : AnnData object  
 
 `gate` : dataframe, optional *(The default is None)*  
-DataFrame with first column as markers and second column as the gate values in log1p scale.  
+DataFrame with first column as markers and second column as the gate values in log1p scale.
+Note: If a marker is not included, the function will try to automatically identify a gate 
+based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but 
+no values are passed, the marker is simply scaled between 0-1 but does not alter the undelying 
+distribution. 
 
 `failed_markers` : list, optional *(The default is None)*  
 list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D'].  
 
 `method` : string, optional *(The default is 'all')*  
 Two available option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid', users have the option to scale all data together or each image independently. Please be aware of batch effects when passing 'all' with multiple images.  
+
+`imageid` : string, optional *(The default is 'imageid')*  
+Column name of the column containing the image id. The default is 'imageid'.
+
 
 `save_fig` : boolian, optional *(The default is False)*  
 If True, the gates identified by the GMM method will be saved in a subdirectory within your working directory.  

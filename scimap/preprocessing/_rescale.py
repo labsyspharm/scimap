@@ -18,7 +18,8 @@ import seaborn as sns; sns.set(color_codes=True)
 from matplotlib.lines import Line2D
 
 
-def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='all',save_fig=False):
+def rescale (adata, gate=None, return_gates=False, 
+             imageid='imageid', failed_markers=None, method='all',save_fig=False):
     """
 
 
@@ -27,6 +28,10 @@ def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='
     adata : AnnData object
     gate : dataframe, optional (The default is None)
         DataFrame with first column as markers and second column as the gate values in log1p scale.
+        Note: If a marker is not included, the function will try to automatically identify a gate
+        based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but 
+        no values are passed, the marker is simply scaled between 0-1 but does not alter the undelying
+        distribution. 
     return_gates : boolian, optional (The default is False)
         Internal parameter for checking.
     failed_markers : list, optional (The default is None)
@@ -35,6 +40,8 @@ def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='
         Two avialble option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid',
         users have the option to scale all data togeather or each image independently. Please be aware of batch effects when
         passing 'all' with multiple images.
+    imageid : string, optional
+        Column name of the column containing the image id. The default is 'imageid'.
     save_fig : boolian, optional (The default is False)
         If True, the gates identified by the GMM method will be saved in a subdirectory
         within your working directory.
@@ -53,7 +60,7 @@ def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='
 
     def rescale_independent (adata, gate, return_gates, failed_markers,save_fig):
 
-        print('Scaling Image '+ str(adata.obs['imageid'].unique()))
+        print('Scaling Image '+ str(adata.obs[imageid].unique()))
 
         # Copy of the raw data if it exisits
         if adata.raw is not None:
@@ -231,10 +238,18 @@ def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='
             m_data = m_data.apply(clipping)
 
             def manual_gating (data,marker,gate):
-                # Print
-                print('Scaling ' + str(marker))
+             
                 # Work on processing manual gates
                 m = gate[gate.iloc[:,0] == marker].iloc[:,1] # gate of the marker passed in
+                
+                if np.isnan(m):
+                    # Find the mean value of the marker so that it is scaled right at the middle
+                    # in other it retains the original scale
+                    m = np.mean(data[marker].values)
+                    print('Warning: No manual gate was found for ' + str(marker) + '. Scaling it between 0 and 1')
+                else:
+                    print('Scaling ' + str(marker))
+                    
 
                 # Find the closest value to the gate
                 absolute_val_array = np.abs(data[marker].values - float(m))
@@ -294,7 +309,7 @@ def rescale (adata, gate=None, return_gates=False, failed_markers=None, method='
     if method == 'all':
         all_scaled_data = rescale_independent (adata, gate=gate, return_gates=return_gates, failed_markers=failed_markers, save_fig=save_fig)
     if method == 'by_image':
-        adata_list = [adata[adata.obs['imageid'] == i] for i in adata.obs['imageid'].unique()]
+        adata_list = [adata[adata.obs[imageid] == i] for i in adata.obs[imageid].unique()]
         r_rescale_independent = lambda x: rescale_independent(adata=x, gate=gate, return_gates=return_gates, failed_markers=failed_markers,save_fig=save_fig) # Create lamda function
         scaled_data = list(map(r_rescale_independent, adata_list)) # Apply function
         all_scaled_data = pd.concat(scaled_data)
