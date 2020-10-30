@@ -18,8 +18,8 @@ import seaborn as sns; sns.set(color_codes=True)
 from matplotlib.lines import Line2D
 
 
-def rescale (adata, gate=None, return_gates=False, 
-             imageid='imageid', failed_markers=None, method='all',save_fig=False):
+def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_markers=None, method='all',save_fig=False):
+    
     """
 
 
@@ -112,16 +112,6 @@ def rescale (adata, gate=None, return_gates=False,
             scaler = MinMaxScaler(feature_range=(0, 1))
             s = scaler.fit_transform(n_log)
             normalised_data = pd.DataFrame(s, columns = gmm_data.columns, index= gmm_data.index)
-
-            # Scaling the data new (ratio method)
-            # pseudo_ref_data = gmm_data.T
-            # pseudo_ref = gmean(pseudo_ref_data,axis=1)
-            # pseudo_ref_ratio = pseudo_ref_data.div(pseudo_ref,axis=0)
-            # norm_factor = pseudo_ref_ratio.median()
-            # norm_data = pseudo_ref_data.div(norm_factor,axis=1).T
-            # s = scaler.fit_transform(norm_data)
-            # normalised_data = pd.DataFrame(s, columns = gmm_data.columns, index= gmm_data.index)
-            # gmm_data = norm_data
 
 
             # Gaussian fit to identify the gate for each marker and scale based on the gate
@@ -242,7 +232,7 @@ def rescale (adata, gate=None, return_gates=False,
                 # Work on processing manual gates
                 m = gate[gate.iloc[:,0] == marker].iloc[:,1] # gate of the marker passed in
                 
-                if np.isnan(m):
+                if pd.isnull(m):
                     # Find the mean value of the marker so that it is scaled right at the middle
                     # in other it retains the original scale
                     m = np.mean(data[marker].values)
