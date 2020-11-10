@@ -13,9 +13,6 @@ Helper function to convert andata object to a csv file with the expression matri
 
 `adata` : AnnData object  
 
-`pos`: list *(The default is None)*  
-Pass a list of markers that should be expressed in the resultant cells.  
-
 `data_type` : string, optional *(The default is 'raw')*  
 Three options are available:  
 1) 'raw' - The raw data will be returned.  
