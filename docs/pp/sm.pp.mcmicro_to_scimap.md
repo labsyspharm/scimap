@@ -41,6 +41,12 @@ Randomly sub-sample the data with the desired number of cells.
 `CellId` : string, optional *(The default is CellID)*  
 Name of the column that contains the cell ID.  
 
+`unique_CellId`: bool, optional *(The default is True)*  
+By default, the function creates a unique name for each cell/row by combining the 
+`CellId` and `imageid`. If you wish not to perform this operation please pass `False`.
+The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId`
+especially when loading multiple datasets togeather.  
+
 `split` : string, optional *(The default is 'X_centroid')*  
 To split the CSV into counts table and meta data, pass in the name of the column  
 that immediately follows the marker quantification.  

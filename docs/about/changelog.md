@@ -1,6 +1,12 @@
+# 0.8.0 (2020-11-09)
+
+ - Updated `pp.mcmicro_to_scimap` function. Added a new parameter `unique_CellId`
+ - Added a helper function `scimap_to_csv` to save the andata object as a CSV.
+ - Added documentation and tests for `scimap_to_csv`
+ 
 # 0.7.10 (2020-10-30)
 
- - Updated `hp.rescale` function. If a gate is included in the `manual_gate.csv` 
+ - Updated `pp.rescale` function. If a gate is included in the `manual_gate.csv` 
    file but no gate value is provided, the algorithm simply scales the data between
    0-1 without changing the undelying structure.
    

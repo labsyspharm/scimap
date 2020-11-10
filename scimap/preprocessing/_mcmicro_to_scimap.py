@@ -11,7 +11,7 @@ import anndata as ad
 import pandas as pd
 
 def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
-                        log=True,drop_markers=None,random_sample=None,
+                        log=True,drop_markers=None,random_sample=None, unique_CellId=True,
                         CellId='CellID',split='X_centroid',custom_imageid=None,
                         min_cells=None):
     """
@@ -33,6 +33,11 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
         Randomly sub-sample the data with the desired number of cells. The default is None.
     CellId : string, optional
         Name of the column that contains the cell ID. The default is CellID.
+    unique_CellId: bool, optional
+        By default, the function creates a unique name for each cell/row by combining the 
+        `CellId` and `imageid`. If you wish not to perform this operation please pass `False`.
+        The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId`
+        especially when loading multiple datasets togeather.  
     split : string, optional
         To split the CSV into counts table and meta data, pass in the name of the column
         that immediately follows the marker quantification. The default is 'X_centroid'.
@@ -68,7 +73,10 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
                 imid = str(image.rsplit('/', 1)[-1]).replace('.csv','')
             d['imageid'] = imid
         # Unique name for the data
-        d.index = d['imageid'].astype(str)+'_'+d[CellId].astype(str)
+        if unique_CellId is True:
+            d.index = d['imageid'].astype(str)+'_'+d[CellId].astype(str)
+        else:
+            d.index = d[CellId]
         # Drop imageid and cell ID column
         d.drop([CellId], axis=1, inplace=True)
         # Move Image ID to the last column

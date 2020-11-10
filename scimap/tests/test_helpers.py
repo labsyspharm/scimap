@@ -9,6 +9,8 @@ Tests
 import pytest
 import sys, os
 
+#os.chdir ("/Users/aj/Dropbox (Partners HealthCare)/packages/scimap")
+
 @pytest.fixture
 def adata():
     import anndata as ad    
@@ -31,3 +33,13 @@ def test_classify (adata):
     
     a = adata.obs['classify'].value_counts()['passed_classify']
     assert a == 16
+    
+
+# test scimap_to_csv function
+def test_scimap_to_csv (adata):
+    from scimap.helpers._scimap_to_csv import scimap_to_csv
+    data = scimap_to_csv(adata)
+    
+    # test
+    a = data.shape[1]
+    assert a == 45
