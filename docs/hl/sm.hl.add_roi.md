@@ -10,8 +10,7 @@
 
 **Short description**
 
-Helper function to add ROI's extracted from Omero using this [script](https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0)  
-Please note that the function currently does not handle overlapping ROI's. Hence please make sure the ROI's are mutually exclusive.
+Helper function to add ROI's extracted from Omero using this [script.](https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0) Please note that the function currently does not handle overlapping ROI's. Hence please make sure the ROI's are mutually exclusive.
 
 
 
