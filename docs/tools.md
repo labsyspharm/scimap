@@ -45,3 +45,4 @@ import scimap as sm
 |:----------------------------------------:|:-----------------------------------------------------------------:|
 | [`sm.hl.classify`](hl/sm.hl.classify.md) | Quickly classify cells based on pos/negativity of list of markers |
 | [`sm.hl.scimap_to_csv`](hl/sm.hl.scimap_to_csv.md) | Export scimap object to CSV |
+| [`sm.hl.add_roi`](hl/sm.hl.add_roi.md) | Add ROI's extracted from Omero to Scimap object |

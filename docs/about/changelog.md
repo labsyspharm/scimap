@@ -1,3 +1,8 @@
+# 0.8.3 (2020-11-16)
+
+ - Added `hl.add_roi` function. Used to incorporate ROI's extracted from Omero into the scimap object.
+ 
+ 
 # 0.8.0 (2020-11-09)
 
  - Updated `pp.mcmicro_to_scimap` function. Added a new parameter `unique_CellId`

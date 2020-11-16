@@ -1,1 +1,1 @@
-from ._rename import renamefrom ._classify import classifyfrom ._scimap_to_csv import scimap_to_csv
+from ._rename import renamefrom ._classify import classifyfrom ._scimap_to_csv import scimap_to_csvfrom ._add_roi import add_roi
