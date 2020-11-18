@@ -4,6 +4,7 @@
     `scimap.pl.spatial_interaction` (
       **adata, 
       spatial_interaction='spatial_interaction',
+      subset_phenotype=None, subset_neighbour_phenotype=None, 
       summarize_plot=True, p_val=0.05, nonsig_color='grey',
       row_cluster=False, col_cluster=False, binary_view=False,
       cmap = 'vlag', **kwargs**)
@@ -28,6 +29,14 @@ plot the average cell-cell interaction across all images.
 
 `p_val` : float, optional *(The default is 0.05.)*  
 P-value cut-off above which interactions are not considered significant. 
+
+`subset_phenotype` : list, optional *(The default is None)*  
+If user requires to visualize a subset of phenotypes, it can be passed here. 
+e.g.  `subset_phenotype = ['celltype_A', 'celltype_B']`.
+
+`subset_neighbour_phenotype` : list, optional *(The default is None)*  
+If user requires to visualize a subset of interacting phenotypes, it can be passed here. 
+e.g.  `subset_neighbour_phenotype = ['celltype_C', 'celltype_D']`.
 
 `nonsig_color` : string, optional *(The default is 'grey')*  
 Color for non-significant interactions (Interactions above the P-value cut-off will use this color).

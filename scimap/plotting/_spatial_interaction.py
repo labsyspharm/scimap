@@ -19,6 +19,7 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
                          summarize_plot=True, p_val=0.05,
                          row_cluster=False, col_cluster=False,
                          cmap = 'vlag', nonsig_color='grey', 
+                         subset_phenotype=None, subset_neighbour_phenotype=None,
                          binary_view=False, **kwargs):
     """
 
@@ -38,6 +39,12 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         Cluster Rows. The default is False.
     col_cluster : bool, optional
         Cluster Columns. The default is False.
+    subset_phenotype : list, optional
+        If user requires to visualize a subset of phenotypes, it can be passed here. 
+        e.g.  `subset_phenotype = ['celltype_A', 'celltype_B']`. The default is None.
+    subset_neighbour_phenotype : list, optional
+        If user requires to visualize a subset of interacting phenotypes, it can be passed here. 
+        e.g.  `subset_neighbour_phenotype = ['celltype_C', 'celltype_D']`. The default is None.
     cmap : string, optional
         Color map to use for continous variables. 
         Can be a name or a Colormap instance (e.g. 'magma', 'viridis'). The default is 'vlag'.
@@ -73,6 +80,19 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         interaction_map = adata.uns[spatial_interaction].copy()
     except KeyError:
         raise ValueError('spatial_interaction not found- Please run sm.tl.spatial_interaction first')
+        
+    # subset the data if user requests
+    if subset_phenotype is not None:
+        if isinstance(subset_phenotype, str):
+            subset_phenotype = [subset_phenotype]
+        # subset the phenotype
+        interaction_map = interaction_map[interaction_map['phenotype'].isin(subset_phenotype)]
+    
+    if subset_neighbour_phenotype is not None:
+        if isinstance(subset_neighbour_phenotype, str):
+            subset_neighbour_phenotype = [subset_neighbour_phenotype]
+        # subset the phenotype
+        interaction_map = interaction_map[interaction_map['neighbour_phenotype'].isin(subset_neighbour_phenotype)]
         
     # Seperate Interaction intensity from P-value
     p_value = interaction_map.filter(regex='pvalue_')    

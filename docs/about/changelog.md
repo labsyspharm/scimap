@@ -1,3 +1,9 @@
+# 0.8.7 (2020-11-18)
+
+ - Updated `pl.spatial_interaction` function to include two additional parameters - 
+   `subset_phenotype` and `subset_neighbour_phenotype`.
+ 
+
 # 0.8.3 (2020-11-16)
 
  - Added `hl.add_roi` function. Used to incorporate ROI's extracted from Omero into the scimap object.
