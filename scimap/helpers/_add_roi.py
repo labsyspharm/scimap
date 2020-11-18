@@ -80,6 +80,7 @@ def add_roi (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',lab
     
     # Reindex
     result = result.reindex(adata.obs.index)
+    result['ROI'] = result['ROI'].fillna('Other')
     
     # Add to adata
     adata.obs[label] = result['ROI']

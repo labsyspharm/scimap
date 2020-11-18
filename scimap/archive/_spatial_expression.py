@@ -13,7 +13,6 @@ import pandas as pd
 import numpy as np
 from sklearn.neighbors import BallTree
 from scipy.sparse import csr_matrix
-from scipy.sparse import lil_matrix
 
 # Function
 def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
@@ -86,33 +85,77 @@ def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroi
             print("Identifying the " + str(knn) + " nearest neighbours for every cell")
             tree = BallTree(data, leaf_size= 2)
             dist, ind = tree.query(data, k=knn, return_distance= True)
-
+            # Remove self from ind
+            neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
+            neighbours.drop(0, axis=1, inplace=True) # Remove self neighbour
+            # Remove self from dist
+            neighbours_dist = pd.DataFrame(dist.tolist(), index = data.index) # neighbour DF
+            neighbours_dist.drop(0, axis=1, inplace=True) # Remove self neighbour
+            # Merge the indeces and distance into a single dictionary
+            ind_dict = lambda x,y: dict(zip(x, y)) # Function to create a dict of indeces and distances
+            ind_dist = list(map(ind_dict, neighbours.values, neighbours_dist.values))
+            
             
         # b) Local radius method
         if method == 'radius':
             print("Identifying neighbours within " + str(radius) + " pixels of every cell")
             kdt = BallTree(data, metric='euclidean')
             ind, dist = kdt.query_radius(data, r=radius, return_distance= True)
+            # Remove self from ind
+            for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self
+            for i in range(0, len(ind)): dist[i] =  dist[i][dist[i] != 0]#remove self distance
+            # Merge the indeces and distance into a single dictionary
+            ind_dict = lambda x,y: dict(zip(x, y)) # Function to create a dict of indeces and distances
+            ind_dist = list(map(ind_dict, ind.tolist(),dist.tolist()))
+        
+        # Modify the dictionary to custom range for normalization 
+        def range_normalize (data, upper_limit, lower_limit): # Function to normalize based on custom range
             
-        # Normalize range (0-1) and account for total number of cells 
-        d = scipy.sparse.lil_matrix((len(data), len(data)))
-        for row, (columns, values) in enumerate(zip(ind, dist)):
-            # Drop self-distance element.
-            idx = columns != row
-            columns = columns[idx]
-            values = values[idx]
-            if len(values) == 1:
-                values = [1.0]
-            elif len(values) > 1:
-                # Normalize distances.
-                values = (values.max() - values) / (values.max() - values.min())
-                values /= values.sum()
-            # Assign row to matrix.
-            d[row, columns] = values
+            if len(data) >= 2:
+                # calculate data range
+                x = (max (data.values()) - min (data.values())) / len (data)
+                # calculate normalization factor range
+                y = (upper_limit - lower_limit) / len (data)
+                # Step-2: For each data point calculate the normalization factor
+                xij = []
+                for i in data:
+                    xij = np.append(xij, ((max (data.values()) - data[i]) * y) / x)
+                # Step-3: Compute the normalized values from the factors determined
+                yij = []
+                for j in xij:
+                    yij = xij + lower_limit
+                # modify the data object to reflect the new normlized values
+                modified_data = dict(zip(data.keys(), yij))
+            elif len(data) == 1:
+                data[list(data.keys())[0]] = upper_limit
+                modified_data = data
+            elif data == {}:
+                modified_data = {}
+            
+            return modified_data
         
-        # convert to csr sparse matrix
-        wn_matrix_sparse = d.tocsr()
+        # Define range
+        n = lambda x: range_normalize(x, 1, 0)
+        # Apply function
+        normalized_dist = list(map(n, ind_dist))
         
+        # Normalize the spatial weights based on total number of neighbours per cell
+        def norm (data):
+            norm_data = {k: v/sum(data.values()) for k, v in data.items()}
+            return norm_data
+        
+        # Run the function on all cell neighbourhoods  
+        cell_number_normalized_dist = list(map(norm, normalized_dist))
+        
+        ## Spatial Lag calculation
+        # Convert the dictionary to a martix
+        idx = range(len(cell_number_normalized_dist))
+        wn_matrix = pd.DataFrame(cell_number_normalized_dist, columns=idx, index=idx).fillna(0)
+        wn_matrix.columns = data.index # add the cell name
+        wn_matrix.index = data.index  # add the cell name
+        
+        # Convert the matrix to a sparce matrix
+        wn_matrix_sparse = csr_matrix(wn_matrix)
         
         # Calculation of spatial lag
         if use_raw==True:
