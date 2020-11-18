@@ -14,6 +14,7 @@ import numpy as np
 from sklearn.neighbors import BallTree
 from scipy.sparse import csr_matrix
 from scipy.sparse import lil_matrix
+import scipy
 
 # Function
 def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
