@@ -14,8 +14,8 @@ import tifffile as tiff
 
 def image_viewer (image_path, adata, overlay=None,
                     overlay_category=None,markers=None,channel_names='default',
-                    x='X_centroid',y='Y_centroid',point_size=10,
-                    point_color=None,image_id=None,seg_mask=None):
+                    x_coordinate='X_centroid',y_coordinate='Y_centroid',point_size=10,
+                    point_color=None,subset=None,imageid='imageid',seg_mask=None):
     """
     Parameters
     ----------
@@ -33,14 +33,16 @@ def image_viewer (image_path, adata, overlay=None,
         Markers to be included. If none, all markers will be displayed.
     channel_names : list, optional (The default is `adata.uns['all_markers']`)
         List of channels in the image in the exact order as image.
-    x : string, optional (The default is 'X_centroid')
+    x_coordinate : string, optional (The default is 'X_centroid')
         X axis coordinate column name in AnnData object.
-    y : string, optional (The default is 'Y_centroid')
+    y_coordinate : string, optional (The default is 'Y_centroid')
         Y axis coordinate column name in AnnData object.
     point_size : int, optional (The default is 10)
         point size in the napari plot.
-    image_id: string, optional (The default is None)
-        The ID under 'imageid' to load the image of interest. Only useful when multiple images are being analyzed together.
+    imageid : string, optional *(The default is `imageid`)*   
+        Column name of the column containing the image id. 
+    subset : string, optional  *(The default is None)*  
+        imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.
 
     Returns
     -------
@@ -55,8 +57,8 @@ def image_viewer (image_path, adata, overlay=None,
 
     """
     # Plot only the Image that is requested
-    if image_id is not None:
-        adata = adata[adata.obs['imageid'] == image_id]
+    if subset is not None:
+        adata = adata[adata.obs[imageid] == subset]
 
     # Recover the channel names from adata
     if channel_names is 'default':
@@ -114,5 +116,5 @@ def image_viewer (image_path, adata, overlay=None,
         # Run the function on all phenotypes
         for i in available_phenotypes:
             add_phenotype_layer (adata=adata, overlay=overlay,
-                                    phenotype_layer=i, x=x, y=y, viewer=viewer,
+                                    phenotype_layer=i, x=x_coordinate, y=y_coordinate, viewer=viewer,
                                     point_size=point_size,point_color=point_color)

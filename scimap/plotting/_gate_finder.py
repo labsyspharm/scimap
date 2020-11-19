@@ -13,7 +13,8 @@ import numpy as np
 
 def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=None, channel_names = 'default',
-                 x='X_centroid',y='Y_centroid',point_size=10,image_id=None,seg_mask=None):
+                 x_coordinate='X_centroid',y_coordinate='Y_centroid',
+                 point_size=10,imageid='imageid',subset=None,seg_mask=None):
     """
 
 
@@ -34,14 +35,16 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
         Additional markers to be included in the plot for evaluation.
     channel_names : list, optional (The default is `adata.uns['all_markers']`)
         List of channels in the image in the exact order as image.
-    x : string, optional (The default is 'X_centroid')
+    x_coordinate : string, optional (The default is 'X_centroid')
         X axis coordinate column name in AnnData object.
-    y : string, optional (The default is 'Y_centroid')
+    y_coordinate : string, optional (The default is 'Y_centroid')
         Y axis coordinate column name in AnnData object.
     point_size : int, optional (The default is 10)
         point size in the napari plot.
-    image_id : string, optional (The default is None)
-        The ID under 'ImageId' for the image of interest.
+    imageid : string, optional
+        Column name of the column containing the image id. The default is 'imageid'.
+    subset : string, optional
+        imageid of a single image to be subsetted for analyis. The default is None.
     seg_mask : string, optional (The default is None)
         Location to the segmentation mask file.
 
@@ -51,8 +54,8 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     sm.pl.gate_finder (image_path, adata, marker_of_interest='CD45',
                  from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=['DNA10'], channel_names = 'default',
-                 x='X_position',y='Y_position',point_size=10,
-                 image_id= '77', seg_mask=None)
+                 x_coordinate='X_position',y_coordinate='Y_position',point_size=10,
+                 subset= '77', seg_mask=None)
 
     """
 
@@ -91,8 +94,8 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     ##########################################################################
     # Visulaisation using Napari
     # Plot only the Image that is requested
-    if image_id is not None:
-        adata = adata[adata.obs['ImageId'] == image_id]
+    if subset is not None:
+        adata = adata[adata.obs[imageid] == subset]
 
     # Recover the channel names from adata
     if channel_names is 'default':
@@ -149,5 +152,5 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
 
     # Run the function on all phenotypes
     for i in gates.columns:
-        add_phenotype_layer (adata=adata, gates=gates, phenotype_layer=i, x=x, y=y, viewer=viewer,
+        add_phenotype_layer (adata=adata, gates=gates, phenotype_layer=i, x=x_coordinate, y=y_coordinate, viewer=viewer,
                                                            point_size=point_size)

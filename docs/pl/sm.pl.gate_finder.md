@@ -2,16 +2,17 @@
 
 !!! note "Function Call"
     `scimap.pl.gate_finder` (
-      **image_path,
-      adata,
-      marker_of_interest,
-      from_gate = 6, to_gate = 8, increment = 0.1,
-      markers = None,
-      channel_names = 'default',
-      x='X_centroid',
-      y='Y_centroid',
-      point_size=10,
-      image_id=None,
+      **image_path, 
+      adata, 
+      marker_of_interest, 
+      from_gate = 6, to_gate = 8, increment = 0.1, 
+      markers = None, 
+      channel_names = 'default', 
+      x_coordinate='X_centroid', 
+      y_coordinate='Y_centroid', 
+      point_size=10, 
+      imageid='imageid', 
+      subset=None, 
       seg_mask=None**)
 
 **Short description**
@@ -43,17 +44,21 @@ Additional markers to be included in the image for evaluation.
 `channel_names` : list, optional *(The default is `adata.uns['all_markers']`)*  
 List of channels in the image in the exact order as image.  
 
-`x` : string, optional *(The default is 'X_centroid')*  
+`x_coordinate` : string, optional *(The default is 'X_centroid')*  
 X axis coordinate column name in AnnData object.  
 
-`y` : string, optional *(The default is 'Y_centroid')*  
+`y_coordinate` : string, optional *(The default is 'Y_centroid')*  
 Y axis coordinate column name in AnnData object.  
 
 `point_size` : int, optional *(The default is 10)*  
 point size in the napari plot.  
 
-`image_id` : string, optional *(The default is None)*  
-The ID under 'imageid' to load the image of interest. Only useful when multiple images are being analyzed together.  
+`imageid` : string, optional *(The default is `imageid`)*   
+Column name of the column containing the image id. 
+
+`subset` : string, optional  *(The default is None)*  
+imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.  
+
 
 `seg_mask` : string, optional *(The default is None)*  
 Location to the segmentation mask file.  
