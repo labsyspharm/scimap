@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr  1 21:57:54 2020
-@author: Ajit Johnson Nirmal, Yuan Chen
+@author: Ajit Johnson Nirmal
 Using Napari to Visualize images overlayed with phenotypes or any categorical column
 """
 
@@ -12,14 +12,10 @@ import pandas as pd
 import random
 import tifffile as tiff
 
-import dask.array as da
-import zarr
-import pathlib
-
 def image_viewer (image_path, adata, overlay=None,
                     overlay_category=None,markers=None,channel_names='default',
                     x_coordinate='X_centroid',y_coordinate='Y_centroid',point_size=10,
-                    point_color=None,subset=None,imageid='imageid',seg_mask=None,**kwargs):
+                    point_color=None,subset=None,imageid='imageid',seg_mask=None):
     """
     Parameters
     ----------
@@ -47,8 +43,7 @@ def image_viewer (image_path, adata, overlay=None,
         Column name of the column containing the image id. 
     subset : string, optional  *(The default is None)*  
         imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.
-    **kwargs
-        Other arguments that can be passed to napari viewer
+
     Returns
     -------
     None.
@@ -61,12 +56,6 @@ def image_viewer (image_path, adata, overlay=None,
                 point_size=7,point_color='white')
 
     """
-    
-    # Load the image    
-    image = tiff.TiffFile(image_path, is_ome=False)
-    z = zarr.open(image.aszarr(), mode='r') # convert image to Zarr array
-    #z = image.aszarr() # convert image to Zarr array
-    
     # Plot only the Image that is requested
     if subset is not None:
         adata = adata[adata.obs[imageid] == subset]
@@ -87,52 +76,22 @@ def image_viewer (image_path, adata, overlay=None,
             idx.append(list(channel_names).index(i))
         channel_names = markers
 
-    # Identify the number of pyramids and number of channels
-    n_levels = len(image.series[0].levels) # pyramid
-    
-    # If and if not pyramids are available
-    if n_levels > 1:
-        pyramid = [da.from_zarr(z[i]) for i in range(n_levels)]
-        multiscale = True
-    else:
-        pyramid = da.from_zarr(z)
-        multiscale = False
-        
-    # subset channels of interest
-    if markers is not None:
-        if n_levels > 1:
-            for i in range(n_levels-1):
-                pyramid[i] = pyramid[i][idx, :, :]
-            n_channels = pyramid[0].shape[0] # identify the number of channels
-        else:
-            pyramid = pyramid[idx, :, :]
-            n_channels = pyramid.shape[0] # identify the number of channels
-    else:
-        if n_levels > 1:
-            n_channels = pyramid[0].shape[0]
-        else:
-            n_channels = pyramid.shape[0]
-            
-    
-    # check if channel names have been passed to all channels
-    if channel_names is not None:
-        assert n_channels == len(channel_names), (
-            f'number of channel names ({len(channel_names)}) must '
-            f'match number of channels ({n_channels})'
-        )
-    
+
+    # Load the image
+    image = tiff.imread(image_path, key = idx)
+
     # Load the segmentation mask
     if seg_mask is not None:
         seg_m = tiff.imread(seg_mask)
 
     # Load the viewer
     viewer = napari.view_image(
-        pyramid, multiscale=multiscale, channel_axis=0,
-        visible=False, 
-        name = None if channel_names is None else channel_names,
-        **kwargs
-    )
-    
+    image,
+    #is_pyramid=False,
+    channel_axis=0,
+    name = None if channel_names is None else channel_names,
+    visible = False)
+
     # Add the seg mask
     if seg_mask is not None:
         viewer.add_labels(seg_m, name='segmentation mask')

@@ -1,8 +1,12 @@
+# 0.9.0 (2020-11-21)
+
+ - Updated `pl.image_viewer` and `pl.gate_finder` functions - 
+   Implemeted Zarr functionality for napari viz.
+   
 # 0.8.7 (2020-11-18)
 
  - Updated `pl.spatial_interaction` function to include two additional parameters - 
-   `subset_phenotype` and `subset_neighbour_phenotype`.
- 
+   `subset_phenotype` and `subset_neighbour_phenotype`. 
 
 # 0.8.3 (2020-11-16)
 

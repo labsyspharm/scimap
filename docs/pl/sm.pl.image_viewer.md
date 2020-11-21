@@ -14,7 +14,8 @@
       point_color=None, 
       imageid='imageid', 
       subset=None, 
-      seg_mask=None**)
+      seg_mask=None, 
+      kwargs**)
 
 **Short description**
 
@@ -56,6 +57,13 @@ Y axis coordinate column name in AnnData object.
 
 `point_size` : int, optional *(The default is 10)*  
 point size in the napari plot.  
+
+`point_color` : string, optional *(The default is None)*  
+Pass a color that should be used for the overlayed points. e.g. `white`. 
+By default, a random  color is chosen for each layer.
+
+`**kwargs` : None  
+Other arguments that can be passed to napari viewer.
 
 **Returns**
 
