@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.9.12"
+version = "0.9.13"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -44,7 +44,7 @@ plotly = "^4.12.0"
 TiffFile = "^2020.11.18"
 dask = {extras = ["array"], version = "^2.30.0"}
 zarr = "^2.5.0"
-napari = "^0.4.0"
+napari = "<=0.3.8"
 
 [tool.poetry.dev-dependencies]
 

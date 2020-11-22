@@ -143,7 +143,8 @@ def image_viewer (image_path, adata, overlay=None,
     def add_phenotype_layer (adata, overlay, phenotype_layer,x,y,viewer,point_size,point_color):
         coordinates = adata[adata.obs[overlay] == phenotype_layer]
         coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
-        points = coordinates.values.tolist()
+        #points = coordinates.values.tolist()
+        points = coordinates.values
         if point_color is None:
             r = lambda: random.randint(0,255) # random color generator
             point_color = '#%02X%02X%02X' % (r(),r(),r()) # random color generator

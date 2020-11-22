@@ -192,8 +192,14 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
         cells = gates[gates[phenotype_layer] == 1].index
         coordinates = adata[cells]
         coordinates = pd.DataFrame({'x': coordinates.obs[x],'y': coordinates.obs[y]})
-        points = coordinates.values.tolist()
+        #points = coordinates.values.tolist()
+        points = coordinates.values
+        #import time
+        #start = time.time()
         viewer.add_points(points, size=point_size, face_color='white',visible=False,name=phenotype_layer)
+        #stop = time.time()
+        #print(stop-start)
+        
 
     # Run the function on all phenotypes
     for i in gates.columns:

@@ -807,8 +807,8 @@ category = "main"
 description = "n-dimensional array viewer in Python"
 name = "napari"
 optional = false
-python-versions = ">=3.7"
-version = "0.4.0"
+python-versions = ">=3.6"
+version = "0.3.8"
 
 [package.dependencies]
 IPython = ">=7.7.0"
@@ -835,7 +835,7 @@ wrapt = ">=1.11.1"
 
 [package.dependencies.dask]
 extras = ["array"]
-version = ">=2.1.0,<2.28.0 || >2.28.0"
+version = ">=2.1.0"
 
 [package.dependencies.importlib-metadata]
 python = "<3.8"
@@ -2040,7 +2040,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-content-hash = "e07a8c25068ae3b0f7b48f7b6f413151663b84eac4ff5ec9692192f2d62a2f97"
+content-hash = "bc55951476ea7c53be0956a20219cf6dd60d3fa4dfd2c6593b3ae6e47ae16053"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -2535,8 +2535,8 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
 napari = [
-    {file = "napari-0.4.0-py3-none-any.whl", hash = "sha256:c46634ca60f442b3d6c0384a8fa63365a9c8d6c9e9c71048e6ace47d6b4b7829"},
-    {file = "napari-0.4.0.tar.gz", hash = "sha256:ec48f2d4be85e3ea97ccac1b48d4ffc6ebfa24b1208a8c5f2d0934d3e1c82eb6"},
+    {file = "napari-0.3.8-py3-none-any.whl", hash = "sha256:2c01687f0d80b2cdf61f07cf3b8f0f57db7e27e67dbecdef06ee080802cced49"},
+    {file = "napari-0.3.8.tar.gz", hash = "sha256:ba71fb67746fc99541901d41d4638613a4804daaffae7584e6b950dce54c0645"},
 ]
 napari-plugin-engine = [
     {file = "napari-plugin-engine-0.1.8.tar.gz", hash = "sha256:b285ec4cd428cdd95460fe5e3a16a96a22e7b703750279acca361a69593e7639"},
