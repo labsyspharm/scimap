@@ -6,22 +6,15 @@ Created on Tue May 12 23:47:52 2020
 View the gating in Napari viewer
 """
 
-try:
-    import napari
-except:
-    pass
-
+import napari
 import pandas as pd
 import tifffile as tiff
 import numpy as np
 
-import dask.array as da
-import zarr
-
 def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=None, channel_names = 'default',
                  x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                 point_size=10,imageid='imageid',subset=None,seg_mask=None,**kwargs):
+                 point_size=10,imageid='imageid',subset=None,seg_mask=None):
     """
 
 
@@ -54,8 +47,6 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
         imageid of a single image to be subsetted for analyis. The default is None.
     seg_mask : string, optional (The default is None)
         Location to the segmentation mask file.
-    **kwargs
-        Other arguments that can be passed to napari viewer
 
     Example
     -------
@@ -67,6 +58,8 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
                  subset= '77', seg_mask=None)
 
     """
+
+
 
     # If no raw data is available make a copy
     if adata.raw is None:
@@ -100,12 +93,6 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
 
     ##########################################################################
     # Visulaisation using Napari
-    
-    # Load the image    
-    image = tiff.TiffFile(image_path, is_ome=False)
-    z = zarr.open(image.aszarr(), mode='r') # convert image to Zarr array
-    #z = image.aszarr() # convert image to Zarr array
-    
     # Plot only the Image that is requested
     if subset is not None:
         adata = adata[adata.obs[imageid] == subset]
@@ -115,68 +102,36 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
         channel_names = adata.uns['all_markers']
     else:
         channel_names = channel_names
-        
-    # if markers is a string convert to list
-    if isinstance(markers, str):
-        markers = [markers]
-        
+
+
     # Index of the marker of interest and corresponding names
-    if markers is not None:
-        markers.extend([marker_of_interest])
-        idx = np.where(np.isin(channel_names,markers))[0]
-        channel_names = [channel_names[i] for i in idx]
-    else:
+    if markers is None:
+        idx = [0, list(channel_names).index(marker_of_interest)]
+        channel_names = [adata.uns['all_markers'][0], marker_of_interest]
+    elif markers == 'all':
         idx = list(range(len(channel_names)))
         channel_names = channel_names
-        
+    else:
+        markers = [marker_of_interest] + list(markers)
+        idx = []
+        for i in markers:
+            idx.append(list(channel_names).index(i))
+        channel_names = markers
 
-    # Identify the number of pyramids and number of channels
-    n_levels = len(image.series[0].levels) # pyramid
-    
-    # If and if not pyramids are available
-    if n_levels > 1:
-        pyramid = [da.from_zarr(z[i]) for i in range(n_levels)]
-        multiscale = True
-    else:
-        pyramid = da.from_zarr(z)
-        multiscale = False
-    
-    # subset channels of interest
-    if markers is not None:
-        if n_levels > 1:
-            for i in range(n_levels-1):
-                pyramid[i] = pyramid[i][idx, :, :]
-            n_channels = pyramid[0].shape[0] # identify the number of channels
-        else:
-            pyramid = pyramid[idx, :, :]
-            n_channels = pyramid.shape[0] # identify the number of channels
-    else:
-        if n_levels > 1:
-            n_channels = pyramid[0].shape[0]
-        else:
-            n_channels = pyramid.shape[0]
-            
-    
-    # check if channel names have been passed to all channels
-    if channel_names is not None:
-        assert n_channels == len(channel_names), (
-            f'number of channel names ({len(channel_names)}) must '
-            f'match number of channels ({n_channels})'
-        )
-            
+    # Load the image
+    image = tiff.imread(image_path, key = idx)
 
     # Load the segmentation mask
     if seg_mask is not None:
         seg_m = tiff.imread(seg_mask)
 
-
     # Load the viewer
     viewer = napari.view_image(
-    pyramid,
-    channel_axis = 0,
-    multiscale=multiscale,
+    image,
+    #is_pyramid=False,
+    channel_axis=0,
     name = None if channel_names is None else channel_names,
-    visible = False, **kwargs)
+    visible = False)
 
     # Add the seg mask
     if seg_mask is not None:
@@ -191,12 +146,11 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     def add_phenotype_layer (adata, gates, phenotype_layer,x,y,viewer,point_size):
         cells = gates[gates[phenotype_layer] == 1].index
         coordinates = adata[cells]
-        coordinates = pd.DataFrame({'x': coordinates.obs[x],'y': coordinates.obs[y]})
+        coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
         points = coordinates.values.tolist()
         viewer.add_points(points, size=point_size, face_color='white',visible=False,name=phenotype_layer)
 
     # Run the function on all phenotypes
     for i in gates.columns:
-        add_phenotype_layer (adata=adata, gates=gates, 
-                             phenotype_layer=i, x=x_coordinate, y=y_coordinate, 
-                             viewer=viewer, point_size=point_size)
+        add_phenotype_layer (adata=adata, gates=gates, phenotype_layer=i, x=x_coordinate, y=y_coordinate, viewer=viewer,
+                                                           point_size=point_size)

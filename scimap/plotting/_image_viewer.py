@@ -7,14 +7,16 @@ Using Napari to Visualize images overlayed with phenotypes or any categorical co
 """
 
 #%gui qt
-import napari
+try:
+    import napari
+except:
+    pass
 import pandas as pd
 import random
 import tifffile as tiff
 
 import dask.array as da
 import zarr
-import pathlib
 
 def image_viewer (image_path, adata, overlay=None,
                     overlay_category=None,markers=None,channel_names='default',

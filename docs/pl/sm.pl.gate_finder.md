@@ -13,7 +13,8 @@
       point_size=10, 
       imageid='imageid', 
       subset=None, 
-      seg_mask=None**)
+      seg_mask=None, 
+      kwargs**)
 
 **Short description**
 
@@ -59,9 +60,11 @@ Column name of the column containing the image id.
 `subset` : string, optional  *(The default is None)*  
 imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.  
 
-
 `seg_mask` : string, optional *(The default is None)*  
 Location to the segmentation mask file.  
+
+`**kwargs` : None  
+Other arguments that can be passed to napari viewer.
 
 
 **Returns**
