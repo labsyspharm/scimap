@@ -67,8 +67,6 @@ data and identify the group it belongs to.
         2) [Plotly.bar()](https://plotly.com/python-api-reference/generated/plotly.express.bar.html) when using the `plotly` method.
 
 
-[Duck Duck Go](https://duckduckgo.com)
-
 **Returns**
 
 Stacked bar plot. If return_data is set to `True` also returns a dataframe of the data used for the plot.
