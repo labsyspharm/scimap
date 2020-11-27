@@ -1,3 +1,7 @@
+# 0.10.0 (2020-11-27)
+
+ - Included `stacked_barplot` function to generate a stacked barplot from any two cloumns
+   
 # 0.9.0 (2020-11-21)
 
  - Updated `pl.image_viewer` and `pl.gate_finder` functions - 
