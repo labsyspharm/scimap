@@ -63,9 +63,11 @@ data and identify the group it belongs to.
         When True, return the data used for plotting.
         
 `**kwargs` : Additional keyword arguments passed to:  
-        1) Pandas DataFrame.plot() when using the `matplotlib` method (https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot))  
-        2) Plotly.bar() when using the `plotly` method (https://plotly.com/python-api-reference/generated/plotly.express.bar.html))
+        1) Pandas [DataFrame.plot()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot) when using the `matplotlib` method.  
+        2) [Plotly.bar()](https://plotly.com/python-api-reference/generated/plotly.express.bar.html) when using the `plotly` method.
 
+
+[Duck Duck Go](https://duckduckgo.com)
 
 **Returns**
 
