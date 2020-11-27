@@ -69,7 +69,7 @@ data and identify the group it belongs to.
 
 **Returns**
 
-Stacked bar plot. If return_data is set to `True` also returns a dataframe of the data used for the plot.
+Stacked bar plot. If return_data is set to `True`, the function also returns a dataframe of the data used for the plotting.
 
 **Example**
 
