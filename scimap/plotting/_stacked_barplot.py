@@ -12,6 +12,7 @@ import pandas as pd
 import matplotlib.pylab as plt
 import seaborn as sns; sns.set(color_codes=True)
 import plotly.express as px
+import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default = 'browser'
 sns.set(style="white")
@@ -156,8 +157,14 @@ def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None
     elif plot_tool == 'plotly':
         
         fig = px.bar(rg, x=x_axis, y="count", color=y_axis, **kwargs)
-        fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)',})
+        fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                           'paper_bgcolor': 'rgba(0, 0, 0, 0)'},
+                          xaxis = dict(tickmode='linear') #type = 'category'
+                          )
         fig.show()
+        
+        
+         
         
     else:
         
