@@ -2,13 +2,13 @@
 
 !!! note "Function Call"
     `scimap.pl.stacked_barplot` (
-      **adata,
-      x_axis='imageid',y_axis='phenotype',
-      subset_xaxis=None,subset_yaxis=None,
-      method='percent',
-      plot_tool='matplotlib',matplotlib_cmap=None,
+      **adata, 
+      x_axis='imageid', y_axis='phenotype',
+      subset_xaxis=None, subset_yaxis=None, 
+      method='percent', 
+      plot_tool='matplotlib', matplotlib_cmap=None, 
       matplotlib_bbox_to_anchor=(1,1.02), matplotlib_legend_loc=2, 
-      return_data=False,
+      return_data=False, 
       **kwargs **)
 
 **Short description**
