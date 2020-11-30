@@ -164,8 +164,6 @@ def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None
         fig.show()
         
         
-         
-        
     else:
         
         raise ValueError('plot_tool should be either matplotlib or plotly')

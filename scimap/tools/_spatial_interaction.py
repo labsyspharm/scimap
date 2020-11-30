@@ -164,8 +164,13 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
 
         # Normalize based on total cell count
         k = n.groupby(['phenotype','neighbour_phenotype']).size().unstack().fillna(0)
+        # add neighbour phenotype that are not present to make k a square matrix
+        columns_to_add = dict.fromkeys(np.setdiff1d(k.index,k.columns), 0)
+        k = k.assign(**columns_to_add)
+
         total_cell_count = data['phenotype'].value_counts()
-        total_cell_count = total_cell_count.reindex(k.columns).values
+        total_cell_count = total_cell_count[k.columns].values # keep only cell types that are present in the column of k
+        # total_cell_count = total_cell_count.reindex(k.columns).values # replaced by above
         k_max = k.div(total_cell_count, axis = 0)
         k_max = k_max.div(k_max.max(axis=1), axis=0).stack()
         
