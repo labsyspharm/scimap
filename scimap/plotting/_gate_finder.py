@@ -28,7 +28,7 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     Parameters
     ----------
     image_path : string
-        Location to the image file..
+        Location to the image file.
     adata : Ann Data Object
     marker_of_interest : string
         Marker for which gate is to be defined e.g. 'CD45'.
