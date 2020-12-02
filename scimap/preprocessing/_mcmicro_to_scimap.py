@@ -58,6 +58,10 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     adata = sm.pp.mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
 
     """
+    
+    # image_path list or string
+    if isinstance(image_path, str):
+        image_path = [image_path]
 
     # Import data based on the location provided
     def load_process_data (image):
