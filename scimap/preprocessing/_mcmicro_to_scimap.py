@@ -126,8 +126,9 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
 
     # Drop unnecessary markers
     if drop_markers is not None:
-        for i in drop_markers:
-            entire_data = entire_data.loc[:,~entire_data.columns.str.contains(i, case=False)]
+        if isinstance(drop_markers, str):
+            drop_markers = [drop_markers]
+        entire_data = entire_data.drop(columns=drop_markers)
 
     # Create an anndata object
     adata = ad.AnnData(entire_data)
@@ -138,7 +139,6 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
     if log is True:
         adata.raw = adata
         adata.X = np.log1p(adata.X)
-
-
+        
     # Return data
     return adata
