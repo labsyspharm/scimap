@@ -187,11 +187,11 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
     # subset the gates to include only the image of interest
     gates = gates.loc[adata.obs.index,]
 
-    # Add phenotype layer function
+    # Add gating layer
     def add_phenotype_layer (adata, gates, phenotype_layer,x,y,viewer,point_size):
         cells = gates[gates[phenotype_layer] == 1].index
         coordinates = adata[cells]
-        coordinates = pd.DataFrame({'x': coordinates.obs[x],'y': coordinates.obs[y]})
+        coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
         #points = coordinates.values.tolist()
         points = coordinates.values
         #import time
@@ -201,7 +201,7 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
         #print(stop-start)
         
 
-    # Run the function on all phenotypes
+    # Run the function on all gating layer
     for i in gates.columns:
         add_phenotype_layer (adata=adata, gates=gates, 
                              phenotype_layer=i, x=x_coordinate, y=y_coordinate, 

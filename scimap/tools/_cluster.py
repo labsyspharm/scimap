@@ -249,7 +249,7 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
         bdata = adata[:,subset_genes]
         bdata.raw = bdata[:,subset_genes]
     else:
-        bdata = adata
+        bdata = adata.copy()
         
     # What cells to run the clustering on?
     if sub_cluster_group is not None:
