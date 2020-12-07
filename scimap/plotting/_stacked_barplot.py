@@ -170,7 +170,7 @@ def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None
     
     # Return data
     if return_data is True:
-        return rg
+        return pivot_df
         
 
     
