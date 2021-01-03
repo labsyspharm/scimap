@@ -6,6 +6,7 @@
       pos=None, neg=None, 
       classify_label='passed_classify', 
       phenotype='phenotype', subclassify_phenotype=None, 
+      threshold = 0.5, 
       collapse_failed=True, label="classify"**)
 
 **Short description**
@@ -35,6 +36,10 @@ This is important if `subclassify_phenotype` or `collapse_failed` arguments are 
 If only a subset of phenotypes require to classified, pass the name of those phenotypes as a list
 through this argument. 
 
+`threshold` : float, optional *(The default is 0.5)*  
+Above or below the given value will be considered for positive and negative classification.
+If the data was scaled using the `sm.pp.rescale` function, 0.5 is the classification threshold. 
+        
 `collapse_failed` : bool, optional *(The default is True)*  
 If set to true, the cells that were not classified based on the given criteria will be
 binned into a single category named 'failed_classify'. When False, the phenotype

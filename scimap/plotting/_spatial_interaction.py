@@ -20,7 +20,7 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
                          row_cluster=False, col_cluster=False,
                          cmap = 'vlag', nonsig_color='grey', 
                          subset_phenotype=None, subset_neighbour_phenotype=None,
-                         binary_view=False, **kwargs):
+                         binary_view=False, return_data=False, **kwargs):
     """
 
     Parameters
@@ -54,6 +54,8 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
     binary_view : bool, optional
         Removes the intensity of intreaction and plots significant interactions and avoidance in a binary format.
         The default is 'False'.
+    return_data : bool, optional
+        When True, return the data used for plotting. The default is False.
 
     **kwargs : key:value pairs
         Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
@@ -150,5 +152,8 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         mask.columns = interaction_map.columns
         # Plot
         sns.clustermap(interaction_map, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
+    
+    if return_data is True:
+        return interaction_map
         
 

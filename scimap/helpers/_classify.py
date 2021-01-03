@@ -14,7 +14,7 @@ import numpy as np
 
 # Functions
 def classify (adata, pos=None, neg=None, classify_label='passed_classify', 
-              phenotype='phenotype', subclassify_phenotype=None, 
+              phenotype='phenotype', subclassify_phenotype=None, threshold = 0.5,
               collapse_failed=True, label="classify"):
     """
     
@@ -32,6 +32,10 @@ def classify (adata, pos=None, neg=None, classify_label='passed_classify',
     subclassify_phenotype : list, optional
         If only a subset of phenotypes require to classified, pass the name of those phenotypes as a list
         through this argument. The default is None.
+    threshold: float, optional
+        Above or below the given value will be considered for positive and negative classification.
+        If the data was scaled using the `sm.pp.rescale` function, 0.5 is the classification threshold.
+        The default is 0.5.
     phenotype : string, required
         Column name of the column containing the phenotype information. 
         This is important if `subclassify_phenotype` or `collapse_failed` arguments are used.
@@ -85,13 +89,13 @@ def classify (adata, pos=None, neg=None, classify_label='passed_classify',
     if pos is not None:
         for i in pos:
             # subset data
-            data = data[data[i] >= 0.5]
+            data = data[data[i] >= threshold]
     
     # Subset cells that pass the neg criteria 
     if neg is not None and not data.empty:
         for j in neg:
             # subset data
-            data = data[data[j] < 0.5]
+            data = data[data[j] < threshold]
     
     # cells that passed the classify criteria
     if data.empty:

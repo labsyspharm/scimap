@@ -39,6 +39,11 @@ def rename (adata, rename, from_column='phenotype', to_column='phenotype_renamed
 
     """
     
+    # Sanity check: if the values are not list convert them into list
+    for i in rename:
+        if isinstance(rename[i], str):
+            rename[i] = [rename[i]]
+    
     # Get the from_column
     rename_from = list(adata.obs[from_column].values)
     

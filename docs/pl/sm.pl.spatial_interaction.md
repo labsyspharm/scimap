@@ -54,6 +54,9 @@ Removes the intensity of intreaction and plots significant interactions and avoi
 Color map to use for continous variables. Can be a name or a Colormap 
 instance (e.g. `'magma'`, `'viridis'`). 
 
+`return_data` : bool, optional *(The default is False)*  
+When True, return the data used for plotting. 
+
 `**kwargs`: key:value pairs.  
 Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
  
