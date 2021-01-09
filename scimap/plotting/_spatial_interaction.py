@@ -127,9 +127,9 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         
         # Plotting heatmap
         mask = p_val_df.isnull() # identify the NAN's for masking 
-        interaction_map = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
+        im = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
         # heatmap
-        sns.clustermap(interaction_map, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
+        sns.clustermap(im, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
         
     else:
         if len(interaction_map.columns) <= 3:
@@ -148,10 +148,10 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         
         # Plotting heatmap
         mask = p_val_df.isnull() # identify the NAN's for masking 
-        interaction_map = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
-        mask.columns = interaction_map.columns
+        im = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
+        mask.columns = im.columns
         # Plot
-        sns.clustermap(interaction_map, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
+        sns.clustermap(im, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
     
     if return_data is True:
         return interaction_map
