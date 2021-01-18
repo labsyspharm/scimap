@@ -20,6 +20,7 @@ sns.set(style="white")
 
 # Function
 def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None,subset_yaxis=None,
+                     order_xaxis=None,order_yaxis=None,
                      method='percent',plot_tool='matplotlib',matplotlib_cmap=None,
                      matplotlib_bbox_to_anchor=(1,1.02), matplotlib_legend_loc=2, 
                      return_data=False, **kwargs):
@@ -40,6 +41,14 @@ def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None
     subset_yaxis : list, optional
         Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['Celltype_A', 'Celltype_B']
         The default is None.
+    order_xaxis : list, optional
+        Order the x-axis of the plot as needed. Pass in a list of categories. eg- order_xaxis = ['ROI_5', 'ROI_1']
+        The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
+        will generate NaN's.
+    order_yaxis : list, optional
+        Order the y-axis of the plot as needed. Pass in a list of categories. eg- order_yaxis = ['Celltype_B', 'Celltype_A']
+        The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
+        will generate NaN's.
     method : string, optional
         Available options: 'percent' and 'absolute'. 
         1) Use Percent to plot the percent proportion.
@@ -129,8 +138,20 @@ def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None
     rg.columns = ['count']
     
     # Add the index as columns in the data frame    
-    
     rg.reset_index(inplace=True)  
+    
+    # re-order the x oy y axis if requested by user
+    if order_xaxis is not None:
+        rg[x_axis] = rg[x_axis].astype('category')
+        rg[x_axis] = rg[x_axis].cat.reorder_categories(order_xaxis)
+        rg = rg.sort_values(x_axis)
+    if order_yaxis is not None:
+        rg[y_axis] = rg[y_axis].astype('category')
+        rg[y_axis] = rg[y_axis].cat.reorder_categories(order_yaxis)
+        rg = rg.sort_values(y_axis)
+    if order_xaxis and order_yaxis is not None:
+        rg = rg.sort_values([x_axis, y_axis])
+        
     pivot_df = rg.pivot(index=x_axis, columns=y_axis, values='count')
         
     # Plotting tool

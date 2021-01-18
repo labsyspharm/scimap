@@ -5,6 +5,7 @@
       **adata, 
       x_axis='imageid', y_axis='phenotype',
       subset_xaxis=None, subset_yaxis=None, 
+      order_xaxis=None, order_yaxis=None, 
       method='percent', 
       plot_tool='matplotlib', matplotlib_cmap=None, 
       matplotlib_bbox_to_anchor=(1,1.02), matplotlib_legend_loc=2, 
@@ -36,6 +37,16 @@ data and identify the group it belongs to.
         
 `subset_yaxis` : list, optional *(The default is None)*  
         Subset y-axis before plotting. Pass in a list of categories. `eg- subset_yaxis = ['Celltype_A', 'Celltype_B']`
+        
+`order_xaxis` : list, optional *(The default is None)*  
+        Order the x-axis of the plot as needed. Pass in a list of categories. eg- order_xaxis = ['ROI_5', 'ROI_1']
+        The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
+        will generate NaN's.
+        
+`order_yaxis` : list, optional *(The default is None)*  
+        Order the y-axis of the plot as needed. Pass in a list of categories. eg- order_yaxis = ['Celltype_B', 'Celltype_A']
+        The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
+        will generate NaN's. 
         
 `method` : string, optional *(The default is 'percent')*  
         Available options: 'percent' and 'absolute'.  
