@@ -211,6 +211,3 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
     return adata
 
 
-
-
-

@@ -1,36 +1,45 @@
-**scimap.tl.spatial_interaction**
+**scimap.tl.spatial_pscore**
 
 !!! note "Function Call"
-    `scimap.tl.spatial_interaction` (
-      **adata,
-      x_coordinate='X_centroid',
-      y_coordinate='Y_centroid',
-      phenotype='phenotype',
-      method='radius', radius=30, knn=10,
-      permutation=1000,
-      imageid='imageid',subset=None,
-      pval_method='histocat',
-      label='spatial_interaction'**)
+    `scimap.tl.spatial_pscore` (
+      **adata, 
+      proximity, 
+      score_by='imageid', 
+      x_coordinate='X_centroid', 
+      y_coordinate='Y_centroid', 
+      phenotype='phenotype', 
+      method='radius', 
+      radius=20, knn=3, 
+      imageid='imageid', 
+      subset=None, 
+      label='spatial_pscore'**)
 
 **Short description**
 
-The `spatial_interaction` function enables the unbiased and systematic study of all 
-cell–cell interactions present in a tissue or all tissues of a sample cohort by using a 
-permutation test to compare the number of interactions between all cell types in a given image 
-to that of a matched control containing randomized cell phenotypes. This approach determines 
-the significance of cell–cell interactions and reveals enrichments or depletions 
-in cell–cell interactions that are indicative of cellular organization.  <br>
+The `spatial_pscore` function enables users to score interation between cell types.
+The function generates two scores and saved at `adata.uns`: <br>
+A) Proximity Density: Total number of interactions identified divided by the total number of 
+cells of the cell-types that were used for interaction analysis. <br>s
+B) Proximity Volume: Total number of interactions identified divided by the total number of all cells in the data.
+The interaction sites are also recorded and saved in `adata.obs` <br>
 
 The function supports two methods to define a local neighbourhood <br>
 **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
 **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
 
-The resultant proportion matrix is saved with `adata.uns`.
+The resultant proportion matrix is saved with `adata.uns` and `adata.obs`.
 
 
 **Parameters**
 
 `adata` : AnnData Object  
+
+`proximity` : list, required  
+Pass a list of cell-types for which the proximity score needs to calculated. e.g. ['CellType-A', 'CellType-B'].
+        
+`score_by` : string, optional *(The default is 'imageid')* 
+If the scores need to compared across region's of interest, the column name containing the ROI's 
+should be passed. By default the score is calculated across the entire image. The default is 'imageid'.  
 
 `x_coordinate` : float, required *(The default is 'X_centroid')*  
 Column name containing the x-coordinates values.  
@@ -46,21 +55,11 @@ Two options are available: a) 'radius', b) 'knn'.
 a) radius - Identifies the neighbours within a given radius for every cell.
 b) knn - Identifies the K nearest neigbours for every cell.
 
-`radius` : int, optional *(The default is 30)*  
+`radius` : int, optional *(The default is 20)*  
 The radius used to define a local neighbhourhood.
 
-`knn` : int, optional *(The default is 10)*  
+`knn` : int, optional *(The default is 3)*  
 Number of cells considered for defining the local neighbhourhood.
-
-`permutation` : int, optional *(The default is 1000)*  
-The number of permutations to be performed for calculating the P-Value. 
-
-`pval_method` : string, optional *(The default is 'histocat')*  
-Two options are available: a) 'histocat', b) 'zscore'.  
-a) P-values are calculated by subtracting the permuted mean from the observed mean
-divided by the number of permutations as described in the histoCAT manuscript (Denis et.al, Nature Methods 2017) <br>
-b) zscores are calculated from the mean and standard deviation and further p-values 
-are derived by fitting the observed values to a normal distribution.
 
 `imageid` : string, optional *(The default is 'imageid')*  
 Column name of the column containing the image id.
@@ -68,22 +67,20 @@ Column name of the column containing the image id.
 `subset` : string, optional *(The default is None)*  
 imageid of the image to be subsetted for analyis. 
 
-`label` : string, optional *(The default is 'spatial_interaction')*  
-Key for the returned data, stored in `adata.uns`. 
+`label` : string, optional *(The default is 'spatial_pscore')*  
+Key for the returned data, stored in `adata.uns` and `adata.obs`. 
 
 
 **Returns**
-`AnnData` object with the results stored in `adata.uns['spatial_interaction']`.
+`AnnData` object with the results stored in `adata.uns['spatial_pscore']` and `adata.obs['spatial_pscore']`.
 
 
 **Example**
 
 ```
-# Using the radius method to identify local neighbours and histocat to compute P-values
-adata = sm.tl.spatial_interaction(adata, method='radius', radius=30,pval_method='histocat',
-                                      imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
-    
-# Using the KNN method to identify local neighbours and zscore to compute P-values
-adata = sm.tl.spatial_interaction(adata, method='knn', radius=30,pval_method='zscore',
-                                      imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
+# Calculate the score for proximity between `Tumor CD30+` cells and `M2 Macrophages`
+adata =  spatial_pscore (adata,proximity= ['Tumor CD30+', 'M2 Macrophages'], score_by = 'ImageId',
+                        x_coordinate='X_position',y_coordinate='Y_position',
+                        phenotype='phenotype',method='radius',radius=20,knn=3,
+                        imageid='ImageId',subset=None, label='spatial_pscore')
 ```

@@ -93,5 +93,15 @@ def test_spatial_distance(adata):
     
     #test
     assert a is not None
+    
+# Testing spatial_pscore function
+def test_spatial_pscore(adata):
+    from scimap.tools._spatial_pscore import spatial_pscore
+    adata = spatial_pscore (adata, imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position', 
+                            score_by='ImageId', proximity= ['Tumor CD30+', 'M2 Macrophages'])
+    a = adata.uns['spatial_pscore']['Total Cells'].values
+    
+    # test
+    assert a == 152
 
 

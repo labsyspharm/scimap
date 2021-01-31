@@ -1,3 +1,7 @@
+# 0.11.0 (2021-01-30)
+
+ - Included `spatial_pscore` function
+ 
 # 0.10.0 (2020-11-27)
 
  - Included `stacked_barplot` function to generate a stacked barplot from any two cloumns
