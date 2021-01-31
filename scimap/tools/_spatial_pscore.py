@@ -63,7 +63,7 @@ def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroi
     Example
     -------
     # Calculate the score for proximity between `Tumor CD30+` cells and `M2 Macrophages`
-    adata =  spatial_pscore (adata,proximity= ['Tumor CD30+', 'M2 Macrophages'], score_by = 'ImageId',
+    adata =  sm.tl.spatial_pscore (adata,proximity= ['Tumor CD30+', 'M2 Macrophages'], score_by = 'ImageId',
                              x_coordinate='X_position',y_coordinate='Y_position',
                              phenotype='phenotype',method='radius',radius=20,knn=3,
                              imageid='ImageId',subset=None, label='spatial_pscore')
@@ -86,7 +86,7 @@ def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroi
             tree = BallTree(data[['x','y']], leaf_size= 2)
             ind = tree.query(data[['x','y']], k=knn, return_distance= False)
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
-            neighbours_ind = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
+            neighbours_ind = neighbours.copy() # neighbour DF
             #neighbours.drop(0, axis=1, inplace=True) # Remove self neighbour
         
         # b) Local radius method
@@ -96,7 +96,7 @@ def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroi
             ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
             #for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
-            neighbours_ind = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
+            neighbours_ind = neighbours.copy() # neighbour DF
             
         # Map phenotype
         phenomap = dict(zip(list(range(len(ind))), data['phenotype'])) # Used for mapping
@@ -125,11 +125,8 @@ def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroi
         d = data.loc[cleaned_neighbours_ind_unique]
         d = d[d['phenotype'].isin(proximity)].index
         
-        # Create a list with the cells that are in the identified neighbourhoods 
-        #proximity_sites = np.where(data.index.isin(x), "proximity-site", "other")
-        
-        # return
-        return d
+        # return neighbours for score and image_neighbours for plotting on image
+        return {'neighbours': neighbours.index, 'image_neighbours': d }
         
         
     # Subset a particular image if needed
@@ -146,34 +143,41 @@ def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroi
                                                    method=method,radius=radius,knn=knn,
                                                    imageid=imageid,subset=subset,label=label) 
     all_data = list(map(r_spatial_pscore_internal, adata_list)) # Apply function 
-        
+    
     
     # Merge all the results into a single dataframe    
-    proximity_site_cells = np.concatenate(all_data, axis=0)
+    proximity_site_cells =  np.concatenate([d['image_neighbours'] for d in all_data], axis=0)
     
     # Add it to the AnnData Object
     adata.obs[label] = np.where(adata.obs.index.isin(proximity_site_cells), '_'.join(proximity), "other")
     
     
     ##### SCORING #####
+    proximity_neigh = np.concatenate([d['neighbours'] for d in all_data], axis=0)
+    wh_d = adata.obs
+    wh_d[label] = np.where(wh_d.index.isin(proximity_neigh), '_'.join(proximity), "other")
+    
     # Define a scoring system
-    whole_data = adata.obs[[score_by, label, phenotype]]
+    name = '_'.join(proximity)
+    whole_data = wh_d[[score_by, label, phenotype]]
     
     # proximity volume
     p_v = whole_data.groupby([score_by, label]).size().unstack().fillna(0)
-    p_v['proximity_volume'] = p_v.iloc[:, 1] / p_v.iloc[:, 0]
+    p_v ['All Cells'] = p_v[name] + p_v["other"]
+    p_v['Proximity Volume'] = p_v[name] / p_v['All Cells']
     p_v = p_v.fillna(0) # replace NA
-    p_v.columns = ['Total Cells','Interactions Observed', 'Proximity Volume']
+    p_v = p_v.replace([np.inf, -np.inf], 0)
+    p_v = p_v.drop(columns = 'other')
     
     # subset the phenotypes of interest
     w_d = whole_data[whole_data[phenotype].isin(proximity)]
     # proximity density
     p_d = w_d.groupby([score_by, label]).size().unstack().fillna(0)
-    p_d['proximity_density'] = p_d.iloc[:, 1] / p_d.iloc[:, 0]
+    p_d ['Celltype of interest'] = p_d[name] + p_d["other"]
+    p_d['Proximity Density'] = p_d[name] / p_d['Celltype of interest']
     p_d = p_d.fillna(0) # replace NA
-    p_d.columns = ['Total ' + '_'.join(proximity),'Interactions Observed' ,'Proximity Density']
-    p_d = p_d.drop(columns = 'Interactions Observed')
-    
+    p_d = p_d.replace([np.inf, -np.inf], 0)
+    p_d = p_d.drop(columns = ['other', name])
     
     # Merge Promimity volumne and density
     proximity_score = pd.merge(p_v, p_d, left_index=True, right_index=True)

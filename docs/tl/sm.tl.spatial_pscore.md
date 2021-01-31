@@ -79,7 +79,7 @@ Key for the returned data, stored in `adata.uns` and `adata.obs`.
 
 ```
 # Calculate the score for proximity between `Tumor CD30+` cells and `M2 Macrophages`
-adata =  spatial_pscore (adata,proximity= ['Tumor CD30+', 'M2 Macrophages'], score_by = 'ImageId',
+adata =  sm.tl.spatial_pscore (adata,proximity= ['Tumor CD30+', 'M2 Macrophages'], score_by = 'ImageId',
                         x_coordinate='X_position',y_coordinate='Y_position',
                         phenotype='phenotype',method='radius',radius=20,knn=3,
                         imageid='ImageId',subset=None, label='spatial_pscore')

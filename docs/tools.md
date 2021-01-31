@@ -38,6 +38,7 @@ import scimap as sm
 |    [`sm.pl.stacked_barplot`](../pl/sm.pl.stacked_barplot)    | Generate a stacked barplot from any two columns of categorical data |
 | [`sm.pl.spatial_interaction`](../pl/sm.pl.spatial_interaction) |                    Heatmap of cell–cell interaction analysis                     |
 |    [`sm.pl.spatial_distance`](../pl/sm.pl.spatial_distance)    | Heatmap, distribution and numeric plots to visualize distance between phenotypes |
+|    [`sm.pl.spatial_pscore`](../pl/sm.pl.spatial_pscore)    | Bar plot of the derived Spatial Proximity Scores |
 |                                                                |                                                                                  |
 
 ### Helper Functions: `hl`
