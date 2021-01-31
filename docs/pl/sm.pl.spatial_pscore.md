@@ -41,5 +41,5 @@ the function the users can plot either the `Proximity Density` score, `Proximity
 **Example**
 
 ```
-sm.plspatial_pscore (adata, color='Black', plot_score='Proximity Volume', order_xaxis=['ROI2', 'ROI4', "ROI1"])
+sm.pl.spatial_pscore (adata, color='Black', plot_score='Proximity Volume', order_xaxis=['ROI2', 'ROI4', "ROI1"])
 ```

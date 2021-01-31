@@ -43,7 +43,7 @@ def spatial_pscore (adata, label='spatial_pscore', plot_score='both',
 
     Example
     -------
-    sm.plspatial_pscore (adata, color='Black', plot_score='Proximity Volume', order_xaxis=['ROI2', 'ROI4', "ROI1"])
+    sm.pl.spatial_pscore (adata, color='Black', plot_score='Proximity Volume', order_xaxis=['ROI2', 'ROI4', "ROI1"])
 
     """
     
