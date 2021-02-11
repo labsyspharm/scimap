@@ -99,9 +99,9 @@ def test_spatial_pscore(adata):
     from scimap.tools._spatial_pscore import spatial_pscore
     adata = spatial_pscore (adata, imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position', 
                             score_by='ImageId', proximity= ['Tumor CD30+', 'M2 Macrophages'])
-    a = adata.uns['spatial_pscore']['Total Cells'].values
+    a = adata.uns['spatial_pscore']['All Cells'].values
     
     # test
-    assert a == 152
+    assert a == 3029
 
 
