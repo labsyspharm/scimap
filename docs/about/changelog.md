@@ -1,3 +1,7 @@
+# 0.12.0 (2021-02-12)
+
+ - Included `sm.pl.voronoi` function. Now possible to draw voronoi diagram of the images using X/Y coordinates
+ 
 # 0.11.0 (2021-01-30)
 
  - Included `spatial_pscore` function

@@ -5,3 +5,4 @@ from ._spatial_interaction import spatial_interaction
 from ._spatial_distance import spatial_distance
 from ._stacked_barplot import stacked_barplot
 from ._spatial_pscore import spatial_pscore
+from ._voronoi import voronoi

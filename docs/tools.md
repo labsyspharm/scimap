@@ -36,6 +36,7 @@ import scimap as sm
 |         [`sm.pl.gate_finder`](pl/sm.pl.gate_finder.md)         |            Overlays gating positivity on the image for manual gating             |
 |        [`sm.pl.image_viewer`](../pl/sm.pl.image_viewer)        |               Opens the image with overlays on a `napari` browser                |
 |    [`sm.pl.stacked_barplot`](../pl/sm.pl.stacked_barplot)    | Generate a stacked barplot from any two columns of categorical data |
+|    [`sm.pl.voronoi`](../pl/sm.pl.voronoi)    | Generate a voronoi diagram and color it with categorical data |
 | [`sm.pl.spatial_interaction`](../pl/sm.pl.spatial_interaction) |                    Heatmap of cell–cell interaction analysis                     |
 |    [`sm.pl.spatial_distance`](../pl/sm.pl.spatial_distance)    | Heatmap, distribution and numeric plots to visualize distance between phenotypes |
 |    [`sm.pl.spatial_pscore`](../pl/sm.pl.spatial_pscore)    | Bar plot of the derived Spatial Proximity Scores |

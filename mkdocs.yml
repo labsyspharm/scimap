@@ -41,6 +41,7 @@ nav:
     - pl.spatial_distance: pl/sm.pl.spatial_distance.md
     - pl.spatial_interaction: pl/sm.pl.spatial_interaction.md
     - pl.spatial_pscore: pl/sm.pl.spatial_pscore.md
+    - pl.voronoi: pl/sm.pl.voronoi.md
   - Helper:
     - hl.classify: hl/sm.hl.classify.md
     - hl.scimap_to_csv: hl/sm.hl.scimap_to_csv.md
