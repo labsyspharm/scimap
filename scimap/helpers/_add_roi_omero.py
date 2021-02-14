@@ -14,7 +14,7 @@ import matplotlib.path as mpath
 from joblib import Parallel, delayed
 
 
-def add_roi (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI'):
+def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI'):
     
     """
     
@@ -40,7 +40,7 @@ def add_roi (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',lab
     Example
     -------
     roi = pd.read_csv('ROI/ROI_Z147_1_750.csv')
-    adata = sm.hl.add_roi (adata, roi, label='aj_ROI')
+    adata = sm.hl.add_roi_omero (adata, roi, label='aj_ROI')
 
     """
     

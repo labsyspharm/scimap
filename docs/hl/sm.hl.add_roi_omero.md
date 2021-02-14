@@ -1,7 +1,7 @@
-**scimap.hl.add_roi**
+**scimap.hl.add_roi_omero**
 
 !!! note "Function Call"
-    `scimap.hl.add_roi` (
+    `scimap.hl.add_roi_omero` (
       **adata, 
       roi, 
       x_coordinate='X_centroid', 
@@ -45,6 +45,6 @@ Modified AnnData object. Check `adata.obs` for an additional column.
 roi = pd.read_csv('ROI/ROI_Z147_1_750.csv')
 
 # Run the function
-adata = sm.hl.add_roi (adata, roi, label='aj_ROI')
+adata = sm.hl.add_roi_omero (adata, roi, label='aj_ROI')
 
 ```
