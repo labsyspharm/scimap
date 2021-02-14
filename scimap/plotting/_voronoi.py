@@ -192,6 +192,9 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
     # Subset the image of interest
     if subset is not None:
         data = data[data[imageid] == subset]
+    
+    # create an extra column with index information
+    data['index_info'] = np.arange(data.shape[0])
         
     # generate the x and y coordinates
     points = data[[x_coordinate,y_coordinate]].values
@@ -286,10 +289,11 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
             d = d[-d[overlay_points].isin(overlay_drop_categories)]
         
         # Find the x and y coordinates for the overlay category
-        points_scatter = d[[x_coordinate,y_coordinate]].values
+        #points_scatter = d[[x_coordinate,y_coordinate]].values
+        points_scatter = points[d.index_info.values]
     
         # invert the Y-axis
-        points_scatter[:,1] = max(points_scatter[:,1])-points_scatter[:,1]
+        #points_scatter[:,1] = max(points_scatter[:,1])-points_scatter[:,1]
         
         # Generate colors for the scatter plot
         if overlay_points_colors is None and color_by == overlay_points:
@@ -329,7 +333,7 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
         # map to colors
         colors_scatter = list(map(c_p_scatter.get, list(d[overlay_points].values)))
             
-
+        #plt.scatter(x = points_scatter[:,0], y = points_scatter[:,1], s= overlay_point_size, alpha= overlay_point_alpha, c= colors_scatter, marker=overlay_point_shape)
         plt.scatter(x = points_scatter[:,0], y = points_scatter[:,1], s= overlay_point_size, alpha= overlay_point_alpha, c= colors_scatter, marker=overlay_point_shape,**kwargs)
         plt.xticks([]) ; plt.yticks([]);
 

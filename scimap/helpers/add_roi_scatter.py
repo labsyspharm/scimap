@@ -23,11 +23,12 @@ def add_roi_scatter (adata, method=None, marker=None, threshold=0.5, raw=False, 
     
     
     # create a copy of the anndata object
+    adata = combined_excluded.copy()
     bdata = adata.copy()
     
     # Subset the image of interest
     if subset is not None:
-        bdata = bdata[bdata[imageid] == subset]
+        bdata = bdata[bdata.obs[imageid] == subset]
         
     # indentify the index of the marker of interest
     if marker is not None:
