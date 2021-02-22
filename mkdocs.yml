@@ -45,7 +45,7 @@ nav:
   - Helper:
     - hl.classify: hl/sm.hl.classify.md
     - hl.scimap_to_csv: hl/sm.hl.scimap_to_csv.md
-    - hl.add_roi: hl/sm.hl.add_roi.md
+    - hl.add_roi_omero: hl/sm.hl.add_roi_omero.md
   - Tutorials:
     - Load the Data: tutorials/scimap-tutorial-getting-started.md
     - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md
