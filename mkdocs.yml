@@ -33,7 +33,8 @@ nav:
     - tl.spatial_count: tl/sm.tl.spatial_count.md
     - tl.spatial_expression: tl/sm.tl.spatial_expression.md
     - tl.spatial_aggregate: tl/sm.tl.spatial_aggregate.md
-    - tl.spatial_pscore: tl/sm.tl.spatial_pscore.md    
+    - tl.spatial_pscore: tl/sm.tl.spatial_pscore.md  
+    - tl.spatial_lda: tl/sm.tl.spatial_lda.md  
   - Plotting:
     - pl.gate_finder: pl/sm.pl.gate_finder.md
     - pl.image_viewer: pl/sm.pl.image_viewer.md

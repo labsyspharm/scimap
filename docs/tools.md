@@ -27,6 +27,7 @@ import scimap as sm
 |  [`sm.tl.spatial_expression`](tl/sm.tl.spatial_expression.md)  |    Distribution of spatial expression with local neighborhood     |
 |   [`sm.tl.spatial_aggregate`](tl/sm.tl.spatial_aggregate.md)   |         Aggregates of cell-types with local neighborhood          |
 |   [`sm.tl.spatial_pscore`](tl/sm.tl.spatial_pscore.md)   |         Scoring proximity between user defined cell types          |
+|   [`sm.tl.spatial_lda`](tl/sm.tl.spatial_lda.md)   |         Latent Dirichlet Allocation (LDA) modelling for spatial motifs          |
 
 
 ### Plotting: `pl`

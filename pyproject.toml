@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.12.1"
+version = "0.13.0"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -48,6 +48,7 @@ napari = "^0.4.2"
 numba = "<=0.51.2"
 llvmlite = "<=0.34.0"
 shapely = "^1.7.1"
+gensim = "^3.8.3"
 
 [tool.poetry.dev-dependencies]
 

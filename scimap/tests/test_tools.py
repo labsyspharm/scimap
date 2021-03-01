@@ -104,4 +104,12 @@ def test_spatial_pscore(adata):
     # test
     assert a == 3029
 
-
+# Testing spatial_lda function
+def test_spatial_lda (adata):
+    from scimap.tools._spatial_lda import spatial_lda
+    adata = spatial_lda (adata, num_motifs=10, radius=30,imageid='ImageId',
+                         x_coordinate='X_position',y_coordinate='Y_position')
+    a = round(adata.uns['spatial_lda']['Motif_0'][0], 3)
+    
+    # test
+    assert a == 0.775

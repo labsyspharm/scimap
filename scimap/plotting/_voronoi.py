@@ -10,7 +10,10 @@ Generating a voronoi diagram
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from shapely.geometry import MultiPoint, Point, Polygon
+try:
+  from shapely.geometry import MultiPoint, Point, Polygon
+except:
+  print("If you are using Conda in Windows please install Shapely uisng the following command to use the Voronoi function\n\nconda install -c conda-forge shapely")
 from scipy.spatial import Voronoi
 import matplotlib.patches as mpatches
 
