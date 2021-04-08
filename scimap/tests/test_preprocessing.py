@@ -33,4 +33,4 @@ def test_rescale(adata):
     a = np.round(adata[:,'CD3D'].X[0],2)
 
     # test
-    assert a == 0.37
+    assert a == 0.4
