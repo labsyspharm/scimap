@@ -19,6 +19,7 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
                       method='heatmap',heatmap_summarize=True,heatmap_na_color='grey',heatmap_cmap='vlag_r',
                       heatmap_row_cluster=False,heatmap_col_cluster=False,heatmap_standard_scale=0,
                       distance_from=None,distance_to=None,x_axis = None,y_axis = None,facet_by = None,plot_type = None,
+                      return_data = False,
                       **kwargs):
     """
     
@@ -199,6 +200,10 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
         for col in ['imageid', 'group','phenotype']:
             d[col] = d[col].astype('category')
         
+        # re arrange the order based on from and to list provided
+        if distance_to is not None:
+            d['group'] = d['group'].cat.reorder_categories(distance_to)
+            d = d.sort_values('group')
         
         # Plotting
         if method=='numeric':
@@ -211,5 +216,9 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
             if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
                 sns.displot(data=d, x="distance", hue="imageid",  col="group", kind="kde", **kwargs)
             else:
-                sns.displot(data=d, x=x_axis, hue=y_axis, col=facet_by, kind=plot_type,**kwargs)    
+                sns.displot(data=d, x=x_axis, hue=y_axis, col=facet_by, kind=plot_type,**kwargs)   
+                
+    # return
+    if return_data is True:
+        return d
             

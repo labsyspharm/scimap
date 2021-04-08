@@ -125,6 +125,14 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         p_val_df.loc[p_val_df[p_val_df['mean'] > p_val].index,'mean'] = np.NaN       
         p_val_df = p_val_df['mean'].unstack()
         
+        # change to the order passed in subset
+        if subset_phenotype is not None:
+            interaction_map = interaction_map.reindex(subset_phenotype)
+            p_val_df = p_val_df.reindex(subset_phenotype)
+        if subset_neighbour_phenotype is not None:
+            interaction_map = interaction_map.reindex(columns=subset_neighbour_phenotype)
+            p_val_df = p_val_df.reindex(columns=subset_neighbour_phenotype)
+        
         # Plotting heatmap
         mask = p_val_df.isnull() # identify the NAN's for masking 
         im = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
@@ -145,6 +153,31 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
         idx = p_val_df.index[p_val_df.isnull().all(1)] # Find all nan rows
         interaction_map = interaction_map.loc[interaction_map.index.difference(idx)] # clean intensity data
         p_val_df = p_val_df.loc[p_val_df.index.difference(idx)] # clean p-value data
+        
+        # order the plot as needed
+        if subset_phenotype or subset_neighbour_phenotype is not None:
+            interaction_map.reset_index(inplace=True)
+            p_val_df.reset_index(inplace=True)
+            if subset_phenotype is not None:
+                interaction_map['phenotype'] = interaction_map['phenotype'].astype('category')
+                interaction_map['phenotype'] = interaction_map['phenotype'].cat.reorder_categories(subset_phenotype)
+                interaction_map = interaction_map.sort_values('phenotype')
+                # Do same for Pval
+                p_val_df['phenotype'] = p_val_df['phenotype'].astype('category')
+                p_val_df['phenotype'] = p_val_df['phenotype'].cat.reorder_categories(subset_phenotype)
+                p_val_df = p_val_df.sort_values('phenotype')
+            if subset_neighbour_phenotype is not None:
+                interaction_map['neighbour_phenotype'] = interaction_map['neighbour_phenotype'].astype('category')
+                interaction_map['neighbour_phenotype'] = interaction_map['neighbour_phenotype'].cat.reorder_categories(subset_neighbour_phenotype)
+                interaction_map = interaction_map.sort_values('neighbour_phenotype')
+                # Do same for Pval
+                p_val_df['neighbour_phenotype'] = p_val_df['neighbour_phenotype'].astype('category')
+                p_val_df['neighbour_phenotype'] = p_val_df['neighbour_phenotype'].cat.reorder_categories(subset_neighbour_phenotype)
+                p_val_df = p_val_df.sort_values('neighbour_phenotype')
+            if subset_phenotype and subset_neighbour_phenotype is not None:
+                 interaction_map = interaction_map.sort_values(['phenotype', 'neighbour_phenotype'])
+                 p_val_df = p_val_df.sort_values(['phenotype', 'neighbour_phenotype'])
+
         
         # Plotting heatmap
         mask = p_val_df.isnull() # identify the NAN's for masking 

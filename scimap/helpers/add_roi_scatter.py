@@ -23,7 +23,7 @@ def add_roi_scatter (adata, method=None, marker=None, threshold=0.5, raw=False, 
     
     
     # create a copy of the anndata object
-    adata = combined_excluded.copy()
+    adata = combined_excluded_RJP.copy()
     bdata = adata.copy()
     
     # Subset the image of interest

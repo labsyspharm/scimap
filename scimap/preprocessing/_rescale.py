@@ -19,7 +19,7 @@ from matplotlib.lines import Line2D
 
 
 def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_markers=None, method='all',save_fig=False):
-    
+
     """
 
 
@@ -29,9 +29,9 @@ def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_mar
     gate : dataframe, optional (The default is None)
         DataFrame with first column as markers and second column as the gate values in log1p scale.
         Note: If a marker is not included, the function will try to automatically identify a gate
-        based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but 
+        based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but
         no values are passed, the marker is simply scaled between 0-1 but does not alter the undelying
-        distribution. 
+        distribution.
     return_gates : boolian, optional (The default is False)
         Internal parameter for checking.
     failed_markers : list, optional (The default is None)
@@ -98,7 +98,7 @@ def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_mar
             gmm_data = data[gmm_markers]
             # Clip off the 99th percentile
             def clipping (x):
-                clip = x.clip(lower =np.percentile(x,1), upper=np.percentile(x,99)).tolist()
+                clip = x.clip(lower =np.percentile(x,0.01), upper=np.percentile(x,99.99)).tolist()
                 return clip
             # Run the function
             gmm_data = gmm_data.apply(clipping)
@@ -225,13 +225,13 @@ def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_mar
                 clip = x.clip(lower =np.percentile(x,1), upper=np.percentile(x,99)).tolist()
                 return clip
             # Run the function
-            m_data = m_data.apply(clipping)
+            #m_data = m_data.apply(clipping)
 
             def manual_gating (data,marker,gate):
-             
+
                 # Work on processing manual gates
                 m = gate[gate.iloc[:,0] == marker].iloc[:,1].values[0] # gate of the marker passed in
-                
+
                 if np.isnan(m):
                     # Find the mean value of the marker so that it is scaled right at the middle
                     # in other it retains the original scale
@@ -239,10 +239,21 @@ def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_mar
                     print('Warning: No manual gate was found for ' + str(marker) + '. Scaling it between 0 and 1')
                 else:
                     print('Scaling ' + str(marker))
-                    
+
 
                 # Find the closest value to the gate
                 absolute_val_array = np.abs(data[marker].values - float(m))
+                
+                # throw error if the array has nan values
+                if np.isnan(absolute_val_array).any():
+                    raise ValueError ("An exception occurred: " + str(marker) + ' has nan values')
+                
+                #absolute_val_array = data[marker].values - float(m)
+                # if the gate is above the largest value (essentially the marker has failed)
+                #if absolute_val_array.min() < 0:
+                #    smallest_difference_index = absolute_val_array.argmax()
+                #else:
+                #    smallest_difference_index = absolute_val_array.argmin()
                 smallest_difference_index = absolute_val_array.argmin()
                 closest_element = data[marker].values[smallest_difference_index]
 

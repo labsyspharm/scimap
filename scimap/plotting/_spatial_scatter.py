@@ -16,10 +16,11 @@ import matplotlib.pyplot as plt
 
 def hotspot (adata, method='matplotlib'):
     # Start
+    bdata = adata.copy()
     
-    x = adata.obs['X_centroid']
-    y = adata.obs['Y_centroid']
-    c= adata.X[:,adata.var.index.get_loc('PD1')]
+    x = bdata.obs['X_centroid']
+    y = bdata.obs['Y_centroid']
+    c= bdata.X[:,bdata.var.index.get_loc('KI67')]
     c = [1 if x >= 0.5 else 0 for x in c]
     
     fig = plt.figure()
@@ -27,3 +28,16 @@ def hotspot (adata, method='matplotlib'):
     ax.scatter_density(x, y, dpi=80, c=c, cmap='magma')
     ax.invert_yaxis()
     plt.xticks([]) ; plt.yticks([]);
+    
+    
+    
+    # identify cells based on marker postivity
+    bdata = sm.hl.classify(bdata, pos=['KI67','MITF'], collapse_failed=True, label='pcna_mitf')
+    bdata.obs['pcna_mitf'].value_counts()
+    
+    c= bdata.obs['pcna_mitf'].values
+    c = [1 if x == 'passed_classify' else 0 for x in c]
+    
+        
+    c= bdata.obs['phenotype_final'].values
+    c = [1 if x == 'T5b' else 0 for x in c]
