@@ -1,3 +1,7 @@
+# 0.14.0 (2021-04-10)
+
+ - Included `sm.tl.foldchange` function. Also calculated p-val by Fisher exact test
+
 # 0.12.0 (2021-02-12)
 
  - Included `sm.pl.voronoi` function. Now possible to draw voronoi diagram of the images using X/Y coordinates

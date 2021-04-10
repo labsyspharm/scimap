@@ -113,3 +113,48 @@ def test_spatial_lda (adata):
     
     # test
     assert a == 0.775
+    
+# Testing foldchange function
+def test_foldchange (adata):
+    from scimap.tools._foldchange import foldchange
+    import numpy as np
+    # prepare
+    x = np.repeat('ROI1', round(adata.shape[0]/2))
+    y = np.repeat('ROI2', adata.shape[0] - round(adata.shape[0]/2))
+    z = np.concatenate((x, y))    
+    adata.obs['ROI'] = z
+    # start test
+    adata = foldchange(adata, from_group = 'ROI1', imageid='ROI')
+    a = round(adata.uns['foldchange_fc']['ASMA+ cells'], 2).values
+    
+    # test
+    assert a == 1.27
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

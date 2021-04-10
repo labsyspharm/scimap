@@ -21,6 +21,7 @@ import scimap as sm
 |:--------------------------------------------------------------:|:-----------------------------------------------------------------:|
 |     [`sm.tl.phenotype_cells`](tl/sm.tl.phenotype_cells.md)     |          Probability distribution based cell phenotyping          |
 |             [`sm.tl.cluster`](tl/sm.tl.cluster.md)             | Cluster or sub-cluster single-cells using a variety of algorithms |
+|             [`sm.tl.foldchange`](tl/sm.tl.foldchange.md)             | Compute foldchange in phenotypes between samples/ROIs|
 |    [`sm.tl.spatial_distance`](tl/sm.tl.spatial_distance.md)    |  Computes nearest distance between all phenotypes for every cell  |
 | [`sm.tl.spatial_interaction`](tl/sm.tl.spatial_interaction.md) |                  cell–cell interactions analysis                  |
 |       [`sm.tl.spatial_count`](tl/sm.tl.spatial_count.md)       |        Distribution of cell-types with local neighborhood         |

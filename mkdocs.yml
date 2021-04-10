@@ -28,6 +28,7 @@ nav:
   - Tools:
     - tl.phenotype_cells: tl/sm.tl.phenotype_cells.md
     - tl.cluster: tl/sm.tl.cluster.md
+    - tl.foldchange: tl/sm.tl.foldchange.md
     - tl.spatial_distance: tl/sm.tl.spatial_distance.md
     - tl.spatial_interaction: tl/sm.tl.spatial_interaction.md
     - tl.spatial_count: tl/sm.tl.spatial_count.md
