@@ -7,3 +7,4 @@ from ._stacked_barplot import stacked_barplot
 from ._spatial_pscore import spatial_pscore
 from ._voronoi import voronoi
 from ._foldchange import foldchange
+from ._pie import pie

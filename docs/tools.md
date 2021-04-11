@@ -40,6 +40,7 @@ import scimap as sm
 |         [`sm.pl.gate_finder`](pl/sm.pl.gate_finder.md)         |            Overlays gating positivity on the image for manual gating             |
 |        [`sm.pl.image_viewer`](../pl/sm.pl.image_viewer)        |               Opens the image with overlays on a `napari` browser                |
 |    [`sm.pl.stacked_barplot`](../pl/sm.pl.stacked_barplot)    | Generate a stacked barplot from any two columns of categorical data |
+|    [`sm.pl.pie`](../pl/sm.pl.pie)    | Generate a pieplot of cell-type proportion or any categorical data |
 |    [`sm.pl.foldchange`](../pl/sm.pl.foldchange)    | vizualize foldchange in phenotypes between samples/ROIs |
 |    [`sm.pl.voronoi`](../pl/sm.pl.voronoi)    | Generate a voronoi diagram and color it with categorical data |
 | [`sm.pl.spatial_interaction`](../pl/sm.pl.spatial_interaction) |                    Heatmap of cell–cell interaction analysis                     |
