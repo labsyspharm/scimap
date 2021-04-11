@@ -154,6 +154,7 @@ def foldchange (adata, label='foldchange',
         g= sns.clustermap(fold, cmap=cmap, mask=mask, center=center, **kwargs)
         plt.suptitle('reference: '+ str(ref))
         plt.setp(g.ax_heatmap.get_xticklabels(), rotation=xticks_rotation)
+        plt.tight_layout()
         
     
     if method == 'parallel_coordinates':
