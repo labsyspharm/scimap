@@ -10,7 +10,7 @@ Run `sm.tl.foldchange` first to compute the foldchange.
 
 # lib
 import seaborn as sns; sns.set(color_codes=True)
-import matplotlib as plt
+import matplotlib.pyplot as plt 
 import numpy as np
 from pandas.plotting import parallel_coordinates
 sns.set_style("white")

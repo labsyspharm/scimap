@@ -5,6 +5,7 @@
 import scimap as sm
 ```
 
+<br>
 ### Preprocessing: `pp`
 
 `Scimap` provides a suite of tools to preprocess the data for subsequent analysis.
@@ -15,6 +16,7 @@ import scimap as sm
 |           [`sm.pp.rescale`](../pp/sm.pp.rescale)           |    Manual/Auto gate based scaling of data    |
 |                                                            |                                              |
 
+<br>
 ### Tools: `tl`
 
 |                                                                |                                                                   |
@@ -30,7 +32,7 @@ import scimap as sm
 |   [`sm.tl.spatial_pscore`](tl/sm.tl.spatial_pscore.md)   |         Scoring proximity between user defined cell types          |
 |   [`sm.tl.spatial_lda`](tl/sm.tl.spatial_lda.md)   |         Latent Dirichlet Allocation (LDA) modelling for spatial motifs          |
 
-
+<br>
 ### Plotting: `pl`
 
 |                                                                |                                                                                  |
@@ -41,10 +43,11 @@ import scimap as sm
 |    [`sm.pl.foldchange`](../pl/sm.pl.foldchange)    | vizualize foldchange in phenotypes between samples/ROIs |
 |    [`sm.pl.voronoi`](../pl/sm.pl.voronoi)    | Generate a voronoi diagram and color it with categorical data |
 | [`sm.pl.spatial_interaction`](../pl/sm.pl.spatial_interaction) |                    Heatmap of cell–cell interaction analysis                     |
-|    [`sm.pl.spatial_distance`](../pl/sm.pl.spatial_distance)    | Heatmap, distribution and numeric plots to visualize distance between phenotypes |
+|    [`sm.pl.spatial_distance`](../pl/sm.pl.spatial_distance)    | Visualize distance between phenotypes |
 |    [`sm.pl.spatial_pscore`](../pl/sm.pl.spatial_pscore)    | Bar plot of the derived Spatial Proximity Scores |
 |                                                                |                                                                                  |
 
+<br>
 ### Helper Functions: `hl`
 
 |                                          |                                                                   |
