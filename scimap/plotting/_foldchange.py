@@ -10,6 +10,7 @@ Run `sm.tl.foldchange` first to compute the foldchange.
 
 # lib
 import seaborn as sns; sns.set(color_codes=True)
+import matplotlib
 import matplotlib.pyplot as plt 
 import numpy as np
 from pandas.plotting import parallel_coordinates
@@ -101,7 +102,7 @@ def foldchange (adata, label='foldchange',
         
     # set color for heatmap
     #cmap_updated = copy.copy(matplotlib.cm.get_cmap(cmap))
-    cmap_updated = plt.cm.get_cmap(cmap)
+    cmap_updated = matplotlib.cm.get_cmap(cmap)
     cmap_updated.set_bad(color=nonsig_color)
     
     
