@@ -87,12 +87,15 @@ def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
     # create copy of the required data
     if group_by is not None:
         data = adata.obs[[phenotype,group_by]]
-        if subset_groupby is not None:
-            data = data[data[group_by].isin(subset_groupby)]
     else:
         data = adata.obs[[phenotype]]
-        if subset_phenotype is not None:
-            data = data[data[phenotype].isin(subset_phenotype)]
+
+    # subset data if needed
+    if subset_groupby is not None:
+        data = data[data[group_by].isin(subset_groupby)]
+    if subset_phenotype is not None:
+        data = data[data[phenotype].isin(subset_phenotype)]
+    
      
     # calculate the proportion
     if group_by is None:
