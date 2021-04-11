@@ -157,6 +157,7 @@ def foldchange (adata, from_group, to_group=None, imageid='imageid', phenotype='
         
     # foldchange
     fold_change = to_data_ratio.div(from_data_ratio.values,  axis=1)
+    fold_change.index.name = '-'.join(from_group)
     
     # reshape the pvalues to the todata df
     p_values = np.reshape(p_vals, to_data_consolidated.shape)
