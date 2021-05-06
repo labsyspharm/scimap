@@ -50,7 +50,7 @@ def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroi
     
     def parse_roi_points(all_points):
         return np.array(
-            re.findall(r'\d+\.\d+', all_points), dtype=float
+            re.findall(r'\d+\.?\d+', all_points), dtype=float
         ).reshape(-1, 2)
 
     def ellipse_points_to_patch(
