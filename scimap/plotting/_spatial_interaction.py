@@ -177,16 +177,33 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
             if subset_phenotype and subset_neighbour_phenotype is not None:
                  interaction_map = interaction_map.sort_values(['phenotype', 'neighbour_phenotype'])
                  p_val_df = p_val_df.sort_values(['phenotype', 'neighbour_phenotype'])
-
-        
+            
+            # convert the data back into multi-index
+            interaction_map = interaction_map.set_index(['phenotype', 'neighbour_phenotype'])
+            p_val_df = p_val_df.set_index(['phenotype', 'neighbour_phenotype'])
+                 
         # Plotting heatmap
         mask = p_val_df.isnull() # identify the NAN's for masking 
         im = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
         mask.columns = im.columns
+                
+        # covert the first two columns into index
         # Plot
         sns.clustermap(im, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
     
     if return_data is True:
-        return interaction_map
+        # perpare data for export
+        map_data = interaction_map.copy()
+        p_val_data = mask.copy()
+        map_data.reset_index(inplace=True)
+        p_val_data.reset_index(inplace=True)
+        # remove the first two colums
+        map_data = map_data.drop(['phenotype','neighbour_phenotype'],axis=1)
+        p_val_data = p_val_data.drop(['phenotype','neighbour_phenotype'],axis=1)
+        p_val_data.columns = map_data.columns
+        # remove the mased values
+        final_Data = map_data.where(~p_val_data, other=np.nan)
+        final_Data.index = interaction_map.index
+        return final_Data
         
 

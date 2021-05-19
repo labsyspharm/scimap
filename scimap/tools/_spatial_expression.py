@@ -17,38 +17,74 @@ from scipy.sparse import lil_matrix
 import scipy
 
 # Function
-def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        method='radius', radius=30, knn=10, imageid='imageid', 
-                        use_raw=True,subset=None,label='spatial_expression'):
+def spatial_expression (adata, 
+                        x_coordinate='X_centroid',
+                        y_coordinate='Y_centroid',
+                        method='radius', radius=30, 
+                        knn=10, imageid='imageid', 
+                        use_raw=True,subset=None,
+                        label='spatial_expression'):
     """
-    
+    !!! example "Function Call"
+        `scimap.tl.spatial_expression` (
+          adata,  
+          x_coordinate='X_centroid',  
+          y_coordinate='Y_centroid',  
+          method='radius', radius=30,  
+          knn=10,  
+          imageid='imageid',  
+          use_raw=True,  
+          subset=None,  
+          label='spatial_expression')
+        
+    Short Description
+    ----------
+    The `spatial_expression` function allows users to compute a proximity based weighted expression scoring. <br>
+    The function generates a neighbourhood for each cell and computes a score for all markers based on its 
+    proximity to cells within it's neighbourhood.  
+    <br>
+    The function supports two methods to define a local neighbourhood <br>
+    **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.  
+    **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
+    <br>
+    The resultant proportion matrix is saved with `adata.uns`. This can be further clustered to 
+    identify similar neighbourhoods.
 
+    
     Parameters
     ----------
-    adata : AnnData object
+    `adata` : anndata object
 
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    method : string, optional
-        Two options are available: a) 'radius', b) 'knn'.
-        a) radius - Identifies the neighbours within a given radius for every cell.
-        b) knn - Identifies the K nearest neigbours for every cell.
-        The default is 'radius'.
-    radius : int, optional
-        The radius used to define a local neighbhourhood. The default is 30.
-    knn : int, optional
-        Number of cells considered for defining the local neighbhourhood. The default is 10.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    use_raw : boolian, optional
+    `x_coordinate` : float, required
+        Column name containing the x-coordinates values. The default is `X_centroid`.
+        
+    `y_coordinate` : float, required
+        Column name containing the y-coordinates values. The default is `Y_centroid`.
+        
+    `method` : string, optional
+        Two options are available: a) `radius`, b) `knn`.
+        a) `radius` - Identifies the neighbours within a given radius for every cell.
+        b) `knn` - Identifies the K nearest neigbours for every cell.
+        The default is `radius`.
+        
+    `radius` : int, optional
+        The radius used to define a local neighbhourhood. The default is `30`.
+        
+    `knn` : int, optional
+        Number of cells considered for defining the local neighbhourhood. The default is `10`.
+        
+    `imageid` : string, optional
+        Column name of the column containing the image id. The default is `imageid`.
+        
+    `subset` : string, optional
+        imageid of a single image to be subsetted for analyis. The default is `None`.
+        
+    `use_raw` : boolian, optional
         Argument to denote whether to use the raw data or scaled data after applying `sm.pp.rescale`.
-        If `True`, the log of raw data is used. The default is True.
-    label : string, optional
-        Key for the returned data, stored in `adata.uns`. The default is 'spatial_count'.
+        If `True`, the log of raw data is used. The default is `True`.
+        
+    `label` : string, optional
+        Key for the returned data, stored in `adata.uns`. The default is `spatial_count`.
 
     Returns
     -------
@@ -58,15 +94,21 @@ def spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroi
         
     Example
     -------
+    ```
     # Running the radius method
-    adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                                method='radius', radius=30, imageid='imageid', 
-                                use_raw=True,subset=None,label='spatial_expression_radius')
+    adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',
+                                      y_coordinate='Y_centroid',
+                                      method='radius', radius=30, 
+                                      imageid='imageid', 
+                                      use_raw=True,subset=None,
+                                      label='spatial_expression_radius')
     # Running the knn method
-    adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        method='knn', knn=10, imageid='imageid', 
-                        use_raw=True,subset=None,label='spatial_expression_knn')
-
+    adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',
+                                      y_coordinate='Y_centroid',
+                                      method='knn', knn=10, imageid='imageid', 
+                                      use_raw=True,subset=None,
+                                      label='spatial_expression_knn')
+    ```
     """
     
     # Error statements

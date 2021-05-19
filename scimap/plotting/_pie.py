@@ -93,10 +93,18 @@ def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
     # subset data if needed
     if subset_groupby is not None:
         data = data[data[group_by].isin(subset_groupby)]
+        data[group_by] = data[group_by].astype('str').astype('category')
+        data[group_by] = data[group_by].cat.reorder_categories(subset_groupby)
+        data = data.sort_values(group_by)
     if subset_phenotype is not None:
         data = data[data[phenotype].isin(subset_phenotype)]
-    
-     
+        data[phenotype] = data[phenotype].astype('str').astype('category')      
+        data[phenotype] = data[phenotype].cat.reorder_categories(subset_phenotype)
+        data = data.sort_values(phenotype)
+    if group_by and phenotype is not None:
+        data = data.sort_values([phenotype, group_by])
+        
+        
     # calculate the proportion
     if group_by is None:
         prop = data[phenotype].value_counts().reset_index(inplace=False)

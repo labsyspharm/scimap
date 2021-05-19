@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.14.5"
+version = "0.14.10"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -49,6 +49,7 @@ numba = "<=0.51.2"
 llvmlite = "<=0.34.0"
 shapely = "^1.7.1"
 gensim = "^3.8.3"
+mkdocs-material = "^7.1.1"
 
 [tool.poetry.dev-dependencies]
 

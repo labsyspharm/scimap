@@ -106,7 +106,7 @@ def voronoi_finite_polygons_2d(vor, radius=None):
 # Actual function
 
 def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-             imageid='imageid',subset=None,
+             imageid='imageid',subset=None, x_lim=None,y_lim=None,
              voronoi_edge_color = 'black',voronoi_line_width = 0.1, voronoi_alpha = 0.5, size_max=np.inf,
              overlay_points=None, overlay_points_categories=None, overlay_drop_categories=None, overlay_points_colors=None,
              overlay_point_size = 5, overlay_point_alpha= 1, overlay_point_shape=".", plot_legend=True, legend_size = 6,**kwargs):
@@ -141,6 +141,10 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
         The default is 0.1.
     voronoi_alpha : float, optional
         The alpha blending value, between 0 (transparent) and 1 (opaque). The default is 0.5.
+    x_lim : list, optional
+        Pass the x-coordinates range [x1,x2]. The default is None.
+    y_lim : list, optional
+        Pass the y-coordinates range [y1,y2]. The default is None.
     overlay_points : string, optional
         It is possible to overlay a scatter plot on top of the voronoi diagram.
         Pass the name of the column which contains categorical variable to be overlayed.
@@ -195,7 +199,30 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
     # Subset the image of interest
     if subset is not None:
         data = data[data[imageid] == subset]
-    
+        
+
+    # subset coordinates if needed
+    if x_lim is not None:
+        x1 = x_lim [0]
+        if len(x_lim) < 2:
+            x2 = max(data[x_coordinate])
+        else:
+            x2 = x_lim [1]
+    if y_lim is not None:
+        y1 = y_lim [0]
+        if len(y_lim) < 2:
+            y2 = min(data[y_coordinate])
+        else:
+            y2 = y_lim [1]
+    # do the actuall subsetting
+    if x_lim is not None:
+        data = data[data[x_coordinate] >= x1]
+        data = data[data[x_coordinate] <= x2]
+    if y_lim is not None:
+        data = data[data[y_coordinate] <= y1]
+        data = data[data[y_coordinate] >= y2]
+
+                    
     # create an extra column with index information
     data['index_info'] = np.arange(data.shape[0])
         
@@ -273,6 +300,9 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
             else:
                 plt.fill(*zip(*poly), alpha=alph, edgecolor=voronoi_edge_color, linewidth = voronoi_line_width, facecolor = colors[i])
                 plt.xticks([]) ; plt.yticks([]);
+                #plt.xlim([1097.5,1414.5])
+                #plt.ylim([167.3,464.1])
+
     
     # Add scatter on top of the voronoi if user requests
     if overlay_points is not None:
@@ -340,6 +370,7 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
         plt.scatter(x = points_scatter[:,0], y = points_scatter[:,1], s= overlay_point_size, alpha= overlay_point_alpha, c= colors_scatter, marker=overlay_point_shape,**kwargs)
         plt.xticks([]) ; plt.yticks([]);
 
+
     if plot_legend is True:
         # Add legend to voronoi
         patchList = []
@@ -361,10 +392,5 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
         
             plt.legend(handles=patchList_scatter, bbox_to_anchor=(-0.05, 1), loc=1, borderaxespad=0., prop={'size': legend_size})
             #plt.tight_layout()
-
-    
-    
-    
-    
     
     
