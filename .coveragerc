@@ -1,0 +1,18 @@
+[run]
+
+branch = true
+
+data_file = .cache/coverage
+
+omit =
+    .venv/*
+    */tests/*
+    */__main__.py
+
+[report]
+
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    except DistributionNotFound
+    TYPE_CHECKING
