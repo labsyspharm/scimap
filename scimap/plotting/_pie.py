@@ -138,22 +138,31 @@ def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
     # plot
     if group_by is None:
         fig, ax = plt.subplots()
-        #ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops)
-        ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops, **kwargs)
+        ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops)
+        #ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops, **kwargs)
         if title is None:
             pass
         else:
             ax.set_title(phenotype)
     else:
         # plot the figure
+        # Ground work for removing unwanted axes
+        total_axes = list(range(ncols * rows))
+        required_axes = list(range(len(np.unique(prop['group_by']))))
+        final_axes = list(set(total_axes) ^ set(required_axes))      
+        # Plot
         fig, axes = plt.subplots(ncols=ncols, nrows=rows)
         for (c, grp), ax in zip(g, axes.flat):
-            #ax.pie(grp.value, labels=label, colors=colors, wedgeprops =wedgeprops)
-            ax.pie(grp.value, labels=label, colors=colors, wedgeprops = wedgeprops, **kwargs)
+            ax.pie(grp.value, labels=label, colors=colors, wedgeprops =wedgeprops)
+            #ax.pie(grp.value, labels=label, colors=colors, wedgeprops = wedgeprops, **kwargs)
             if title is None:
                 pass
             else:
-                ax.set_title(c)               
+                ax.set_title(c)        
+        # removing unwanted axis
+        for i in final_axes:
+            fig.delaxes(axes.flatten()[i])
+            
     plt.show()
     
 
