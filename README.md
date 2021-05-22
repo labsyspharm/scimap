@@ -9,8 +9,6 @@ Scimap is a scalable toolkit for analyzing single-cell multiplex imaging data. T
 [![PyPI Version](https://img.shields.io/pypi/v/scimap.svg)](https://pypi.org/project/scimap)
 [![PyPI License](https://img.shields.io/pypi/l/scimap.svg)](https://pypi.org/project/scimap)
 [![Gitter chat](https://badges.gitter.im/scimap_io/community.png)](https://gitter.im/scimap_io/community)
-<!--[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/ajitjohnson/scimap.svg)](https://scrutinizer-ci.com/g/ajitjohnson/scimap/?branch=master)-->
-<!--[![Coverage Status](https://img.shields.io/coveralls/ajitjohnson/scimap/master.svg)](https://coveralls.io/r/ajitjohnson/scimap) -->
 
 ## Installation
 
