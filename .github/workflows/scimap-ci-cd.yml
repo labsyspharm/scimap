@@ -10,13 +10,13 @@ on:
     branches: [ master ]
 
 jobs:
-  execute:
-    name: Execute
-    runs-on: ubuntu-18.04
+  ci:
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.7, 3.8]
-      fail-fast: true
+        os: [ubuntu-18.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v2.3.3
