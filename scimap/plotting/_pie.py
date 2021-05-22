@@ -16,6 +16,7 @@ import numpy as np
 def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
          subset_phenotype=None, subset_groupby=None,
          label='auto', title='auto', colors=None, autopct='%1.1f%%',
+         legend=False,legend_loc='upper right',
          wedgeprops = {'linewidth': 0}, return_data=False, **kwargs):
     """
     
@@ -45,6 +46,10 @@ def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
     colors : list, optional
         A sequence of colors through which the pie chart will cycle. If None, will use the 
         colors in the currently active cycle. The default is None.
+    legend : bool, optional
+        If True, color legends are plotted seperately. The default is False.
+    legend_loc: string, optional
+        Place a legend on the Axes. The default is 'upper right'.
     autopct : None or str or callable, optional
         If not None, is a string or function used to label the wedges with their numeric value. 
         The label will be placed inside the wedge. If it is a format string, 
@@ -162,6 +167,9 @@ def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
         # removing unwanted axis
         for i in final_axes:
             fig.delaxes(axes.flatten()[i])
+        
+        if legend is True:
+            plt.legend(labels, loc=legend_loc, framealpha=1)
             
     plt.show()
     
