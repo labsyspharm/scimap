@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 19 15:00:39 2020
-@author: Ajit Johnson Nirmal
-Function to find regions of aggregration of similar cells
+# Created on Wed Aug 19 15:00:39 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.tl.spatial_aggregate`: The function allows users to find regions of aggregration of similar cells.
+Use the `purity` parameter to fine-tune percent of similar cells within a given `radius`. 
 """
 
 # Import library
@@ -17,55 +18,62 @@ def spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid
                        imageid='imageid',subset=None,label='spatial_aggregate'):
     """
     
-    Parameters
-    ----------
+Parameters:
     adata : AnnData object
 
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    purity : int, optional
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    purity : int, optional  
         Supply a value between 1 to 100. It is the percent purity of neighbouring cells.
         For e.g. if 60 is chosen, every neighbourhood is tested such that if a 
         particular phenotype makes up greater than 60% of the total 
-        population it is annotated to be an aggregate of that particular phenotype. The default is 60.
-    phenotype : string, required
+        population it is annotated to be an aggregate of that particular phenotype.
+
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells. The default is 'phenotype'.
-    method : string, optional
+        It could also be any categorical assignment given to single cells.
+
+    method : string, optional  
         Two options are available: a) 'radius', b) 'knn'.
         a) radius - Identifies the neighbours within a given radius for every cell.
         b) knn - Identifies the K nearest neigbours for every cell.
-        The default is 'radius'.
-    radius : int, optional
-        The radius used to define a local neighbhourhood. The default is 30.
-    knn : int, optional
-        Number of cells considered for defining the local neighbhourhood. The default is 10.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    label : string, optional
-        Key for the returned data, stored in `adata.obs`. The default is 'spatial_aggregate'.
 
-    Returns
-    -------
+    radius : int, optional  
+        The radius used to define a local neighbhourhood.
+
+    knn : int, optional  
+        Number of cells considered for defining the local neighbhourhood.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
+
+    label : string, optional  
+        Key for the returned data, stored in `adata.obs`.
+
+Returns:
     adata : AnnData object
         Updated AnnData object with the results stored in `adata.obs['spatial_aggregate']`.
         
         
-    Example
-    -------
+Example:
+```python
     # Running the radius method
     adata = sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
                         phenotype='phenotype', method='radius', radius=30, purity = 60,
                         imageid='imageid',subset=None,label='spatial_aggregate_radius')
+    
     # Running the knn method
     adata =  sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
                         phenotype='phenotype', method='knn', knn=10, purity = 60,
                         imageid='imageid',subset=None,label='spatial_aggregate_knn')
-
+```
     """
     
     # Error statements

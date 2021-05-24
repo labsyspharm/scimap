@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 19 15:00:39 2020
-@author: Ajit Johnson Nirmal
-Function to compute the proportion of phenotypes or any single cell annotation 
-within the local neighbourhood of each cell. 
+# Created on Wed Aug 19 15:00:39 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+The `sm.tl.spatial_count` function allows users to compute a neighbourhood matrix 
+using any categorical variable (e.g. cell-types) as input.
+
+The function supports two methods to define a local neighbourhood <br>
+**Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
+**KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
+    
+The resultant neighbourhood matrix is saved with `adata.uns`. 
+
+This can be further clustered to identify similar neighbourhoods. 
+Use the [spatial_cluster] function to further group the neighbourhoods into 
+Reccurent Cellular Neighbourhoods (RCNs)
 """
 
 # Import library
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import BallTree
-
 
 # Function
 def spatial_count (adata,
@@ -24,73 +33,45 @@ def spatial_count (adata,
                    subset=None,
                    label='spatial_count'):
     """
-    
-    !!! example "Function Call"
-        `scimap.tl.spatial_count` (
-          adata,  
-          x_coordinate='X_centroid',  
-          y_coordinate='Y_centroid',  
-          phenotype='phenotype',  
-          method='radius', radius=30,  
-          knn=10, imageid='imageid',  
-          subset=None,  
-          label='spatial_count')
-    
-    Short description
-    ----------
-    The `spatial_count` function allows users to compute the proportion of a categorical 
-    variable (e.g. cell-types) within the local neighbourhood of each cell. 
+Parameters:
+    adata : anndata object
 
-    The function supports two methods to define a local neighbourhood <br>
-    **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
-    **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
-    
-    The resultant proportion matrix is saved with `adata.uns`. 
-    This can be further clustered to identify similar neighbourhoods.
-
-    Parameters
-    ----------
-    `adata` : anndata object
-
-    `x_coordinate` : float, required
-        Column name containing the x-coordinates values. The default is `X_centroid`.
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
         
-    `y_coordinate` : float, required
-        Column name containing the y-coordinates values. The default is `Y_centroid`.
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
         
-    `phenotype` : string, required
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells. The default is `phenotype`.
+        It could also be any categorical assignment given to single cells.
         
-    `method` : string, optional
-        Two options are available: a) `radius`, b) `knn`.
-        a) radius - Identifies the neighbours within a given radius for every cell.
-        b) knn - Identifies the K nearest neigbours for every cell.
-        The default is `radius`.
+    method : string, optional  
+        Two options are available: a) `radius`, b) `knn`.  
+        a) radius - Identifies the neighbours within a given radius for every cell.  
+        b) knn - Identifies the K nearest neigbours for every cell.  
         
-    `radius` : int, optional
-        The radius used to define a local neighbhourhood. The default is `30`.
+    radius : int, optional  
+        The radius used to define a local neighbhourhood.
         
-    `knn` : int, optional
-        Number of cells considered for defining the local neighbhourhood. The default is`10`.
+    knn : int, optional  
+        Number of cells considered for defining the local neighbhourhood.
         
-    `imageid` : string, optional
-        Column name of the column containing the image id. The default is `imageid`.
+    imageid : string, optional  
+        Column name of the column containing the image id.
         
-    `subset` : string, optional
-        imageid of a single image to be subsetted for analyis. The default is `None`.
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
         
-    `label` : string, optional
-        Key for the returned data, stored in `adata.uns`. The default is `spatial_count`.
+    label : string, optional  
+        Key for the returned data, stored in `adata.uns`.
 
-    Returns
-    -------
-    `adata` : anndata object
-        Updated AnnData object with the results stored in `adata.uns['spatial_count']`.
+Returns:
+    adata : anndata object  
+        Updated AnnData object with the results stored in `adata.uns ['spatial_count']`.
     
-    Example
-    -------
-    ```
+Example:
+    ```python
     # Running the radius method
     adata = sm.tl.spatial_count (adata,x_coordinate='X_centroid',
                                  y_coordinate='Y_centroid',

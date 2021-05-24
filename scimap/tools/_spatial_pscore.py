@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Jan 28 22:55:06 2021
-@author: Ajit Johnson Nirmal
-A system to score user defined interation between cell types.
-The function generates two scores and saved at `adata.uns`: 
+# Created on Thu Jan 28 22:55:06 2021
+# @author: Ajit Johnson Nirmal
+
+""" abstract "Short Description"
+`sm.tl.spatial_pscore`: A scoring system to evaluate user defined proximity between cell types.  
+The function generates two scores and saved at `adata.uns`:   
 A) Proximity Density: Total number of interactions identified divided by the total number of 
-cells of the cell-types that were used for interaction analysis.
-B) Proximity Volume: Total number of interactions identified divided by the total number of all cells in the data.
+cells of the cell-types that were used for interaction analysis.  
+B) Proximity Volume: Total number of interactions identified divided by the total number of all cells in the data.  
 The interaction sites are also recorded and saved in `adata.obs`
 """
 
@@ -21,54 +22,59 @@ def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroi
                     phenotype='phenotype',method='radius',radius=20,knn=3,
                     imageid='imageid',subset=None, label='spatial_pscore'):
     """
-    
-
-    Parameters
-    ----------
+Parameters:
     adata : AnnData object
 
-    proximity : list
+    proximity : list  
         Pass a list of cell-types for which the proximity score needs to calculated. e.g. ['CellType-A', 'CellType-B']
-    score_by : string, optional
+
+    score_by : string, optional  
         If the scores need to compared across region's of interest, the column name containing the ROI's
-        should be passed. By default the score is calculated across the entire image. The default is 'imageid'.
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    phenotype : string, required
+        should be passed. By default the score is calculated across the entire image.
+
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells. The default is 'phenotype'.
-    method : string, optional
-        Two options are available: a) 'radius', b) 'knn'.
-        a) radius - Identifies the neighbours within a given radius for every cell.
-        b) knn - Identifies the K nearest neigbours for every cell.
-        The default is 'radius'.
-    radius : int, optional
-        The radius used to define a local neighbhourhood. The default is 20.
-    knn : int, optional
-        Number of cells considered for defining the local neighbhourhood. The default is 3.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    label : string, optional
-        Key for the returned data, stored in `adata.obs` and `adata.uns`. The default is 'spatial_pscore'.
+        It could also be any categorical assignment given to single cells.
 
-    Returns
-    -------
-    adata : AnnData object
-        Updated AnnData object with the results stored in `adata.obs['spatial_pscore']` and `adata.uns['spatial_pscore']`.
+    method : string, optional  
+        Two options are available: a) 'radius', b) 'knn'.  
+        a) radius - Identifies the neighbours within a given radius for every cell.  
+        b) knn - Identifies the K nearest neigbours for every cell.  
 
-    Example
-    -------
+    radius : int, optional  
+        The radius used to define a local neighbhourhood.
+
+    knn : int, optional  
+        Number of cells considered for defining the local neighbhourhood.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
+
+    label : string, optional  
+        Key for the returned data, stored in `adata.obs` and `adata.uns`.
+
+Returns:
+    adata : AnnData object  
+        Updated AnnData object with the results stored in `adata.obs ['spatial_pscore']` and `adata.uns ['spatial_pscore']`.
+
+Example:
+```python
     # Calculate the score for proximity between `Tumor CD30+` cells and `M2 Macrophages`
     adata =  sm.tl.spatial_pscore (adata,proximity= ['Tumor CD30+', 'M2 Macrophages'], score_by = 'ImageId',
                              x_coordinate='X_position',y_coordinate='Y_position',
                              phenotype='phenotype',method='radius',radius=20,knn=3,
                              imageid='ImageId',subset=None, label='spatial_pscore')
     
-
+```
     """
     
     

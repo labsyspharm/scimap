@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Feb 26 19:47:10 2021
-@author: Ajit Johnson Nirma
-Latent Dirichlet Allocation (LDA) for identifying spatial motifs
-EAch spatial motif is a mixture of over a set of cell-type proximity organisation probabilities.
+# Created on Fri Feb 26 19:47:10 2021
+# @author: Ajit Johnson Nirmal
+
+"""abstract "Short Description"
+`sm.tl.spatial_lda`: The function allows users to compute a neighbourhood matrix 
+using any categorical variable (e.g. cell-types) as input and then perform 
+Latent Dirichlet Allocation (LDA) modelling. The latent space weights are then then
+returned which can be clustered to identify Reccurent Cellular Neighbourhoods (RCNs).
+
+Use the [spatial_cluster] function to further group the neighbourhoods into 
+Reccurent Cellular Neighbourhoods (RCNs)
 """
 
-
+#Import
 from sklearn.neighbors import BallTree
 import numpy as np
 import pandas as pd
@@ -24,50 +30,57 @@ def spatial_lda (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
                  imageid='imageid',num_motifs=10, random_state=0, subset=None,
                  label='spatial_lda',**kwargs):
     """
-    Parameters
-    ----------
+Parameters:
     adata : AnnData object
 
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    phenotype : string, required
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells. The default is 'phenotype'.
-    method : string, optional
-        Two options are available: a) 'radius', b) 'knn'.
-        a) radius - Identifies the neighbours within a given radius for every cell.
-        b) knn - Identifies the K nearest neigbours for every cell.
-        The default is 'radius'.
-    radius : int, optional
-        The radius used to define a local neighbhourhood. The default is 30.
-    knn : int, optional
-        Number of cells considered for defining the local neighbhourhood. The default is 10.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    num_motifs : int, optional
-        The number of requested latent motifs to be extracted from the training corpus. The default is 10.
-    random_state : int, optional
-        Either a randomState object or a seed to generate one. Useful for reproducibility. The default is 0.
-    label : string, optional
-        Key for the returned data, stored in `adata.obs`. The default is 'spatial_lda'.
+        It could also be any categorical assignment given to single cells.
 
-    Returns
-    -------
-    adata : AnnData object
-        Updated AnnData object with the results stored in `adata.obs['spatial_lda']`.
+    method : string, optional  
+        Two options are available: a) 'radius', b) 'knn'.  
+        a) radius - Identifies the neighbours within a given radius for every cell.  
+        b) knn - Identifies the K nearest neigbours for every cell.  
+
+    radius : int, optional  
+        The radius used to define a local neighbhourhood.
+
+    knn : int, optional  
+        Number of cells considered for defining the local neighbhourhood.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
+
+    num_motifs : int, optional  
+        The number of requested latent motifs to be extracted from the training corpus.
+
+    random_state : int, optional  
+        Either a randomState object or a seed to generate one. Useful for reproducibility.
+
+    label : string, optional  
+        Key for the returned data, stored in `adata.obs`.
+
+Returns:
+    adata : AnnData object  
+        Updated AnnData object with the results stored in `adata.obs ['spatial_lda']`.
     
-    Example
-    -------
+Example:
+```python
     # Running the radius method
     adata = sm.tl.spatial_lda (adata, num_motifs=10, radius=100)
-
+```
     """
 
-    
+    # Function
     def spatial_lda_internal (adata_subset, x_coordinate,y_coordinate,phenotype, 
                               method, radius, knn, imageid):
         

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 12 17:03:56 2020
-@author: Ajit Johnson Nirmal
-Function to sub-cluster a cluster of interest. Particularly useful to check if 
-there are sub-phenotypes after performing the gating based phenotyping.
+# Created on Mon Oct 12 17:03:56 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.tl.cluster`: This function allows users to cluster the dataset. 
+The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).
 """
 
 # Import library
@@ -19,7 +19,6 @@ except:
     pass
 
 
-
 def cluster (adata, method = 'kmeans', subset_genes=None,
              sub_cluster=False, sub_cluster_column='phenotype', sub_cluster_group = None,
              parc_small_pop= 50, parc_too_big_factor=0.4, 
@@ -29,69 +28,84 @@ def cluster (adata, method = 'kmeans', subset_genes=None,
              label=None):
     """
     
-    Parameters
-    ----------
+Parameters:
+
     adata : AnnData Object
-    method : string, optional
-        Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc. The default is 'kmeans'.
-    subset_genes : list, optional
+
+    method : string, optional  
+        Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc.
+
+    subset_genes : list, optional  
         Pass a list of genes ['CD3D', 'CD20', 'KI67'] that should be included for the purpose of clustering. 
         By default the algorithm uses all genes in the dataset.
-    sub_cluster : Boolian, optional
+
+    sub_cluster : Boolian, optional  
         If the user has already performed clustering or phenotyping previously and would like to
-        sub-cluster within a particular cluster/phenotype, this option can be used. The default is False.
-    sub_cluster_column : string, optional
+        sub-cluster within a particular cluster/phenotype, this option can be used.
+
+    sub_cluster_column : string, optional  
         The column name that contains the cluster/phenotype information to be sub-clustered. 
         This is only required when sub_cluster is set to True.
-        The default is 'phenotype'.
-    sub_cluster_group : list, optional
+
+    sub_cluster_group : list, optional  
         By default the program will sub-cluster all groups within column passed through the argument sub_cluster_column.
         If user wants to sub cluster only a subset of phenotypes/clusters this option can be used.
         Pass them as list e.g. ["tumor", "b cells"].     
-    parc_small_pop : int, optional
-        Smallest cluster population to be considered a community in PARC clustering. The default is 50.
-    parc_too_big_factor : float, optional
+
+    parc_small_pop : int, optional  
+        Smallest cluster population to be considered a community in PARC clustering.
+
+    parc_too_big_factor : float, optional  
         If a cluster exceeds this share of the entire cell population, then the PARC will be run on 
-        the large cluster. at 0.4 it does not come into play. The default is 0.4.
-    k : int, optional
-        Number of clusters to return when using K-Means clustering. The default is 10.
-    n_pcs : int, optional
+        the large cluster. at 0.4 it does not come into play.
+
+    k : int, optional  
+        Number of clusters to return when using K-Means clustering.
+
+    n_pcs : int, optional  
         Number of PC's to be used in leiden clustering. By default it uses all PC's.
-    resolution : float, optional
+
+    resolution : float, optional  
         A parameter value controlling the coarseness of the clustering. 
-        Higher values lead to more clusters. The default is 1.
-    phenograph_clustering_metric : string, optional
+        Higher values lead to more clusters.
+
+    phenograph_clustering_metric : string, optional  
         Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. 
         Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’, 
         ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, 
         ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
-        The default is 'euclidean'.
-    nearest_neighbors : int, optional
+
+    nearest_neighbors : int, optional  
         Number of nearest neighbors to use in first step of graph construction. 
         This parameter is used both in leiden and phenograph clustering.
-        The default is 30.
-    use_raw : bool, optional
+
+    use_raw : bool, optional  
         If True, log transformed raw data will be used for clustering. 
-        If False, normalized/scaled data within `adata.X` will be used. The default is True.
-    random_state : int, optional
-        Change the initialization of the optimization. The default is 0.
-    collapse_labels : bool, optional
+        If False, normalized/scaled data within `adata.X` will be used.
+
+    random_state : int, optional  
+        Change the initialization of the optimization.
+
+    collapse_labels : bool, optional  
         While sub clustering only a few phenotypes/clusters, this argument helps to 
         group all the other phenotypes/clusters into a single category- 
-        Helps in visualisation. The default is False.
-    label : string, optional
-        Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs[method used].
+        Helps in visualisation.
+
+    label : string, optional  
+        Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].
 
 
-    Returns
-    -------
+Returns:
+
     adata : AnnData Object
-        Returns an updated anndata object with a new column. check- adata.obs[method used]
+        Returns an updated `anndata` object with a new column. check- adata.obs [method used]
         
-    Example
-    -------
-    adata = sm.tl.cluster (adata, k= 10, method = 'kmeans', sub_cluster_column='phenotype', use_raw = True)
+Example:
 
+```python
+    adata = sm.tl.cluster (adata, k= 10, method = 'kmeans', 
+    sub_cluster_column='phenotype', use_raw = True)
+```
 
     """
     

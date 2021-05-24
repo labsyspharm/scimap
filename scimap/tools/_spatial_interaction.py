@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 19 20:03:01 2020
-@author: Ajit Johnson Nirmal
-Function that computes how likely a celltype is found close to another 
+# Created on Mon Oct 19 20:03:01 2020
+# @author: Ajit Johnson Nirmal
+
+"""abstract "Short Description"
+`sm.tl.spatial_interaction`: The function allows users to computes how likely celltypes are found next to each another
+compared to random background. 
 """
 
 # Import library
@@ -21,61 +23,67 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
                          method='radius', radius=30, knn=10,
                          permutation=1000,
                          imageid='imageid',subset=None,
-                         pval_method='histocat',
+                         pval_method='zscore',
                          label='spatial_interaction'):
     """
-    
-
-    Parameters
-    ----------
+Parameters:
     adata : AnnData object
 
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    phenotype : string, required
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells. The default is 'phenotype'.
-    method : string, optional
+        It could also be any categorical assignment given to single cells.
+
+    method : string, optional  
         Two options are available: a) 'radius', b) 'knn'.
         a) radius - Identifies the neighbours within a given radius for every cell.
         b) knn - Identifies the K nearest neigbours for every cell.
-        The default is 'radius'.
-    radius : int, optional
-        The radius used to define a local neighbhourhood. The default is 30.
-    knn : int, optional
-        Number of cells considered for defining the local neighbhourhood. The default is 10.
-    permutation : int, optional
-        The number of permutations to be performed for calculating the P-Value. The default is 1000.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    pval_method : string, optional
-        Two options are available: a) 'histocat', b) 'zscore'.
-        a) P-values are calculated by subtracting the permuted mean from the observed mean 
-        divided by the number of permutations as described in the histoCAT manuscript (Denis et.al, Nature Methods 2017)
+
+    radius : int, optional  
+        The radius used to define a local neighbhourhood.
+
+    knn : int, optional  
+        Number of cells considered for defining the local neighbhourhood.
+
+    permutation : int, optional  
+        The number of permutations to be performed for calculating the P-Value.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
+
+    pval_method : string, optional  
+        Two options are available: a) 'histocat', b) 'zscore'.  
+        a) P-values are calculated by subtracting the permuted mean from the observed mean
+        divided by the number of permutations as described in the histoCAT manuscript (Denis et.al, Nature Methods 2017)  
         b) zscores are calculated from the mean and standard deviation and further p-values are
         derived by fitting the observed values to a normal distribution. The default is 'histocat'.
-    label : string, optional
+
+    label : string, optional  
         Key for the returned data, stored in `adata.obs`. The default is 'spatial_interaction'.
 
-    Returns
-    -------
-    adata : AnnData object
+Returns:
+    adata : AnnData object  
         Updated AnnData object with the results stored in `adata.obs['spatial_aggregate']`.
     
-    Example
-    -------
+Example:
+```python
     # Using the radius method to identify local neighbours and histocat to compute P-values
     adata = sm.tl.spatial_interaction(adata, method='radius', radius=30,pval_method='histocat',
                                       imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
     
+    
     # Using the KNN method to identify local neighbours and zscore to compute P-values
     adata = sm.tl.spatial_interaction(adata, method='knn', radius=30,pval_method='zscore',
                                       imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
-
+```
     """
     
     

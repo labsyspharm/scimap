@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 14 09:23:07 2020
-@author: Ajit Johnson Nirmal
-This function will allow users to calculate the average shortest between every cell to phenotypes/clusters
-of interest.  
+# Created on Wed Oct 14 09:23:07 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.tl.spatial_distance`: The function allows users to calculate 
+the average shortest between phenotypes or clusters of interest.
 """
 
 # Import library
@@ -14,40 +14,43 @@ from joblib import Parallel, delayed
 import itertools
 
 # Function
-
 def spatial_distance (adata,x_coordinate='X_centroid',y_coordinate='Y_centroid',
                       phenotype='phenotype',subset=None,imageid='imageid',
                       label='spatial_distance'):
     """
     
+Parameters:
 
-    Parameters
-    ----------
     adata : AnnData object
 
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    phenotype : string, required
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells. The default is 'phenotype'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    label : string, optional
-        Key for the returned data, stored in `adata.obs`. The default is 'spatial_distance'.
+        It could also be any categorical assignment given to single cells.
 
-    Returns
-    -------
-    adata : AnnData object
-        Updated AnnData object with the results stored in `adata.uns['spatial_distance']`.
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    label : string, optional  
+        Key for the returned data, stored in `adata.obs`.
+
+Returns:
+    adata : AnnData object  
+        Updated AnnData object with the results stored in `adata.uns ['spatial_distance']`.
         
-    Example
-    -------
-    adata = sm.tl.spatial_distance (adata,x_coordinate='X_position',y_coordinate='Y_position',imageid='ImageId')
-        
+Example:
+```python
+    adata = sm.tl.spatial_distance (adata,x_coordinate='X_position',
+    y_coordinate='Y_position',imageid='ImageId')
+```     
 
     """
     

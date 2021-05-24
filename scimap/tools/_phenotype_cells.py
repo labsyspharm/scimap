@@ -1,38 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Mar  2 19:56:08 2020
-@author: Ajit Johnson Nirmal
-Cell Phenotyping
-"""
-
-# Library
-import numpy as np
-import pandas as pd
-
-
-def phenotype_cells (adata, 
-                     phenotype, 
-                     gate = 0.5, 
-                     label="phenotype", 
-                     imageid='imageid',
-                     pheno_threshold_percent=None, 
-                     pheno_threshold_abs=None):
-    """
-    
-    !!! example "Function Call"
-        `sm.tl.phenotype_cells` (
-          adata, phenotype,  
-          gate = 0.5,  
-          label="phenotype",  
-          imageid='imageid',  
-          pheno_threshold_percent=None,  
-          pheno_threshold_abs=None)
-    
-    
-    Short description
-    ----------
-    The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` 
+# Created on Mon Mar  2 19:56:08 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.tl.phenotype_cells`: The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` 
     file to assign phenotype annotation to each cell in the dataset. Use the `sm.tl.rescale` function to
     rescale the data first. 
     
@@ -55,50 +26,59 @@ def phenotype_cells (adata,
     `pos`- A given marker is positive. If this argument is passed to multiple markers. (e.g) If regulatory T cell is defined as `CD4+`, `FOXP3+` by passing `pos` to each the markers and the algorithm finds that for a few cells one of the two is not, the algorithm will assign the cell as likely-regulatory T cell and will allow the user to make the decision later.  
     `neg`- A given marker is negative.  
     *It is always advised to use positive markers over negative markers*  
+"""
 
+# Library
+import numpy as np
+import pandas as pd
+
+
+def phenotype_cells (adata, 
+                     phenotype, 
+                     gate = 0.5, 
+                     label="phenotype", 
+                     imageid='imageid',
+                     pheno_threshold_percent=None, 
+                     pheno_threshold_abs=None):
+    """
     
-    Parameters
-    ----------
-    `adata` : anndata object
+Parameters:
+
+    adata : anndata object
     
-    `phenotype` : dataframe, required
+    phenotype : dataframe, required  
         A gating strategy for phenotyping the cells. An example `workflow` provided [here](https://github.com/ajitjohnson/scimap/blob/master/scimap/tests/_data/phenotype_workflow.csv).
         
-    `gate` : int, optional
+    gate : int, optional  
         By default rescale function, scales the data such that values above 0.5 are considered positive cells.
-        The default is `0.5`.
         
-    `label` : string, optional
-        Name the column underwhich the final phenotype calling will be saved. The default is `phenotype`.
+    label : string, optional  
+        Name the column underwhich the final phenotype calling will be saved.
         
-    `imageid` : string, optional
+    imageid : string, optional  
         Name of the column that contains the unique imageid. This is only utilized
         when the user uses `pheno_threshold_percent` or `pheno_threshold_abs` parameters.
-        The default is `imageid`.
         
-    `pheno_threshold_percent` : float, optional
+    pheno_threshold_percent : float, optional  
         Accepts values between (0-100). If any particular phenotype is below the user defined threshold,
         it is recategorised as 'unknown. Generally used to deal with low background false positives.
-        The default is `None`.
         
-    `pheno_threshold_abs` : int, optional
+    pheno_threshold_abs : int, optional  
         Serves the same purpose as that of pheno_threshold_percent. However, an absolute
         number can be passed. For example, if user passes in 10- any phenotype that contains
-        less than 10 cells will be recategorized as unknown. The default is `None`.
+        less than 10 cells will be recategorized as unknown.
 
-    Returns
-    -------
-    `adata`
+Returns:
+    adata
         Updated AnnData object with the phenotype calls for each cell. Check `adata.obs['phenotype']` for results.
 
-    Example
-    -------
-    
-    ```
+Example:    
+    ```python
     # load the workflow csv file
     phenotype = pd.read_csv('path/to/csv/file/')  
     # phenotype the cells based on the workflow provided
-    adata = sm.tl.phenotype_cells (adata, phenotype=phenotype, gate = 0.5, label="phenotype")
+    adata = sm.tl.phenotype_cells (adata, phenotype=phenotype, 
+    gate = 0.5, label="phenotype")
     ```
 
     """

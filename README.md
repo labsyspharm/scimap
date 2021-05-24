@@ -24,7 +24,6 @@ Install `scimap` directly into an activated virtual environment:
 
 ```python
 $ pip install scimap
-$ pip install napari[all] # For visualizing images
 ```
 
 After installation, the package can be imported as:

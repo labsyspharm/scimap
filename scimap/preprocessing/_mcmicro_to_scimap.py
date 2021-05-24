@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Mar  2 09:12:35 2020
-@author: Ajit Johnson Nirmal
-Convert mcmicro output to AnnData object
+# Created on Mon Mar  2 09:12:35 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.pp.mcmicro_to_scimap`: The function allows users to directly import the output from [mcmicro](https://mcmicro.org/)
+into `scimap`.
 """
 
 # Import library
@@ -16,47 +17,58 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
                         min_cells=None):
     """
 
-    Parameters
-    ----------
-    image_path : list
+ Parameters:
+
+    image_path : list  
         List of path to the image or images. Each Image should have a unique path supplied.
-    remove_dna : bool, optional
-        Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it. The default is True.
-    remove_string_from_name : string, optional
+
+    remove_dna : bool, optional  
+        Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it.
+
+    remove_string_from_name : string, optional  
         Used to celan up channel names. If a string is given, that particular string will be removed from all marker names.
-        If multiple images are passed, just use the string that appears in the first image. The default is None.
-    log : bool, optional
-        Log the data (log1p transformation will be applied). The default is True.
-    drop_markers : list, optional
-        List of markers to drop from the analysis. e.g. ["CD3D", "CD20"]. The default is None.
-    random_sample : int, optional
-        Randomly sub-sample the data with the desired number of cells. The default is None.
-    CellId : string, optional
-        Name of the column that contains the cell ID. The default is CellID.
-    unique_CellId: bool, optional
+        If multiple images are passed, just use the string that appears in the first image.
+
+    log : bool, optional  
+        Log the data (log1p transformation will be applied).
+
+    drop_markers : list, optional  
+        List of markers to drop from the analysis. e.g. ["CD3D", "CD20"].
+
+    random_sample : int, optional  
+        Randomly sub-sample the data with the desired number of cells.
+
+    CellId : string, optional  
+        Name of the column that contains the cell ID.
+
+    unique_CellId: bool, optional  
         By default, the function creates a unique name for each cell/row by combining the 
         `CellId` and `imageid`. If you wish not to perform this operation please pass `False`.
         The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId`
         especially when loading multiple datasets togeather.  
-    split : string, optional
+
+    split : string, optional  
         To split the CSV into counts table and meta data, pass in the name of the column
-        that immediately follows the marker quantification. The default is 'X_centroid'.
-    custom_imageid: string, optional
+        that immediately follows the marker quantification.
+
+    custom_imageid: string, optional  
         Pass a user defined Image ID. By default the name of the CSV file is used.
-    min_cells: int, optional
+
+    min_cells: int, optional  
         If these many cells are not in the image, the image will be dropped.
         Particulary useful when importing multiple images.
 
-    Returns
-    -------
+Returns:
+
     AnnData Object
 
-    Example
-    -------
+
+Example:
+```python
     image_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
                   '/Users/aj/whole_sections/PTCL2_552.csv']
     adata = sm.pp.mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
-
+```
     """
     
     # image_path list or string

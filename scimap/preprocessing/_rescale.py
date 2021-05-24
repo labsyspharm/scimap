@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Mar  6 12:13:22 2020
-@author: Ajit Johnson Nirmal
-ReScale the data
+# Created on Fri Mar  6 12:13:22 2020
+# @author: Ajit Johnson Nirmal
+
+""" abstract "Short Description"
+`sm.pp.rescale`: The function allows users to rescale the data. This step is often performed to standardize the 
+the expression of all markers to a common scale. The rescaling can be either performed automatically or manually.
+User defined gates can be passed to rescale the data manually, else the algorithm fits a GMM (gaussian mixed model) to 
+identify the cutoff point. The resultant data is between 0-1 where values below 0.5 are considered non-expression while 
+above 0.5 is considered positive. 
 """
 
 # Import library
@@ -21,40 +26,44 @@ from matplotlib.lines import Line2D
 def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_markers=None, method='all',save_fig=False):
 
     """
+Parameters:
 
-
-    Parameters
-    ----------
     adata : AnnData object
-    gate : dataframe, optional (The default is None)
+
+    gate : dataframe, optional  
         DataFrame with first column as markers and second column as the gate values in log1p scale.
         Note: If a marker is not included, the function will try to automatically identify a gate
         based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but
         no values are passed, the marker is simply scaled between 0-1 but does not alter the undelying
         distribution.
-    return_gates : boolian, optional (The default is False)
+
+    return_gates : boolian, optional  
         Internal parameter for checking.
-    failed_markers : list, optional (The default is None)
+
+    failed_markers : list, optional  
         list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D'].
-    method : string, optional (The default is 'all')
+
+    method : string, optional  
         Two avialble option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid',
         users have the option to scale all data togeather or each image independently. Please be aware of batch effects when
         passing 'all' with multiple images.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    save_fig : boolian, optional (The default is False)
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    save_fig : boolian, optional  
         If True, the gates identified by the GMM method will be saved in a subdirectory
         within your working directory.
 
-    Returns
-    -------
-    Modified AnnData Object
+Returns:
+    AnnData
+        Modified AnnData Object.
 
-    Example
-    -------
+Example:
+```python
     manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
     adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
-
+```
     """
 
 
