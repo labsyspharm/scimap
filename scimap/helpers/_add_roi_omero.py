@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 16 08:34:04 2020
-@author: Ajit Johnson Nirmal
-Omero ROI to Scimap
+# Created on Mon Nov 16 08:34:04 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.hl.voronoi`: The function allows users to add annotations that have been 
+extracted from Omero using the following 
+script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
 """
 
 # Library
@@ -17,31 +19,32 @@ from joblib import Parallel, delayed
 def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI'):
     
     """
-    
-    Parameters
-    ----------
+Parameters:
+
     adata : AnnData object
 
-    roi : DataFrame
+    roi : DataFrame  
         Pandas dataframe of ROI's that have been extracted from Omero using the following script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
         Please note that the function currently does not handle overlapping ROI's and so make sure the ROI's are mutually exclusive.
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    label : string, optional
-        Key for the returned data, stored in `adata.obs`. The default is 'ROI'.
 
-    Returns
-    -------
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    label : string, optional  
+        Key for the returned data, stored in `adata.obs`.
+
+Returns:
     adata
         Modified AnnData object. Check `adata.obs` for an additional column.
     
-    Example
-    -------
+Example:
+```python
     roi = pd.read_csv('ROI/ROI_Z147_1_750.csv')
     adata = sm.hl.add_roi_omero (adata, roi, label='aj_ROI')
-
+```
     """
     
     # create data matrix that has the co-ordinates

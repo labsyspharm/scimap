@@ -1,42 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Created on Sun Mar 22 13:08:26 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.hl.rename`: The function allows users to rename any string within a column to another and saved in a new column.
 """
-Created on Sun Mar 22 13:08:26 2020
-@author: Ajit Johnson Nirmal
-Rename any string within a column to anything
-"""
-
+# Import
 import functools 
 import re
 
-
+# Function
 def rename (adata, rename, from_column='phenotype', to_column='phenotype_renamed'):
     """
-    
-    Parameters
-    ----------
-    adata : AnnData object
-    rename : dict
-        Pass a dictionary with 'values' as elements that need to be altered and 'keys' as the elements that they need to be transformed into.
-    from_column : string, required
-        Column that need to be modified. The default is 'phenotype'.
-    to_column : string, required
-        Modified names will be stored in a new column with this name. The default is 'phenotype_renamed'.
+Parameters:
 
-    Returns
-    -------
-    adata : Modified AnnData Object
-        DESCRIPTION.
+    adata : AnnData object
+
+    rename : dict  
+        Pass a dictionary with 'values' as elements that need to be altered and 
+        'keys' as the elements that they need to be transformed into.
+
+    from_column : string, required  
+        Column that need to be modified.
+
+    to_column : string, required  
+        Modified names will be stored in a new column with this name.
+
+Returns:
+    adata : Modified AnnData Object  
     
-    Example
-    -------
+Example:
+```python
+
     rename= {'tumor': ['cd45 neg tumor', 'cd8 tumor', 'cd4 tumor'],
              'macrophages': ['m1 macrophages', 'm2 macrophages']}
     Here we are renaming cd45 neg tumor, cd8 tumor and cd4 tumor into 'tumor' and 
     m1 macrophages and m2 macrophages into macrophages
     
-    adata = sm.hl.rename_clusters (adata, rename, from_column='phenotype', to_column='phenotype_renamed')
-
+    adata = sm.hl.rename_clusters (adata, rename, from_column='phenotype', 
+                                    to_column='phenotype_renamed')
+```
     """
     
     # Sanity check: if the values are not list convert them into list

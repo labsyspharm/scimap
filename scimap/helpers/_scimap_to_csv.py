@@ -1,43 +1,37 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Nov  9 21:00:57 2020
-@author: Ajit Johnson Nirmal
-Helper function to save andata object as a csv file
+# Created on Mon Nov  9 21:00:57 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.hl.scimap_to_csv`:  Helper function that allows users to save the contents of the `scimap` object as a csv file.
+Please not that anything that it only saves elements that are within `adata.X or adata.raw.X ` and `adata.obs`.
 """
 
-# Lib
+# Import
 import pandas as pd
 import numpy as np
 
-
 # Function
-
 def scimap_to_csv (adata, data_type='raw'):
     """
-    
-
-    Parameters
-    ----------
+Parameters:
     adata : AnnData Object
 
-    data_type : string, optional
-        Three options are available:
-        1) 'raw' - The raw data will be returned.
-        2) 'log' - The raw data converted to log scale using `np.log1p` will be returned.
+    data_type : string, optional  
+        Three options are available:  
+        1) 'raw' - The raw data will be returned.  
+        2) 'log' - The raw data converted to log scale using `np.log1p` will be returned.  
         3) 'scaled' - If you have scaled the data using the `sm.pp.rescale`, that will be
         returned. Please note, if you have not scaled the data, whatever is within
         `adata.X` will be returned.
-        The default is 'raw'.
 
-    Returns
-    -------
-    merged : DataFrame
+Returns:
+    merged : DataFrame  
         A single dataframe containing the expression and metadata will be returned.
         
-    Example
-    -------
+Example:
+```python
     data = sm.hl.scimap_to_csv (adata, data_type='raw')
-
+```
     """
     
     # Expression matrix

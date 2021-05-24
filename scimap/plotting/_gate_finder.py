@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue May 12 23:47:52 2020
-@author: Ajit Johnson Nirmal
-View the gating in Napari viewer
+# Created on Tue May 12 23:47:52 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.pl.gate_finder`: The function opens the OME-TIFF image inside Napari and overlays points to help with the
+identifying manual gates for each marker. Use the `sm.pp.rescale` function to apply the identified gates to your data.
 """
 
 try:
@@ -23,49 +24,60 @@ def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate =
                  x_coordinate='X_centroid',y_coordinate='Y_centroid',
                  point_size=10,imageid='imageid',subset=None,seg_mask=None,**kwargs):
     """
-
-
-    Parameters
-    ----------
-    image_path : string
+Parameters:
+    image_path : string  
         Location to the image file.
-    adata : Ann Data Object
-    marker_of_interest : string
-        Marker for which gate is to be defined e.g. 'CD45'.
-    from_gate : int, optional (The default is 6)
-        Start value gate of interest.
-    to_gate : int, optional (The default is 8)
-        End value of the gate of interest.
-    increment : float, optional (The default is 0.1)
-        Increments between the start and end values.
-    markers : string, optional (The default is None)
-        Additional markers to be included in the plot for evaluation.
-    channel_names : list, optional (The default is `adata.uns['all_markers']`)
-        List of channels in the image in the exact order as image.
-    x_coordinate : string, optional (The default is 'X_centroid')
-        X axis coordinate column name in AnnData object.
-    y_coordinate : string, optional (The default is 'Y_centroid')
-        Y axis coordinate column name in AnnData object.
-    point_size : int, optional (The default is 10)
-        point size in the napari plot.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for analyis. The default is None.
-    seg_mask : string, optional (The default is None)
-        Location to the segmentation mask file.
-    **kwargs
-        Other arguments that can be passed to napari viewer
 
-    Example
-    -------
-    image_path = '/Users/aj/Desktop/ptcl_tma/image.tif'
+    adata : Ann Data Object  
+
+    marker_of_interest : string  
+        Marker for which gate is to be defined e.g. 'CD45'.
+
+    from_gate : int, optional  
+        Start value gate of interest.
+
+    to_gate : int, optional  
+        End value of the gate of interest.
+
+    increment : float, optional  
+        Increments between the start and end values.
+
+    markers : string, optional  
+        Additional markers to be included in the plot for evaluation.
+
+    channel_names : list, optional  
+        List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
+
+    x_coordinate : string, optional  
+        X axis coordinate column name in AnnData object.
+
+    y_coordinate : string, optional  
+        Y axis coordinate column name in AnnData object.
+
+    point_size : int, optional  
+        point size in the napari plot.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis.
+
+    seg_mask : string, optional  
+        Location to the segmentation mask file.
+
+    **kwargs  
+        Other arguments that can be passed to napari viewer.
+
+Example:
+```python
+    image_path = '/Users/aj/Desktop/ptcl_tma/image.ome.tif'
     sm.pl.gate_finder (image_path, adata, marker_of_interest='CD45',
                  from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=['DNA10'], channel_names = 'default',
                  x_coordinate='X_position',y_coordinate='Y_position',point_size=10,
                  subset= '77', seg_mask=None)
-
+```
     """
 
     # If no raw data is available make a copy

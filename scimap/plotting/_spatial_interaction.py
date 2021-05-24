@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Oct 21 11:00:57 2020
-@author: Ajit Johnson Nirmal
-Heatmap plot to visualize spatial interaction output. The intensity represents 
-number of interactions (scaled) observed and blank regions represent non-significant results.
+# Created on Wed Oct 21 11:00:57 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.pl.spatial_interaction`: The function allows users to plot a heatmap to visualize spatial interaction output. 
+The intensity represents abundance of co-occurrence (scaled) observed and blank regions represent non-significant results.
 """
 
 # Library
@@ -22,53 +22,61 @@ def spatial_interaction (adata, spatial_interaction='spatial_interaction',
                          subset_phenotype=None, subset_neighbour_phenotype=None,
                          binary_view=False, return_data=False, **kwargs):
     """
-
-    Parameters
-    ----------
+Parameters:
     adata : AnnData object
 
-    spatial_interaction : string, optional
+    spatial_interaction : string, optional  
         In order to locate the spatial_interaction data within the AnnData object please provide the output 
-        label/columnname of `sm.tl.spatial_interaction` function. The default is 'spatial_interaction'.
-    summarize_plot : bool, optional
+        label/columnname of `sm.tl.spatial_interaction` function.
+
+    summarize_plot : bool, optional  
         In the event of analyzing multiple images, this argument allows users to
-        plot the average cell-cell interaction across all images. The default is True.
-    p_val : float, optional
-        P-value cut-off above which interactions are not considered significant. The default is 0.05.
-    row_cluster : bool, optional
-        Cluster Rows. The default is False.
-    col_cluster : bool, optional
-        Cluster Columns. The default is False.
-    subset_phenotype : list, optional
+        plot the average cell-cell interaction across all images.
+
+    p_val : float, optional  
+        P-value cut-off above which interactions are not considered significant.
+
+    row_cluster : bool, optional  
+        Cluster Rows.
+
+    col_cluster : bool, optional  
+        Cluster Columns.
+
+    subset_phenotype : list, optional  
         If user requires to visualize a subset of phenotypes, it can be passed here. 
-        e.g.  `subset_phenotype = ['celltype_A', 'celltype_B']`. The default is None.
-    subset_neighbour_phenotype : list, optional
+        e.g.  `subset_phenotype = ['celltype_A', 'celltype_B']`.
+
+    subset_neighbour_phenotype : list, optional  
         If user requires to visualize a subset of interacting phenotypes, it can be passed here. 
-        e.g.  `subset_neighbour_phenotype = ['celltype_C', 'celltype_D']`. The default is None.
-    cmap : string, optional
+        e.g.  `subset_neighbour_phenotype = ['celltype_C', 'celltype_D']`.
+
+    cmap : string, optional  
         Color map to use for continous variables. 
-        Can be a name or a Colormap instance (e.g. 'magma', 'viridis'). The default is 'vlag'.
-    nonsig_color : string, optional
+        Can be a name or a Colormap instance (e.g. 'magma', 'viridis').
+
+    nonsig_color : string, optional  
         Color for non-significant interactions (Interactions above the P-value cut-off will use this color).
-        The default is 'grey'.
-    binary_view : bool, optional
+
+    binary_view : bool, optional  
         Removes the intensity of intreaction and plots significant interactions and avoidance in a binary format.
-        The default is 'False'.
-    return_data : bool, optional
-        When True, return the data used for plotting. The default is False.
 
-    **kwargs : key:value pairs
-        Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
+    return_data : bool, optional  
+        When True, return the data used for plotting.
 
-    Example
-    -------
+    **kwargs : key:value pairs  
+        Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
+
+Example:
+```python
     # spatial_interaction heatmap for a single image
-    sm.pl.spatial_interaction(adata, summarize_plot=True, row_cluster=True, linewidths=0.75, linecolor='black')
+    sm.pl.spatial_interaction(adata, summarize_plot=True, 
+    row_cluster=True, linewidths=0.75, linecolor='black')
     
     # spatial_interaction heatmap for multiple images
     sns.set(font_scale=0.6)
-    sm.pl.spatial_interaction(adata, summarize_plot=False, row_cluster=True, col_cluster=True, yticklabels=True)
-
+    sm.pl.spatial_interaction(adata, summarize_plot=False, 
+    row_cluster=True, col_cluster=True, yticklabels=True)
+```
     """
     
     # set color for heatmap

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Apr  1 21:57:54 2020
-@author: Ajit Johnson Nirmal, Yuan Chen
-Using Napari to Visualize images overlayed with phenotypes or any categorical column
+# Created on Wed Apr  1 21:57:54 2020
+# @author: Ajit Johnson Nirmal, Yuan Chen
+""" abstract "Short Description"
+`sm.pl.image_viewer`: The function allows users to open OME-TIFF images inside 
+Napari and overlay any any categorical column such as cluster annotation or phenotypes.
 """
 
 #%gui qt
@@ -23,45 +24,56 @@ def image_viewer (image_path, adata, overlay=None,
                     x_coordinate='X_centroid',y_coordinate='Y_centroid',point_size=10,
                     point_color=None,subset=None,imageid='imageid',seg_mask=None,**kwargs):
     """
-    Parameters
-    ----------
-    image_path : string
+Parameters:
+    image_path : string  
         Location to the image file.
-    seg_mask: string (The default is None)
+
+    seg_mask: string  
         Location to the segmentation mask file.
-    adata : AnnData Object
-    overlay : string, optional (The default is None)
+
+    adata : AnnData Object  
+
+    overlay : string, optional  
         Name of the column with any categorical data such as phenotypes or clusters.
-    overlay_category : list, optional (The default is None)
+
+    overlay_category : list, optional  
         If only specfic categories within the overlay column is needed, pass their names as a list.
         If None, all categories will be used.
-    markers : list, optional (The default is None)
-        Markers to be included. If none, all markers will be displayed.
-    channel_names : list, optional (The default is `adata.uns['all_markers']`)
-        List of channels in the image in the exact order as image.
-    x_coordinate : string, optional (The default is 'X_centroid')
-        X axis coordinate column name in AnnData object.
-    y_coordinate : string, optional (The default is 'Y_centroid')
-        Y axis coordinate column name in AnnData object.
-    point_size : int, optional (The default is 10)
-        point size in the napari plot.
-    imageid : string, optional *(The default is `imageid`)*   
-        Column name of the column containing the image id. 
-    subset : string, optional  *(The default is None)*  
-        imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.
-    **kwargs
-        Other arguments that can be passed to napari viewer
-    Returns
-    -------
-    None.
 
-    Example
-    -------
-    image_path = '/Users/aj/Desktop/ptcl_tma/image.tif'
+    markers : list, optional  
+        Markers to be included. If none, all markers will be displayed.
+
+    channel_names : list, optional  
+        List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
+
+    x_coordinate : string, optional  
+        X axis coordinate column name in AnnData object.
+
+    y_coordinate : string, optional  
+        Y axis coordinate column name in AnnData object.
+
+    point_size : int, optional  
+        point size in the napari plot.
+
+    imageid : string, optional  
+        Column name of the column containing the image id. 
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.
+
+    **kwargs  
+        Other arguments that can be passed to napari viewer
+    
+Returns:
+    Napari Viewer.
+
+Example:
+```python
+    image_path = '/Users/aj/Desktop/ptcl_tma/image.ome.tif'
     sm.pl.image_viewer (image_path, adata, overlay='phenotype',overlay_category=None,
                 markers=['CD31', "CD3D","DNA11",'CD19','CD45','CD163','FOXP3'],
                 point_size=7,point_color='white')
-
+```
     """
     
     # Load the image    

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Apr  7 17:46:29 2021
-@author: Ajit Johnson Nirmal
-Plotting tool to visualize foldchange in celltypes between samples/ROI's. 
+# Created on Wed Apr  7 17:46:29 2021
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.pl.foldchange`: The Function allows users to visualize foldchange in abundance of celltypes between samples/ROI's. 
 Run `sm.tl.foldchange` first to compute the foldchange.
 """
-
 
 # lib
 import seaborn as sns; sns.set(color_codes=True)
@@ -16,9 +15,7 @@ import numpy as np
 from pandas.plotting import parallel_coordinates
 sns.set_style("white")
 
-
 # Function
-
 def foldchange (adata, label='foldchange', 
                 p_val=0.05, nonsig_color='grey',subset_xaxis=None,subset_yaxis=None,
                 cmap = 'vlag', log=True,center=0, 
@@ -28,62 +25,70 @@ def foldchange (adata, label='foldchange',
                 return_data = False,
                 **kwargs):
     """
-    
-
-    Parameters
-    ----------
+Parameters:
     adata : Anndata object
 
-    label : strong, optional
-        label used when running `sm.tl.foldchange`. The default is `foldchange`.
-    p_val : float, optional
+    label : strong, optional  
+        label used when running `sm.tl.foldchange`.
+
+    p_val : float, optional  
         p_val cut-off above which is considered not-significant. The cells containing
         non-significant changes will be highlighted in the heatmap.
-        The default is 0.05.
-    nonsig_color : string, optional
-        Color used to highlight non-significant fold changes in the heatmap. The default is 'grey'.
-    subset_xaxis : list, optional
-        Subset x-axis before plotting. Pass in a list of categories. eg- subset_xaxis = ['CelltypeA', 'CellTypeB']. 
-        The default is None.
-    subset_yaxis : list, optional
-        Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['ROI_1', 'ROI_5']. 
-        The default is None.
-    cmap : string, optional
-        Color map. Can be a name or a Colormap instance (e.g. 'magma', 'viridis'). The default is 'vlag'.
-    log : bool, optional
-        Convert foldchange to log2 scale. The default is True.
-    center : float, optional
-        The center value to be used in heatmap. The default is 0.
-    method : string, optional
-        Two methods are available for plotting the foldchanges
-        a) Heatmap: Use `heatmap`
-        b) parallel coordinates plot : Use `parallel_coordinates`
-        The default is 'heatmap'.
-    invert_axis : bool, optional
-        Flip the axis of the plot. The default is None.
-    parallel_coordinates_color : list, optional
-        Custom colors for each category. The default is None.
-    matplotlib_bbox_to_anchor : tuple, optional
-        Bounding box argument used along with matplotlib_legend_loc to control
-        the legend location when using the matplotlib method. The default is (1.04,1).
-    matplotlib_legend_loc : TYPE, optional
-        Location of legend used along with matplotlib_bbox_to_anchor to control
-        the legend location when using the matplotlib method. The default is 'upper left'.
-    xticks_rotation : int, optional
-        Angle the x-axis ticks. The default is 90.
-    return_data: bool, optional
-        Return the final data used for plotting. The default is `False`
-    **kwargs : Additional keyword arguments passed to:
-        a) sns.clustermap
-        b) pandas.parallel_coordinates
 
-    Returns
-    -------
-    Plot. Data used for the plot if `return_data = True`
+    nonsig_color : string, optional  
+        Color used to highlight non-significant fold changes in the heatmap.
+
+    subset_xaxis : list, optional  
+        Subset x-axis before plotting. Pass in a list of categories. eg- subset_xaxis = ['CelltypeA', 'CellTypeB']. 
+
+    subset_yaxis : list, optional  
+        Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['ROI_1', 'ROI_5']. 
+
+    cmap : string, optional  
+        Color map. Can be a name or a Colormap instance (e.g. 'magma', 'viridis').
+
+    log : bool, optional  
+        Convert foldchange to log2 scale.
+
+    center : float, optional  
+        The center value to be used in heatmap.
+
+    method : string, optional  
+        Two methods are available for plotting the foldchanges  
+        a) Heatmap: Use `heatmap`  
+        b) parallel coordinates plot : Use `parallel_coordinates`  
+
+    invert_axis : bool, optional  
+        Flip the axis of the plot.
+
+    parallel_coordinates_color : list, optional  
+        Custom colors for each category.
+
+    matplotlib_bbox_to_anchor : tuple, optional  
+        Bounding box argument used along with matplotlib_legend_loc to control
+        the legend location when using the matplotlib method.
+
+    matplotlib_legend_loc : TYPE, optional  
+        Location of legend used along with matplotlib_bbox_to_anchor to control
+        the legend location when using the matplotlib method.
+
+    xticks_rotation : int, optional  
+        Angle the x-axis ticks.
+
+    return_data: bool, optional  
+        Return the final data used for plotting.
+
+    **kwargs : Additional keyword arguments passed to:  
+        a) sns.clustermap  
+        b) pandas.parallel_coordinates  
+
+Returns:
+    Plot:  
+        Data used for the plot if `return_data = True`
     
-    Example
-    -------
-    # Heatmap of foldchnage
+Example:
+```python
+    # Heatmap of foldchnage  
     sm.pl.foldchange (adata, label='foldchange', method='heatmap',
                      p_val=0.05, nonsig_color='grey',
                      cmap = 'vlag', log=True, center=0, linecolor='black',linewidths=0.7,
@@ -97,7 +102,7 @@ def foldchange (adata, label='foldchange',
                 matplotlib_legend_loc='upper left',
                 xticks_rotation=90,
                 return_data = False
-
+```
     """
         
     # set color for heatmap

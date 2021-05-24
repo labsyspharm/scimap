@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Created on Sat Jan 30 21:38:21 2021
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.pl.spatial_pscore`: The function allows users to plot proximity volume and density scores.
+Run `sm.tl.spatial_pscore` before running this function. 
 """
-Created on Sat Jan 30 21:38:21 2021
-@author: Ajit Johnson Nirmal
-Function to plot the proximity scores
-"""
-
 
 # Library
 import seaborn as sns; sns.set_theme(style='white', color_codes=True)
@@ -16,35 +16,36 @@ def spatial_pscore (adata, label='spatial_pscore', plot_score='both',
                     order_xaxis = None,
                     color='grey', **kwargs):
     """
-    
+Parameters:
 
-    Parameters
-    ----------
     adata : AnnData object
     
-    label : string, optional
+    label : string, optional  
         The label under which the data is saved. This is the same `label` parameter 
         passed when running the `sm.tl.spatial_pscore` function.
-        The default is 'spatial_pscore'.
-    plot_score : string, optional
+
+    plot_score : string, optional  
         Three option are available. 
-        A) Plot only the *Proximity Density* by passing in `Proximity Density`
-        B) Plot only the *Proximity Volume* by passing in `Proximity Volume`
+        A) Plot only the *Proximity Density* by passing in `Proximity Density`  
+        B) Plot only the *Proximity Volume* by passing in `Proximity Volume`  
         C) Plot both side by side by passing `both`
-        The default is 'both'.
-    order_xaxis : list, optional
+
+    order_xaxis : list, optional  
         If the user wants to re-order the x-axis, pass all the names in the x-axis
         in the desired order as a list. e.g. ['ROI2', 'ROI4', "ROI1"] 
-        The default is None.
-    color : string, optional
-        Color of the bars. The default is 'grey'.
-    **kwargs : string
+
+    color : string, optional  
+        Color of the bars.
+
+    **kwargs : string  
         Other arguments that can be passed into `sns.barplot`
 
-    Example
-    -------
-    sm.pl.spatial_pscore (adata, color='Black', plot_score='Proximity Volume', order_xaxis=['ROI2', 'ROI4', "ROI1"])
-
+Example:
+```python
+    # Plot only `Proximity Volume` scores
+    sm.pl.spatial_pscore (adata, color='Black', 
+    plot_score='Proximity Volume', order_xaxis=['ROI2', 'ROI4', "ROI1"])
+```
     """
     
     

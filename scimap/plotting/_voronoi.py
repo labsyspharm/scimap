@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Feb 11 20:19:50 2021
-@author: Ajit Johnson Nirmal
-Generating a voronoi diagram
+# Created on Thu Feb 11 20:19:50 2021
+# @author: Ajit Johnson Nirmal
+# Adapted from https://stackoverflow.com/questions/20515554/colorize-voronoi-diagram/20678647#20678647
+""" abstract "Short Description"
+`sm.pl.voronoi`: The function allows users to generate a voronoi diagram and color it based on 
+any categorical column. Please note, voronoi diagrams are best fitted for small regions with 
+upto 5000 cells. Any larger, the voronoi plots are uninterpretable and takes a long time to generate.
 """
 
 # import lib
@@ -19,29 +22,6 @@ import matplotlib.patches as mpatches
 
 # Function
 def voronoi_finite_polygons_2d(vor, radius=None):
-    
-    """
-    Adapted from https://stackoverflow.com/questions/20515554/colorize-voronoi-diagram/20678647#20678647
-    Reconstruct infinite voronoi regions in a 2D diagram to finite
-    regions.
-
-    Parameters
-    ----------
-    vor : Voronoi
-        Input diagram
-    radius : float, optional
-        Distance to 'points at infinity'.
-
-    Returns
-    -------
-    regions : list of tuples
-        Indices of vertices in each revised Voronoi regions.
-    vertices : list of tuples
-        Coordinates for revised Voronoi vertices. Same as coordinates
-        of input vertices, with 'points at infinity' appended to the
-        end.
-
-    """
 
     if vor.points.shape[1] != 2:
         raise ValueError("Requires 2D input")
@@ -106,87 +86,99 @@ def voronoi_finite_polygons_2d(vor, radius=None):
 # Actual function
 
 def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-             imageid='imageid',subset=None, x_lim=None,y_lim=None,
-             voronoi_edge_color = 'black',voronoi_line_width = 0.1, voronoi_alpha = 0.5, size_max=np.inf,
+             imageid='imageid',subset=None, x_lim=None, y_lim=None,
+             voronoi_edge_color='black', voronoi_line_width=0.1, voronoi_alpha=0.5, size_max=np.inf,
              overlay_points=None, overlay_points_categories=None, overlay_drop_categories=None, overlay_points_colors=None,
-             overlay_point_size = 5, overlay_point_alpha= 1, overlay_point_shape=".", plot_legend=True, legend_size = 6,**kwargs):
+             overlay_point_size = 5, overlay_point_alpha= 1, overlay_point_shape=".", plot_legend=True, legend_size = 6, **kwargs):
     """
-    
-
-    Parameters
-    ----------
+Parameters:
     adata : Anndata object
 
-    color_by : string, optional
+    color_by : string, optional  
         Color the voronoi diagram based on categorical variable (e.g. cell types or neighbourhoods).
         Pass the name of the column which contains the categorical variable.
-        The default is None.
-    colors : string or Dict, optional
+
+    colors : string or Dict, optional  
         Custom coloring the voronoi diagram. The parameter accepts `sns color palettes` or a python dictionary
-        mapping the categorical variable with the required color. The default is None.
-    x_coordinate : float, required
-        Column name containing the x-coordinates values. The default is 'X_centroid'.
-    y_coordinate : float, required
-        Column name containing the y-coordinates values. The default is 'Y_centroid'.
-    imageid : string, optional
-        Column name of the column containing the image id. The default is 'imageid'.
-    subset : string, optional
-        imageid of a single image to be subsetted for plotting. The default is None.
-    voronoi_edge_color : string, optional
+        mapping the categorical variable with the required color.
+
+    x_coordinate : float, required  
+        Column name containing the x-coordinates values.
+
+    y_coordinate : float, required  
+        Column name containing the y-coordinates values.
+
+    imageid : string, optional  
+        Column name of the column containing the image id.
+
+    subset : string, optional  
+        imageid of a single image to be subsetted for plotting.
+
+    voronoi_edge_color : string, optional  
         A Matplotlib color for marking the edges of the voronoi. 
         If `facecolor` is passed, the edge color will always be the same as the face color.
-        The default is 'black'.
-    voronoi_line_width : float, optional
+
+    voronoi_line_width : float, optional  
         The linewidth of the marker edges. Note: The default edgecolors is 'face'. You may want to change this as well. 
-        The default is 0.1.
-    voronoi_alpha : float, optional
-        The alpha blending value, between 0 (transparent) and 1 (opaque). The default is 0.5.
-    x_lim : list, optional
-        Pass the x-coordinates range [x1,x2]. The default is None.
-    y_lim : list, optional
-        Pass the y-coordinates range [y1,y2]. The default is None.
-    overlay_points : string, optional
+
+    voronoi_alpha : float, optional  
+        The alpha blending value, between 0 (transparent) and 1 (opaque).
+
+    x_lim : list, optional  
+        Pass the x-coordinates range [x1,x2].
+
+    y_lim : list, optional  
+        Pass the y-coordinates range [y1,y2].
+
+    overlay_points : string, optional  
         It is possible to overlay a scatter plot on top of the voronoi diagram.
         Pass the name of the column which contains categorical variable to be overlayed.
-        The default is None.
-    overlay_points_categories : list, optional
+
+    overlay_points_categories : list, optional  
         If the passed column in `overlay_points` contains multiple categories, however the user is only
         interested in a subset of categories, those specific names can be passed as a list. By default all 
-        categories will be overlayed on the voronoi diagram. The default is None.
-    overlay_drop_categories : list, optional
+        categories will be overlayed on the voronoi diagram.
+
+    overlay_drop_categories : list, optional  
         Similar to `overlay_points_categories`. Here for ease of use, especially if large number of categories are present.
-        The user can drop a set of categories. The default is None.
-    overlay_points_colors : string or dict, optional
-        Similar to `colors`. 
-        User can pass in a 
+        The user can drop a set of categories.
+
+    overlay_points_colors : string or dict, optional  
+        Similar to `colors`.  
+        User can pass in a  
         a) solid color (like `black`)  
-        b) sns palettes name (like `Set1`)
+        b) sns palettes name (like `Set1`)  
         c) python dictionary mapping the categories with custom colors
-    The default is None.
-    overlay_point_size : float, optional
-        Overlay scatter plot point size. The default is 5.
-    overlay_point_alpha : float, optional
-        The alpha blending value for the overlay, between 0 (transparent) and 1 (opaque). The default is 1.
-    overlay_point_shape : string, optional
+
+    overlay_point_size : float, optional  
+        Overlay scatter plot point size.
+
+    overlay_point_alpha : float, optional  
+        The alpha blending value for the overlay, between 0 (transparent) and 1 (opaque).
+
+    overlay_point_shape : string, optional  
         The marker style. marker can be either an instance of the class or the text shorthand for a particular marker.
-        The default is ".".
-    plot_legend : bool, optional
-        Define if the figure legend should be plotted.
+
+    plot_legend : bool, optional  
+        Define if the figure legend should be plotted.  
         Please note the figure legend may be out of view and you may need to resize the image to see it, especially 
         the legend for the scatter plot which will be on the left side of the plot.
-        The default is True.
-    legend_size : float, optional
-        Resize the legend if needed. The default is 6.
 
-    Example
-    -------
+    legend_size : float, optional  
+        Resize the legend if needed.
+
+Example:
     
-    ```
-    sm.pl.voronoi(adata, color_by='phenotype', colors=None, x_coordinate='X_position', y_coordinate='Y_position',
+    ```python
+    sm.pl.voronoi(adata, color_by='phenotype', colors=None, 
+             x_coordinate='X_position', y_coordinate='Y_position',
              imageid='ImageId',subset=None,
-             voronoi_edge_color = 'black',voronoi_line_width = 0.2, voronoi_alpha = 0.5, size_max=np.inf,
-             overlay_points='phenotype', overlay_points_categories=None, overlay_drop_categories=None,
-             overlay_point_size = 5, overlay_point_alpha= 1, overlay_point_shape=".", plot_legend=False, legend_size=6)
+             voronoi_edge_color = 'black',voronoi_line_width = 0.2, 
+             voronoi_alpha = 0.5, size_max=np.inf,
+             overlay_points='phenotype', overlay_points_categories=None, 
+             overlay_drop_categories=None,
+             overlay_point_size = 5, overlay_point_alpha= 1, 
+             overlay_point_shape=".", plot_legend=False, legend_size=6)
     
     ```
 

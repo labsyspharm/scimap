@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue May 12 19:06:40 2020
-@author: Ajit Johnson Nirmal
+# Created on Tue May 12 19:06:40 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
 Manual Gate finder
 """
 
@@ -14,25 +14,21 @@ import seaborn as sns; sns.set(color_codes=True)
 import matplotlib.pyplot as plt
 
 
-
 def gmm_gate (adata, marker_of_interest):
     """
-    
+Parameters:
 
-    Parameters
-    ----------
     adata : Ann Data Object
     marker_of_interest : string
         Marker of interest.
 
-    Returns
-    -------
+Returns:
     Distribution plot of the marker of interest along with GMM overlaid.
     
-    Example
-    -------
+Example:
+```python
     sm.pl.gmm_dist_plot (adata, marker_of_interest='CD45')
-
+```
     """
     
     # If no raw data is available make a copy

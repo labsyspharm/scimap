@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Nov 27 09:34:22 2020
-@author: Ajit Johnson Nirmal
-Stacked bar plot using matplotlib and Plotly. Users can use this function to plot the
-absolute number of cells or cells as a proportion (100%) across different ROI's or images.
+# Created on Fri Nov 27 09:34:22 2020
+# @author: Ajit Johnson Nirmal
+""" abstract "Short Description"
+`sm.pl.stacked_barplot`: The function allows users to generate a stacked bar plot of a categorical column. 
+The function can generate the plots using matplotlib and Plotly libraries. Plotly is browser based and so
+it can be used for interactive data exploration.
 """
 
 # Required library
 import pandas as pd
 import matplotlib.pylab as plt
 import seaborn as sns; sns.set(color_codes=True)
-import plotly.express as px
+import plotly.express as pxs
 import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default = 'browser'
@@ -19,93 +20,103 @@ sns.set(style="white")
 
 
 # Function
-def stacked_barplot (adata,x_axis='imageid',y_axis='phenotype',subset_xaxis=None,subset_yaxis=None,
-                     order_xaxis=None,order_yaxis=None,
-                     method='percent',plot_tool='matplotlib',matplotlib_cmap=None,
+def stacked_barplot (adata, x_axis='imageid', y_axis='phenotype', subset_xaxis=None, subset_yaxis=None, 
+                     order_xaxis=None, order_yaxis=None,
+                     method='percent', plot_tool='matplotlib', matplotlib_cmap=None, 
                      matplotlib_bbox_to_anchor=(1,1.02), matplotlib_legend_loc=2, 
                      return_data=False, **kwargs):
     """
-    
-
-    Parameters
-    ----------
+Parameters:
     adata : AnnData Object
 
-    x_axis : string, required
-        Column name of the data that need to be plotted in the x-axis. The default is 'imageid'.
-    y_axis : string, required
-        Column name of the data that need to be plotted in the y-axis. The default is 'phenotype'.
-    subset_xaxis : list, optional
+    x_axis : string, required  
+        Column name of the data that need to be plotted in the x-axis.
+
+    y_axis : string, required  
+        Column name of the data that need to be plotted in the y-axis.
+
+    subset_xaxis : list, optional  
         Subset x-axis before plotting. Pass in a list of categories. eg- subset_xaxis = ['ROI_1', 'ROI_5']
-        The default is None.
-    subset_yaxis : list, optional
+
+    subset_yaxis : list, optional  
         Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['Celltype_A', 'Celltype_B']
-        The default is None.
-    order_xaxis : list, optional
+
+    order_xaxis : list, optional  
         Order the x-axis of the plot as needed. Pass in a list of categories. eg- order_xaxis = ['ROI_5', 'ROI_1']
         The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
         will generate NaN's.
-    order_yaxis : list, optional
+
+    order_yaxis : list, optional  
         Order the y-axis of the plot as needed. Pass in a list of categories. eg- order_yaxis = ['Celltype_B', 'Celltype_A']
         The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
         will generate NaN's.
-    method : string, optional
-        Available options: 'percent' and 'absolute'. 
-        1) Use Percent to plot the percent proportion.
-        2) Use 'absolute' to plot the plot the absolute number.
-        The default is 'percent'.
-    plot_tool : string, optional
-        Available options: 'matplotlib' and 'plotly'.
-        1) matplotlib uses the standard python plotting method
-        2) plotly opens the plot in a local browser. Advantage is to be able 
-        to hover over the plot and retreive data for plots with large number of categories.
-        The default is 'matplotlib'.
-    matplotlib_cmap : string, optional
-        Colormap to select colors from. If string, load colormap with that name from matplotlib. 
-        The default is None.
-    matplotlib_bbox_to_anchor : tuple, optional
-        Bounding box argument used along with matplotlib_legend_loc to control
-        the legend location when using the matplotlib method. The default is (1,1.02).
-    matplotlib_legend_loc : int, optional
-        Location of legend used along with matplotlib_bbox_to_anchor to control
-        the legend location when using the matplotlib method. The default is 2.
-    return_data : bool, optional
-        When True, return the data used for plotting. The default is False.
-    **kwargs : Additional keyword arguments passed to:
-        1) Pandas DataFrame.plot() when using the `matplotlib` method (https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot))
-        2) Plotly.bar() when using the `plotly` method (https://plotly.com/python-api-reference/generated/plotly.express.bar.html))
 
-    Returns
-    -------
+    method : string, optional  
+        Available options: 'percent' and 'absolute'. 
+        1) Use Percent to plot the percent proportion.  
+        2) Use 'absolute' to plot the plot the absolute number.  
+
+    plot_tool : string, optional  
+        Available options: 'matplotlib' and 'plotly'.  
+        1) matplotlib uses the standard python plotting method  
+        2) plotly opens the plot in a local browser. Advantage is to be able   
+        to hover over the plot and retreive data for plots with large number of categories.
+
+    matplotlib_cmap : string, optional  
+        Colormap to select colors from. If string, load colormap with that name from matplotlib. 
+
+    matplotlib_bbox_to_anchor : tuple, optional  
+        Bounding box argument used along with matplotlib_legend_loc to control
+        the legend location when using the matplotlib method.
+
+    matplotlib_legend_loc : int, optional  
+        Location of legend used along with matplotlib_bbox_to_anchor to control
+        the legend location when using the matplotlib method.
+
+    return_data : bool, optional  
+        When True, return the data used for plotting.
+
+    **kwargs : Additional keyword arguments passed to:  
+        1) Pandas DataFrame.plot() when using the `matplotlib` method (https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot))  
+        2) Plotly.bar() when using the `plotly` method (https://plotly.com/python-api-reference/generated/plotly.express.bar.html))  
+
+Returns:  
     Stacked bar plot. If return_data is set to `True` also returns a dataframe of the data used for the plot.
 
     
-    Example
-    -------
-    # Plot the absolute number of phenotypes using the matplotlib tool across differnt ROI's
+Example:
+```python
+    # Plot the absolute number of phenotypes using the matplotlib 
+    # tool across differnt ROI's
     # ROI column is `epidermis_roi` and phenotypes are stored under `phenotype`
 
     sm.pl.stacked_barplot (adata,x_axis='epidermis_roi',y_axis='phenotype',
-                     method='absolute',plot_tool='matplotlib',figsize=(10, 10))
+                     method='absolute',plot_tool='matplotlib',
+                     figsize=(10, 10))
     
-    # Plot the number of cells normalized to 100% using the plotly tool across differnt ROI's
+    # Plot the number of cells normalized to 100% using the plotly 
+    # tool across differnt ROI's
     
     sm.pl.stacked_barplot (adata,x_axis='epidermis_roi',y_axis='phenotype',
-                     method='percent',plot_tool='plotly',color_discrete_sequence=px.colors.qualitative.Alphabet)
+                     method='percent',plot_tool='plotly',
+                     color_discrete_sequence=px.colors.qualitative.Alphabet)
     
-    # Same as above but visualize only a subset of ROI's and a subset of phenotypes
+    # Same as above but visualize only a subset of ROI's and a subset of 
+    # phenotypes
     subset_xaxis = ['epidermis_1', 'epidermis_5', 'epidermis_6']
     subset_yaxis = ['APCs', 'Keratinocytes', 'Macrophages']
     
     sm.pl.stacked_barplot (adata,x_axis='epidermis_roi',y_axis='phenotype',
-                     subset_xaxis=subset_xaxis,subset_yaxis=subset_yaxis,
-                     method='percent',plot_tool='plotly')
+                            subset_xaxis=subset_xaxis,subset_yaxis=subset_yaxis,
+                            method='percent',plot_tool='plotly')
     
-    # Visualize absolute number of phenotypes and return the data into a dataframe `absolute_number`
-    absolute_number = sm.pl.stacked_barplot (adata,x_axis='epidermis_roi',y_axis='phenotype',
-                     method='absolute',plot_tool='matplotlib', return_data=True)
+    # Visualize absolute number of phenotypes and return the data into a 
+    # dataframe `absolute_number`
+    absolute_number = sm.pl.stacked_barplot (adata,x_axis='epidermis_roi',
+                      y_axis='phenotype', method='absolute',
+                      plot_tool='matplotlib', return_data=True)
 
-
+```
     """
     
     
