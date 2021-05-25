@@ -35,8 +35,6 @@ plugins:
         rendering:
           show_signature_annotations: no
           heading_level: 4
-    watch:
-      - scimap/tools/_cluster.py
 - search:
     prebuild_index: true
 - autorefs
