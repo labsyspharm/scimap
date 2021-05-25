@@ -1,6 +1,5 @@
 # Tools Shortcut
 
-
 ```python
 import scimap as sm
 ```
@@ -11,7 +10,7 @@ import scimap as sm
 
 | Function                                                   | Short Description                            |
 |------------------------------------------------------------|----------------------------------------------|
-| [`sm.pp.rescale`](../pp/sm.pp.rescale)                     | Manual/Auto gate based scaling of data       |
+| [`sm.pp.rescale`](All%20Functions/A.%20Pre%20Processing/sm.pp.rescale.md)                     | Manual/Auto gate based scaling of data       |
 | [`sm.pp.mcmicro_to_scimap`](pp/sm.pp.mcmicro_to_scimap.md) | `mcmicro` output to scimap compatible object |
 
 

@@ -42,7 +42,7 @@ adata = sm.pp.mcmicro_to_scimap (filepath)
 
 The typical workflow then consists of subsequent calls of `scimap` tools:
 
-- Pre-Processing Tools under `sm.pp.<tool>`
-- Analysis Tools under `sm.tl.<tool>`
-- Plotting Tools under `sm.pl.<tool>`
-- Helper Tools under `sm.hl.<tool>`
+> Pre-Processing Tools under `sm.pp.<tool>`  
+> Analysis Tools under `sm.tl.<tool>`  
+> Plotting Tools under `sm.pl.<tool>`  
+> Helper Tools under `sm.hl.<tool>`  
