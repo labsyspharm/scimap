@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Mon Oct 12 17:03:56 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.tl.cluster`: This function allows users to cluster the dataset. 
-The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).
+"""
+!!! abstract "Short Description"
+    `sm.tl.cluster`: This function allows users to cluster the dataset. 
+    The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).
+
+## Function
 """
 
 # Import library

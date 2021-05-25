@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 # Created on Fri Nov 27 09:34:22 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.stacked_barplot`: The function allows users to generate a stacked bar plot of a categorical column. 
-The function can generate the plots using matplotlib and Plotly libraries. Plotly is browser based and so
-it can be used for interactive data exploration.
+
+"""
+!!! abstract "Short Description"
+    `sm.pl.stacked_barplot`: The function allows users to generate a stacked bar plot of a categorical column. 
+    The function can generate the plots using matplotlib and Plotly libraries. Plotly is browser based and so 
+    it can be used for interactive data exploration.
+
+## Function
 """
 
 # Required library

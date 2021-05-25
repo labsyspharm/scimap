@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # # Created on Mon Dec 14 17:45:14 2020
 # @author: Ajit Johnson Nirmal 
-""" abstract "Short Description"
-`sm.tl.spatial_cluster`: This function allows users to cluster the spatial neighbourhood matrix 
-genereated by either `sm.tl.spatial_expression` or `sm.tl.spatial_count` methods.
+"""
+!!! abstract "Short Description"
+    `sm.tl.spatial_cluster`: This function allows users to cluster the spatial neighbourhood matrix 
+    genereated by either `sm.tl.spatial_expression` or `sm.tl.spatial_count` methods.
+
+## Function
 """
 
 # Import library

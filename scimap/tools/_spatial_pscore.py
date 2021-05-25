@@ -3,13 +3,16 @@
 # Created on Thu Jan 28 22:55:06 2021
 # @author: Ajit Johnson Nirmal
 
-""" abstract "Short Description"
-`sm.tl.spatial_pscore`: A scoring system to evaluate user defined proximity between cell types.  
-The function generates two scores and saved at `adata.uns`:   
-A) Proximity Density: Total number of interactions identified divided by the total number of 
-cells of the cell-types that were used for interaction analysis.  
-B) Proximity Volume: Total number of interactions identified divided by the total number of all cells in the data.  
-The interaction sites are also recorded and saved in `adata.obs`
+"""
+!!! abstract "Short Description"
+    `sm.tl.spatial_pscore`: A scoring system to evaluate user defined proximity between cell types.  
+    The function generates two scores and saved at `adata.uns`:   
+    A) Proximity Density: Total number of interactions identified divided by the total number of 
+    cells of the cell-types that were used for interaction analysis.  
+    B) Proximity Volume: Total number of interactions identified divided by the total number of all cells in the data.  
+    The interaction sites are also recorded and saved in `adata.obs`
+
+## Functions
 """
 
 # Import library

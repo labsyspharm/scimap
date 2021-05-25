@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # Created on Mon Nov  9 21:00:57 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.hl.scimap_to_csv`:  Helper function that allows users to save the contents of the `scimap` object as a csv file.
-Please not that anything that it only saves elements that are within `adata.X or adata.raw.X ` and `adata.obs`.
+"""
+!!! abstract "Short Description"
+    `sm.hl.scimap_to_csv`:  Helper function that allows users to save the contents of the `scimap` object as a csv file.
+    Please not that anything that it only saves elements that are within `adata.X or adata.raw.X ` and `adata.obs`.
+
+## Function
 """
 
 # Import

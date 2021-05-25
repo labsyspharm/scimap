@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # Created on Mon Mar  2 09:12:35 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pp.mcmicro_to_scimap`: The function allows users to directly import the output from [mcmicro](https://mcmicro.org/)
-into `scimap`.
+"""
+!!! abstract "Short Description"
+    `sm.pp.mcmicro_to_scimap`: The function allows users to directly import the output from [mcmicro](https://mcmicro.org/) 
+    into `scimap`.
+
+## Function
 """
 
 # Import library

@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Thu Feb 18 13:24:11 2021
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.hotspot`:  The function allows users to generate a scatter plot with X and Y coordinates
+
+"""
+!!! abstract "Short Description"
+    `sm.pl.hotspot`:  The function allows users to generate a scatter plot with X and Y coordinates.
+
+## Function
 """
 
 # load Library

@@ -3,14 +3,17 @@
 # Created on Fri Feb 26 19:47:10 2021
 # @author: Ajit Johnson Nirmal
 
-"""abstract "Short Description"
-`sm.tl.spatial_lda`: The function allows users to compute a neighbourhood matrix 
-using any categorical variable (e.g. cell-types) as input and then perform 
-Latent Dirichlet Allocation (LDA) modelling. The latent space weights are then then
-returned which can be clustered to identify Reccurent Cellular Neighbourhoods (RCNs).
+"""
+!!! abstract "Short Description"
+    `sm.tl.spatial_lda`: The function allows users to compute a neighbourhood matrix 
+    using any categorical variable (e.g. cell-types) as input and then perform 
+    Latent Dirichlet Allocation (LDA) modelling. The latent space weights are then then 
+    returned which can be clustered to identify Reccurent Cellular Neighbourhoods (RCNs).
 
-Use the [spatial_cluster] function to further group the neighbourhoods into 
-Reccurent Cellular Neighbourhoods (RCNs)
+    Use the [spatial_cluster] function to further group the neighbourhoods into 
+    Reccurent Cellular Neighbourhoods (RCNs)
+
+## Function
 """
 
 #Import

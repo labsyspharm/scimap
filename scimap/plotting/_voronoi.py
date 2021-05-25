@@ -3,10 +3,15 @@
 # Created on Thu Feb 11 20:19:50 2021
 # @author: Ajit Johnson Nirmal
 # Adapted from https://stackoverflow.com/questions/20515554/colorize-voronoi-diagram/20678647#20678647
-""" abstract "Short Description"
-`sm.pl.voronoi`: The function allows users to generate a voronoi diagram and color it based on 
-any categorical column. Please note, voronoi diagrams are best fitted for small regions with 
-upto 5000 cells. Any larger, the voronoi plots are uninterpretable and takes a long time to generate.
+
+"""
+!!!
+!!! abstract "Short Description"
+    `sm.pl.voronoi`: The function allows users to generate a voronoi diagram and color it based on 
+    any categorical column. Please note, voronoi diagrams are best fitted for small regions with 
+    upto 5000 cells. Any larger, the voronoi plots are uninterpretable and takes a long time to generate.
+
+## Function
 """
 
 # import lib

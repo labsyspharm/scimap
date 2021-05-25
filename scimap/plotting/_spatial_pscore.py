@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 # Created on Sat Jan 30 21:38:21 2021
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.spatial_pscore`: The function allows users to plot proximity volume and density scores.
-Run `sm.tl.spatial_pscore` before running this function. 
+
+"""
+!!! abstract "Short Description"
+    `sm.pl.spatial_pscore`: The function allows users to plot proximity volume and density scores. 
+    Run `sm.tl.spatial_pscore` before running this function. 
+
+## Function
 """
 
 # Library

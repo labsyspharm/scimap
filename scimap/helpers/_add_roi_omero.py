@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 # Created on Mon Nov 16 08:34:04 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.hl.voronoi`: The function allows users to add annotations that have been 
-extracted from Omero using the following 
-script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
+"""
+!!! abstract "Short Description"
+    `sm.hl.voronoi`: The function allows users to add annotations that have been 
+    extracted from Omero using the following 
+    script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
+
+## Function
 """
 
 # Library

@@ -2,12 +2,15 @@
 # Created on Fri Mar  6 12:13:22 2020
 # @author: Ajit Johnson Nirmal
 
-""" abstract "Short Description"
-`sm.pp.rescale`: The function allows users to rescale the data. This step is often performed to standardize the 
-the expression of all markers to a common scale. The rescaling can be either performed automatically or manually.
-User defined gates can be passed to rescale the data manually, else the algorithm fits a GMM (gaussian mixed model) to 
-identify the cutoff point. The resultant data is between 0-1 where values below 0.5 are considered non-expression while 
-above 0.5 is considered positive. 
+"""
+!!! abstract "Short Description"
+    `sm.pp.rescale`: The function allows users to rescale the data. This step is often performed to standardize the 
+    the expression of all markers to a common scale. The rescaling can be either performed automatically or manually. 
+    User defined gates can be passed to rescale the data manually, else the algorithm fits a GMM (gaussian mixed model) to 
+    identify the cutoff point. The resultant data is between 0-1 where values below 0.5 are considered non-expression while 
+    above 0.5 is considered positive. 
+
+## Function
 """
 
 # Import library

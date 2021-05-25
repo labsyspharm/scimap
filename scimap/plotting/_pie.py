@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 # Created on Tue Apr  6 22:05:14 2021
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.pie`: The function allows users to plot a pie plot for any categorical column of interest. 
+"""
+!!! abstract "Short Description"
+    `sm.pl.pie`: The function allows users to plot a pie plot for any categorical column of interest. 
+
+## Function
 """
 
 # Lib

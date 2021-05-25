@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Apr  1 21:57:54 2020
 # @author: Ajit Johnson Nirmal, Yuan Chen
-""" abstract "Short Description"
-`sm.pl.image_viewer`: The function allows users to open OME-TIFF images inside 
-Napari and overlay any any categorical column such as cluster annotation or phenotypes.
+"""
+!!! abstract "Short Description"
+    `sm.pl.image_viewer`: The function allows users to open OME-TIFF images inside 
+    Napari and overlay any any categorical column such as cluster annotation or phenotypes.
+
+## Function
 """
 
 #%gui qt

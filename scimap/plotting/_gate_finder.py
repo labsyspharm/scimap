@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Tue May 12 23:47:52 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.gate_finder`: The function opens the OME-TIFF image inside Napari and overlays points to help with the
-identifying manual gates for each marker. Use the `sm.pp.rescale` function to apply the identified gates to your data.
+"""
+!!! abstract "Short Description"
+    `sm.pl.gate_finder`: The function opens the OME-TIFF image inside Napari and overlays points to help with the 
+    identifying manual gates for each marker. Use the `sm.pp.rescale` function to apply the identified gates to your data.
+
+## Function
 """
 
 try:

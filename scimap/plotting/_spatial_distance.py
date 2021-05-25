@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Sat Oct 24 13:07:38 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.spatial_distance`: The function allows users to visualize the average shortest distance between phenotypes of interest.
-Run `sm.tl.spatial_distance` before running this function.
+"""
+!!! abstract "Short Description"
+    `sm.pl.spatial_distance`: The function allows users to visualize the average shortest distance between phenotypes of interest.  
+    Run `sm.tl.spatial_distance` before running this function.
+
+## Function
 """
 
 # library

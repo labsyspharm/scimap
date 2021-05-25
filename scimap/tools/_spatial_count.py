@@ -2,19 +2,22 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Aug 19 15:00:39 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-The `sm.tl.spatial_count` function allows users to compute a neighbourhood matrix 
-using any categorical variable (e.g. cell-types) as input.
+"""
+!!! abstract "Short Description"
+    The `sm.tl.spatial_count` function allows users to compute a neighbourhood matrix 
+    using any categorical variable (e.g. cell-types) as input.
 
-The function supports two methods to define a local neighbourhood <br>
-**Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
-**KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
-    
-The resultant neighbourhood matrix is saved with `adata.uns`. 
+    The function supports two methods to define a local neighbourhood <br>
+    **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
+    **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
+        
+    The resultant neighbourhood matrix is saved with `adata.uns`. 
 
-This can be further clustered to identify similar neighbourhoods. 
-Use the [spatial_cluster] function to further group the neighbourhoods into 
-Reccurent Cellular Neighbourhoods (RCNs)
+    This can be further clustered to identify similar neighbourhoods. 
+    Use the [spatial_cluster] function to further group the neighbourhoods into 
+    Reccurent Cellular Neighbourhoods (RCNs)
+
+## Function
 """
 
 # Import library

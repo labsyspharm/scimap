@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Oct 21 11:00:57 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.spatial_interaction`: The function allows users to plot a heatmap to visualize spatial interaction output. 
-The intensity represents abundance of co-occurrence (scaled) observed and blank regions represent non-significant results.
+"""
+!!! abstract "Short Description"
+    `sm.pl.spatial_interaction`: The function allows users to plot a heatmap to visualize spatial interaction output. 
+    The intensity represents abundance of co-occurrence (scaled) observed and blank regions represent non-significant results.
+
+## Function
 """
 
 # Library

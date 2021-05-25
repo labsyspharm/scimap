@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Apr  7 17:46:29 2021
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.pl.foldchange`: The Function allows users to visualize foldchange in abundance of celltypes between samples/ROI's. 
-Run `sm.tl.foldchange` first to compute the foldchange.
+"""
+!!! abstract "Short Description"
+    `sm.pl.foldchange`: The Function allows users to visualize foldchange in abundance of celltypes between samples/ROI's. 
+    Run `sm.tl.foldchange` first to compute the foldchange.
+
+## Function
 """
 
 # lib

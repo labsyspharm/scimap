@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Aug 19 15:00:39 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.tl.spatial_aggregate`: The function allows users to find regions of aggregration of similar cells.
-Use the `purity` parameter to fine-tune percent of similar cells within a given `radius`. 
+"""
+!!! abstract "Short Description"
+    `sm.tl.spatial_aggregate`: The function allows users to find regions of aggregration of similar cells.
+    Use the `purity` parameter to fine-tune percent of similar cells within a given `radius`. 
+
+## Function
 """
 
 # Import library

@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 # Created on Mon Oct 26 12:04:17 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.hl.classify`: Helper function that allow users to annotate cells based on positivity/negativity 
-of defined markers. Users can classify the entire data or a subset of data that 
-has been previously phenotyped or clustered.
+"""
+!!! abstract "Short Description"
+    `sm.hl.classify`: Helper function that allow users to annotate cells based on positivity/negativity 
+    of defined markers. Users can classify the entire data or a subset of data that 
+    has been previously phenotyped or clustered.
+
+## Function
 """
 
 # Library

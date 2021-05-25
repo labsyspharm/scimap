@@ -3,9 +3,12 @@
 # Created on Mon Oct 19 20:03:01 2020
 # @author: Ajit Johnson Nirmal
 
-"""abstract "Short Description"
-`sm.tl.spatial_interaction`: The function allows users to computes how likely celltypes are found next to each another
-compared to random background. 
+"""
+!!! abstract "Short Description"
+    `sm.tl.spatial_interaction`: The function allows users to computes how likely celltypes are found next to each another
+    compared to random background. 
+
+## Function
 """
 
 # Import library

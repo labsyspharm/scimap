@@ -2,17 +2,20 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Apr  7 13:22:29 2021
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.tl.foldchange`: The function allows users to compute the foldchange (fc) in cell-type (phenotype) abundance 
-between samples or ROI's. 
+"""
+!!! abstract "Short Description"
+    `sm.tl.foldchange`: The function allows users to compute the foldchange (fc) in cell-type (phenotype) abundance 
+    between samples or ROI's. 
 
-The reference sample or ROI needs to be passed via the `from_group` parameter. 
-The column name of `from_group` should be passed via `imageid`. The function computes the fc 
-to all other categories within the same `imageid` column. By default (can be turned off), the cell-abundance will
-be normalized for the total number of cells within the sample/ROI to account for difference in area.
-A `fisher-exact-test` is performed to compute the p-values.
+    The reference sample or ROI needs to be passed via the `from_group` parameter. 
+    The column name of `from_group` should be passed via `imageid`. The function computes the fc 
+    to all other categories within the same `imageid` column. By default (can be turned off), the cell-abundance will
+    be normalized for the total number of cells within the sample/ROI to account for difference in area.
+    A `fisher-exact-test` is performed to compute the p-values.
 
-The results are stored in `.uns` section of the anndata object. 
+    The results are stored in `.uns` section of the anndata object. 
+
+## Function
 """
 
 # library

@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 # Created on Sun Mar 22 13:08:26 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.hl.rename`: The function allows users to rename any string within a column to another and saved in a new column.
+"""
+!!! abstract "Short Description"
+    `sm.hl.rename`: The function allows users to rename any string within a column to another and saved in a new column.
+
+## Function
 """
 # Import
 import functools 

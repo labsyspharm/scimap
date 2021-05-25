@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 # Created on Wed Oct 14 09:23:07 2020
 # @author: Ajit Johnson Nirmal
-""" abstract "Short Description"
-`sm.tl.spatial_distance`: The function allows users to calculate 
-the average shortest between phenotypes or clusters of interest.
+"""
+!!! abstract "Short Description"
+    `sm.tl.spatial_distance`: The function allows users to calculate 
+    the average shortest between phenotypes or clusters of interest.
+
+## Function
 """
 
 # Import library
