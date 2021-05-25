@@ -98,11 +98,11 @@ def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroi
         return roi_mpatch
 
     def add_roi_internal (roi_id):
-        roi_subset = roi[roi['Id'] == roi_id]
+        roi_subset = roi[roi['Id'] == roi_id].iloc[0]
         
         roi_mpatch = get_mpatch(roi_subset)
         inside = data[roi_mpatch.contains_points(data)]
-        inside['ROI'] = roi_subset['Name'].iloc[0]
+        inside['ROI'] = roi_subset['Name']
 
         # return
         return inside
