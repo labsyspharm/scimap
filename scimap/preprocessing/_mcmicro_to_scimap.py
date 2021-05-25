@@ -19,8 +19,7 @@ def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
                         CellId='CellID',split='X_centroid',custom_imageid=None,
                         min_cells=None):
     """
-
- Parameters:
+Parameters:
 
     image_path : list  
         List of path to the image or images. Each Image should have a unique path supplied.
