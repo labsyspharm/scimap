@@ -10,6 +10,12 @@ Scimap is a scalable toolkit for analyzing single-cell multiplex imaging data. T
 [![PyPI License](https://img.shields.io/pypi/l/scimap.svg)](https://pypi.org/project/scimap)
 [![Gitter chat](https://badges.gitter.im/scimap_io/community.png)](https://gitter.im/scimap_io/community)
 
+<br>
+
+![SCIMAP](./docs/assets/scimap_logo.png "SCIMAP")
+
+<br>
+
 ## Installation
 
 We strongly recommend installing `scimap` in a fresh virtual environment.
