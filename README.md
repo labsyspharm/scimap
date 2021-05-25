@@ -37,11 +37,9 @@ $ python
 
 
 #### Detailed documentation of `scimap` functions and tutorials are available [here](http://scimap.xyz/).
-<br>
 
 *SCIMAP* development is led by [Ajit Johnson Nirmal](https://ajitjohnson.com/) at the Laboratory of Systems Pharmacology, Harvard Medical School.
 
-<br>
 ## Funding
 This work is supported by the following NIH grant K99-CA256497
 
