@@ -15,7 +15,8 @@
 import pandas as pd
 import numpy as np
 import re
-import matplotlib.path as mpath
+import matplotlib.patches as mpatches
+import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
 
 
@@ -53,23 +54,61 @@ Example:
     # create data matrix that has the co-ordinates
     data = pd.DataFrame(adata.obs)[[x_coordinate, y_coordinate]]
     
+    def parse_roi_points(all_points):
+        return np.array(
+            re.findall(r'\d+\.?\d+', all_points), dtype=float
+        ).reshape(-1, 2)
+
+    def ellipse_points_to_patch(
+        vertex_1, vertex_2,
+        co_vertex_1, co_vertex_2
+    ):
+        """
+        Parameters
+        ----------
+        vertex_1, vertex_2, co_vertex_1, co_vertex_2: array like, in the form of (x-coordinate, y-coordinate)
+
+        """
+        v_and_co_v = np.array([
+            vertex_1, vertex_2,
+            co_vertex_1, co_vertex_2
+        ])
+        centers = v_and_co_v.mean(axis=0)
+
+        d = sdistance.cdist(v_and_co_v, v_and_co_v, metric='euclidean')
+        width = d[0, 1]
+        height = d[2, 3]
+
+        vector_2 = v_and_co_v[1] - v_and_co_v[0]
+        vector_2 /= np.linalg.norm(vector_2)
+
+        angle = np.degrees(np.arccos([1, 0] @ vector_2))
+
+        ellipse_patch = mpatches.Ellipse(
+            centers, width=width, height=height, angle=angle        
+        )
+        return ellipse_patch
+
+    def get_mpatch(roi):
+        points = parse_roi_points(roi['all_points'])
+
+        roi_type = roi['type']
+        if roi_type in ['Point', 'Line']:
+            roi_mpatch = mpatches.Polygon(points, closed=False)
+        elif roi_type in ['Rectangle', 'Polygon', 'Polyline']:
+            roi_mpatch = mpatches.Polygon(points, closed=True)
+        elif roi_type == 'Ellipse':
+            roi_mpatch = ellipse_points_to_patch(*points)
+        else:
+            raise ValueError
+        return roi_mpatch
+
     def add_roi_internal (roi_id):
-        roi_subset = roi[roi['Id'] == roi_id]
+        roi_subset = roi[roi['Id'] == roi_id].iloc[0]
         
-        # Make a list of all ROI's from the ROI table
-        all_points = [
-        np.array(re.findall(r'\d+\.\d+', s))
-            .astype(np.float64)
-            .reshape(-1, 2)
-        for s in roi_subset['all_points']
-        ]
-        
-        # Identify the cells within the ROI
-        path = mpath.Path(all_points[0], closed=True)
-        
-        # the mask to query cells within one ROI
-        inside = data[path.contains_points(data)]
-        inside['ROI'] = roi_subset['Name'].iloc[0]
+        roi_mpatch = get_mpatch(roi_subset)
+        inside = data[roi_mpatch.contains_points(data)]
+        inside['ROI'] = roi_subset['Name']
 
         # return
         return inside
@@ -93,4 +132,3 @@ Example:
     
     # return
     return adata
-    
