@@ -1,0 +1,58 @@
+site_name: scimap
+site_description: Single-Cell Image Analysis Package
+site_author: Ajit Johnson Nirmal
+
+repo_url: https://github.com/ajitjohnson/scimap
+edit_uri: https://github.com/ajitjohnson/scimap/edit/master/docs
+
+theme:
+  name: readthedocs
+  titles_only: true
+  highlightjs: true
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+
+extra_css: [extra.css]
+
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - Available tools: tools.md
+  - Pre-processing:
+    - pp.mcmicro_to_scimap: pp/sm.pp.mcmicro_to_scimap.md
+    - pp.rescale: pp/sm.pp.rescale.md
+  - Tools:
+    - tl.phenotype_cells: tl/sm.tl.phenotype_cells.md
+    - tl.cluster: tl/sm.tl.cluster.md
+    - tl.foldchange: tl/sm.tl.foldchange.md
+    - tl.spatial_distance: tl/sm.tl.spatial_distance.md
+    - tl.spatial_interaction: tl/sm.tl.spatial_interaction.md
+    - tl.spatial_count: tl/sm.tl.spatial_count.md
+    - tl.spatial_expression: tl/sm.tl.spatial_expression.md
+    - tl.spatial_aggregate: tl/sm.tl.spatial_aggregate.md
+    - tl.spatial_pscore: tl/sm.tl.spatial_pscore.md  
+    - tl.spatial_lda: tl/sm.tl.spatial_lda.md  
+  - Plotting:
+    - pl.gate_finder: pl/sm.pl.gate_finder.md
+    - pl.image_viewer: pl/sm.pl.image_viewer.md
+    - pl.stacked_barplot: pl/sm.pl.stacked_barplot.md
+    - pl.pie: pl/sm.pl.pie.md
+    - pl.foldchange: pl/sm.pl.foldchange.md
+    - pl.spatial_distance: pl/sm.pl.spatial_distance.md
+    - pl.spatial_interaction: pl/sm.pl.spatial_interaction.md
+    - pl.spatial_pscore: pl/sm.pl.spatial_pscore.md
+    - pl.voronoi: pl/sm.pl.voronoi.md
+  - Helper:
+    - hl.classify: hl/sm.hl.classify.md
+    - hl.scimap_to_csv: hl/sm.hl.scimap_to_csv.md
+    - hl.add_roi_omero: hl/sm.hl.add_roi_omero.md
+  - Tutorials:
+    - Load the Data: tutorials/scimap-tutorial-getting-started.md
+    - Cell Phenotyping: tutorials/scimap-tutorial-cell-phenotyping.md
+  - About:
+    - Release Notes: about/changelog.md
+    - License: about/license.md
