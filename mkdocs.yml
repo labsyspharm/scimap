@@ -9,7 +9,7 @@ edit_uri: https://github.com/ajitjohnson/scimap/edit/master/docs
 theme:
   name: "material"
   logo: assets/favicon.png
-  favicon: images/favicon.png
+  favicon: assets/favicon.png
   features:
     - navigation.instant
   features:
