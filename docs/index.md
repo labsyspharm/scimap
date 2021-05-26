@@ -13,9 +13,9 @@ hide:
 [![Gitter chat](https://badges.gitter.im/scimap_io/community.png)](https://gitter.im/scimap_io/community)
 
 <br>
-<br>
 
-![SCIMAP](./assets/scimap_logo.png "SCIMAP")
+<img src="./assets/scimap_logo.png" style="width: 65%; height: 65%"/>
+
 
 <br>
 <br>

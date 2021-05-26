@@ -7,4 +7,8 @@
     box-shadow: 2px 2px 2px 2px #0ff;
   }
 
+.md-typeset table:not([class]) {
+    font-size: 1em;
+  }
+
   
