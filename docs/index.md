@@ -16,7 +16,7 @@ hide:
 
 <br>
 
-<img src="./assets/scimap_logo.png" style="width: 65%; height: 65%"/>
+<img src="./assets/scimap_logo.png" style="width: 70%; height: 70%"/>
 
 <br>
 
