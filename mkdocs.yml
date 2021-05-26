@@ -8,6 +8,7 @@ edit_uri: https://github.com/ajitjohnson/scimap/edit/master/docs
 # mkdocs.yml
 theme:
   name: "material"
+  custom_dir: overrides
   logo: ./assets/favicon.png
   favicon: ./assets/favicon.png
   features:

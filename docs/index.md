@@ -1,4 +1,6 @@
 ---
+title: SCIMAP
+description: Spatial Single-Cell Analysis Toolkit
 hide:
   - toc        # Hide table of contents
 ---
@@ -17,7 +19,6 @@ hide:
 <img src="./assets/scimap_logo.png" style="width: 65%; height: 65%"/>
 
 
-<br>
 <br>
 
 Scimap is a scalable toolkit for analyzing spatial molecular data. The underlying framework is generalizable to spatial datasets mapped to XY coordinates. The package uses the [anndata](https://anndata.readthedocs.io/en/stable/anndata.AnnData.html) framework making it easy to integrate with other popular single-cell analysis toolkits. It includes preprocessing, phenotyping, visualization, clustering, spatial analysis and differential spatial testing. The Python-based implementation efficiently deals with large datasets of millions of cells.
