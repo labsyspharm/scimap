@@ -13,11 +13,73 @@
 import numpy as np
 import anndata as ad
 import pandas as pd
+import argparse
+import sys
+
+
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        description='The function allows users to directly import the output from mcmicro'
+    )
+    parser.add_argument(
+        '--image_path', nargs='*', required=True, 
+        help='List of path to the image or images. Each Image should have a unique path supplied.'
+    )
+    parser.add_argument(
+        '--remove_dna', default=False, action='store_true', required=False, 
+        help='Remove the DNA channels from the final output. Looks for channels with the string dna in it.'
+    )
+    parser.add_argument(
+        '--remove_string_from_name', type=str, required=False, 
+        help='Used to celan up channel names. If a string is given, that particular string will be removed from all marker names. If multiple images are passed, just use the string that appears in the first image.'
+    )
+    parser.add_argument(
+        '--log', default=False, action='store_true', required=False, 
+        help='Log the data (log1p transformation will be applied).'
+    )
+    parser.add_argument(
+        '--drop_markers', nargs='*', required=False, 
+        help='List of markers to drop from the analysis. e.g. ["CD3D", "CD20"]'
+    )
+    parser.add_argument(
+        '--random_sample', type=int, required=False, 
+        help='Randomly sub-sample the data with the desired number of cells.'
+    )
+    parser.add_argument(
+        '--unique_CellId', default=False, action='store_true', required=False, 
+        help='By default, the function creates a unique name for each cell/row by combining the `CellId` and `imageid`. If you wish not to perform this operation please pass `False`. The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId` especially when loading multiple datasets togeather.'
+    )
+    parser.add_argument(
+        '--CellId', default='CellID', type=str, required=False, 
+        help='Name of the column that contains the cell ID.'
+    )
+    parser.add_argument(
+        '--split', default='X_centroid', type=str, required=False, 
+        help='To split the CSV into counts table and meta data, pass in the name of the column that immediately follows the marker quantification.'
+    )
+    parser.add_argument( 
+        '--custom_imageid', type=str, required=False, 
+        help='Pass a user defined Image ID. By default the name of the CSV file is used.'
+    )
+    parser.add_argument(
+        '--min_cells', type=int, required=False, 
+        help='If these many cells are not in the image, the image will be dropped. Particulary useful when importing multiple images.'
+    )
+    parser.add_argument(
+        '--output_dir', type=str, required=False, 
+        help='Path to output directory.'
+    )
+    args = parser.parse_args(argv[1:])
+    print(vars(args))
+    mcmicro_to_scimap(**vars(args))
+
+
+
 
 def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
                         log=True,drop_markers=None,random_sample=None, unique_CellId=True,
                         CellId='CellID',split='X_centroid',custom_imageid=None,
-                        min_cells=None):
+                        min_cells=None, output_dir=None):
     """
 Parameters:
 
@@ -59,6 +121,9 @@ Parameters:
     min_cells: int, optional  
         If these many cells are not in the image, the image will be dropped.
         Particulary useful when importing multiple images.
+
+    output_dir: string, optional  
+        Path to output directory. 
 
 Returns:
 
@@ -157,6 +222,15 @@ Example:
     if log is True:
         adata.raw = adata
         adata.X = np.log1p(adata.X)
-        
-    # Return data
-    return adata
+
+    # Save data if requested
+    if output_dir is not None:
+        imid = str(image_path[0].rsplit('/', 1)[-1]).replace('.csv','')
+        adata.write(str(output_dir) + imid + '.h5ad')
+    else:    
+        # Return data
+        return adata
+
+
+if __name__ == '__main__':
+    main()
