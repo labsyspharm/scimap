@@ -5,7 +5,7 @@
 
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_expression`: The function allows users to compute a neighbourhood matrix 
+    `sm.tl.spatial_expression`: The function allows users to compute a neighbourhood weighted matrix 
     based on the expression values.
 
     The function supports two methods to define a local neighbourhood  
@@ -28,6 +28,66 @@ from sklearn.neighbors import BallTree
 from scipy.sparse import csr_matrix
 from scipy.sparse import lil_matrix
 import scipy
+import argparse
+import sys
+import anndata
+
+
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        description='The function allows users to compute a neighbourhood weighted matrix based on the expression values.'
+    )
+    parser.add_argument(
+        '--adata', required=True, 
+        help='AnnData object loaded into memory or path to AnnData object.'
+    )
+    parser.add_argument(
+        '--x_coordinate', type=str, required=False, default='X_centroid',
+        help='Column name containing the x-coordinates values.'
+    )
+    parser.add_argument(
+        '--y_coordinate', type=str, required=False, default='Y_centroid',
+        help='Column name containing the y-coordinates values.'
+    )
+    parser.add_argument(
+        '--method', type=str, required=False, default='radius',
+        help='Two options are available: a) `radius`, b) `knn`.'
+    )
+    parser.add_argument(
+        '--radius', type=int, required=False, default=30,
+        help='The radius used to define a local neighbhourhood.'
+    )
+    parser.add_argument(
+        '--knn', type=int, required=False, default=10,
+        help='Number of cells considered for defining the local neighbhourhood.'
+    )
+    parser.add_argument(
+        '--imageid', type=str, required=False, default='imageid',
+        help='Column name of the column containing the image id.'
+    )
+    parser.add_argument(
+        '--use_raw', type=bool, required=False, default=True,
+        help='Argument to denote whether to use the raw data or scaled data after applying `sm.pp.rescale`.'
+    )
+    parser.add_argument(
+        '--log', type=bool, required=False, default=True,
+        help='If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect.'
+    )
+    parser.add_argument(
+        '--subset', type=str, required=False, default=None,
+        help='imageid of a single image to be subsetted for analyis.'
+    )
+    parser.add_argument(
+        '--label', type=str, required=False, default='spatial_expression',
+        help='Key for the returned data, stored in `adata.uns`.'
+    )
+    parser.add_argument(
+        '--output_dir', type=str, required=False, default=None,
+        help='Path to output directory.'
+    )
+    args = parser.parse_args(argv[1:])
+    print(vars(args))
+    spatial_expression(**vars(args))
 
 # Function
 def spatial_expression (adata, 
@@ -35,11 +95,12 @@ def spatial_expression (adata,
                         y_coordinate='Y_centroid',
                         method='radius', radius=30, 
                         knn=10, imageid='imageid', 
-                        use_raw=True,subset=None,
-                        label='spatial_expression'):
+                        use_raw=True, log=True, subset=None,
+                        label='spatial_expression',
+                        output_dir=None):
     """
 Parameters:
-    adata : anndata object
+    adata : AnnData object loaded into memory or path to AnnData object.
 
     x_coordinate : float, required  
         Column name containing the x-coordinates values.
@@ -66,10 +127,15 @@ Parameters:
         
     use_raw : boolian, optional  
         Argument to denote whether to use the raw data or scaled data after applying `sm.pp.rescale`.
-        If `True`, the log of raw data is used.
+
+    log : boolian, optional  
+        If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. 
         
     label : string, optional  
         Key for the returned data, stored in `adata.uns`.
+
+    output_dir : string, optional  
+        Path to output directory.
 
 Returns:
     adata : AnnData object  
@@ -94,6 +160,14 @@ Returns:
                                       label='spatial_expression_knn')
     ```
     """
+    
+    # Load the andata object    
+    if isinstance(adata, str):
+        imid = str(adata.rsplit('/', 1)[-1])
+        adata = anndata.read(adata)
+    else:
+        adata = adata
+
     
     # Error statements
     if use_raw is False:
@@ -143,7 +217,10 @@ Returns:
         
         # Calculation of spatial lag
         if use_raw==True:
-            spatial_lag = pd.DataFrame(wn_matrix_sparse * np.log1p(adata_subset.raw.X), columns = adata_subset.var.index, index=adata_subset.obs.index)
+            if log is True:
+                spatial_lag = pd.DataFrame(wn_matrix_sparse * np.log1p(adata_subset.raw.X), columns = adata_subset.var.index, index=adata_subset.obs.index)
+            else:
+                spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.raw.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
         else:
             spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
         
@@ -180,6 +257,13 @@ Returns:
     # Add to adata
     adata.uns[label] = result
     
-    # Return        
-    return adata
+    # Save data if requested
+    if output_dir is not None:
+        adata.write(str(output_dir) + '/' + imid)
+    else:    
+        # Return data
+        return adata
 
+
+if __name__ == '__main__':
+    main()

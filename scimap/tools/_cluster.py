@@ -16,19 +16,108 @@ import pandas as pd
 import scanpy as sc
 import scanpy.external as sce
 from sklearn.cluster import KMeans
+import argparse
+import sys
+import anndata
 try:
     import parc
 except:
     pass
 
 
-def cluster (adata, method = 'kmeans', subset_genes=None,
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        description='This function allows users to cluster the dataset. The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).'
+    )
+    parser.add_argument(
+        '--adata', required=True, 
+        help='AnnData object loaded into memory or path to AnnData object.'
+    )
+    parser.add_argument(
+        '--method', type=str, required=False, default='kmeans',
+        help='Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc.'
+    )
+    parser.add_argument(
+        '--subset_genes', type=list, required=False, default=None,
+        help='Pass a list of genes [`CD3D`, `CD20`, `KI67`] that should be included for the purpose of clustering. By default the algorithm uses all genes in the dataset.'
+    )
+    parser.add_argument(
+        '--sub_cluster', type=bool, required=False, default=False,
+        help='If the user has already performed clustering or phenotyping previously and would like to sub-cluster within a particular cluster/phenotype, this option can be used.'
+    )
+    parser.add_argument(
+        '--sub_cluster_column', type=str, required=False, default='phenotype',
+        help='The column name that contains the cluster/phenotype information to be sub-clustered. This is only required when sub_cluster is set to True.'
+    )
+    parser.add_argument(
+        '--sub_cluster_group', type=list, required=False, default=None,
+        help='By default the program will sub-cluster all groups within column passed through the argument sub_cluster_column. If user wants to sub cluster only a subset of phenotypes/clusters this option can be used. Pass them as list e.g. ["tumor", "b cells"].'
+    )
+    parser.add_argument(
+        '--parc_small_pop', type=int, required=False, default=50,
+        help='Smallest cluster population to be considered a community in PARC clustering.'
+    )
+    parser.add_argument(
+        '--parc_too_big_factor', type=float, required=False, default=0.4,
+        help='If a cluster exceeds this share of the entire cell population, then the PARC will be run on the large cluster. at 0.4 it does not come into play.'
+    )
+    parser.add_argument(
+        '--k', type=int, required=False, default=10,
+        help='Number of clusters to return when using K-Means clustering.'
+    )
+    parser.add_argument(
+        '--n_pcs', type=int, required=False, default=None,
+        help='Number of PCs to be used in leiden clustering. By default it uses all PCs.'
+    )
+    parser.add_argument(
+        '--resolution', type=float, required=False, default=1,
+        help='A parameter value controlling the coarseness of the clustering. Higher values lead to more clusters.'
+    )
+    parser.add_argument(
+        '--phenograph_clustering_metric', type=str, required=False, default='euclidean',
+        help='Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’,  ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’'
+    )
+    parser.add_argument(
+        '--nearest_neighbors', type=int, required=False, default=30,
+        help='Number of nearest neighbors to use in first step of graph construction. This parameter is used both in leiden and phenograph clustering.'
+    )
+    parser.add_argument(
+        '--use_raw', type=bool, required=False, default=True,
+        help='If True, raw data will be used for clustering. If False, normalized/scaled data within `adata.X` will be used.'
+    )
+    parser.add_argument(
+        '--log', type=bool, required=False, default=True,
+        help='If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. '
+    )
+    parser.add_argument(
+        '--random_state', type=int, required=False, default=0,
+        help='Change the initialization of the optimization.'
+    )
+    parser.add_argument(
+        '--collapse_labels', type=bool, required=False, default=False,
+        help='While sub clustering only a few phenotypes/clusters, this argument helps to group all the other phenotypes/clusters into a single category- Helps in visualisation.'
+    )
+    parser.add_argument(
+        '--label', type=str, required=False, default=None,
+        help='Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].'
+    )
+    parser.add_argument(
+        '--output_dir', type=str, required=False, default=None,
+        help='Path to output directory.'
+    )
+    args = parser.parse_args(argv[1:])
+    print(vars(args))
+    cluster(**vars(args))
+
+
+
+def cluster (adata, method='kmeans', subset_genes=None,
              sub_cluster=False, sub_cluster_column='phenotype', sub_cluster_group = None,
              parc_small_pop= 50, parc_too_big_factor=0.4, 
              k= 10, n_pcs=None, resolution=1, 
              phenograph_clustering_metric='euclidean', nearest_neighbors= 30, 
-             use_raw = True, random_state=0, collapse_labels= False,
-             label=None):
+             use_raw=True, log=True, random_state=0, collapse_labels= False,
+             label=None, output_dir=None):
     """
     
 Parameters:
@@ -83,8 +172,11 @@ Parameters:
         This parameter is used both in leiden and phenograph clustering.
 
     use_raw : bool, optional  
-        If True, log transformed raw data will be used for clustering. 
+        If True, raw data will be used for clustering. 
         If False, normalized/scaled data within `adata.X` will be used.
+
+    log : boolian, optional  
+        If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. 
 
     random_state : int, optional  
         Change the initialization of the optimization.
@@ -96,6 +188,9 @@ Parameters:
 
     label : string, optional  
         Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].
+
+    output_dir : string, optional  
+        Path to output directory.
 
 
 Returns:
@@ -111,6 +206,14 @@ Example:
 ```
 
     """
+
+    # Load the andata object    
+    if isinstance(adata, str):
+        imid = str(adata.rsplit('/', 1)[-1])
+        print(imid)
+        adata = anndata.read(adata)
+    else:
+        adata = adata
     
     
     # Leiden clustering
@@ -124,7 +227,10 @@ Example:
         
         if use_raw == True:
             data_subset = adata[cell_subset]
-            data_subset.X = np.log1p(data_subset.raw.X)          
+            if log is True:
+                data_subset.X = np.log1p(data_subset.raw.X)          
+            else:
+                data_subset.X = data_subset.raw.X
         else:
             data_subset = adata[cell_subset]
         
@@ -162,7 +268,10 @@ Example:
         
         # Usage of scaled or raw data
         if use_raw == True:
-            data_subset = pd.DataFrame(np.log1p(adata.raw[cell_subset].X), columns =adata[cell_subset].var.index, index = adata[cell_subset].obs.index)
+            if log is True:
+                data_subset = pd.DataFrame(np.log1p(adata.raw[cell_subset].X), columns =adata[cell_subset].var.index, index = adata[cell_subset].obs.index)
+            else:
+                data_subset = pd.DataFrame(adata.raw[cell_subset].X, columns =adata[cell_subset].var.index, index = adata[cell_subset].obs.index)
         else:
             data_subset = pd.DataFrame(adata[cell_subset].X, columns =adata[cell_subset].var.index, index = adata[cell_subset].obs.index)
             
@@ -197,7 +306,10 @@ Example:
         # Usage of scaled or raw data
         if use_raw == True:
             data_subset = adata[cell_subset]
-            data_subset.X = np.log1p(data_subset.raw.X)          
+            if log is True:
+                data_subset.X = np.log1p(data_subset.raw.X)          
+            else:
+                data_subset.X = data_subset.raw.X
         else:
             data_subset = adata[cell_subset]
         
@@ -235,7 +347,10 @@ Example:
         # Usage of scaled or raw data
         if use_raw == True:
             data_subset = adata[cell_subset]
-            data_subset.X = np.log1p(data_subset.raw.X)          
+            if log is True:
+                data_subset.X = np.log1p(data_subset.raw.X)
+            else:
+                data_subset.X = data_subset.raw.X      
         else:
             data_subset = adata[cell_subset]
         
@@ -267,24 +382,26 @@ Example:
         bdata.raw = bdata[:,subset_genes]
     else:
         bdata = adata.copy()
-        
+    
+    # IF sub-cluster is True
     # What cells to run the clustering on?
-    if sub_cluster_group is not None:
-        if isinstance(sub_cluster_group, list):
-            pheno = sub_cluster_group
+    if sub_cluster is True:
+        if sub_cluster_group is not None:
+            if isinstance(sub_cluster_group, list):
+                pheno = sub_cluster_group
+            else:
+                pheno = [sub_cluster_group]         
         else:
-            pheno = [sub_cluster_group]         
-    else:
-        # Make sure number of clusters is not greater than number of cells available
-        if method == 'kmeans':
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > k+1).index[bdata.obs[sub_cluster_column].value_counts() > k+1]
-        if method == 'phenograph':
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1).index[bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1]
-        if method == 'leiden':
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
-        if method == 'parc':
-            pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
-            
+            # Make sure number of clusters is not greater than number of cells available
+            if method == 'kmeans':
+                pheno = (bdata.obs[sub_cluster_column].value_counts() > k+1).index[bdata.obs[sub_cluster_column].value_counts() > k+1]
+            if method == 'phenograph':
+                pheno = (bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1).index[bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1]
+            if method == 'leiden':
+                pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
+            if method == 'parc':
+                pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
+                
         
     # Run the specified method
     if method == 'kmeans':
@@ -326,13 +443,14 @@ Example:
         sub_clusters = all_cluster_labels
         
     # Merge with all cells
-    sub_clusters = pd.DataFrame(bdata.obs[sub_cluster_column]).merge(sub_clusters, how='outer', left_index=True, right_index=True)
-        
+    #sub_clusters = pd.DataFrame(bdata.obs[sub_cluster_column]).merge(sub_clusters, how='outer', left_index=True, right_index=True)
+    sub_clusters = pd.DataFrame(bdata.obs).merge(sub_clusters, how='outer', left_index=True, right_index=True)
 
-    
+
     # Transfer labels
-    if collapse_labels == False:
+    if collapse_labels is False and sub_cluster is True:
         sub_clusters = pd.DataFrame(sub_clusters[0].fillna(sub_clusters[sub_cluster_column]))
+    
         
     # Get only the required column
     sub_clusters = sub_clusters[0]
@@ -345,7 +463,10 @@ Example:
         adata.obs[method] = sub_clusters
     else:
         adata.obs[label] = sub_clusters
-
     
-    # Return adata
-    return adata
+    # Save data if requested
+    if output_dir is not None:
+        adata.write(str(output_dir) + '/' + imid)
+    else:    
+        # Return data
+        return adata

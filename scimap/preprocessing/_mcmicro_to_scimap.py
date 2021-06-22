@@ -226,7 +226,7 @@ Example:
     # Save data if requested
     if output_dir is not None:
         imid = str(image_path[0].rsplit('/', 1)[-1]).replace('.csv','')
-        adata.write(str(output_dir) + imid + '.h5ad')
+        adata.write(str(output_dir) + '/' + imid + '.h5ad')
     else:    
         # Return data
         return adata
