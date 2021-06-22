@@ -13,11 +13,66 @@
 # Import library
 from scimap.tools._cluster import cluster
 import anndata as ad
+import argparse
+import sys
+
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        description='This function allows users to cluster the spatial neighbourhood matrix genereated by either `sm.tl.spatial_expression` or `sm.tl.spatial_count` methods.'
+    )
+    parser.add_argument(
+        '--adata', required=True, 
+        help='AnnData object loaded into memory or path to AnnData object.'
+    )
+    parser.add_argument(
+        '--df_name', type=str, required=False, default='spatial_count',
+        help='Label of the spatial analysis performed. By default if `sm.tl.spatial_count` was run the results will be saved under `spatial_count` and if `sm.tl.spatial_expression` was run, the results will be saved under `spatial_expression`.'
+    )
+    parser.add_argument(
+        '--method', type=str, required=False, default='kmeans',
+        help='Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc.'
+    )
+    parser.add_argument(
+        '--k', type=int, required=False, default=10,
+        help='Number of clusters to return when using K-Means clustering.'
+    )
+    parser.add_argument(
+        '--n_pcs', type=int, required=False, default=None,
+        help='Number of PCs to be used in leiden clustering. By default it uses all PCs.'
+    )
+    parser.add_argument(
+        '--resolution', type=float, required=False, default=1,
+        help='A parameter value controlling the coarseness of the clustering. Higher values lead to more clusters.'
+    )
+    parser.add_argument(
+        '--phenograph_clustering_metric', type=str, required=False, default='euclidean',
+        help='Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’,  ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’'
+    )
+    parser.add_argument(
+        '--nearest_neighbors', type=int, required=False, default=30,
+        help='Number of nearest neighbors to use in first step of graph construction. This parameter is used both in leiden and phenograph clustering.'
+    )
+    parser.add_argument(
+        '--random_state', type=int, required=False, default=0,
+        help='Change the initialization of the optimization.'
+    )
+    parser.add_argument(
+        '--label', type=str, required=False, default=None,
+        help='Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].'
+    )
+    parser.add_argument(
+        '--output_dir', type=str, required=False, default=None,
+        help='Path to output directory.'
+    )
+    args = parser.parse_args(argv[1:])
+    print(vars(args))
+    spatial_cluster(**vars(args))
+
 
 # Function
-def spatial_cluster (adata, df_name='spatial_count', method = 'kmeans',k=10, phenotype='phenotype',
+def spatial_cluster (adata, df_name='spatial_count', method = 'kmeans',k=10,
                      n_pcs=None, resolution=1, phenograph_clustering_metric='euclidean', 
-                     nearest_neighbors=30, random_state=0,label=None):
+                     nearest_neighbors=30, random_state=0,label=None, output_dir=None):
     """
     
 
@@ -70,6 +125,13 @@ Example:
     adata = sm.tl.spatial_cluster (adata, k= 10, method = 'kmeans') # results will be saved under adata.obs['spatial_kmeans']
 ```
     """
+
+    # Load the andata object    
+    if isinstance(adata, str):
+        imid = str(adata.rsplit('/', 1)[-1])
+        adata = ad.read(adata)
+    else:
+        adata = adata
     
     # Make a copy of adata to modify
     adata_copy = adata.copy()
@@ -95,7 +157,6 @@ Example:
                          resolution=resolution,
                          phenograph_clustering_metric=phenograph_clustering_metric,
                          nearest_neighbors=nearest_neighbors, 
-                         sub_cluster_column=phenotype,
                          use_raw=False, 
                          random_state=random_state,
                          label=label)
@@ -106,9 +167,12 @@ Example:
     adata.obs[label] = result
     
     
-    # Return anndata object
-    return adata
-    
-    
-    
-    
+    # Save data if requested
+    if output_dir is not None:
+        adata.write(str(output_dir) + '/' + imid)
+    else:    
+        # Return data
+        return adata
+
+if __name__ == '__main__':
+    main()

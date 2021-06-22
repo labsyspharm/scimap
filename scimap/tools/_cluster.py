@@ -210,7 +210,6 @@ Example:
     # Load the andata object    
     if isinstance(adata, str):
         imid = str(adata.rsplit('/', 1)[-1])
-        print(imid)
         adata = anndata.read(adata)
     else:
         adata = adata
@@ -470,3 +469,6 @@ Example:
     else:    
         # Return data
         return adata
+
+if __name__ == '__main__':
+    main()
