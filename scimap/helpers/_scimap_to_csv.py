@@ -12,9 +12,34 @@
 # Import
 import pandas as pd
 import numpy as np
+import argparse
+import sys
+import anndata as ad
+
+
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        description='Helper function that allows users to save the contents of the `scimap` object as a csv file.'
+    )
+    parser.add_argument(
+        '--adata', required=True, 
+        help='AnnData object loaded into memory or path to AnnData object.'
+    )
+    parser.add_argument(
+        '--data_type', type=str, required=False, default='raw',
+        help='Three options are available: 1) `raw` - The raw data will be returned; 2) `log` - The raw data converted to log scale using `np.log1p` will be returned; 3) `scaled` - If you have scaled the data using the `sm.pp.rescale`, that will be returned. Please note, if you have not scaled the data, whatever is within `adata.X` will be returned'
+    )
+    parser.add_argument(
+        '--output_dir', type=str, required=False, default=None,
+        help='Path to output directory.'
+    )
+    args = parser.parse_args(argv[1:])
+    print(vars(args))
+    scimap_to_csv(**vars(args))
+    
 
 # Function
-def scimap_to_csv (adata, data_type='raw'):
+def scimap_to_csv (adata, data_type='raw', output_dir=None):
     """
 Parameters:
     adata : AnnData Object
@@ -26,6 +51,9 @@ Parameters:
         3) 'scaled' - If you have scaled the data using the `sm.pp.rescale`, that will be
         returned. Please note, if you have not scaled the data, whatever is within
         `adata.X` will be returned.
+        
+    output_dir : string, optional  
+        Path to output directory.
 
 Returns:
     merged : DataFrame  
@@ -36,6 +64,13 @@ Example:
     data = sm.hl.scimap_to_csv (adata, data_type='raw')
 ```
     """
+    
+    # Load the andata object    
+    if isinstance(adata, str):
+        imid = str(adata.rsplit('/', 1)[-1])
+        adata = ad.read(adata)
+    else:
+        adata = adata
     
     # Expression matrix
     if data_type is 'raw':
@@ -56,7 +91,14 @@ Example:
     
     # reset index
     merged = merged.reset_index(drop=True)
-    
-    # return
-    return merged
+
+    # Save data if requested
+    if output_dir is not None:
+        merged.to_csv(str(output_dir) + '/' + imid + '.csv')
+    else:    
+        # Return data
+        return merged
+
+if __name__ == '__main__':
+    main()
 

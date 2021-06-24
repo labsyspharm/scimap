@@ -115,6 +115,9 @@ Parameters:
 
     label : string, optional  
         Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [spatial_method used].
+    
+    output_dir : string, optional  
+        Path to output directory.
 
 Returns:
     adata : AnnData Object  
