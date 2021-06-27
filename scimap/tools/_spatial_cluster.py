@@ -77,7 +77,7 @@ def spatial_cluster (adata, df_name='spatial_count', method = 'kmeans',k=10,
     
 
 Parameters:
-    adata : AnnData Object
+    adata : AnnData object loaded into memory or path to AnnData object.
     
     df_name : string, required  
         Label of the spatial analysis performed.

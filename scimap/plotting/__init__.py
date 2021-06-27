@@ -7,3 +7,4 @@ from ._spatial_pscore import spatial_pscore
 from ._voronoi import voronoi
 from ._foldchange import foldchange
 from ._pie import pie
+from ._cluster_plots import cluster_plots

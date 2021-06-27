@@ -42,7 +42,7 @@ def main(argv=sys.argv):
 def scimap_to_csv (adata, data_type='raw', output_dir=None):
     """
 Parameters:
-    adata : AnnData Object
+    adata : AnnData object loaded into memory or path to AnnData object.
 
     data_type : string, optional  
         Three options are available:  
