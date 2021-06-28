@@ -54,7 +54,7 @@ def main(argv=sys.argv):
     cluster_plots(**vars(args))
 
 # Function
-def cluster_plots (adata, group_by, subsample=100000, palette ='tab10', 
+def cluster_plots (adata, group_by, subsample=100000, palette ='viridis', 
                    use_raw=False,
                    size=None, output_dir=None):
     """
