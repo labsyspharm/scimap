@@ -85,7 +85,7 @@ Returns:
         
 Example:
 ```python
-    data = sm.pl.cluster_plots (adata, group_by='spatial_kmeans')
+    sm.pl.cluster_plots (adata, group_by='spatial_kmeans')
 ```
     """
     
