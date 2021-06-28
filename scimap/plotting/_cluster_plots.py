@@ -105,6 +105,7 @@ Example:
     sc.pp.neighbors(adata) # Computing the neighborhood graph
     sc.tl.umap(adata)
     fig = sc.pl.umap(adata, color=group_by, palette = palette, size=size, return_fig=True, show=False) # View the clustering
+    fig.tight_layout()
     # save figure
     if output_dir is not None:
         fig.savefig(output_dir + '/umap.pdf')
