@@ -15,6 +15,7 @@ import anndata as ad
 import pandas as pd
 import argparse
 import sys
+import pathlib
 
 
 def main(argv=sys.argv):
@@ -141,11 +142,12 @@ Example:
     # image_path list or string
     if isinstance(image_path, str):
         image_path = [image_path]
+    image_path = [pathlib.Path(p) for p in image_path]
 
     # Import data based on the location provided
     def load_process_data (image):
         # Print the data that is being processed
-        print("Loading " + str(image.rsplit('/', 1)[-1]))
+        print(f"Loading {image.name}")
         d = pd.read_csv(image)
         # If the data does not have a unique image ID column, add one.
         if 'imageid' not in d.columns:
@@ -153,7 +155,7 @@ Example:
                 imid = custom_imageid
             else:
                 #imid = random.randint(1000000,9999999)
-                imid = str(image.rsplit('/', 1)[-1]).replace('.csv','')
+                imid = image.stem
             d['imageid'] = imid
         # Unique name for the data
         if unique_CellId is True:
@@ -225,7 +227,10 @@ Example:
 
     # Save data if requested
     if output_dir is not None:
-        imid = str(image_path[0].rsplit('/', 1)[-1]).replace('.csv','')
+        output_dir = pathlib.Path(output_dir)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        imid = image_path[0].stem
+        adata.write(output_dir / f'{imid}.h5ad')
         adata.write(str(output_dir) + '/' + imid + '.h5ad')
     else:    
         # Return data
