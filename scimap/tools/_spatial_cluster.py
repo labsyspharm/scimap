@@ -15,6 +15,7 @@ from scimap.tools._cluster import cluster
 import anndata as ad
 import argparse
 import sys
+import pathlib
 
 def main(argv=sys.argv):
     parser = argparse.ArgumentParser(
@@ -172,7 +173,9 @@ Example:
     
     # Save data if requested
     if output_dir is not None:
-        adata.write(str(output_dir) + '/' + imid)
+        output_dir = pathlib.Path(output_dir)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        adata.write(output_dir / imid)
     else:    
         # Return data
         return adata

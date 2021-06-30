@@ -19,6 +19,7 @@ from sklearn.cluster import KMeans
 import argparse
 import sys
 import anndata
+import pathlib
 try:
     import parc
 except:
@@ -465,7 +466,9 @@ Example:
     
     # Save data if requested
     if output_dir is not None:
-        adata.write(str(output_dir) + '/' + imid)
+        output_dir = pathlib.Path(output_dir)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        adata.write(output_dir / imid)
     else:    
         # Return data
         return adata

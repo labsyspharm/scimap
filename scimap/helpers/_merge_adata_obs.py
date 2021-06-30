@@ -12,6 +12,7 @@
 
 import argparse
 import sys
+import pathlib
 import pandas as pd
 import anndata as ad
 
@@ -112,7 +113,9 @@ Example:
     
     # Save data if requested
     if output_dir is not None:
-        final_adata.write(str(output_dir) + '/combined.h5ad')
+        output_dir = pathlib.Path(output_dir)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        final_adata.write(output_dir / 'combined.h5ad')
     else:    
         # Return data
         return final_adata

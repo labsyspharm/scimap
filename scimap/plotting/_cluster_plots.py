@@ -11,6 +11,7 @@
 # Import
 import argparse
 import sys
+import pathlib
 import anndata as ad
 import scanpy as sc
 import matplotlib.pyplot as plt
@@ -108,7 +109,9 @@ Example:
     fig.tight_layout()
     # save figure
     if output_dir is not None:
-        fig.savefig(output_dir + '/umap.pdf')
+        output_dir = pathlib.Path(output_dir)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        fig.savefig(output_dir / 'umap.pdf')
         
     # Matrix plot
     mat_fig = sc.pl.matrixplot(adata, var_names=adata.var.index, groupby=group_by, use_raw=use_raw,
@@ -116,7 +119,7 @@ Example:
                      return_fig=True
                      )
     if output_dir is not None:
-        mat_fig.savefig(output_dir + '/matrixplot.pdf')
+        mat_fig.savefig(output_dir / 'matrixplot.pdf')
     
     # Marker expression per group
     sc.tl.rank_genes_groups(adata, group_by, method='t-test')
@@ -129,7 +132,7 @@ Example:
     if output_dir is not None:
         sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12, show=False)
         plt.suptitle(group_by, fontsize=20)
-        plt.savefig(output_dir + '/ranked_markers_per_cluster.pdf')
+        plt.savefig(output_dir / 'ranked_markers_per_cluster.pdf')
     else:
         sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12)
         
