@@ -112,13 +112,13 @@ Example:
     final_adata.obs = df
     
     # Find name of file
-    # imid = str(adata[0].rsplit('/', 1)[-1])
+    image_path = pathlib.Path(adata[0])    
     
     # Save data if requested
     if output_dir is not None:
         output_dir = pathlib.Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
-        final_adata.write(output_dir / 'combined.h5ad')
+        final_adata.write(output_dir / image_path.name)
     else:    
         # Return data
         return final_adata
