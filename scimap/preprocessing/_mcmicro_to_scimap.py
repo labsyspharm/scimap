@@ -231,7 +231,7 @@ Example:
         output_dir.mkdir(exist_ok=True, parents=True)
         imid = image_path[0].stem
         adata.write(output_dir / f'{imid}.h5ad')
-        adata.write(str(output_dir) + '/' + imid + '.h5ad')
+        #adata.write(str(output_dir) + '/' + imid + '.h5ad')
     else:    
         # Return data
         return adata

@@ -111,6 +111,9 @@ Example:
     # replace obs
     final_adata.obs = df
     
+    # Find name of file
+    # imid = str(adata[0].rsplit('/', 1)[-1])
+    
     # Save data if requested
     if output_dir is not None:
         output_dir = pathlib.Path(output_dir)
