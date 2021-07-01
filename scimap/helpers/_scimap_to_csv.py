@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np
 import argparse
 import sys
+import pathlib
 import anndata as ad
 
 
@@ -94,7 +95,9 @@ Example:
 
     # Save data if requested
     if output_dir is not None:
-        merged.to_csv(str(output_dir) + '/' + imid + '.csv')
+        output_dir = pathlib.Path(output_dir)
+        output_dir.mkdir(exist_ok=True, parents=True)
+        merged.to_csv(output_dir / f'{imid}.csv')
     else:    
         # Return data
         return merged
