@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.17.1"
+version = "0.17.2"
 description = "Single-Cell Image Analysis Package"
 
 license = "MIT"
@@ -10,8 +10,8 @@ authors = ["Ajit Johnson Nirmal <ajitjohnson.n@gmail.com>"]
 
 readme = "README.md"
 
-homepage = "https://pypi.org/project/scimap"
-documentation = "https://scimap.readthedocs.io"
+homepage = "https://pypi.org/project/scimap/"
+documentation = "https://scimap.xyz"
 repository = "https://github.com/ajitjohnson/scimap"
 
 keywords = ["image analysis","multiplex imaging","single cell analysis"]
