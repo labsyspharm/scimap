@@ -92,9 +92,11 @@ Example:
     
     # Load the data 
     if isinstance(adata, str):
-        adata = ad.read(adata)
+        adata = ad.read(adata)  
+        imid = pathlib.Path(adata).stem
     else:
         adata = adata
+        imid = ""
         
     # Subset data if needed
     if subsample is not None:
@@ -111,7 +113,10 @@ Example:
     if output_dir is not None:
         output_dir = pathlib.Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
-        fig.savefig(output_dir / 'umap.pdf')
+        #fig.savefig(output_dir / f"{imid}_umap.pdf")
+        fig.savefig(pathlib.Path(output_dir) / f"{imid}_umap.pdf")
+        
+
         
     # Matrix plot
     mat_fig = sc.pl.matrixplot(adata, var_names=adata.var.index, groupby=group_by, use_raw=use_raw,
@@ -119,7 +124,8 @@ Example:
                      return_fig=True
                      )
     if output_dir is not None:
-        mat_fig.savefig(output_dir / 'matrixplot.pdf')
+        #mat_fig.savefig(output_dir / 'matrixplot.pdf')
+        mat_fig.savefig(pathlib.Path(output_dir) / f"{imid}_matrixplot.pdf")
     
     # Marker expression per group
     sc.tl.rank_genes_groups(adata, group_by, method='t-test')
@@ -132,7 +138,8 @@ Example:
     if output_dir is not None:
         sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12, show=False)
         plt.suptitle(group_by, fontsize=20)
-        plt.savefig(output_dir / 'ranked_markers_per_cluster.pdf')
+        #plt.savefig(output_dir / 'ranked_markers_per_cluster.pdf')
+        plt.savefig(pathlib.Path(output_dir) / f"{imid}_ranked_markers_per_cluster.pdf")
     else:
         sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12)
         
