@@ -215,10 +215,9 @@ Example:
     else:
         adata = adata
         
-    # dynamically adatapt the number of neighbours
+    # dynamically adapt the number of neighbours
     if nearest_neighbors > adata.shape[0]:
         nearest_neighbors = adata.shape[0] - 3
-    
     
     
     # Leiden clustering

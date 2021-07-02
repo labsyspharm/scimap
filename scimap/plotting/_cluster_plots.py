@@ -92,8 +92,8 @@ Example:
     
     # Load the data 
     if isinstance(adata, str):
-        adata = ad.read(adata)  
         imid = pathlib.Path(adata).stem
+        adata = ad.read(adata)  
     else:
         adata = adata
         imid = ""
