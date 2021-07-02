@@ -105,43 +105,57 @@ Example:
     
     
     # UMAP
-    sc.pp.neighbors(adata) # Computing the neighborhood graph
-    sc.tl.umap(adata)
-    fig = sc.pl.umap(adata, color=group_by, palette = palette, size=size, return_fig=True, show=False) # View the clustering
-    fig.tight_layout()
-    # save figure
-    if output_dir is not None:
-        output_dir = pathlib.Path(output_dir)
-        output_dir.mkdir(exist_ok=True, parents=True)
-        #fig.savefig(output_dir / f"{imid}_umap.pdf")
-        fig.savefig(pathlib.Path(output_dir) / f"{imid}_umap.pdf")
-        
+    try:
+        sc.pp.neighbors(adata) # Computing the neighborhood graph
+        sc.tl.umap(adata)
+        fig = sc.pl.umap(adata, color=group_by, palette = palette, size=size, return_fig=True, show=False) # View the clustering
+        fig.tight_layout()
+        # save figure
+        if output_dir is not None:
+            output_dir = pathlib.Path(output_dir)
+            output_dir.mkdir(exist_ok=True, parents=True)
+            #fig.savefig(output_dir / f"{imid}_umap.pdf")
+            fig.savefig(pathlib.Path(output_dir) / f"{imid}_umap.pdf")
+            
+    except Exception as exc:
+        print('UMAP could not be generated')
+        print (exc)
 
-        
     # Matrix plot
-    mat_fig = sc.pl.matrixplot(adata, var_names=adata.var.index, groupby=group_by, use_raw=use_raw,
-                     cmap='RdBu_r', dendrogram=True, title = group_by,
-                     return_fig=True
-                     )
-    if output_dir is not None:
-        #mat_fig.savefig(output_dir / 'matrixplot.pdf')
-        mat_fig.savefig(pathlib.Path(output_dir) / f"{imid}_matrixplot.pdf")
+    try:
+        mat_fig = sc.pl.matrixplot(adata, var_names=adata.var.index, groupby=group_by, use_raw=use_raw,
+                         cmap='RdBu_r', dendrogram=True, title = group_by,
+                         return_fig=True
+                         )
+        if output_dir is not None:
+            #mat_fig.savefig(output_dir / 'matrixplot.pdf')
+            mat_fig.savefig(pathlib.Path(output_dir) / f"{imid}_matrixplot.pdf")
+            
+    except Exception as exc:
+        print('Heatmap could not be generated')
+        print (exc)
     
     # Marker expression per group
-    sc.tl.rank_genes_groups(adata, group_by, method='t-test')
-    # find number of genes in dataset
-    if len(adata.var.index) > 20:
-        n_genes = 20
-    else:
-        n_genes = len(adata.var.index)
-    
-    if output_dir is not None:
-        sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12, show=False)
-        plt.suptitle(group_by, fontsize=20)
-        #plt.savefig(output_dir / 'ranked_markers_per_cluster.pdf')
-        plt.savefig(pathlib.Path(output_dir) / f"{imid}_ranked_markers_per_cluster.pdf")
-    else:
-        sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12)
+    try:
+        sc.tl.rank_genes_groups(adata, group_by, method='t-test')
+     
+        # find number of genes in dataset
+        if len(adata.var.index) > 20:
+            n_genes = 20
+        else:
+            n_genes = len(adata.var.index)
+        
+        if output_dir is not None:
+            sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12, show=False)
+            plt.suptitle(group_by, fontsize=20)
+            #plt.savefig(output_dir / 'ranked_markers_per_cluster.pdf')
+            plt.savefig(pathlib.Path(output_dir) / f"{imid}_ranked_markers_per_cluster.pdf")
+        else:
+            sc.pl.rank_genes_groups(adata, sharey=False, n_genes=n_genes, fontsize=12)
+            
+    except Exception as exc:
+        print('Finding differential markers per group cannot be completed')
+        print (exc)
         
     
 
