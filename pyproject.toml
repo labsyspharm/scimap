@@ -12,7 +12,7 @@ readme = "README.md"
 
 homepage = "https://pypi.org/project/scimap/"
 documentation = "https://scimap.xyz"
-repository = "https://github.com/ajitjohnson/scimap"
+repository = "https://github.com/labsyspharm/scimap"
 
 keywords = ["image analysis","multiplex imaging","single cell analysis"]
 
