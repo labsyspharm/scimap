@@ -16,7 +16,7 @@
 import pandas as pd
 import matplotlib.pylab as plt
 import seaborn as sns; sns.set(color_codes=True)
-import plotly.express as pxs
+import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default = 'browser'
