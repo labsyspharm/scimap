@@ -1,8 +1,8 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.17.6"
-description = "Single-Cell Image Analysis Package"
+version = "0.17.7"
+description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
 

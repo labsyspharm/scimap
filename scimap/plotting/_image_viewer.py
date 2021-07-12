@@ -22,7 +22,7 @@ import tifffile as tiff
 import dask.array as da
 import zarr
 
-def image_viewer (image_path, adata, overlay=None,
+def image_viewer (image_path, adata, overlay=None, flip_y=True,
                     overlay_category=None,markers=None,channel_names='default',
                     x_coordinate='X_centroid',y_coordinate='Y_centroid',point_size=10,
                     point_color=None,subset=None,imageid='imageid',seg_mask=None,**kwargs):
@@ -35,6 +35,10 @@ Parameters:
         Location to the segmentation mask file.
 
     adata : AnnData Object  
+        
+    flip_y : bool, optional  
+        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
+        If the image overlays do not align to the cells, try again by setting this to `False`.
 
     overlay : string, optional  
         Name of the column with any categorical data such as phenotypes or clusters.
@@ -147,7 +151,7 @@ Example:
         pyramid, multiscale=multiscale, channel_axis=0,
         visible=False, 
         name = None if channel_names is None else channel_names,
-        **kwargs
+        #**kwargs
     )
     
     # Add the seg mask
@@ -157,7 +161,12 @@ Example:
     # Add phenotype layer function
     def add_phenotype_layer (adata, overlay, phenotype_layer,x,y,viewer,point_size,point_color):
         coordinates = adata[adata.obs[overlay] == phenotype_layer]
-        coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
+        # Flip Y AXIS if needed
+        if flip_y is True:
+            coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
+        else:  
+            coordinates = pd.DataFrame({'x': coordinates.obs[x],'y': coordinates.obs[y]})
+
         #points = coordinates.values.tolist()
         points = coordinates.values
         if point_color is None:

@@ -23,7 +23,7 @@ import dask.array as da
 import zarr
 
 def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate = 8, increment = 0.1,
-                 markers=None, channel_names = 'default',
+                 markers=None, channel_names = 'default', flip_y=True,
                  x_coordinate='X_centroid',y_coordinate='Y_centroid',
                  point_size=10,imageid='imageid',subset=None,seg_mask=None,**kwargs):
     """
@@ -41,6 +41,10 @@ Parameters:
 
     to_gate : int, optional  
         End value of the gate of interest.
+        
+    flip_y : bool, optional  
+        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
+        If the image overlays do not align to the cells, try again by setting this to `False`.
 
     increment : float, optional  
         Increments between the start and end values.
@@ -206,7 +210,11 @@ Example:
     def add_phenotype_layer (adata, gates, phenotype_layer,x,y,viewer,point_size):
         cells = gates[gates[phenotype_layer] == 1].index
         coordinates = adata[cells]
-        coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
+        # Flip Y axis if needed
+        if flip_y is True:
+            coordinates = pd.DataFrame({'y': coordinates.obs[y],'x': coordinates.obs[x]})
+        else:  
+            coordinates = pd.DataFrame({'x': coordinates.obs[x],'y': coordinates.obs[y]})
         #points = coordinates.values.tolist()
         points = coordinates.values
         #import time

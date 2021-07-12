@@ -91,7 +91,7 @@ def voronoi_finite_polygons_2d(vor, radius=None):
 # Actual function
 
 def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-             imageid='imageid',subset=None, x_lim=None, y_lim=None,
+             imageid='imageid',subset=None, x_lim=None, y_lim=None, flip_y=True,
              voronoi_edge_color='black', voronoi_line_width=0.1, voronoi_alpha=0.5, size_max=np.inf,
              overlay_points=None, overlay_points_categories=None, overlay_drop_categories=None, overlay_points_colors=None,
              overlay_point_size = 5, overlay_point_alpha= 1, overlay_point_shape=".", plot_legend=True, legend_size = 6, **kwargs):
@@ -112,6 +112,10 @@ Parameters:
 
     y_coordinate : float, required  
         Column name containing the y-coordinates values.
+           
+    flip_y : bool, optional  
+        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
+        If the image overlays do not align to the cells, try again by setting this to `False`.
 
     imageid : string, optional  
         Column name of the column containing the image id.
@@ -227,7 +231,8 @@ Example:
     points = data[[x_coordinate,y_coordinate]].values
     
     # invert the Y-axis
-    points[:,1] = max(points[:,1])-points[:,1]
+    if flip_y is True:
+        points[:,1] = max(points[:,1])-points[:,1]
     
     # Generate colors
     if color_by is None:
