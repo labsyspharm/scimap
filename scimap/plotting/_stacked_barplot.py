@@ -187,8 +187,9 @@ Example:
         except NameError:
             width=0.9
         # actual plotting   
-        p = pivot_df.plot.bar(stacked=True, cmap=matplotlib_cmap, width=width, **kwargs)
-        p.legend(bbox_to_anchor=matplotlib_bbox_to_anchor, loc=matplotlib_legend_loc)
+        p = pivot_df.plot.bar(stacked=True, cmap=matplotlib_cmap, width=width,  **kwargs)
+        handles, labels = p.get_legend_handles_labels() # for reversing the order of the legend
+        p.legend(reversed(handles), reversed(labels), bbox_to_anchor=matplotlib_bbox_to_anchor, loc=matplotlib_legend_loc)
     
     elif plot_tool == 'plotly':
         
