@@ -1,0 +1,17 @@
+name: docs
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2.3.3
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+          architecture: x64
+      - run: pip install scimap mkdocs-material mkdocstrings
+      - run: mkdocs gh-deploy --force

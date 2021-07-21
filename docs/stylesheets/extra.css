@@ -1,0 +1,14 @@
+.md-typeset h4 {
+    border-style: solid;
+    border-color: teal;
+    border-width: 0.1em;
+    padding: 1em;
+    border-radius: 0.3em;
+    box-shadow: 2px 2px 2px 2px #0ff;
+  }
+
+.md-typeset table:not([class]) {
+    font-size: 1em;
+  }
+
+  

@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import hashlib
+import sys
+
+
+def run(paths):
+    sha = hashlib.sha1()
+
+    for path in paths:
+        try:
+            with open(path, 'rb') as f:
+                for chunk in iter(lambda: f.read(4096), b''):
+                    sha.update(chunk)
+        except IOError:
+            sha.update(path.encode())
+
+    print(sha.hexdigest())
+
+
+if __name__ == '__main__':
+    run(sys.argv[1:])
