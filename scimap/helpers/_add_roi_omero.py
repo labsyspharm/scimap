@@ -20,7 +20,7 @@ import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
 
 
-def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI', n_jobs=-1):
+def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI', n_jobs=-1, verbose=False):
     
     """
 Parameters:
@@ -39,6 +39,9 @@ Parameters:
 
     label : string, optional  
         Key for the returned data, stored in `adata.obs`.
+        
+    n_jobs : int, optional  
+        Number of cores to use. Default is to use all available cores.
 
 Returns:
     adata
@@ -115,7 +118,7 @@ Example:
     
     # Apply function to all rows of the ROI dataframe
     roi_list = roi['Id'].unique()
-    final_roi = Parallel(n_jobs=n_jobs)(delayed(add_roi_internal)(roi_id=i) for i in roi_list)   
+    final_roi = Parallel(n_jobs=n_jobs, verbose=verbose)(delayed(add_roi_internal)(roi_id=i) for i in roi_list)   
     
     # Merge all into a single DF
     final_roi = pd.concat(final_roi)[['ROI']]
