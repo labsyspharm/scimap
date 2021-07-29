@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created on Mon Nov 16 08:34:04 2020
-# @author: Ajit Johnson Nirmal
+# @author: Ajit Johnson Nirmal and Yuan Chen
 """
 !!! abstract "Short Description"
     `sm.hl.add_roi_omero`: The function allows users to add annotations that have been 
@@ -20,7 +20,7 @@ import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
 
 
-def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI'):
+def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI', n_jobs=-1):
     
     """
 Parameters:
@@ -115,7 +115,7 @@ Example:
     
     # Apply function to all rows of the ROI dataframe
     roi_list = roi['Id'].unique()
-    final_roi = Parallel(n_jobs=-1)(delayed(add_roi_internal)(roi_id=i) for i in roi_list)   
+    final_roi = Parallel(n_jobs=n_jobs)(delayed(add_roi_internal)(roi_id=i) for i in roi_list)   
     
     # Merge all into a single DF
     final_roi = pd.concat(final_roi)[['ROI']]
