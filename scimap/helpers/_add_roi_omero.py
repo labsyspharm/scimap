@@ -40,13 +40,20 @@ Parameters:
         Column name containing the y-coordinates values.
     
     imageid : string, optional  
-        Column name of the column you wish to subset
+        In the event that the adata object contains multiple images, it is
+        important that ROIs are added to each image seperately. Pass the column name 
+        of the column that contains the `imageid` and use it in conjunction with
+        the `subset` parameter to add ROI's to a specific image.
 
     subset : list, optional  
-        list of name/id of the image to be subsetted for analyis.
+        Name of the image to which the ROI is to be added. Note if you have multiple images in the 
+        adata object, you will need to add ROI's to each image one after the other independently. 
     
     overwrite : bool, optional  
-        Overwrite the label column. 
+        In the event you have multiple images in the adata object, ROI can be added to each image
+        independently using the `imageid` and `subset` parameter. If you wish the results to be
+        all saved with in the same column set this parameter to `False`. By default, the 
+        function will overwrite the label column. 
 
     label : string, optional  
         Key for the returned data, stored in `adata.obs`.
