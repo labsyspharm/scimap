@@ -41,7 +41,7 @@ Parameters:
     
     imageid : string, optional  
         In the event that the adata object contains multiple images, it is
-        important that ROIs are added to each image seperately. Pass the column name 
+        important that ROIs are added to each image seperately. Pass the name 
         of the column that contains the `imageid` and use it in conjunction with
         the `subset` parameter to add ROI's to a specific image.
 
