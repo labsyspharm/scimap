@@ -53,7 +53,7 @@ Parameters:
         In the event you have multiple images in the adata object, ROI can be added to each image
         independently using the `imageid` and `subset` parameter. If you wish the results to be
         all saved with in the same column set this parameter to `False`. By default, the 
-        function will overwrite the label column. 
+        function will overwrite the `label` column. 
 
     label : string, optional  
         Key for the returned data, stored in `adata.obs`.
