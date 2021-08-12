@@ -20,7 +20,9 @@ import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
 
 
-def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',label='ROI', n_jobs=-1, verbose=False):
+def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',
+                   imageid='imageid', subset=None, overwrite=True,
+                   label='ROI', n_jobs=-1, verbose=False):
     
     """
 Parameters:
@@ -36,6 +38,15 @@ Parameters:
 
     y_coordinate : float, required  
         Column name containing the y-coordinates values.
+    
+    imageid : string, optional  
+        Column name of the column you wish to subset
+
+    subset : list, optional  
+        list of name/id of the image to be subsetted for analyis.
+    
+    overwrite : bool, optional  
+        Overwrite the label column. 
 
     label : string, optional  
         Key for the returned data, stored in `adata.obs`.
@@ -55,7 +66,18 @@ Example:
     """
     
     # create data matrix that has the co-ordinates
-    data = pd.DataFrame(adata.obs)[[x_coordinate, y_coordinate]]
+    data = pd.DataFrame(adata.obs)[[x_coordinate, y_coordinate, imageid]]
+    
+    # subset the data if needed
+    if subset is not None:
+        # convert string to list
+        if isinstance(subset, str): 
+            subset = [subset]
+        # subset data
+        sub_data = data[data['imageid'].isin(subset)]
+    else:
+        sub_data = data
+    
     
     def parse_roi_points(all_points):
         return np.array(
@@ -110,8 +132,8 @@ Example:
         roi_subset = roi[roi['Id'] == roi_id].iloc[0]
         
         roi_mpatch = get_mpatch(roi_subset)
-        inside = data[roi_mpatch.contains_points(data)]
-        inside['ROI'] = roi_subset['Name']
+        inside = sub_data[roi_mpatch.contains_points(sub_data[[x_coordinate, y_coordinate]])]
+        inside['ROI_internal'] = roi_subset['Name']
 
         # return
         return inside
@@ -121,17 +143,35 @@ Example:
     final_roi = Parallel(n_jobs=n_jobs, verbose=verbose)(delayed(add_roi_internal)(roi_id=i) for i in roi_list)   
     
     # Merge all into a single DF
-    final_roi = pd.concat(final_roi)[['ROI']]
+    final_roi = pd.concat(final_roi)[['ROI_internal']]
     
     # Add the list to obs
     result = pd.merge(data, final_roi, left_index=True, right_index=True, how='outer')
     
     # Reindex
     result = result.reindex(adata.obs.index)
-    result['ROI'] = result['ROI'].fillna('Other')
+    
+    # check if adata already has a column with the supplied label
+    # if avaialble overwrite or append depending on users choice
+    if label in adata.obs.columns:
+        if overwrite is False:
+            # Append
+            # retreive the ROI information
+            old_roi = adata.obs[label]
+            combined_roi = pd.merge(result, old_roi, left_index=True, right_index=True, how='outer')
+            combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna(combined_roi[label])
+        else:
+            # Over write
+            combined_roi = result.copy()
+            combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna('Other')     
+    else:
+        # if label is not present just create a new one
+        combined_roi = result.copy()
+        combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna('Other') 
+    
     
     # Add to adata
-    adata.obs[label] = result['ROI']
+    adata.obs[label] = combined_roi['ROI_internal']
     
     # return
     return adata
