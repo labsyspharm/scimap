@@ -22,7 +22,7 @@ def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phen
                       method='heatmap',heatmap_summarize=True,heatmap_na_color='grey',heatmap_cmap='vlag_r',
                       heatmap_row_cluster=False,heatmap_col_cluster=False,heatmap_standard_scale=0,
                       distance_from=None,distance_to=None,x_axis = None,y_axis = None,facet_by = None,plot_type = None,
-                      return_data = False,
+                      return_data = False, subset_col=None, subset_value=None,
                       **kwargs):
     """
 Parameters:
@@ -102,7 +102,18 @@ Parameters:
         For `distribution` plot, the following options are available: “hist”, “kde”, “ecdf”.  
         The default for `numeric` plot is 'boxen'.  
         The default for `distribution` plot is 'kde`. 
-
+        
+    subset_col : string, optional  
+        If the users wants to consider only a subset of observations while plotting, this argument in conjuction to 
+        `subset_value` can be used. 
+        For example, in the event of a multi-image dataset, the `sm.tl.spatial_distance` was run on all images 
+        but the user is interested in plotting only a subset of images. Pass the name of the column which contains 
+        the categories to be subsetted.
+    
+    subset_value : list, optional  
+        If the users wants to consider only a subset of observations while plotting, this argument in conjuction to 
+        `subset_col` can be used. Pass a list of the categories to be subsetted.
+        
     **kwargs : dict  
         Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`, `sns.catplot` or `sns.displot`
         e.g. `linecolor='black'`.
@@ -155,6 +166,18 @@ Example:
         diatance_map = adata.uns[spatial_distance].copy()
     except KeyError:
         raise ValueError('spatial_distance not found- Please run sm.tl.spatial_distance first')
+    
+    # subset the data if user requests
+    if subset_col is not None:
+        if isinstance(subset_value, str):
+            subset_value = [subset_value]
+        # find the cell names to be subsetted out
+        obs = adata.obs[[subset_col]]
+        cells_to_subset = obs[obs[subset_col].isin(subset_value)].index
+        
+        # subset the diatance_map
+        diatance_map = diatance_map.loc[cells_to_subset]
+        
     
     # Convert distance to log scale if user requests
     if log is True:
