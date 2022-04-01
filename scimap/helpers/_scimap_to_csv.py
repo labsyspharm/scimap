@@ -74,11 +74,11 @@ Example:
         adata = adata
     
     # Expression matrix
-    if data_type is 'raw':
+    if data_type == 'raw':
         data = pd.DataFrame(adata.raw.X, index=adata.obs.index, columns=adata.var.index)
-    if data_type is 'log':
+    if data_type == 'log':
         data = pd.DataFrame(np.log1p(adata.raw.X), index=adata.obs.index, columns=adata.var.index)
-    if data_type is 'scaled':
+    if data_type == 'scaled':
         data = pd.DataFrame(adata.X, index=adata.obs.index, columns=adata.var.index)
     
     # Metadata

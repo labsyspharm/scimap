@@ -20,7 +20,12 @@ import random
 import tifffile as tiff
 
 import dask.array as da
+from dask.cache import Cache
 import zarr
+import os
+
+cache = Cache(2e9)  # Leverage two gigabytes of memory
+cache.register()
 
 def image_viewer (image_path, adata, overlay=None, flip_y=True,
                     overlay_category=None,markers=None,channel_names='default',
@@ -29,7 +34,7 @@ def image_viewer (image_path, adata, overlay=None, flip_y=True,
     """
 Parameters:
     image_path : string  
-        Location to the image file.
+        Location to the image file (TIFF, OME.TIFF, ZARR supported)
 
     seg_mask: string  
         Location to the segmentation mask file.
@@ -83,76 +88,96 @@ Example:
 ```
     """
     
-    # Load the image    
-    image = tiff.TiffFile(image_path, is_ome=False)
-    z = zarr.open(image.aszarr(), mode='r') # convert image to Zarr array
-    #z = image.aszarr() # convert image to Zarr array
+    #TODO
+    # - ADD Subset markers for ZARR ssection
+    # - Ability to use ZARR metadata if available
     
-    # Plot only the Image that is requested
-    if subset is not None:
-        adata = adata[adata.obs[imageid] == subset]
-
-    # Recover the channel names from adata
-    if channel_names is 'default':
-        channel_names = adata.uns['all_markers']
-    else:
-        channel_names = channel_names
-
-    # Index of the marker of interest and corresponding names
-    if markers is None:
-        idx = list(range(len(channel_names)))
-        channel_names = channel_names
-    else:
-        idx = []
-        for i in markers:
-            idx.append(list(channel_names).index(i))
-        channel_names = markers
-
-    # Identify the number of pyramids and number of channels
-    n_levels = len(image.series[0].levels) # pyramid
+    # adding option to load just the image without an adata object
+    if adata is None:
+        channel_names = None
+    else: 
+        # All operations on the AnnData object is performed first
+        # Plot only the Image that is requested
+        if subset is not None:
+            adata = adata[adata.obs[imageid] == subset]
     
-    # If and if not pyramids are available
-    if n_levels > 1:
-        pyramid = [da.from_zarr(z[i]) for i in range(n_levels)]
-        multiscale = True
-    else:
-        pyramid = da.from_zarr(z)
-        multiscale = False
+        # Recover the channel names from adata
+        if channel_names == 'default':
+            channel_names = adata.uns['all_markers']
+        else:
+            channel_names = channel_names
+    
+        # Index of the marker of interest and corresponding names
+        if markers is None:
+            idx = list(range(len(channel_names)))
+            channel_names = channel_names
+        else:
+            idx = []
+            for i in markers:
+                idx.append(list(channel_names).index(i))
+            channel_names = markers
         
-    # subset channels of interest
-    if markers is not None:
-        if n_levels > 1:
-            for i in range(n_levels-1):
-                pyramid[i] = pyramid[i][idx, :, :]
-            n_channels = pyramid[0].shape[0] # identify the number of channels
-        else:
-            pyramid = pyramid[idx, :, :]
-            n_channels = pyramid.shape[0] # identify the number of channels
-    else:
-        if n_levels > 1:
-            n_channels = pyramid[0].shape[0]
-        else:
-            n_channels = pyramid.shape[0]
-            
+        # Load the segmentation mask
+        if seg_mask is not None:
+            seg_m = tiff.imread(seg_mask)
     
-    # check if channel names have been passed to all channels
-    if channel_names is not None:
-        assert n_channels == len(channel_names), (
-            f'number of channel names ({len(channel_names)}) must '
-            f'match number of channels ({n_channels})'
+ 
+    
+ 
+    # Operations on the OME TIFF image is performed next
+    # check the format of image
+    if os.path.isfile(image_path) is True:  
+        image = tiff.TiffFile(image_path, is_ome=False) #is_ome=False
+        z = zarr.open(image.aszarr(), mode='r') # convert image to Zarr array
+        # Identify the number of pyramids
+        n_levels = len(image.series[0].levels) # pyramid
+        
+        # If and if not pyramids are available
+        if n_levels > 1:
+            pyramid = [da.from_zarr(z[i]) for i in range(n_levels)]
+            multiscale = True
+        else:
+            pyramid = da.from_zarr(z)
+            multiscale = False  
+   
+        # subset channels of interest
+        if markers is not None:
+            if n_levels > 1:
+                for i in range(n_levels-1):
+                    pyramid[i] = pyramid[i][idx, :, :]
+                n_channels = pyramid[0].shape[0] # identify the number of channels
+            else:
+                pyramid = pyramid[idx, :, :]
+                n_channels = pyramid.shape[0] # identify the number of channels
+        else:
+            if n_levels > 1:
+                n_channels = pyramid[0].shape[0]
+            else:
+                n_channels = pyramid.shape[0]
+            
+        # check if channel names have been passed to all channels
+        if channel_names is not None:
+            assert n_channels == len(channel_names), (
+                f'number of channel names ({len(channel_names)}) must '
+                f'match number of channels ({n_channels})'
+            )
+
+        # Load the viewer
+        viewer = napari.view_image(
+            pyramid, multiscale=multiscale, channel_axis=0,
+            visible=False, 
+            name = None if channel_names is None else channel_names,
+            #**kwargs
         )
     
-    # Load the segmentation mask
-    if seg_mask is not None:
-        seg_m = tiff.imread(seg_mask)
-
-    # Load the viewer
-    viewer = napari.view_image(
-        pyramid, multiscale=multiscale, channel_axis=0,
-        visible=False, 
-        name = None if channel_names is None else channel_names,
-        #**kwargs
-    )
+    # Operations on the ZARR image
+    # check the format of image
+    if os.path.isfile(image_path) is False: 
+        #print(image_path)
+        viewer = napari.Viewer()
+        viewer.open(image_path, multiscale=True,
+                    visible=False,
+                    name = None if channel_names is None else channel_names)
     
     # Add the seg mask
     if seg_mask is not None:
