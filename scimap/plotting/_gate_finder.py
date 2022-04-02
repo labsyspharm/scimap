@@ -130,7 +130,7 @@ Example:
         adata = adata[adata.obs[imageid] == subset]
 
     # Recover the channel names from adata
-    if channel_names is 'default':
+    if channel_names == 'default':
         channel_names = adata.uns['all_markers']
     else:
         channel_names = channel_names

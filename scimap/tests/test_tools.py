@@ -74,7 +74,7 @@ def test_cluster(adata):
     a = adata.obs['kmeans'].value_counts()[4]
     
     #test
-    assert a == 252
+    assert a == 261
 
 # Testing spatial_interaction function
 def test_spatial_interaction(adata):
