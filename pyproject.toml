@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.18.17"
+version = "0.18.18"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -50,6 +50,7 @@ shapely = "^1.7.1"
 gensim = "^4.0"
 mkdocs-material = "^7.1.1"
 napari-ome-zarr = "^0.4.0"
+llvmlite = "^0.38.0"
 
 [tool.poetry.dev-dependencies]
 
