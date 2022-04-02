@@ -20,7 +20,12 @@ import tifffile as tiff
 import numpy as np
 
 import dask.array as da
+from dask.cache import Cache
 import zarr
+import os
+
+cache = Cache(2e9)  # Leverage two gigabytes of memory
+cache.register()
 
 def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=None, channel_names = 'default', flip_y=True,
@@ -116,25 +121,17 @@ Example:
     gated_data = list(map(r_gate, inc)) # Apply function
     # Concat all the results into a single dataframe
     gates = pd.concat(gated_data, axis=1)
-
-    ##########################################################################
-    # Visulaisation using Napari
-    
-    # Load the image    
-    image = tiff.TiffFile(image_path, is_ome=False)
-    z = zarr.open(image.aszarr(), mode='r') # convert image to Zarr array
-    #z = image.aszarr() # convert image to Zarr array
     
     # Plot only the Image that is requested
     if subset is not None:
         adata = adata[adata.obs[imageid] == subset]
-
+        
     # Recover the channel names from adata
     if channel_names == 'default':
         channel_names = adata.uns['all_markers']
     else:
         channel_names = channel_names
-        
+
     # if markers is a string convert to list
     if isinstance(markers, str):
         markers = [markers]
@@ -147,55 +144,67 @@ Example:
     else:
         idx = list(range(len(channel_names)))
         channel_names = channel_names
-        
-
-    # Identify the number of pyramids and number of channels
-    n_levels = len(image.series[0].levels) # pyramid
-    
-    # If and if not pyramids are available
-    if n_levels > 1:
-        pyramid = [da.from_zarr(z[i]) for i in range(n_levels)]
-        multiscale = True
-    else:
-        pyramid = da.from_zarr(z)
-        multiscale = False
-    
-    # subset channels of interest
-    if markers is not None:
-        if n_levels > 1:
-            for i in range(n_levels-1):
-                pyramid[i] = pyramid[i][idx, :, :]
-            n_channels = pyramid[0].shape[0] # identify the number of channels
-        else:
-            pyramid = pyramid[idx, :, :]
-            n_channels = pyramid.shape[0] # identify the number of channels
-    else:
-        if n_levels > 1:
-            n_channels = pyramid[0].shape[0]
-        else:
-            n_channels = pyramid.shape[0]
-            
-    
-    # check if channel names have been passed to all channels
-    if channel_names is not None:
-        assert n_channels == len(channel_names), (
-            f'number of channel names ({len(channel_names)}) must '
-            f'match number of channels ({n_channels})'
-        )
-            
 
     # Load the segmentation mask
     if seg_mask is not None:
         seg_m = tiff.imread(seg_mask)
+        
+
+    ##########################################################################
+    # Visulaisation using Napari
+    
+    # load OME TIFF
+    if os.path.isfile(image_path) is True: 
+        # Load the image    
+        image = tiff.TiffFile(image_path, is_ome=False)
+        z = zarr.open(image.aszarr(), mode='r') # convert image to Zarr array
+        # Identify the number of pyramids and number of channels
+        n_levels = len(image.series[0].levels) # pyramid  
+        # If and if not pyramids are available
+        if n_levels > 1:
+            pyramid = [da.from_zarr(z[i]) for i in range(n_levels)]
+            multiscale = True
+        else:
+            pyramid = da.from_zarr(z)
+            multiscale = False   
+        # subset channels of interest
+        if markers is not None:
+            if n_levels > 1:
+                for i in range(n_levels-1):
+                    pyramid[i] = pyramid[i][idx, :, :]
+                n_channels = pyramid[0].shape[0] # identify the number of channels
+            else:
+                pyramid = pyramid[idx, :, :]
+                n_channels = pyramid.shape[0] # identify the number of channels
+        else:
+            if n_levels > 1:
+                n_channels = pyramid[0].shape[0]
+            else:
+                n_channels = pyramid.shape[0]\
+        # check if channel names have been passed to all channels
+        if channel_names is not None:
+            assert n_channels == len(channel_names), (
+                f'number of channel names ({len(channel_names)}) must '
+                f'match number of channels ({n_channels})'
+            )
+
+        # Load the viewer
+        viewer = napari.view_image(
+        pyramid,
+        channel_axis = 0,
+        multiscale=multiscale,
+        name = None if channel_names is None else channel_names,
+        visible = False, **kwargs)
 
 
-    # Load the viewer
-    viewer = napari.view_image(
-    pyramid,
-    channel_axis = 0,
-    multiscale=multiscale,
-    name = None if channel_names is None else channel_names,
-    visible = False, **kwargs)
+    # Operations on the ZARR image
+    # check the format of image
+    if os.path.isfile(image_path) is False: 
+        #print(image_path)
+        viewer = napari.Viewer()
+        viewer.open(image_path, multiscale=True,
+                    visible=False,
+                    name = None if channel_names is None else channel_names)
 
     # Add the seg mask
     if seg_mask is not None:
