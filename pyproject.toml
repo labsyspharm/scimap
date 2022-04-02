@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.18.15"
+version = "0.18.16"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -95,5 +95,7 @@ skip-string-normalization = true
 
 [build-system]
 
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+#requires = ["poetry>=0.12"]
+#build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
