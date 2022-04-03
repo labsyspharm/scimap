@@ -15,16 +15,14 @@ hide:
 [![Gitter chat](https://badges.gitter.im/scimap_io/community.png)](https://gitter.im/scimap_io/community)
 <br>
 <br>
-
-<img src="./assets/scimap_logo.jpg" style="max-width:700px;width:100%" >
-
+<img src="./assets/scimap_logo.jpg" style="" >
 <br>
 
 Scimap is a scalable toolkit for analyzing spatial molecular data. The underlying framework is generalizable to spatial datasets mapped to XY coordinates. The package uses the [anndata](https://anndata.readthedocs.io/en/stable/anndata.AnnData.html) framework making it easy to integrate with other popular single-cell analysis toolkits. It includes preprocessing, phenotyping, visualization, clustering, spatial analysis and differential spatial testing. The Python-based implementation efficiently deals with large datasets of millions of cells.
 <br>
 
 #### Notice for Apple M1 users
-Please note that multiple python packages have not yet extended support for M1 users. 
+Please note that multiple python packages have not yet extended support for M1 users.
 Below is a solution to install scimap in `Apple M1` machines
 
 ```
@@ -55,7 +53,7 @@ pip install git+https://github.com/vtraag/leidenalg.git
 # install scimap
 pip install -U scimap
 
-# uninstall 
+# uninstall
 conda remove llvmlite -y
 pip uninstall numba -y
 pip uninstall numpy -y
@@ -76,4 +74,3 @@ pip install -i https://pypi.anaconda.org/numba/label/wheels_experimental_m1/simp
 
 ### Funding
 This work is supported by the following NIH grant K99-CA256497
-
