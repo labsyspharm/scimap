@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.18.18"
+version = "0.18.19"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -45,12 +45,16 @@ TiffFile = "^2020.11.18"
 dask = {extras = ["array"], version = "^2.30.0"}
 zarr = "2.10.3"
 napari = "^0.4.2"
-numba = "^0.55.0"
+numba = ">=0.55.0"
 shapely = "^1.7.1"
 gensim = "^4.0"
 mkdocs-material = "^7.1.1"
 napari-ome-zarr = "^0.4.0"
-llvmlite = "^0.38.0"
+
+[[tool.poetry.source]]
+name = 'llvmlite'
+url = 'https://pypi.anaconda.org/numba/label/wheels_experimental_m1/simple/'
+secondary = true
 
 [tool.poetry.dev-dependencies]
 
