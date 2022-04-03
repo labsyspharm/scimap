@@ -16,12 +16,61 @@ hide:
 <br>
 <br>
 
-<img src="./assets/scimap_logo.png" style="max-width:700px;width:100%" >
+<img src="./assets/scimap_logo.jpg" style="max-width:700px;width:100%" >
 
 <br>
 
 Scimap is a scalable toolkit for analyzing spatial molecular data. The underlying framework is generalizable to spatial datasets mapped to XY coordinates. The package uses the [anndata](https://anndata.readthedocs.io/en/stable/anndata.AnnData.html) framework making it easy to integrate with other popular single-cell analysis toolkits. It includes preprocessing, phenotyping, visualization, clustering, spatial analysis and differential spatial testing. The Python-based implementation efficiently deals with large datasets of millions of cells.
 <br>
+
+#### Notice for Apple M1 users
+Please note that multiple python packages have not yet extended support for M1 users. 
+Below is a solution to install scimap in `Apple M1` machines
+
+```
+# reate and load a new environment
+conda create --name scimap python=3.8 -y
+conda activate scimap
+
+# if you do not have xcode please install it
+xcode-select --install
+
+# if you do not have homebrew please install it
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# if you do not have cmake install it
+brew install cmake
+
+# install h5py
+brew install hdf5@1.12
+export HDF5_DIR=/opt/homebrew/Cellar/hdf5/1.12.1_1/
+pip install --no-binary=h5py h5py
+
+# install llvmlite
+conda install llvmlite -y
+
+# install leidenalg
+pip install git+https://github.com/vtraag/leidenalg.git
+
+# install scimap
+pip install -U scimap
+
+# uninstall 
+conda remove llvmlite -y
+pip uninstall numba -y
+pip uninstall numpy -y
+
+# reinstall this specific version of llvmlite (ignore errors/warning)
+pip install -i https://pypi.anaconda.org/numba/label/wheels_experimental_m1/simple llvmlite
+
+# reinstall this specific version of numpy (ignore errors/warning)
+pip install numpy==1.22.3
+
+# reinstall this specific version of numba (ignore errors/warning)
+pip install -i https://pypi.anaconda.org/numba/label/wheels_experimental_m1/simple numba
+
+```
+
 
 *SCIMAP* development is led by [Ajit Johnson Nirmal](https://ajitjohnson.com/) at the Laboratory of Systems Pharmacology, Harvard Medical School.
 

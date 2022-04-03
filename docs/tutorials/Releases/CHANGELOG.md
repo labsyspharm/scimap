@@ -1,3 +1,8 @@
+# 0.10.0 (2023-04-03)
+
+ - Included support for `Apple M1` machines
+ - Included support for native rendering of Zarr stored images using Napari: `pl.image_viewer` and `pl.gate_finder`
+ 
 # 0.14.0 (2021-04-10)
 
  - Included `sm.tl.foldchange` function. Also calculated p-val by Fisher exact test
