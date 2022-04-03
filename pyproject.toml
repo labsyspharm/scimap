@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.18.19"
+version = "0.18.21"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -54,7 +54,8 @@ napari-ome-zarr = "^0.4.0"
 [[tool.poetry.source]]
 name = 'llvmlite'
 url = 'https://pypi.anaconda.org/numba/label/wheels_experimental_m1/simple/'
-secondary = true
+default = true
+
 
 [tool.poetry.dev-dependencies]
 
