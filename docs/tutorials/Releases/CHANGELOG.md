@@ -1,4 +1,4 @@
-# 0.10.0 (2023-04-03)
+# 0.19.0 (2023-04-03)
 
  - Included support for `Apple M1` machines
  - Included support for native rendering of Zarr stored images using Napari: `pl.image_viewer` and `pl.gate_finder`

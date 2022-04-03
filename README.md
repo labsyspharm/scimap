@@ -42,11 +42,12 @@ $ python
 
 ### Notice for Apple M1 users
 Please note that multiple python packages have not yet extended support for M1 users. 
-Below is a solution to install scimap in `Apple M1` machines
+Below is a temporary solution to install scimap in `Apple M1` machines. 
+Please follow the instructions in the given order.
 
 ```
-# reate and load a new environment
-conda create --name scimap python=3.8 -y
+# create and load a new environment
+conda create -y -n scimap -c andfoy python=3.9 pyqt
 conda activate scimap
 
 # if you do not have xcode please install it
