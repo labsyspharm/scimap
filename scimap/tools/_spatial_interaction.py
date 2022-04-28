@@ -6,8 +6,7 @@
 """
 !!! abstract "Short Description"
     `sm.tl.spatial_interaction`: The function allows users to computes how likely celltypes are found next to each another
-    compared to random background. 
-
+    compared to random background (3D data supported). 
 ## Function
 """
 
@@ -22,6 +21,7 @@ from functools import reduce
 
 # Function
 def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroid',
+                         z_coordinate=None,
                          phenotype='phenotype',
                          method='radius', radius=30, knn=10,
                          permutation=1000,
@@ -31,47 +31,37 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
     """
 Parameters:
     adata : AnnData object
-
     x_coordinate : float, required  
         Column name containing the x-coordinates values.
-
     y_coordinate : float, required  
         Column name containing the y-coordinates values.
-
+    z_coordinate : float, optional  
+        Column name containing the z-coordinates values.
     phenotype : string, required  
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
-
     method : string, optional  
         Two options are available: a) 'radius', b) 'knn'.
         a) radius - Identifies the neighbours within a given radius for every cell.
         b) knn - Identifies the K nearest neigbours for every cell.
-
     radius : int, optional  
         The radius used to define a local neighbhourhood.
-
     knn : int, optional  
         Number of cells considered for defining the local neighbhourhood.
-
     permutation : int, optional  
         The number of permutations to be performed for calculating the P-Value.
-
     imageid : string, optional  
         Column name of the column containing the image id.
-
     subset : string, optional  
         imageid of a single image to be subsetted for analyis.
-
     pval_method : string, optional  
         Two options are available: a) 'histocat', b) 'zscore'.  
         a) P-values are calculated by subtracting the permuted mean from the observed mean
         divided by the number of permutations as described in the histoCAT manuscript (Denis et.al, Nature Methods 2017)  
         b) zscores are calculated from the mean and standard deviation and further p-values are
         derived by fitting the observed values to a normal distribution. The default is 'histocat'.
-
     label : string, optional  
         Key for the returned data, stored in `adata.obs`. The default is 'spatial_interaction'.
-
 Returns:
     adata : AnnData object  
         Updated AnnData object with the results stored in `adata.obs['spatial_aggregate']`.
@@ -79,18 +69,24 @@ Returns:
 Example:
 ```python
     # Using the radius method to identify local neighbours and histocat to compute P-values
-    adata = sm.tl.spatial_interaction(adata, method='radius', radius=30,pval_method='histocat',
-                                      imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
+    adata = sm.tl.spatial_interaction(adata, method='radius', radius=30, pval_method='histocat',
+                                      imageid='imageid',x_coordinate='X',y_coordinate='Y')
     
     
     # Using the KNN method to identify local neighbours and zscore to compute P-values
     adata = sm.tl.spatial_interaction(adata, method='knn', radius=30,pval_method='zscore',
                                       imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
+
+    # Interaction analysis on 3D data
+    adata = sm.tl.spatial_interaction(adata, method='radius', radius=60, pval_method='zscore',
+                                      imageid='ImageId',x_coordinate='X_position',
+                                      y_coordinate='Y_position', z_coordinate='Z_position')
 ```
     """
     
     
     def spatial_interaction_internal (adata_subset,x_coordinate,y_coordinate,
+                                      z_coordinate,
                                       phenotype,
                                       method, radius, knn,
                                       permutation, 
@@ -100,23 +96,37 @@ Example:
         print("Processing Image: " + str(adata_subset.obs[imageid].unique()))
         
         # Create a dataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
-        
+        if z_coordinate is not None:
+            print("including Z")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        else:
+            print("Only XY")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
         if method == 'knn':
             print("Identifying the " + str(knn) + " nearest neighbours for every cell")
-            tree = BallTree(data[['x','y']], leaf_size= 2)
-            ind = tree.query(data[['x','y']], k=knn, return_distance= False)
+            if z_coordinate is not None:
+                tree = BallTree(data[['x','y','z']], leaf_size= 2)
+                ind = tree.query(data[['x','y','z']], k=knn, return_distance= False)
+            else:
+                tree = BallTree(data[['x','y']], leaf_size= 2)
+                ind = tree.query(data[['x','y']], k=knn, return_distance= False)
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
             neighbours.drop(0, axis=1, inplace=True) # Remove self neighbour
             
         # b) Local radius method
         if method == 'radius':
             print("Identifying neighbours within " + str(radius) + " pixels of every cell")
-            kdt = BallTree(data[['x','y']], metric='euclidean') 
-            ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+            if z_coordinate is not None:
+                kdt = BallTree(data[['x','y','z']], metric='euclidean') 
+                ind = kdt.query_radius(data[['x','y','z']], r=radius, return_distance=False)
+            else:
+                kdt = BallTree(data[['x','y']], metric='euclidean') 
+                ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+                
             for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
             
@@ -207,7 +217,8 @@ Example:
     
     # Apply function to all images and create a master dataframe
     # Create lamda function 
-    r_spatial_interaction_internal = lambda x: spatial_interaction_internal (adata_subset=x, x_coordinate=x_coordinate, y_coordinate=y_coordinate, phenotype=phenotype, method=method,  radius=radius, knn=knn, permutation=permutation, imageid=imageid,subset=subset,pval_method=pval_method) 
+    r_spatial_interaction_internal = lambda x: spatial_interaction_internal (adata_subset=x, x_coordinate=x_coordinate, y_coordinate=y_coordinate, 
+                                                                             z_coordinate=z_coordinate, phenotype=phenotype, method=method,  radius=radius, knn=knn, permutation=permutation, imageid=imageid,subset=subset,pval_method=pval_method) 
     all_data = list(map(r_spatial_interaction_internal, adata_list)) # Apply function 
     
 
