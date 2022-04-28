@@ -97,10 +97,9 @@ Example:
         
         # Create a dataFrame with the necessary inforamtion
         if z_coordinate is not None:
-            print("including Z")
+            print("Including Z -axis")
             data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         else:
-            print("Only XY")
             data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
 
         

@@ -5,7 +5,7 @@
 """
 !!! abstract "Short Description"
     `sm.tl.spatial_distance`: The function allows users to calculate 
-    the average shortest between phenotypes or clusters of interest.
+    the average shortest between phenotypes or clusters of interest (3D data supported).
 
 ## Function
 """
@@ -18,6 +18,7 @@ import itertools
 
 # Function
 def spatial_distance (adata,x_coordinate='X_centroid',y_coordinate='Y_centroid',
+                      z_coordinate=None,
                       phenotype='phenotype',subset=None,imageid='imageid',
                       label='spatial_distance'):
     """
@@ -31,6 +32,9 @@ Parameters:
 
     y_coordinate : float, required  
         Column name containing the y-coordinates values.
+    
+    z_coordinate : float, optional  
+        Column name containing the z-coordinates values.
 
     phenotype : string, required  
         Column name of the column containing the phenotype information. 
@@ -58,12 +62,16 @@ Example:
     """
     
     
-    def spatial_distance_internal (adata_subset,x_coordinate,y_coordinate,
+    def spatial_distance_internal (adata_subset,x_coordinate,y_coordinate,z_coordinate,
                                    phenotype,subset,imageid,label):
         
         print("Processing Image: " + str(adata_subset.obs[imageid].unique()[0]))
         # Create a dataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        if z_coordinate is not None:
+            print("Including Z -axis")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        else:
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
 
         # Function to identify shortest distance for each phenotype of interest
         def distance (pheno):
@@ -91,7 +99,9 @@ Example:
         
     # Apply function to all images and create a master dataframe
     # Create lamda function 
-    r_spatial_distance_internal = lambda x: spatial_distance_internal (adata_subset=x,x_coordinate=x_coordinate,y_coordinate=y_coordinate, phenotype=phenotype,subset=subset,imageid=imageid,label=label) 
+    r_spatial_distance_internal = lambda x: spatial_distance_internal (adata_subset=x,
+                                                                       x_coordinate=x_coordinate,y_coordinate=y_coordinate, z_coordinate=z_coordinate,
+                                                                       phenotype=phenotype,subset=subset,imageid=imageid,label=label) 
     all_data = list(map(r_spatial_distance_internal, adata_list)) # Apply function 
     
     # Merge all the results into a single dataframe    
