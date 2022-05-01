@@ -53,29 +53,39 @@ cache.register()
 
 
 # Function
-def addROI_image (image_path, adata, overlay=None, flip_y=True,
+def addROI_image (image_path, adata, subset=None,imageid='imageid', overlay=None, flip_y=True,
                     overlay_category=None,markers=None,channel_names='default',
                     x_coordinate='X_centroid',y_coordinate='Y_centroid',point_size=10,
-                    point_color=None,subset=None,imageid='imageid',seg_mask=None,
+                    point_color=None,seg_mask=None,
                     n_jobs=-1, verbose=False, 
                     overwrite=True, label='ROI', **kwargs):
     """
 Parameters:
     image_path : string  
-        Location to the image file (TIFF, OME.TIFF, ZARR supported)
-
-    seg_mask: string  
-        Location to the segmentation mask file.
+        Location to the image file (TIFF, OME.TIFF, ZARR supported)  
 
     adata : AnnData Object  
+    
+    subset : list, optional  
+        Name of the image to which the ROI is to be added. Note if you have multiple images in the 
+        adata object, you will need to add ROI's to each image one after the other independently.  
+        
+    imageid : string, optional  
+        In the event that the adata object contains multiple images, it is
+        important that ROIs are added to each image seperately. Pass the name 
+        of the column that contains the `imageid` and use it in conjunction with
+        the `subset` parameter to add ROI's to a specific image.
+
+    seg_mask: string  
+        Location to the segmentation mask file.  
+
+    overlay : string, optional  
+        Name of the column with any categorical data such as phenotypes or clusters.
         
     flip_y : bool, optional  
         Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
         If the image overlays do not align to the cells, try again by setting this to `False`.
-
-    overlay : string, optional  
-        Name of the column with any categorical data such as phenotypes or clusters.
-
+        
     overlay_category : list, optional  
         If only specfic categories within the overlay column is needed, pass their names as a list.
         If None, all categories will be used.
@@ -94,16 +104,6 @@ Parameters:
 
     point_size : int, optional  
         point size in the napari plot.
-
-    imageid : string, optional  
-        In the event that the adata object contains multiple images, it is
-        important that ROIs are added to each image seperately. Pass the name 
-        of the column that contains the `imageid` and use it in conjunction with
-        the `subset` parameter to add ROI's to a specific image.
-
-    subset : list, optional  
-        Name of the image to which the ROI is to be added. Note if you have multiple images in the 
-        adata object, you will need to add ROI's to each image one after the other independently. 
     
     overwrite : bool, optional  
         In the event you have multiple images in the adata object, ROI can be added to each image
@@ -126,9 +126,7 @@ Returns:
 Example:
 ```python
     image_path = '/Users/aj/Desktop/ptcl_tma/image.ome.tif'
-    adata = sm.pl.image_viewer (image_path, adata, overlay='phenotype',overlay_category=None,
-                markers=['CD31', "CD3D","DNA11",'CD19','CD45','CD163','FOXP3'],
-                point_size=7,point_color='white')
+    adata = sm.pl.addROI_image (image_path, adata, label="Tumor Regions")
 ```
     """
     
