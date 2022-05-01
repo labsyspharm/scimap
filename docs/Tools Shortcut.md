@@ -42,6 +42,7 @@ import scimap as sm
 | [`sm.pl.spatial_interaction`](All%20Functions/C.%20Plotting/sm.pl.spatial_interaction) | Heatmap of cell–cell interaction analysis                           |
 | [`sm.pl.spatial_distance`](All%20Functions/C.%20Plotting/sm.pl.spatial_distance)       | Visualize distance between phenotypes                               |
 | [`sm.pl.spatial_pscore`](All%20Functions/C.%20Plotting/sm.pl.spatial_pscore)           | Bar plot of the derived Spatial Proximity Scores                    |
+| [`sm.pl.addROI_image`](All%20Functions/C.%20Plotting/sm.pl.addROI_image)           | Add ROI's with  `napari` browser                       |
 |                                                                |                                                                                  |
 
 ### Helper Functions: `hl`
@@ -50,4 +51,4 @@ import scimap as sm
 |-----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 | [`sm.hl.classify`](All%20Functions/D.%20Helper%20Functions/sm.hl.classify.md)           | Quickly classify cells based on pos/negativity of list of markers |
 | [`sm.hl.scimap_to_csv`](All%20Functions/D.%20Helper%20Functions/sm.hl.scimap_to_csv.md) | Export scimap object to CSV                                       |
-| [`sm.hl.add_roi_omero`](All%20Functions/D.%20Helper%20Functions/sm.hl.add_roi_omero.md) | Add ROI's extracted from Omero to Scimap object                   |
+| [`sm.hl.addROI_omero`](All%20Functions/D.%20Helper%20Functions/sm.hl.addROI_omero.md) | Add ROI's extracted from Omero to Scimap object                   |

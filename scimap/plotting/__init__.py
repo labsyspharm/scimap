@@ -8,3 +8,4 @@ from ._voronoi import voronoi
 from ._foldchange import foldchange
 from ._pie import pie
 from ._cluster_plots import cluster_plots
+from ._addROI_image import addROI_image

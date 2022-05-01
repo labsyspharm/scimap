@@ -57,7 +57,7 @@ extra_css:
   - stylesheets/extra.css
 
 extra:
-  copyright: Copyright &copy; 2020 - 2021 Ajit Johnson Nirmal
+  copyright: Copyright &copy; 2020 - 2022 Ajit Johnson Nirmal
   social:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/ajitjohnson_n
