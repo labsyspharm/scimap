@@ -6,11 +6,11 @@
 """
 !!! abstract "Short Description"
     `sm.pl.addROI_image`: The function allows users to add ROIs to the data. 
-    The function open the image in a `napari` viewer and users should use the 
+    The function opens the image in a `napari` viewer and allows users to use the 
     shapes layer to add ROIs.   
     
     If the user is interesed in adding different ROI's (e.g. Tumor, Stroma, Tumor-Stromal-interface), 
-    each of these should be drawn in a seperate layer. 
+    each of these should be drawn in a seperate `shape layer`. 
     
     Please note that a single `shape layer` can contain multiple seperate annotated regions. 
     All annotated regions within a single shape layer will be pooled into a single ROI. 
@@ -20,7 +20,7 @@
     Please note: All ROI's have to be unique and cannot overlap.  
     
     *This function could also be used as a QC step to annotate regions of poor/ good quality 
-    and later subsetted for further analysis.*  
+    and later subsetted (keep or remove) for further analysis.*  
     
 ## Function
 """
