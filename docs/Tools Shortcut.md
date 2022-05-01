@@ -34,15 +34,15 @@ import scimap as sm
 |                                                                                        |                                                                     |
 |----------------------------------------------------------------------------------------|---------------------------------------------------------------------|
 | [`sm.pl.gate_finder`](All%20Functions/C.%20Plotting/sm.pl.gate_finder.md)              | Overlays gating positivity on the image for manual gating           |
-| [`sm.pl.image_viewer`](All%20Functions/C.%20Plotting/sm.pl.image_viewer)               | Opens the image with overlays on a `napari` browser                 |
-| [`sm.pl.stacked_barplot`](All%20Functions/C.%20Plotting/sm.pl.stacked_barplot)         | Generate a stacked barplot from any two columns of categorical data |
-| [`sm.pl.pie`](All%20Functions/C.%20Plotting/sm.pl.pie)                                 | Generate a pieplot of cell-type proportion or any categorical data  |
-| [`sm.pl.foldchange`](All%20Functions/C.%20Plotting/sm.pl.foldchange)                   | vizualize foldchange in phenotypes between samples/ROIs             |
-| [`sm.pl.voronoi`](All%20Functions/C.%20Plotting/sm.pl.voronoi)                         | Generate a voronoi diagram and color it with categorical data       |
-| [`sm.pl.spatial_interaction`](All%20Functions/C.%20Plotting/sm.pl.spatial_interaction) | Heatmap of cell–cell interaction analysis                           |
-| [`sm.pl.spatial_distance`](All%20Functions/C.%20Plotting/sm.pl.spatial_distance)       | Visualize distance between phenotypes                               |
-| [`sm.pl.spatial_pscore`](All%20Functions/C.%20Plotting/sm.pl.spatial_pscore)           | Bar plot of the derived Spatial Proximity Scores                    |
-| [`sm.pl.addROI_image`](All%20Functions/C.%20Plotting/sm.pl.addROI_image)           | Add ROI's with  `napari` browser                       |
+| [`sm.pl.image_viewer`](All%20Functions/C.%20Plotting/sm.pl.image_viewer.md)               | Opens the image with overlays on a `napari` browser                 |
+| [`sm.pl.stacked_barplot`](All%20Functions/C.%20Plotting/sm.pl.stacked_barplot.md)         | Generate a stacked barplot from any two columns of categorical data |
+| [`sm.pl.pie`](All%20Functions/C.%20Plotting/sm.pl.pie.md)                                 | Generate a pieplot of cell-type proportion or any categorical data  |
+| [`sm.pl.foldchange`](All%20Functions/C.%20Plotting/sm.pl.foldchange.md)                   | vizualize foldchange in phenotypes between samples/ROIs             |
+| [`sm.pl.voronoi`](All%20Functions/C.%20Plotting/sm.pl.voronoi.md)                         | Generate a voronoi diagram and color it with categorical data       |
+| [`sm.pl.spatial_interaction`](All%20Functions/C.%20Plotting/sm.pl.spatial_interaction.md) | Heatmap of cell–cell interaction analysis                           |
+| [`sm.pl.spatial_distance`](All%20Functions/C.%20Plotting/sm.pl.spatial_distance.md)       | Visualize distance between phenotypes                               |
+| [`sm.pl.spatial_pscore`](All%20Functions/C.%20Plotting/sm.pl.spatial_pscore.md)           | Bar plot of the derived Spatial Proximity Scores                    |
+| [`sm.pl.addROI_image`](All%20Functions/C.%20Plotting/sm.pl.addROI_image.md)           | Add ROI's with  `napari` browser                       |
 |                                                                |                                                                                  |
 
 ### Helper Functions: `hl`

@@ -2,4 +2,4 @@
 hide:
   - toc        # Hide table of contents
 ---
-::: scimap.helpers._addROI_omero
+::: scimap.plotting._addROI_image
