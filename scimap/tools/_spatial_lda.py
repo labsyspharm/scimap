@@ -70,11 +70,11 @@ Parameters:
         Either a randomState object or a seed to generate one. Useful for reproducibility.
 
     label : string, optional  
-        Key for the returned data, stored in `adata.obs`.
+        Key for the returned data, stored in `adata.uns`.
 
 Returns:
     adata : AnnData object  
-        Updated AnnData object with the results stored in `adata.obs ['spatial_lda']`.
+        Updated AnnData object with the results stored in `adata.uns ['spatial_lda']`.
     
 Example:
 ```python
