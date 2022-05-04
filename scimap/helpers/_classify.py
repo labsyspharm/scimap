@@ -18,7 +18,7 @@ import numpy as np
 
 # Functions
 def classify (adata, pos=None, neg=None, classify_label='passed_classify', 
-              phenotype='phenotype', subclassify_phenotype=None, threshold = 0.5,
+              phenotype=None, subclassify_phenotype=None, threshold = 0.5,
               collapse_failed=True, label="classify"):
     """
 Parameters:
@@ -89,10 +89,10 @@ Example:
     
     # Create a dataFrame with the necessary inforamtion
     data = pd.DataFrame(adata.X, index= adata.obs.index, columns = adata.var.index)
-    meta = pd.DataFrame(adata.obs[phenotype])
     
     # if user requests to subset a specific phenotype   
     if subclassify_phenotype is not None:
+        meta = pd.DataFrame(adata.obs[phenotype])
         subset_index = meta[meta[phenotype].isin(subclassify_phenotype)].index
         data = data.loc[subset_index]
         
@@ -113,19 +113,26 @@ Example:
         raise TypeError("No cells were found to satisfy your `classify` criteria")
     else:
         classify_idx = data.index
-        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
-        
-        
+        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx)
+        classified.columns = [label]
+        #classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
+
+
     if collapse_failed is True:
+        meta = pd.DataFrame(adata.obs.iloc[:, 0])
         meta = meta.merge(classified, how='outer', left_index=True, right_index=True)
-        meta.columns=[label,phenotype]
-        meta[phenotype] = meta[phenotype].fillna('failed_classify')
+        meta[label] = meta[label].fillna('failed_classify')
+        meta = meta[label] 
     else:
+        if phenotype is None:
+            raise ValueError("Please pass a column name to the PHENOTYPE argument")
+        meta = pd.DataFrame(adata.obs[phenotype])
+        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
         meta.update(classified)
     
     # Add to Anndata
     meta = meta.reindex(adata.obs.index)
-    adata.obs[label] = meta[phenotype]
+    adata.obs[label] = meta
     
     # return
     return adata
