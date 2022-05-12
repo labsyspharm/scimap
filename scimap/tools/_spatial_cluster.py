@@ -144,10 +144,11 @@ Example:
     try:
         adata_copy.uns[df_name]
     except KeyError:
-        print (str('Supplied df_name not found, please run either `sm.tl.spatial_expression` or `sm.tl.spatial_count`'))
+        print (str('Supplied df_name not found, please run `sm.tl.spatial_expression` or LDA, counts or other similar methods'))
     
     # Crete a new anndata object with the user defined spatial information
-    adata_new = ad.AnnData(adata_copy.uns[df_name].fillna(0),obs=adata_copy.obs)
+    adata_new = ad.AnnData(adata_copy.uns[df_name].fillna(0))
+    adata_new.obs = adata_copy.obs
     
     # Create a meaningful label name
     if label is None:

@@ -155,11 +155,13 @@ Example:
         # All operations on the AnnData object is performed first
         # Plot only the Image that is requested
         if subset is not None:
-            adata = adata[adata.obs[imageid] == subset]
+            adata_subset = adata[adata.obs[imageid].isin(subset)]
+        else:
+            adata_subset = adata.copy()
     
         # Recover the channel names from adata
         if channel_names == 'default':
-            channel_names = adata.uns['all_markers']
+            channel_names = adata_subset.uns['all_markers']
         else:
             channel_names = channel_names
     
@@ -223,7 +225,7 @@ Example:
             name = None if channel_names is None else channel_names,
             **kwargs
         )
-            
+         
     # Operations on the ZARR image
     # check the format of image
     if os.path.isfile(image_path) is False: 
@@ -256,13 +258,13 @@ Example:
     if overlay is not None:
         # categories under investigation
         if overlay_category is None:
-            available_phenotypes = list(adata.obs[overlay].unique())
+            available_phenotypes = list(adata_subset.obs[overlay].unique())
         else:
             available_phenotypes = overlay_category
 
         # Run the function on all phenotypes
         for i in available_phenotypes:
-            add_phenotype_layer (adata=adata, overlay=overlay,
+            add_phenotype_layer (adata=adata_subset, overlay=overlay,
                                     phenotype_layer=i, x=x_coordinate, y=y_coordinate, viewer=viewer,
                                     point_size=point_size,point_color=point_color)
      
