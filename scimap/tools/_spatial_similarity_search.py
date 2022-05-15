@@ -106,12 +106,11 @@ Parameters
         Path to output directory.
 
 Returns
-
     adata : AnnData object  
         Updated AnnData object with the results stored in `adata.obs [{label}_{ROIname}]`.
 
 Example
-    ```python
+```python
     # Running the spatial_similarity_search with the radius method
     adata = sm.tl.spatial_similarity_search (adata,ROI_column = 'Blood_Vessel_ROI',
                                                similarity_threshold=0.5,
@@ -132,8 +131,7 @@ Example
     sm.pl.image_viewer (image_path, adata, subset = 'unmicst-exemplar-001_cell', 
                         overlay='spatial_similarity_search_blood_vessel', point_color='White')
     
-    ```
-
+```
     """
     
     
