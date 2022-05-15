@@ -28,6 +28,7 @@ import scimap as sm
 | [`sm.tl.spatial_interaction`](All%20Functions/B.%20Tools/sm.tl.spatial_interaction.md) | cell–cell interactions analysis                                   |
 | [`sm.tl.spatial_lda`](All%20Functions/B.%20Tools/sm.tl.spatial_lda.md)                 | Latent Dirichlet Allocation (LDA) modelling for spatial motifs    |
 | [`sm.tl.spatial_pscore`](All%20Functions/B.%20Tools/sm.tl.spatial_pscore.md)           | Scoring proximity between user defined cell types                 |
+| [`sm.tl.spatial_similarity_search`](All%20Functions/B.%20Tools/sm.tl.spatial_similarity_search.md)           | Search for similar looking regions within and across images                 |
 
 ### Plotting: `pl`
 

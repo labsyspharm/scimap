@@ -40,7 +40,7 @@ def main(argv=sys.argv):
     
 
 # Function
-def scimap_to_csv (adata, data_type='raw', output_dir=None):
+def scimap_to_csv (adata, data_type='raw', output_dir=None, file_name=None):
     """
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
@@ -55,6 +55,10 @@ Parameters:
         
     output_dir : string, optional  
         Path to output directory.
+    
+    file_name : string, optional
+        Name the output csv file. Use in combination with `output_dir` parameter. If no
+        file name is provided a default name `scimap_to_csv_file.csv` will be used. 
 
 Returns:
     merged : DataFrame  
@@ -68,9 +72,16 @@ Example:
     
     # Load the andata object    
     if isinstance(adata, str):
-        imid = str(adata.rsplit('/', 1)[-1])
+        if file_name is None:
+            imid = str(adata.rsplit('/', 1)[-1])
+        else: 
+            imid = str(file_name)
         adata = ad.read(adata)
     else:
+        if file_name is None:
+            imid = "scimap_to_csv_file.csv"
+        else: 
+            imid = str(file_name)
         adata = adata
     
     # Expression matrix

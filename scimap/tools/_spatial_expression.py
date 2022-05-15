@@ -176,7 +176,7 @@ Returns:
             raise ValueError('Please run `sm.pp.rescale` first if you wish to use `use_raw = False`')
         
      
-    def spatial_expression_internal (adata_subset, x_coordinate, y_coordinate,
+    def spatial_expression_internal (adata_subset, x_coordinate, y_coordinate,log,
                                      method, radius, knn, imageid, use_raw, subset,label):
          
         # Create a DataFrame with the necessary inforamtion
@@ -242,6 +242,7 @@ Returns:
                                                                 method=method, radius=radius, 
                                                                 knn=knn, imageid=imageid, 
                                                                 use_raw=use_raw, subset=subset,
+                                                                log=log,
                                                                 label=label) 
     all_data = list(map(r_spatial_expression_internal, adata_list)) # Apply function 
     
