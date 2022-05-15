@@ -45,10 +45,7 @@ def spatial_similarity_search (adata,ROI_column,
                                reuse_similarity_matrix=None,
                                output_dir=None):
     """
-    
-
-    Parameters
-    ----------
+Parameters
     adata : AnnData object loaded into memory or path to AnnData object.  
     
     ROI_column : string, required  
@@ -108,13 +105,12 @@ def spatial_similarity_search (adata,ROI_column,
     output_dir : string, optional  
         Path to output directory.
 
-    Returns
-    ------
+Returns
+
     adata : AnnData object  
         Updated AnnData object with the results stored in `adata.obs [{label}_{ROIname}]`.
 
-    Example
-    -------
+Example
     ```python
     # Running the spatial_similarity_search with the radius method
     adata = sm.tl.spatial_similarity_search (adata,ROI_column = 'Blood_Vessel_ROI',
