@@ -175,7 +175,7 @@ Example
     
     def spatial_expression_internal (adata_subset, x_coordinate, y_coordinate,
                                      method, radius, knn, imageid, use_raw, log,
-                                     morphological_feature, use_only_morphological_features):
+                                     morphological_features, use_only_morphological_features):
         
         # Create a DataFrame with the necessary inforamtion
         data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate]})
