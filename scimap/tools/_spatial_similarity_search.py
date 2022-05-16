@@ -43,6 +43,8 @@ def spatial_similarity_search (adata,ROI_column,
                                use_raw=True, log=True, subset=None,
                                label='spatial_similarity_search',
                                reuse_similarity_matrix=None,
+                               morphological_features=None,
+                               use_only_morphological_features=False,
                                output_dir=None):
     """
 Parameters
@@ -101,6 +103,18 @@ Parameters
         can be adjusted multiple times to identify the regions that best resemble the input ROI. In order to use this 
         parameter, pass the `label` used when running this function for the first time. The defaul label is 
         `spatial_similarity_search`. The default is None.
+
+    morphological_features : list, optional  
+        For calculating the similarity between regions, in addition to the molecular/marker inforamtion, any additional 
+        information such as morphological features pertaining to individual cells can be passed into the algorithm. 
+        If the data was generated using the `mcmicro` pipeline these ['Area', 'MajorAxisLength','MinorAxisLength', 'Eccentricity', 'Solidity', 'Extent', 'Orientation'] 
+        are the usual morphological features that are captured. These can be passed into this parameter. Note one can use any additional 
+        feature that is stored in `adata.obs`. The default is None. 
+
+    use_only_morphological_features : bool, optional  
+        If the user passes data through `morphological_features`, one also has an option to identify regions of similarity 
+        just using the morphological features. If `morphological_features` is included and `use_only_morphological_features` 
+        is set to `False`, both the morphological features and molecular features will be used. The default is False.
         
     output_dir : string, optional  
         Path to output directory.
@@ -137,6 +151,7 @@ Example
     
     #x_coordinate='X_centroid'; y_coordinate='Y_centroid'; method='radius'; radius=30; knn=10; imageid='imageid'; 
     #use_raw=True ; log=True; subset=None; label='spatial_similarity_search'; output_dir=None; ROI_column='ROI'; ROI_subset = None; similarity_threshold=0.5
+    # morphological_features = ['Area', 'MajorAxisLength','MinorAxisLength', 'Eccentricity', 'Solidity', 'Extent', 'Orientation']
     #adata_subset = adata.copy()
     
     # Load the andata object    
@@ -159,8 +174,9 @@ Example
     
     
     def spatial_expression_internal (adata_subset, x_coordinate, y_coordinate,
-                                     method, radius, knn, imageid, use_raw, log):
-         
+                                     method, radius, knn, imageid, use_raw, log,
+                                     morphological_feature, use_only_morphological_features):
+        
         # Create a DataFrame with the necessary inforamtion
         data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate]})
         
@@ -197,16 +213,45 @@ Example
         # convert to csr sparse matrix
         wn_matrix_sparse = d.tocsr()
         
-        # Calculation of spatial lag
-        if use_raw==True:
-            if log is True:
-                spatial_lag = pd.DataFrame(wn_matrix_sparse * np.log1p(adata_subset.raw.X), columns = adata_subset.var.index, index=adata_subset.obs.index)
+        #### Calculation of spatial lag
+        
+        # a) use only morphological features?
+        if morphological_features is not None:
+            if isinstance(morphological_features, str):
+                morphological_features = [morphological_features]
+            morph_f = adata_subset.obs[morphological_features]
+            if use_only_morphological_features is True:
+                spatial_lag = pd.DataFrame(wn_matrix_sparse * morph_f, columns = morph_f.columns, index=morph_f.index)
+        
+        
+        # b) use morphological features and molecular features?
+        if morphological_features is not None and use_only_morphological_features is False:
+            if use_raw==True:
+                if log is True:
+                    molecular_matrix = pd.DataFrame(np.log1p(adata_subset.raw.X), columns = adata_subset.var.index, index=adata_subset.obs.index)
+                    combined_matrix = pd.concat([molecular_matrix, morph_f], axis=1)
+                    spatial_lag = pd.DataFrame(wn_matrix_sparse * combined_matrix, columns = combined_matrix.columns, index=combined_matrix.index)
+                else:
+                    molecular_matrix = pd.DataFrame(adata_subset.raw.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
+                    combined_matrix = pd.concat([molecular_matrix, morph_f], axis=1)
+                    spatial_lag = pd.DataFrame(wn_matrix_sparse * combined_matrix, columns = combined_matrix.columns, index=combined_matrix.index)        
             else:
-                spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.raw.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
-        else:
-            spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
+                molecular_matrix = pd.DataFrame(adata_subset.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
+                combined_matrix = pd.concat([molecular_matrix, morph_f], axis=1)
+                spatial_lag = pd.DataFrame(wn_matrix_sparse * combined_matrix, columns = combined_matrix.columns, index=combined_matrix.index) 
             
         
+        # c) use only molecular features
+        if morphological_features is None:
+            if use_raw==True:
+                if log is True:
+                    spatial_lag = pd.DataFrame(wn_matrix_sparse * np.log1p(adata_subset.raw.X), columns = adata_subset.var.index, index=adata_subset.obs.index)
+                else:
+                    spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.raw.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
+            else:
+                spatial_lag = pd.DataFrame(wn_matrix_sparse * adata_subset.X, columns = adata_subset.var.index, index=adata_subset.obs.index)
+                
+            
         # return value
         return spatial_lag
 
