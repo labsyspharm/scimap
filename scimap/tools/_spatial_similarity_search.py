@@ -275,7 +275,9 @@ Example
                                                                     method=method, radius=radius, 
                                                                     knn=knn, imageid=imageid, 
                                                                     use_raw=use_raw,
-                                                                    log=log) 
+                                                                    log=log,
+                                                                    morphological_feature=morphological_feature, 
+                                                                    use_only_morphological_features=morphological_feature) 
         
         all_data = list(map(r_spatial_expression_internal, adata_list)) # Apply function 
     
