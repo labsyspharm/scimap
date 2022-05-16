@@ -276,8 +276,8 @@ Example
                                                                     knn=knn, imageid=imageid, 
                                                                     use_raw=use_raw,
                                                                     log=log,
-                                                                    morphological_feature=morphological_feature, 
-                                                                    use_only_morphological_features=morphological_feature) 
+                                                                    morphological_features=morphological_features, 
+                                                                    use_only_morphological_features=use_only_morphological_features) 
         
         all_data = list(map(r_spatial_expression_internal, adata_list)) # Apply function 
     
