@@ -148,6 +148,8 @@ Example:
     # Load the segmentation mask
     if seg_mask is not None:
         seg_m = tiff.imread(seg_mask)
+        if seg_m.shape[0] > 1:
+            seg_m = seg_m[0]
         
 
     ##########################################################################
@@ -208,9 +210,7 @@ Example:
 
     # Add the seg mask
     if seg_mask is not None:
-        viewer.add_labels(seg_m,
-                          name='segmentation mask',
-                          visible = False)
+        viewer.add_labels(seg_m, name='segmentation mask', visible=False)
 
     # subset the gates to include only the image of interest
     gates = gates.loc[adata.obs.index,]

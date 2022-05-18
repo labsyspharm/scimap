@@ -42,8 +42,7 @@ brew install cmake
 
 # install h5py
 brew install hdf5@1.12
-export HDF5_DIR=/opt/homebrew/Cellar/hdf5/1.12.1_1/
-pip install --no-binary=h5py h5py
+HDF5_DIR=/opt/homebrew/Cellar/hdf5/ pip install --no-build-isolation h5py
 
 # install llvmlite
 conda install llvmlite -y

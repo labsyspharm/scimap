@@ -120,10 +120,10 @@ Example:
         # Load the segmentation mask
         if seg_mask is not None:
             seg_m = tiff.imread(seg_mask)
+            if seg_m.shape[0] > 1:
+                seg_m = seg_m[0]
     
- 
-    
- 
+
     # Operations on the OME TIFF image is performed next
     # check the format of image
     if os.path.isfile(image_path) is True:  
@@ -181,7 +181,7 @@ Example:
     
     # Add the seg mask
     if seg_mask is not None:
-        viewer.add_labels(seg_m, name='segmentation mask')
+        viewer.add_labels(seg_m, name='segmentation mask', visible=False)
 
     # Add phenotype layer function
     def add_phenotype_layer (adata, overlay, phenotype_layer,x,y,viewer,point_size,point_color):
