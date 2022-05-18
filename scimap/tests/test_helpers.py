@@ -28,7 +28,7 @@ def test_rename (adata):
 # test classify function
 def test_classify (adata):
     from scimap.helpers._classify import classify
-    adata = classify(adata, pos=['CD3D','FOXP3'], neg=['ASMA'], 
+    adata = classify(adata, pos=['CD3D','FOXP3'], neg=['ASMA'], phenotype='phenotype', 
                      subclassify_phenotype=['T cells','Regulatory T cells'])
     
     a = adata.obs['classify'].value_counts()['passed_classify']

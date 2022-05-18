@@ -97,6 +97,9 @@ Example:
     
     # subset data    
     from_data = data[data[imageid].isin(from_group)]
+    if len(from_group) > 1:
+        combined_name = '_'.join(from_group)
+        from_data[imageid] = combined_name
     from_data[imageid] = from_data[imageid].astype('str').astype('category')
     from_data[phenotype] = from_data[phenotype].astype('str').astype('category')
     if to_group is None:
