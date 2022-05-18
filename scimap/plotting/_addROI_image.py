@@ -31,6 +31,7 @@
 try:
     import napari
     from napari.layers import Shapes
+    from napari.utils.notifications import show_info
 except:
     pass
 import pandas as pd
@@ -45,7 +46,7 @@ import matplotlib.patches as mpatches
 import numpy as np
 import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
-from napari.utils.notifications import show_info
+
 
 
 cache = Cache(2e9)  # Leverage two gigabytes of memory
