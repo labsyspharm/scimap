@@ -43,7 +43,7 @@ jobs:
 #          poetry-version: 1.1.2
           
       - name: Set up the cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v3
         with:
           path: .poetry_cache
           key: tests-poetry-cache-${{ matrix.os }}-py${{ matrix.python-version }}          
