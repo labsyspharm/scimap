@@ -23,8 +23,8 @@ def main(argv=sys.argv):
         description='The function allows users to directly import the output from mcmicro'
     )
     parser.add_argument(
-        '--image_path', nargs='*', required=True, 
-        help='List of path to the image or images. Each Image should have a unique path supplied.'
+        '--feature_table_path', nargs='*', required=True, 
+        help='List of path to the single-cell feature tables. Each Image should have a unique path supplied.'
     )
     parser.add_argument(
         '--remove_dna', action='store_true', required=False,  default=True,
@@ -77,15 +77,15 @@ def main(argv=sys.argv):
 
 
 
-def mcmicro_to_scimap (image_path,remove_dna=True,remove_string_from_name=None,
+def mcmicro_to_scimap (feature_table_path,remove_dna=True,remove_string_from_name=None,
                         log=True,drop_markers=None,random_sample=None, unique_CellId=True,
                         CellId='CellID',split='X_centroid',custom_imageid=None,
                         min_cells=None, output_dir=None):
     """
 Parameters:
 
-    image_path : list  
-        List of path to the image or images. Each Image should have a unique path supplied.
+    feature_table_path : list  
+        List of path to the single-cell spatial feature tables. Each Image should have a unique path supplied.
 
     remove_dna : bool, optional  
         Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it.
@@ -133,16 +133,16 @@ Returns:
 
 Example:
 ```python
-    image_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
+    feature_table_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
                   '/Users/aj/whole_sections/PTCL2_552.csv']
-    adata = sm.pp.mcmicro_to_scimap (image_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
+    adata = sm.pp.mcmicro_to_scimap (feature_table_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
 ```
     """
     
-    # image_path list or string
-    if isinstance(image_path, str):
-        image_path = [image_path]
-    image_path = [pathlib.Path(p) for p in image_path]
+    # feature_table_path list or string
+    if isinstance(feature_table_path, str):
+        feature_table_path = [feature_table_path]
+    feature_table_path = [pathlib.Path(p) for p in feature_table_path]
 
     # Import data based on the location provided
     def load_process_data (image):
@@ -162,19 +162,17 @@ Example:
             d.index = d['imageid'].astype(str)+'_'+d[CellId].astype(str)
         else:
             d.index = d[CellId]
-        # Drop imageid and cell ID column
-        d.drop([CellId], axis=1, inplace=True)
-        # Move Image ID to the last column
-        cols = d.columns.tolist()
-        cols.insert(len(cols), cols.pop(cols.index('imageid')))
-        d = d.reindex(columns= cols)
+            
+        # move image id and cellID column to end
+        cellid_col = [col for col in d.columns if col != CellId] + [CellId]; d = d[cellid_col]
+        imageid_col = [col for col in d.columns if col != 'imageid'] + ['imageid']; d = d[imageid_col]
         # If there is INF replace with zero
         d = d.replace([np.inf, -np.inf], 0)
         # Return data
         return d
     # Apply function to all images and create a master dataframe
     r_load_process_data = lambda x: load_process_data(image=x) # Create lamda function
-    all_data = list(map(r_load_process_data, list(image_path))) # Apply function
+    all_data = list(map(r_load_process_data, list(feature_table_path))) # Apply function
 
     # Merge all the data into a single large dataframe
     for i in range(len(all_data)):
@@ -229,7 +227,7 @@ Example:
     if output_dir is not None:
         output_dir = pathlib.Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
-        imid = image_path[0].stem
+        imid = feature_table_path[0].stem
         adata.write(output_dir / f'{imid}.h5ad')
         #adata.write(str(output_dir) + '/' + imid + '.h5ad')
     else:    

@@ -88,7 +88,7 @@ def clustering(argv=sys.argv):
 
     if 'pass' in methods:
         pp.mcmicro_to_scimap(
-            image_path = mcmicro_csv_path, 
+            feature_table_path = mcmicro_csv_path, 
             output_dir = str(_output_dir)
         )
         return
@@ -98,7 +98,7 @@ def clustering(argv=sys.argv):
         output_dir = _output_dir / method
         
         pp.mcmicro_to_scimap(
-            image_path = mcmicro_csv_path, 
+            feature_table_path = mcmicro_csv_path, 
             output_dir = str(output_dir)
         )
 

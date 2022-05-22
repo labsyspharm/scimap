@@ -34,13 +34,21 @@ def main(argv=sys.argv):
         '--output_dir', type=str, required=False, default=None,
         help='Path to output directory.'
     )
+    parser.add_argument(
+        '--file_name', type=str, required=False, default=None,
+        help='Name the output csv file. Use in combination with `output_dir` parameter. If no file name is provided a default name `scimap_to_csv_file.csv` will be used. '
+    )
+    parser.add_argument(
+        '--CellID', type=str, required=False, default='CellID',
+        help='Name of the column which contains the CellID.'
+    )
     args = parser.parse_args(argv[1:])
     print(vars(args))
     scimap_to_csv(**vars(args))
     
 
 # Function
-def scimap_to_csv (adata, data_type='raw', output_dir=None, file_name=None):
+def scimap_to_csv (adata, data_type='raw', output_dir=None, file_name=None, CellID='CellID'):
     """
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
@@ -59,6 +67,9 @@ Parameters:
     file_name : string, optional
         Name the output csv file. Use in combination with `output_dir` parameter. If no
         file name is provided a default name `scimap_to_csv_file.csv` will be used. 
+    
+    CellID : string, optional  
+        Name of the column which contains the CellID. Default is `CellID`.  
 
 Returns:
     merged : DataFrame  
@@ -99,7 +110,10 @@ Example:
     merged = pd.concat([data, meta], axis=1, sort=False)
     
     # Add a column to save cell-id
-    merged['CellID'] = merged.index
+    #merged['CellID'] = merged.index
+    # make cellID the first column
+    first_column = merged.pop(CellID)
+    merged.insert(0, CellID, first_column)
     
     # reset index
     merged = merged.reset_index(drop=True)
