@@ -145,10 +145,11 @@ Example:
         idx = list(range(len(channel_names)))
         channel_names = channel_names
 
+
     # Load the segmentation mask
     if seg_mask is not None:
         seg_m = tiff.imread(seg_mask)
-        if seg_m.shape[0] > 1:
+        if (len(seg_m.shape) > 2) and (seg_m.shape[0] > 1):
             seg_m = seg_m[0]
         
 

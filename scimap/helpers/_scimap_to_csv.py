@@ -108,12 +108,17 @@ Example:
     
     # Merge the two dataframes
     merged = pd.concat([data, meta], axis=1, sort=False)
-    
+        
     # Add a column to save cell-id
     #merged['CellID'] = merged.index
     # make cellID the first column
-    first_column = merged.pop(CellID)
-    merged.insert(0, CellID, first_column)
+    if CellID in merged.columns:
+        first_column = merged.pop(CellID)
+        merged.insert(0, CellID, first_column)
+    else:
+        merged['CellID'] = merged.index
+        first_column = merged.pop(CellID)
+        merged.insert(0, CellID, first_column)
     
     # reset index
     merged = merged.reset_index(drop=True)
@@ -122,7 +127,7 @@ Example:
     if output_dir is not None:
         output_dir = pathlib.Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
-        merged.to_csv(output_dir / f'{imid}.csv')
+        merged.to_csv(output_dir / f'{imid}.csv', index=False)
     else:    
         # Return data
         return merged
