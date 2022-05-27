@@ -53,7 +53,7 @@ jobs:
         
       - name: Install project dependencies
         #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
-        run: rm -rf .poetry_cache/virtualenvs/*; poetry cache:clear repository --all; poetry install -vv;
+        run: rm -rf .poetry_cache/virtualenvs/*; poetry cache clear repository --all; poetry install -vv;
         
       - name: Run tests with Poetry
         run: poetry run pytest
