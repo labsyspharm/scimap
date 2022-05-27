@@ -46,14 +46,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .poetry_cache
-          key: tests-poetry-cache-v4-${{ matrix.os }}-py${{ matrix.python-version }}          
+          key: tests-poetry-cache-v5-${{ matrix.os }}-py${{ matrix.python-version }}          
           
 #      - name: Set up Poetry virtual environment
 #        run: poetry env use python${{ matrix.python-version }}
         
       - name: Install project dependencies
         #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
-        run: rm -rf .poetry_cache/virtualenvs/*; poetry install -vv;
+        run: rm -rf .poetry_cache/virtualenvs/*; poetry cache:clear repository --all; poetry install -vv;
         
       - name: Run tests with Poetry
         run: poetry run pytest
