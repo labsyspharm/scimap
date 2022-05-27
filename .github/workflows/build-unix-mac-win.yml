@@ -52,8 +52,8 @@ jobs:
 #        run: poetry env use python${{ matrix.python-version }}
         
       - name: Install project dependencies
-#        run: poetry install
-        run: poetry install -vv --no-cache || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
+        #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
+        run: rm -rf .poetry_cache/virtualenvs/*; poetry install -vv;
         
       - name: Run tests with Poetry
         run: poetry run pytest
