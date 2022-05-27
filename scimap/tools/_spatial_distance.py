@@ -78,9 +78,15 @@ Example:
             pheno_interest = data[data['phenotype'] == pheno]
             # Build the ball-tree for search space
             tree = BallTree(pheno_interest[['x','y']], metric='euclidean') 
-            # Calculate shortest distance
-            dist, ind = tree.query(data[['x','y']], k=1, return_distance= True)
-            dist = list(itertools.chain.from_iterable(dist))
+            # Calculate shortest distance (if statement to account for K)
+            if len(pheno_interest) > 1:
+                dist, ind = tree.query(data[['x','y']], k=2, return_distance= True)
+                dist = pd.DataFrame(dist)
+                dist.loc[dist[0] == 0, 0]  = dist[1]
+                dist = dist[0].values
+            else:
+                dist, ind = tree.query(data[['x','y']], k=1, return_distance= True)
+                dist = list(itertools.chain.from_iterable(dist))
             return dist
         
         # Run in parallel for all phenotypes
@@ -88,12 +94,12 @@ Example:
         # Apply function
         final_dist = Parallel(n_jobs=-1)(delayed(distance)(pheno=i) for i in phenotype_list)     
         final_dist = pd.DataFrame(final_dist, index = phenotype_list, columns = data.index).T
-        
+
         return final_dist
     
     # subset a particular subset of cells if the user wants else break the adata into list of anndata objects
     if subset is not None:
-        adata_list = [adata[adata.obs[imageid] == subset]]
+        adata_list = [adata[adata.obs[imageid].isin(subset)]]
     else:
         adata_list = [adata[adata.obs[imageid] == i] for i in adata.obs[imageid].unique()]
         
