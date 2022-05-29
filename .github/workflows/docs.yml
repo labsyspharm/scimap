@@ -14,5 +14,5 @@ jobs:
           python-version: 3.8
           architecture: x64
       #- run: pip install scimap mkdocs-material mkdocstrings
-      - run: pip install mkdocs-material mkdocstrings
+      - run: pip install mkdocs-material mkdocstrings mkdocstrings-python
       - run: mkdocs gh-deploy --force
