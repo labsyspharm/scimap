@@ -11,7 +11,7 @@
 """
 
 # libs
-import umap
+import umap as um
 import numpy as np
 
 
@@ -98,7 +98,7 @@ sm.pl.umap(adata)
     
         
     # embedding
-    embedding = umap.UMAP(n_neighbors=n_neighbors,
+    embedding = um.UMAP(n_neighbors=n_neighbors,
                           n_components=n_components,
                           metric=metric,
                           min_dist=min_dist,

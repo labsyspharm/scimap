@@ -35,6 +35,7 @@ import scimap as sm
 
 |                                                                                        |                                                                     |
 |----------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| [`sm.pl.umap`](All%20Functions/C.%20Plotting/sm.pl.umap.md)              | Overlays markers on UMAP           |
 | [`sm.pl.gate_finder`](All%20Functions/C.%20Plotting/sm.pl.gate_finder.md)              | Overlays gating positivity on the image for manual gating           |
 | [`sm.pl.image_viewer`](All%20Functions/C.%20Plotting/sm.pl.image_viewer.md)               | Opens the image with overlays on a `napari` browser                 |
 | [`sm.pl.stacked_barplot`](All%20Functions/C.%20Plotting/sm.pl.stacked_barplot.md)         | Generate a stacked barplot from any two columns of categorical data |
