@@ -72,13 +72,13 @@ Returns:
         Embedding stored in `adata.obsm[label]`.
     
 Example:
-```python
+    ```python
 # Run UMAP
 adata = sm.tl.umap(adata)
     
 # plot results
 sm.pl.umap(adata)
-```
+    ```
 
     """
 
