@@ -133,7 +133,7 @@ Returns:
 
 
 Example:
-```
+```python
     feature_table_path = ['/Users/aj/whole_sections/PTCL1_450.csv',
                   '/Users/aj/whole_sections/PTCL2_552.csv']
     adata = sm.pp.mcmicro_to_scimap (feature_table_path, drop_markers= ['CD21', 'ACTIN'], random_sample=5000)
