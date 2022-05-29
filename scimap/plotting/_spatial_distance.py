@@ -176,7 +176,8 @@ Example:
         cells_to_subset = obs[obs[subset_col].isin(subset_value)].index
         
         # subset the diatance_map
-        diatance_map = diatance_map.loc[cells_to_subset]
+        diatance_map = diatance_map.loc[diatance_map.index.intersection(cells_to_subset)]
+        #diatance_map = diatance_map.loc[cells_to_subset]
         
     
     # Convert distance to log scale if user requests

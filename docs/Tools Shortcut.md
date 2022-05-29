@@ -18,6 +18,7 @@ import scimap as sm
 
 |                                                                                        |                                                                   |
 |----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| [`sm.tl.umap`](All%20Functions/B.%20Tools/sm.tl.umap.md)                         | Dimensionality Reduction using UMAP |
 | [`sm.tl.cluster`](All%20Functions/B.%20Tools/sm.tl.cluster.md)                         | Cluster or sub-cluster single-cells using a variety of algorithms |
 | [`sm.tl.foldchange`](All%20Functions/B.%20Tools/sm.tl.foldchange.md)                   | Compute foldchange in phenotypes between samples/ROIs             |
 | [`sm.tl.phenotype_cells`](All%20Functions/B.%20Tools/sm.tl.phenotype_cells.md)         | Probability distribution based cell phenotyping                   |
