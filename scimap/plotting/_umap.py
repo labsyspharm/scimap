@@ -23,8 +23,8 @@ import matplotlib.patches as mpatches
 
 # function
 def umap (adata, color=None, use_layer=None, use_raw=False, log=False, label='umap',
-          cmap='vlag', palette=None, alpha=0.8, figsize=(10, 10), s=None, ncols=None, 
-          tight_layout=False, return_data=False, save_figure=None):
+          cmap='vlag', palette=None, alpha=0.8, figsize=(5, 5), s=None, ncols=None, 
+          tight_layout=False, return_data=False, save_figure=None, **kwargs):
     """
 Parameters:
 
@@ -78,6 +78,8 @@ Parameters:
     save_figure : string, optional  
         Pass path to saving figure with file extension.
         e.g `\path\to\directory\figure.pdf` The default is None.
+    
+    **kwargs : Other `matplotlib` parameters. 
 
 Returns:
 
@@ -141,8 +143,8 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
             color_data = adataobs
         elif adataobs is None and adatavar is not None:
             color_data = adatavar
-        else:
-            color_data = None
+    else:
+        color_data = None
     
     # combine color data with umap coordinates
     if color_data is not None:
@@ -156,20 +158,29 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
     if ncols is None:
         if nplots >= 4:
             subplot = [math.ceil(nplots / 4), 4]
+        elif nplots == 0:
+            subplot = [1, 1]
         else:
             subplot = [math.ceil(nplots / nplots), nplots]
     else:
         subplot = [math.ceil(nplots /ncols), ncols]
     
-    n_plots_to_remove = np.prod(subplot) - nplots # figure if we have to remove any subplots
+    if nplots == 0:
+        n_plots_to_remove = 0
+    else:
+        n_plots_to_remove = np.prod(subplot) - nplots # figure if we have to remove any subplots
     
     # size of points
     if s is None:
-        s = (100000 / adata.shape[0]) / nplots
+        if nplots == 0:
+            s = (100000 / adata.shape[0])
+        else:
+            s = (100000 / adata.shape[0]) / nplots
     
     # create color mapping
     #final_data_color = final_data.copy()
     
+
     # if there are categorical data then assign colors to them
     if final_data.select_dtypes(exclude=["number","bool_","object_"]).shape[1] > 0:
         # find all categories in the dataframe
@@ -218,17 +229,25 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
         if any(i == 1 for i in subplot):
             ax = ax.reshape(subplot[0],subplot[1])
     
-    if all(i == 1 for i in subplot):
+    if nplots == 0:
+        ax.scatter(x = final_data['umap-1'], y = final_data['umap-2'], s=s, cmap=cmap, alpha=alpha, **kwargs)
+        plt.xlabel("UMAP-1"); plt.ylabel("UMAP-2") 
+        plt.tick_params(right= False,top= False,left= False, bottom= False)
+        ax.get_xaxis().set_ticks([]); ax.get_yaxis().set_ticks([])
+        if tight_layout is True:
+            plt.tight_layout()
+    
+    elif all(i == 1 for i in subplot):
         column_to_plot = [e for e in list(final_data.columns) if e not in ('umap-1', 'umap-2')][0]
         if all_cat_colormap is None:
             im = ax.scatter(x = final_data['umap-1'], y = final_data['umap-2'], s=s, 
                        c=final_data[column_to_plot],
-                       cmap=cmap, alpha=alpha)
+                       cmap=cmap, alpha=alpha, **kwargs)
             plt.colorbar(im, ax=ax)
         else:
             ax.scatter(x = final_data['umap-1'], y = final_data['umap-2'], s=s, 
                        c=final_data[column_to_plot].map(all_cat_colormap),
-                       cmap=cmap, alpha=alpha)
+                       cmap=cmap, alpha=alpha, **kwargs)
             # create legend
             patchList = []
             for key in list(final_data[column_to_plot].unique()):
@@ -251,7 +270,7 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
             if final_data[column_to_plot[k]].dtype == 'category':
                 ax[i,j].scatter(x = final_data['umap-1'], y = final_data['umap-2'], s=s,
                                 c=final_data[column_to_plot[k]].map(all_cat_colormap),
-                                cmap=cmap, alpha=alpha)
+                                cmap=cmap, alpha=alpha, **kwargs)
                 # create legend
                 patchList = []
                 for key in list(final_data[column_to_plot[k]].unique()):
@@ -261,7 +280,7 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
             else:               
                 im = ax[i,j].scatter(x = final_data['umap-1'], y = final_data['umap-2'], s=s,
                                 c=final_data[column_to_plot[k]],
-                                cmap=cmap, alpha=alpha)
+                                cmap=cmap, alpha=alpha, **kwargs)
                 plt.colorbar(im, ax=ax[i, j])
 
             ax[i,j].tick_params(right= False,top= False,left= False, bottom= False)
