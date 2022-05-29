@@ -73,11 +73,11 @@ Returns:
     
 Example:
 ```python
-    # Run UMAP
-    adata = sm.tl.umap(adata)
+# Run UMAP
+adata = sm.tl.umap(adata)
     
-    # plot results
-    sm.pl.umap(adata)
+# plot results
+sm.pl.umap(adata)
 ```
 
     """
