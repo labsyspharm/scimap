@@ -206,11 +206,10 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
             all_cat_colormap.update(dict1)
         
         # if user has passed in custom colours update the colors
-        all_cat_colormap.update(palette)
+        if palette is not None:
+            all_cat_colormap.update(palette)
     else:
         all_cat_colormap = None
-        
-
         
 
     # plot
