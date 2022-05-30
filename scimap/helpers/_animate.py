@@ -4,6 +4,20 @@
 # @author: Ajit Johnson Nirmal
 # Animation in matplotlib
 
+"""
+!!! abstract "Short Description"
+    `sm.hl.animate`:  The function allows users to generate an animation between UMAP 
+    space and physical X and Y coordinates.  
+    
+    Depending on the computer specs the live view maynot render smoothly and hence 
+    saving the animation is recommended. However `imagemagick` needs to be installed to 
+    be able to write the animation to disk. Please follow this link to install `imagemagick`: 
+    https://imagemagick.org/script/download.php
+
+## Function
+"""
+
+
 # libs
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,12 +34,14 @@ def animate (adata, color=None,
              embedding='umap', 
              x_coordinate='X_centroid', 
              y_coordinate='Y_centroid',
+             flip_y=True,
              imageid='imageid', subset=None,
              use_layer=None, use_raw=False, log=False,
              subsample=None,random_state=0,
-             n_frames=50, interval=50,forward=True,
+             n_frames=50, interval=50,reverse=True,final_frame=5, 
              s=None, alpha=1,  cmap='vlag',
              tight_layout=True,plot_legend=False,
+             title=None,
              figsize=(5,5),
              save_animation=None,**kwargs):
     """
@@ -52,6 +68,10 @@ Parameters:
         
     y_coordinate : string, optional  
         Column that contains the `y_coordinates`. The default is 'Y_centroid'.
+    
+    flip_y : bool, optional  
+        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
+        If the image overlays do not align to the cells, try again by setting this to `False`.
         
     imageid : string, optional  
         Name of the column that contains the unique imageid. The default is 'imageid'.
@@ -84,9 +104,12 @@ Parameters:
     interval : int, optional  
         interval between frames in milliseconds. The default is 50.
         
-    forward : bool, optional  
-        If `True` animation will be from `UMAP -> Physical`, if `False` animation 
-        will be from `Physical -> UMAP`. The default is True.
+    reverse : bool, optional  
+        If `True` animation will also include `Physical -> UMAP`. The default is True.
+    
+    final_frame : int, optional  
+        The number of frames at the end. Increasing this can be useful to vizualize the 
+        last frame for a longer time. The default is 5.
         
     s : int, optional  
         The marker size in points. The default is None.
@@ -104,6 +127,11 @@ Parameters:
         
     plot_legend : bool, optional  
         Plots the legend. The default is False.
+
+    title : bool or string, optional  
+        Add a title to your plot. If `True`, it will add the default name of the plot.
+        However, a custom name can be passed through this parameter as well. 
+        e.g. `title = "custom title"`. The default is None.
         
     figsize : tuple, optional  
         Width, height in inches. The default is (10, 10).
@@ -131,19 +159,23 @@ sm.hl.animation (adata, color='phenotype')
 
 ```
     """
-    
-    
+
     # intrapolation function between co-ordinate sytems
-    def tween(e1, e2, n_frames):
+    def tween(e1, e2, n_frames, final_frame):
+        
+        # number of frame to pop
+        #n_frames = int(n_frames + (n_frames*0.3))
         for i in range(5):
             yield e1
         for i in range(n_frames):
             alpha = i / float(n_frames - 1)
             yield (1 - alpha) * e1 + alpha * e2
-        for i in range(5):
-            yield(e2)
+        for i in range(final_frame):
+            yield e2
+            
         return
     
+        
     # check if umap tool has been run
     try:
         adata.obsm[embedding]
@@ -240,11 +272,56 @@ sm.hl.animation (adata, color='phenotype')
     e2[:, 0] += 0.5
     e2[:, 1] += 0.5
     
+    # remove the identified indeces
+    def delete_multiple_element(list_object, indices):
+        indices = sorted(indices, reverse=True)
+        for idx in indices:
+            if idx < len(list_object):
+                list_object.pop(idx)
+    
     # run the interpolation
-    if forward is True:
-        interpolation = list(tween(e1, e2, n_frames=n_frames))
-    else:
-        interpolation = list(tween(e2, e1, n_frames=n_frames))
+    interpolation = list(tween(e1, e2, n_frames=n_frames, final_frame=final_frame))
+    # drop x number of frames
+    top_frames = int(n_frames + 5)
+    
+    l = np.percentile(range(5,top_frames),30); h = np.percentile(range(5,top_frames),80)
+    index_between = list(range(int(l), int(h)))
+    numElems = int(len(index_between) * 0.5)
+    drop = np.round(np.linspace(0, len(index_between) - 1, numElems)).astype(int)
+    drop_index = [index_between[i] for i in drop] 
+    
+    # delete frames
+    delete_multiple_element(interpolation, drop_index)
+    
+    top20 = np.percentile(range(5,top_frames),20); top30 = np.percentile(range(5,top_frames),30)
+    bottom80 = np.percentile(range(5,top_frames),80); bottom90 = np.percentile(range(5,top_frames),90)
+    
+    ib_top = list(range(int(top20), int(top30)))
+    ib_bottom = list(range(int(bottom80), int(bottom90)))
+    ib = ib_top + ib_bottom
+    numElems2 = int(len(ib) * 0.20)
+    drop2 = np.round(np.linspace(0, len(ib) - 1, numElems2)).astype(int)
+    di = [ib[i] for i in drop2] 
+    # delete frames
+    delete_multiple_element(interpolation, di)
+    
+    top10 = np.percentile(range(5,top_frames),10); top19 = np.percentile(range(5,top_frames),19)
+    bottom91 = np.percentile(range(5,top_frames),91); bottom95 = np.percentile(range(5,top_frames),95)
+    
+    ib_top = list(range(int(top10), int(top19)))
+    ib_bottom = list(range(int(bottom91), int(bottom95)))
+    ib = ib_top + ib_bottom
+    numElems2 = int(len(ib) * 0.10)
+    drop2 = np.round(np.linspace(0, len(ib) - 1, numElems2)).astype(int)
+    di = [ib[i] for i in drop2] 
+    # delete frames
+    delete_multiple_element(interpolation, di)
+    
+    
+
+
+    if reverse is True:
+        interpolation = interpolation + interpolation[::-1]
     
     # generate colors
     if s is None:
@@ -289,15 +366,23 @@ sm.hl.animation (adata, color='phenotype')
 
 
     # plot
-    fig, ax = plt.subplots(figsize=figsize)
     plt.rcdefaults()
+    fig, ax = plt.subplots(figsize=figsize, edgecolor="black", facecolor="white")
+    
     ax.set(xlim=(-0.1, 1.1), ylim=(-0.1, 1.1))
+    if flip_y is True:
+        ax.invert_yaxis()
+    
     
     
     if nplots == 0:
         scat = ax.scatter(x = interpolation[0][:, 0], y = interpolation[0][:, 1], s=s, cmap=cmap, alpha=alpha, **kwargs)
         plt.tick_params(right= False,top= False,left= False, bottom= False)
         ax.get_xaxis().set_ticks([]); ax.get_yaxis().set_ticks([])
+        if title is True: 
+            plt.title(column_to_plot)
+        elif isinstance(title, str):
+            plt.title(title)  
         if tight_layout is True:
             plt.tight_layout()
     
@@ -320,7 +405,10 @@ sm.hl.animation (adata, color='phenotype')
                     patchList.append(data_key)    
                     ax.legend(handles=patchList,bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     
-        #plt.title(column_to_plot)
+        if title is True: 
+            plt.title(column_to_plot)
+        elif isinstance(title, str):
+            plt.title(title) 
         plt.tick_params(right= False,top= False,left= False, bottom= False)
         ax.set(xticklabels = ([])); ax.set(yticklabels = ([]))
         if tight_layout is True:
@@ -336,8 +424,8 @@ sm.hl.animation (adata, color='phenotype')
     
      
     if save_animation is not None:
-        print ('Saving file- This can take several minutes for large files')
-        anim.save( str(save_animation) + '_scimap.gif', writer='imagemagick', fps=24)
+        print ('Saving file- This can take several minutes to hours for large files')
+        anim.save( save_animation + '_scimap.gif', writer='imagemagick', fps=24)
 
     # save animation
     #anim.save('/Users/aj/Downloads/filename.mp4')

@@ -274,7 +274,7 @@ Example:
     # Intiate an ROI layer
     shape_layer = viewer.add_shapes(name=label)
     shape_layer.mode = 'add_polygon'
-    _ = show_info('Draw ROIs')
+    #_ = show_info('Draw ROIs')
     
     
     # helper functions
