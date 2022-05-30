@@ -177,9 +177,6 @@ sm.pl.umap(adata, color=['CD3D', 'SOX10'])
         else:
             s = (100000 / adata.shape[0]) / nplots
     
-    # create color mapping
-    #final_data_color = final_data.copy()
-    
 
     # if there are categorical data then assign colors to them
     if final_data.select_dtypes(exclude=["number","bool_","object_"]).shape[1] > 0:

@@ -53,5 +53,7 @@ import scimap as sm
 |                                                                                         |                                                                   |
 |-----------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 | [`sm.hl.classify`](All%20Functions/D.%20Helper%20Functions/sm.hl.classify.md)           | Quickly classify cells based on pos/negativity of list of markers |
+| [`sm.hl.rename`](All%20Functions/D.%20Helper%20Functions/sm.hl.rename.md)           | Quickly rename values within columns based on `dict` mapping |
+| [`sm.hl.animate`](All%20Functions/D.%20Helper%20Functions/sm.hl.animate.md)           | Create a animated scatter plot of `embedding -> physical location` |
 | [`sm.hl.scimap_to_csv`](All%20Functions/D.%20Helper%20Functions/sm.hl.scimap_to_csv.md) | Export scimap object to CSV                                       |
 | [`sm.hl.addROI_omero`](All%20Functions/D.%20Helper%20Functions/sm.hl.addROI_omero.md) | Add ROI's extracted from Omero to Scimap object                   |

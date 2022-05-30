@@ -1,3 +1,7 @@
+# 0.21.0 (2022-05-29)
+
+ - Added `sm.hl.animate` and `sm.pl.umap`
+ 
 # 0.20.16 (2022-05-28)
 
  - Added `sm.tl.umap` and `sm.tl.spatial_similarity_search`
