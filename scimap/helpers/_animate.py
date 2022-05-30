@@ -248,7 +248,7 @@ sm.hl.animation (adata, color='phenotype')
     
     # generate colors
     if s is None:
-        s = 100000 / final_data.shape[0]
+        s = 130000 / final_data.shape[0]
     
     # if there are categorical data then assign colors to them
     if final_data.select_dtypes(exclude=["number","bool_","object_"]).shape[1] > 0:
@@ -325,17 +325,23 @@ sm.hl.animation (adata, color='phenotype')
         ax.set(xticklabels = ([])); ax.set(yticklabels = ([]))
         if tight_layout is True:
             plt.tight_layout()
-    
+        
+
  
     def animate(i):
         scat.set_offsets(interpolation[i])
         
-    anim = FuncAnimation(
-        fig, animate, interval=interval, frames=len(interpolation)-1)
+    anim = FuncAnimation(fig, animate, interval=interval, frames=len(interpolation)-1)
+    
+    
      
     if save_animation is not None:
+        print ('Saving file- This can take several minutes for large files')
         anim.save( str(save_animation) + '_scimap.gif', writer='imagemagick', fps=24)
 
     # save animation
     #anim.save('/Users/aj/Downloads/filename.mp4')
+    
+    return plt.show(anim, block=False)
+    
     
