@@ -16,7 +16,7 @@ env:
   # It makes it easier to later remove the virtualenv when it's broken.
   # Absolute path is necessary to avoid this issue:
   # https://github.com/python-poetry/poetry/issues/3049
-  POETRY_CACHE_DIR: ${{ github.workspace }}/.poetry_cache
+  POETRY_CACHE_DIR: ${{ github.workspace }}/.poetry_cache1
 
 jobs:
   ci:
@@ -45,15 +45,15 @@ jobs:
       - name: Set up the cache
         uses: actions/cache@v3
         with:
-          path: .poetry_cache
-          key: tests-poetry-cache-v6-${{ matrix.os }}-py${{ matrix.python-version }}          
+          path: .poetry_cache1
+          key: tests-poetry-cache-v7-${{ matrix.os }}-py${{ matrix.python-version }}          
           
 #      - name: Set up Poetry virtual environment
 #        run: poetry env use python${{ matrix.python-version }}
         
       - name: Install project dependencies
-        #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
-        run: poetry install -vv || { rm -rf .poetry_cache/*; poetry install -vv; }
+        run: poetry install -vv || { rm -rf .poetry_cache1/virtualenvs/*; poetry install -vv; }
+        #run: poetry install -vv || { rm -rf .poetry_cache/*; poetry install -vv; }
         #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry cache clear repository --all; poetry install -vv; }
         
       - name: Run tests with Poetry
