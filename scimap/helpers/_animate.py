@@ -41,7 +41,7 @@ def animate (adata, color=None,
              n_frames=50, interval=50,reverse=True,final_frame=5, 
              s=None, alpha=1,  cmap='vlag',
              tight_layout=True,plot_legend=False,
-             title=None,
+             title=None, fontsize=20,watermark=True,
              figsize=(5,5),
              save_animation=None,**kwargs):
     """
@@ -132,6 +132,12 @@ Parameters:
         Add a title to your plot. If `True`, it will add the default name of the plot.
         However, a custom name can be passed through this parameter as well. 
         e.g. `title = "custom title"`. The default is None.
+    
+    fontsize : int, optional  
+        Font size of the title. The default is 20.
+    
+    watermark : bool, optional  
+        Shows `made with scimap` in the bottom of the plot. The default is True.
         
     figsize : tuple, optional  
         Width, height in inches. The default is (10, 10).
@@ -367,7 +373,7 @@ sm.hl.animation (adata, color='phenotype')
 
     # plot
     plt.rcdefaults()
-    fig, ax = plt.subplots(figsize=figsize, edgecolor="black", facecolor="white")
+    fig, ax = plt.subplots(figsize=figsize)
     
     ax.set(xlim=(-0.1, 1.1), ylim=(-0.1, 1.1))
     if flip_y is True:
@@ -379,10 +385,13 @@ sm.hl.animation (adata, color='phenotype')
         scat = ax.scatter(x = interpolation[0][:, 0], y = interpolation[0][:, 1], s=s, cmap=cmap, alpha=alpha, **kwargs)
         plt.tick_params(right= False,top= False,left= False, bottom= False)
         ax.get_xaxis().set_ticks([]); ax.get_yaxis().set_ticks([])
+        if watermark is True:
+            ax.text(1.08, 1.08, "made with scimap.xyz",horizontalalignment="right",
+            verticalalignment="bottom", alpha=0.5,fontsize=fontsize * 0.4)
         if title is True: 
-            plt.title(column_to_plot)
+            plt.title(column_to_plot, fontsize=fontsize)
         elif isinstance(title, str):
-            plt.title(title)  
+            plt.title(title, fontsize=fontsize)  
         if tight_layout is True:
             plt.tight_layout()
     
@@ -406,9 +415,12 @@ sm.hl.animation (adata, color='phenotype')
                     ax.legend(handles=patchList,bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     
         if title is True: 
-            plt.title(column_to_plot)
+            plt.title(column_to_plot, fontsize=fontsize)
         elif isinstance(title, str):
-            plt.title(title) 
+            plt.title(title, fontsize=fontsize) 
+        if watermark is True:
+            ax.text(1.08, 1.08, "made with scimap.xyz",horizontalalignment="right",
+            verticalalignment="bottom", alpha=0.5,fontsize=fontsize * 0.4)
         plt.tick_params(right= False,top= False,left= False, bottom= False)
         ax.set(xticklabels = ([])); ax.set(yticklabels = ([]))
         if tight_layout is True:
