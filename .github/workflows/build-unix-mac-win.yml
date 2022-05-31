@@ -52,7 +52,7 @@ jobs:
 #        run: poetry env use python${{ matrix.python-version }}
         
       - name: Install project dependencies
-        run: poetry install -vv || { rm -rf .poetry_cache1/virtualenvs/*; poetry install -vv; }
+        run: poetry install -vv || { rm -rf /opt/hostedtoolcache/*; rm -rf .poetry_cache1/virtualenvs/*; poetry install -vv; }
         #run: poetry install -vv || { rm -rf .poetry_cache/*; poetry install -vv; }
         #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry cache clear repository --all; poetry install -vv; }
         
