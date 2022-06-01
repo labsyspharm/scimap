@@ -233,11 +233,10 @@ sm.hl.animation (adata, color='phenotype')
             color_data = pd.concat ([adataobs, adatavar], axis=1)
         elif adataobs is not None and adatavar is None:
             color_data = adataobs
+            # convert to string
+            color_data[color] = color_data[color].astype('category')
         elif adataobs is None and adatavar is not None:
             color_data = adatavar    
-        
-        # convert to string
-        color_data[color] = color_data[color].astype('category')
         
     else:
         color_data = None
