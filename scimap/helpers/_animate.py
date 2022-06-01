@@ -9,8 +9,9 @@
     `sm.hl.animate`:  The function allows users to generate an animation between UMAP 
     space and physical X and Y coordinates.  
     
-    Depending on the computer specs the live view maynot render smoothly and hence 
-    saving the animation is recommended. However `imagemagick` needs to be installed to 
+    Depending on the computer configuration and how the function is run like jupyter notebook 
+    the live view maynot render smoothly or render at all and hence 
+    saving the animation is highly recommended. However `imagemagick` needs to be installed to 
     be able to write the animation to disk. Please follow this link to install `imagemagick`: 
     https://imagemagick.org/script/download.php
 
@@ -42,7 +43,7 @@ def animate (adata, color=None,
              s=None, alpha=1,  cmap='vlag',
              tight_layout=True,plot_legend=False,
              title=None, fontsize=20,watermark=True,
-             figsize=(5,5),
+             figsize=(5,5), pltStyle=None,
              save_animation=None,**kwargs):
     """
 Parameters:
@@ -141,6 +142,9 @@ Parameters:
         
     figsize : tuple, optional  
         Width, height in inches. The default is (10, 10).
+    
+    pltStyle : string, optional  
+        Plot styles offered by matplotlib. e.g. `dark_background`. The default is True.
         
     save_animation : string, optional  
         Pass path to saving animation. Please note depending on the computer specs the live 
@@ -230,7 +234,11 @@ sm.hl.animation (adata, color='phenotype')
         elif adataobs is not None and adatavar is None:
             color_data = adataobs
         elif adataobs is None and adatavar is not None:
-            color_data = adatavar        
+            color_data = adatavar    
+        
+        # convert to string
+        color_data[color] = color_data[color].astype('category')
+        
     else:
         color_data = None
     
@@ -373,7 +381,10 @@ sm.hl.animation (adata, color='phenotype')
 
     # plot
     plt.rcdefaults()
+    if pltStyle is not None:
+        plt.style.use(pltStyle)
     fig, ax = plt.subplots(figsize=figsize)
+    
     
     ax.set(xlim=(-0.1, 1.1), ylim=(-0.1, 1.1))
     if flip_y is True:
