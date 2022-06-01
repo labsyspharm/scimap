@@ -165,7 +165,7 @@ Example:
 adata = sm.tl.umap(adata)
 
 # Run animation and color it by the identified cell-types
-sm.hl.animation (adata, color='phenotype')
+sm.hl.animate (adata, color='phenotype')
 
 ```
     """
@@ -259,8 +259,8 @@ sm.hl.animation (adata, color='phenotype')
         final_data = final_data.sample(frac=subsample, replace=False, random_state=random_state)
     
     # extract the spaces
-    e1 = final_data[['umap-1', 'umap-2']].values
-    e2 = final_data[[x_coordinate,y_coordinate]].values
+    e1 = final_data[['umap-1', 'umap-2']].values.astype(float)
+    e2 = final_data[[x_coordinate,y_coordinate]].values.astype(float)
 
 
     # rescale to same co-ordinates system

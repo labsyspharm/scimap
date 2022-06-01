@@ -28,6 +28,11 @@ data_path = {
 "D:/cosmx/Lung9_Rep1/Lung9_Rep1-Flat_files_and_images/Lung9_Rep1_exprMat_file.csv": "D:/cosmx/Lung9_Rep1/Lung9_Rep1-Flat_files_and_images/Lung9_Rep1_metadata_file.csv",
   }
 
+
+plt.scatter(x=abs(umap_coordinates['umap-1']), y=umap_coordinates['umap-2'], s=1)
+plt.scatter(x=umap_coordinates['umap-1'], y=umap_coordinates['umap-2'], s=1)
+
+
 adata = cosmx_to_scimap (data_path,
                      unique_CellId=True,
                      remove_NegPrb=True,
@@ -43,6 +48,23 @@ adata = sc.read('D:/cosmx/combined_subset.h5ad')
 adata = sc.read('D:/cosmx/Lung9_Rep2.h5ad')
 
 #%% Process
+
+
+# animate
+plotly (adata,phenotype='kmeans',image_id=None,x='CenterX_global_px',y='CenterY_global_px',size=4)
+# umap
+adata = sm.tl.umap (adata)
+# cluster
+adata = sm.tl.cluster (adata, k= 7, method = 'kmeans', label='kmeans', use_raw=False)
+
+animate (adata, color='kmeans',subsample=None, s=2, figsize=(25,25),
+         n_frames=100, pltStyle='dark_background',title=True, fontsize=35,
+         x_coordinate='CenterX_global_px', y_coordinate='CenterY_global_px',
+               save_animation = "C:/Users/ajn16/Downloads/cosmx")
+
+
+
+
 
 adata.obs['fov'] = adata.obs['fov'].astype('category')
 
