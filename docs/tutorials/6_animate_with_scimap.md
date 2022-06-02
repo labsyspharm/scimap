@@ -8,6 +8,8 @@
 
 The objective is to create an animation showing transition between UMAP plot and XY coordinate plot in spatial data.
 
+Let us use the same data that we used in the [previous tutorial](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/98WEMD).
+
 
 ```python
 # Let us start off with importing scimap
@@ -132,7 +134,8 @@ adata = sm.tl.umap (adata)
 
 ```
 
-If you are interested to know the umap results are stored in `adata.obsm`. You might also need to know this if you plan to pass in your custom coordinate systems. You could save your custom coordinates as a 2D array in `adata.obsm` and call it in the `sm.hl.animate()` function
+If you are interested to know where the umap results are stored, it is in `adata.obsm`. 
+You might also need to know this if you plan to pass in your custom coordinate systems. You could save your custom coordinates as a 2D array in `adata.obsm` and call it in the `sm.hl.animate()` function
 
 
 ```python
@@ -153,7 +156,8 @@ adata.obsm['umap']
 
 
 
-Now that we are set with both the coordinate systems can create the animation. However, it may be dull as we do not have intersting way to color the plot. A common way to color is by cell-types. As I had showed previously you could use scimap's [cell phenotyping](https://scimap.xyz/tutorials/2-scimap-tutorial-cell-phenotyping/) method to identify cell types. For simplicity we are just going to cluster the data and color by those clusters.
+Now that we are set with both the coordinate systems can create the animation. However, it may be still a bit dull as we do not have intersting way to color the plot. 
+A common way to color a plot is by its cell-types. As I had showed previously, you could use scimap's [cell phenotyping](https://scimap.xyz/tutorials/2-scimap-tutorial-cell-phenotyping/) method to identify cell types. For simplicity let us cluster the data and color by those clusters.
 
 
 ```python
@@ -217,6 +221,9 @@ sm.hl.animate (adata, color='kmeans',
 ![png](6_animate_with_scimap_files/6_animate_with_scimap_20_1.png)
     
 
+You might notice that the `gif` images are quiet large. I will add supoort to saving as `mp4` soon. 
+I generally use some online tool to convert it to `mp4` for reducing the file size. 
+
 
 There are a number of `parameters` to play around with to customize the look of the animation. Check out the documentation for more details.
 ```
@@ -229,7 +236,7 @@ plot_legend=False, title=None, fontsize=20, pltStyle=None,
 figsize=(5, 5)
 ```
 
-Please note you can only plot one image at a time as in most cases the XY are unique to each image. If you are working with a dataset of images use the `subset` parameter to subset the **one** image that you want to plot. As I mentioned earlier use the `subsample` parameter to optimize the feel of the plot. 
+Please note you can only plot one image at a time as in most cases the XY are unique to each image. If you are working with a dataset with multiple images, please use the `subset` parameter to subset the **one** image that you want to plot. As I mentioned earlier use the `subsample` parameter to optimize the feel of the plot. 
 
 You could also `color` the plot by expression of a particular marker by using and these parmaters control different aspects of it `use_layer=None, use_raw=False, log=False` 
 
@@ -244,7 +251,7 @@ sm.hl.animate (adata, color='CD45')
     
 
 
-Use `n_frames=50, interval=50, reverse=True, final_frame=5` to control the smoothness, duration of the animation. You can also change the theme/ background of the plot using the `pltStyle=None` paramater. 
+Use `n_frames=50, interval=50, reverse=True, final_frame=5` to control the smoothness and duration of the animation. You can also change the theme/ background of the plot using the `pltStyle=None` paramater. 
 
 
 ```python
