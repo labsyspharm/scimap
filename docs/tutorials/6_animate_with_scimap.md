@@ -62,11 +62,6 @@ adata.obs.head(3)
       <th>MajorAxisLength</th>
       <th>MinorAxisLength</th>
       <th>Eccentricity</th>
-      <th>Solidity</th>
-      <th>Extent</th>
-      <th>Orientation</th>
-      <th>CellID</th>
-      <th>imageid</th>
     </tr>
   </thead>
   <tbody>
@@ -78,11 +73,6 @@ adata.obs.head(3)
       <td>12.375868</td>
       <td>11.823117</td>
       <td>0.295521</td>
-      <td>0.966387</td>
-      <td>0.798611</td>
-      <td>-1.104797</td>
-      <td>1</td>
-      <td>unmicst-exemplar-001_cell</td>
     </tr>
     <tr>
       <th>unmicst-exemplar-001_cell_2</th>
@@ -92,11 +82,6 @@ adata.obs.head(3)
       <td>11.874070</td>
       <td>9.982065</td>
       <td>0.541562</td>
-      <td>0.948454</td>
-      <td>0.696970</td>
-      <td>-0.435290</td>
-      <td>2</td>
-      <td>unmicst-exemplar-001_cell</td>
     </tr>
     <tr>
       <th>unmicst-exemplar-001_cell_3</th>
@@ -106,11 +91,6 @@ adata.obs.head(3)
       <td>9.995049</td>
       <td>8.673949</td>
       <td>0.496871</td>
-      <td>0.837838</td>
-      <td>0.563636</td>
-      <td>1.355995</td>
-      <td>3</td>
-      <td>unmicst-exemplar-001_cell</td>
     </tr>
   </tbody>
 </table>
@@ -261,6 +241,9 @@ sm.hl.animate (adata, color='kmeans', pltStyle='dark_background', s=1)
 
     
 ![png](6_animate_with_scimap_files/6_animate_with_scimap_24_0.png)
+
+Note that I have changes the dot size with `s=1` in the above plot. If you think that is still large, increase 
+the size of the entire figure using `figsize = (25,25)` which will retrospectively make the points smaller. 
     
 
 
