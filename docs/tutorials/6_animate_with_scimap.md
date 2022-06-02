@@ -242,7 +242,7 @@ sm.hl.animate (adata, color='kmeans', pltStyle='dark_background', s=1)
     
 ![png](6_animate_with_scimap_files/6_animate_with_scimap_24_0.png)
 
-Note that I have changes the dot size with `s=1` in the above plot. If you think that is still large, increase 
+Note that I changed the dot size with `s=1` in the above plot. If you think that is still large, increase 
 the size of the entire figure using `figsize = (25,25)` which will retrospectively make the points smaller. 
     
 
