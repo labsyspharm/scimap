@@ -29,7 +29,7 @@ def test_rescale(adata):
 
     # test rescaling data
     manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
-    adata = rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+    adata = rescale (adata, gate=manual_gate, failed_markers={'all':['CD20', 'CD21']})
     a = np.round(adata[:,'CD3D'].X[0],2)
 
     # test
