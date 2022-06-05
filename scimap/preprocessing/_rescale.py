@@ -70,16 +70,16 @@ Returns:
 
 Example:
 ```python
-    # create a df with manual gates
-    manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]}) 
-    adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+# create a df with manual gates
+manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]}) 
+adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers={'all':['CD20', 'CD21']})
     
-    # you could also import the gates as a pandas dataframe without index
-    manual_gate = pd.read_csv('manual_gates.csv')
-    adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+# you could also import the gates as a pandas dataframe without index
+manual_gate = pd.read_csv('manual_gates.csv')
+adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers={'all':['CD20', 'CD21']})
     
-    # The function can also be run without providing manual gates. This will trigger the GMM mode
-    adata = sm.pp.rescale (adata, gate=None, failed_markers=['CD20', 'CD21'])
+# The function can also be run without providing manual gates. This will trigger the GMM mode
+adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']})
     
 ```
 
