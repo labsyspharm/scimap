@@ -7,332 +7,321 @@
     `sm.pp.rescale`: The function allows users to rescale the data. This step is often performed to standardize the 
     the expression of all markers to a common scale. The rescaling can be either performed automatically or manually. 
     User defined gates can be passed to rescale the data manually, else the algorithm fits a GMM (gaussian mixed model) to 
-    identify the cutoff point. The resultant data is between 0-1 where values below 0.5 are considered non-expression while 
+    identify the cutoff point. The resultant data is between 0-1 where values below 0.5 are considered non-expressing while 
     above 0.5 is considered positive. 
 
 ## Function
 """
 
 # Import library
-import os
 import pandas as pd
 import numpy as np
-import itertools
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.mixture import GaussianMixture
-from sklearn.linear_model import LinearRegression
-import matplotlib.pyplot as plt
-import seaborn as sns; sns.set(color_codes=True)
-from matplotlib.lines import Line2D
 
 
-def rescale (adata, gate=None, return_gates=False, imageid='imageid', failed_markers=None, method='all',save_fig=False):
-
+# Function
+def rescale (adata, gate=None, log=True,
+             imageid='imageid', failed_markers=None,
+              method='all',random_state=0):
     """
 Parameters:
 
-    adata : AnnData object
+    adata : AnnData Object  
 
     gate : dataframe, optional  
-        DataFrame with first column as markers and second column as the gate values in log1p scale.
-        Note: If a marker is not included, the function will try to automatically identify a gate
-        based on gaussian mixture modeling. If a marker is included in the `gate` dataframe but
-        no values are passed, the marker is simply scaled between 0-1 but does not alter the undelying
-        distribution.
-
-    return_gates : boolian, optional  
-        Internal parameter for checking.
-
-    failed_markers : list, optional  
-        list of markers that are not expressed at all in any cell. pass in as ['CD20', 'CD3D'].
-
+        DataFrame with first column as markers and subsequent column with gate values for each image in the dataset.
+        The column names should correspond to the unique `imageid`. If only one column of gate is provied 
+        to a dataset with multiple images, the same gate will be applied to all images.
+        Note: If gates are not provided or left out for a particular marker, the function will try to 
+        automatically identify a gate based on applying gaussian mixture modeling algorithm (GMM). The default is None.
+        
+    log : bool, optional  
+        By default the data stored in `adata.raw.X` is extracted for scaling. If the user wishes to log transform (log1p)
+        it before applying the gates, this parameter can be set to True. Please note if the function is used to 
+        identify gates based on GMM, it is recommended for the data to be log transformed. The default is True.
+        
+    imageid : string, optional  
+        The column containing the Image IDs. When passing manual gates the columns of the dataframe need to match 
+        to the elements within the passed `imageid` column. The default is 'imageid'.
+        
+    failed_markers : dict, optional  
+        Markers that were deemed to have failed based on prior visual inspection. This parameter accepts a python 
+        dictionary with `key` as `imageid` and `value` as markers that failed in that particular `imageid`. 
+        Example: failed_markers = {'image_1': ['failed_marker_1'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}. 
+        To make it easier to allow specifying markers that failed in `all` images within the dataset, the parameter also 
+        recognizes the special keyword `all`. For example, failed_markers = {'all': ['failed_marker_X'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}. 
+        The default is None.
+        
     method : string, optional  
         Two avialble option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid',
-        users have the option to scale all data togeather or each image independently. Please be aware of batch effects when
-        passing 'all' with multiple images.
-
-    imageid : string, optional  
-        Column name of the column containing the image id.
-
-    save_fig : boolian, optional  
-        If True, the gates identified by the GMM method will be saved in a subdirectory
-        within your working directory.
+        users have the option to apply GMM by pooling all data togeather or to apply it to each image independently. 
+        Please be aware of batch effects when passing 'all' to multiple images. In contrast, if there are not enough variation 
+        within individual images, the GMM cannot reliably distinguish between the negative and positive populations as well.  
+        
+    random_state : int, optional  
+        Seed for GMM. The default is 0.
 
 Returns:
-    AnnData
-        Modified AnnData Object.
+
+    Modified AnnData Object
+        The values in `adata.X` are replaced with the scaled data.
+        The final gates used for saving the data is also stored in `adata.uns['gates']`
 
 Example:
 ```python
-    manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})
+    # create a df with manual gates
+    manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]}) 
     adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+    
+    # you could also import the gates as a pandas dataframe without index
+    manual_gate = pd.read_csv('manual_gates.csv')
+    adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers=['CD20', 'CD21'])
+    
+    # The function can also be run without providing manual gates. This will trigger the GMM mode
+    adata = sm.pp.rescale (adata, gate=None, failed_markers=['CD20', 'CD21'])
+    
 ```
+
     """
-
-
-    def rescale_independent (adata, gate, return_gates, failed_markers,save_fig):
-
-        print('Scaling Image '+ str(adata.obs[imageid].unique()))
-
-        # Copy of the raw data if it exisits
-        if adata.raw is not None:
-            adata.X = adata.raw.X
-
-        data = pd.DataFrame(adata.X, columns = adata.var.index, index= adata.obs.index)
-        # Merging the manual gates and non-working markers togeather if any
-        if gate is not None:
-            m_markers = list(gate.iloc[:,0])
-            manual_gate_markers = gate
-        if failed_markers != None:
-            manual_gate_markers = pd.DataFrame(data[failed_markers].quantile(0.9999999))
-            manual_gate_markers['markers'] = failed_markers
-            # move column to front
-            cols = manual_gate_markers.columns.tolist()
-            cols.insert(0, cols.pop(cols.index('markers')))
-            manual_gate_markers = manual_gate_markers.reindex(columns= cols)
-            manual_gate_markers.columns = ['marker', 'gate']
-            m_markers = failed_markers
-        if gate is not None and failed_markers != None:
-            m_markers = list(gate.iloc[:,0]) + list(manual_gate_markers.iloc[:,0])
-            gate.columns = ['marker', 'gate']
-            manual_gate_markers = pd.concat([gate, manual_gate_markers])
-        if gate is None and failed_markers == None:
-            m_markers = []
-
-        # Find markers to send to gmm modelling
-        if gate is not None or failed_markers is not None:
-            gmm_markers = list(np.setdiff1d(data.columns, m_markers))
-        else:
-            gmm_markers = list(data.columns)
-
-        # If manual gate is not provided scale the data
-        if len(gmm_markers) != 0:
-            gmm_data = data[gmm_markers]
-            # Clip off the 99th percentile
-            def clipping (x):
-                clip = x.clip(lower =np.percentile(x,0.01), upper=np.percentile(x,99.99)).tolist()
-                return clip
-            # Run the function
-            gmm_data = gmm_data.apply(clipping)
-
-            # Scaling the data old
-            sum_data = gmm_data.sum(axis=1) # Calculate total count for each cell
-            n_count = gmm_data.div(sum_data, axis=0) # Divide genes by total count for every cell
-            med = np.median(list(itertools.chain(*gmm_data.values.tolist()))) # Calculate median count of the entire dataset
-            n_count_med = n_count*med # Multiply by scaling fator (median count of entire dataset)
-            n_log = np.log1p(n_count_med) # Log transform data
-            scaler = MinMaxScaler(feature_range=(0, 1))
-            s = scaler.fit_transform(n_log)
-            normalised_data = pd.DataFrame(s, columns = gmm_data.columns, index= gmm_data.index)
-
-
-            # Gaussian fit to identify the gate for each marker and scale based on the gate
-            # Empty data frame to hold the results
-            all_gmm_data = pd.DataFrame()
-            def gmm_gating (data, marker, return_gates, save_fig, gmm_data):
-                # Print
-                print('Finding the optimal gate for ' + str(marker))
-                # Identify the marker to fit the model
-                m = data[marker].values
-                # Perform GMM
-                data_gm = m.reshape(-1, 1)
-                #gmm = GaussianMixture(n_components=2, means_init=[[0],[1]],covariance_type='tied')
-                gmm = GaussianMixture(n_components=2)
-                gmm.fit(data_gm)
-                gate = np.mean(gmm.means_)
-
-                # Find the closest value to the gate
-                absolute_val_array = np.abs(m - gate)
-                smallest_difference_index = absolute_val_array.argmin()
-                closest_element = m[smallest_difference_index]
-
-                # If Save Figure is true
-                if save_fig == True:
-                    m_ndata = gmm_data[marker].values
-                    # generate a linear regression for prediction
-                    x = data[marker].values.reshape(-1, 1)
-                    y = gmm_data[marker].values.reshape(-1, 1)
-                    reg = LinearRegression().fit(x, y)
-                    #reg.score(x, y)
-                    #SVR
-                    #reg = SVR(kernel='poly').fit(x, y)
-                    #regr.score(x, y)
-
-                    # the three lines
-                    g1 = m[np.abs(m - gmm.means_[0]).argmin()]
-                    mg = m[np.abs(m - np.mean(gmm.means_)).argmin()]
-                    g2 = m[np.abs(m - gmm.means_[1]).argmin()]
-                    # predicted gates on log scale
-                    g1 = np.log1p(reg.predict(np.array([[g1]])))
-                    mg = np.log1p(reg.predict(np.array([[mg]])))
-                    g2 = np.log1p(reg.predict(np.array([[g2]])))
-
-                    # saving figure folder
-                    if not os.path.exists('auto_gating'):
-                        os.makedirs('auto_gating')
-
-                    # generate figure
-                    plt.ioff()
-                    lines = [Line2D([0], [0], color='b', linestyle='--'),
-                             Line2D([1], [1], color='red'),
-                             Line2D([0], [0], color='b',linestyle='--')]
-                    labels = ['Neg Gaussian', 'Gate', 'Pos Gaussian']
-                    sns.set_style("white")
-                    fig, ax = plt.subplots( nrows=1, ncols=1 )
-                    sns.distplot(np.log1p(m_ndata),color="grey")
-                    plt.axvline(g1,ls='--')
-                    plt.axvline(g2,ls='--')
-                    plt.axvline(mg,color="red")
-                    plt.legend(lines, labels)
-                    plt.title(marker, fontsize=30)
-                    fig.savefig('auto_gating/' + str(marker) + '.png')
-                    plt.clf()
-                    plt.close('all')
-                    plt.ion()
-
-                # rescale the data based on the identified gate
-                marker_study = pd.DataFrame(m, index= data.index)
-                marker_study = marker_study.sort_values(0)
-
-                # Find the index of the gate
-                gate_index = marker_study.index[marker_study[0] == closest_element][0]
-
-                # Split into high and low groups
-                high = marker_study.loc[gate_index:,:]
-                low = marker_study.loc[:gate_index,:]
-
-                # Prepare for scaling the high and low dataframes
-                scaler_high = MinMaxScaler(feature_range=(0.5, 1))
-                scaler_low = MinMaxScaler(feature_range=(0, 0.5))
-
-                # Scale it
-                h = pd.DataFrame(scaler_high.fit_transform(high), index = high.index)
-                l = pd.DataFrame(scaler_low.fit_transform(low), index = low.index)
-
-                # Merge the high and low and resort it
-                scaled_data = pd.concat([l,h])
-                scaled_data = scaled_data.loc[~scaled_data.index.duplicated(keep='first')]
-                scaled_data = scaled_data.reindex(data.index)
-
-                #return scaled_data
-                if return_gates == True:
-                    return gate
-                else:
-                    return scaled_data
-
-            # Apply the function
-            r_gmm_gating = lambda x: gmm_gating(data=normalised_data, marker=x,return_gates=return_gates,save_fig=save_fig,gmm_data=gmm_data) # Create lamda function
-            all_gmm_data = list(map(r_gmm_gating, gmm_markers)) # Apply function
-            all_gmm_data = pd.concat(all_gmm_data, axis=1, sort=False)
-            all_gmm_data.columns = gmm_markers
-        else:
-            all_gmm_data = pd.DataFrame()
-
-        # Empty data frame to hold the results
-        all_manual_data = pd.DataFrame()
-        if len(m_markers) != 0:
-            m_data = np.log1p(data[m_markers])
-            # Clip the data
-            def clipping (x):
-                clip = x.clip(lower =np.percentile(x,1), upper=np.percentile(x,99)).tolist()
-                return clip
-            # Run the function
-            #m_data = m_data.apply(clipping)
-
-            def manual_gating (data,marker,gate):
-
-                # Work on processing manual gates
-                m = gate[gate.iloc[:,0] == marker].iloc[:,1].values[0] # gate of the marker passed in
-
-                if np.isnan(m):
-                    # Find the mean value of the marker so that it is scaled right at the middle
-                    # in other it retains the original scale
-                    m = np.mean(data[marker].values)
-                    print('Warning: No manual gate was found for ' + str(marker) + '. Scaling it between 0 and 1')
-                else:
-                    print('Scaling ' + str(marker))
-
-
-                # Find the closest value to the gate
-                absolute_val_array = np.abs(data[marker].values - float(m))
-                
-                # throw error if the array has nan values
-                if np.isnan(absolute_val_array).any():
-                    raise ValueError ("An exception occurred: " + str(marker) + ' has nan values')
-                
-                #absolute_val_array = data[marker].values - float(m)
-                # if the gate is above the largest value (essentially the marker has failed)
-                #if absolute_val_array.min() < 0:
-                #    smallest_difference_index = absolute_val_array.argmax()
-                #else:
-                #    smallest_difference_index = absolute_val_array.argmin()
-                smallest_difference_index = absolute_val_array.argmin()
-                closest_element = data[marker].values[smallest_difference_index]
-
-                # rescale the data based on the identified gate
-                marker_study = data[marker]
-                marker_study = marker_study.sort_values(0)
-
-                # Find the index of the gate
-                gate_index = marker_study.index[marker_study == closest_element][0]
-
-                # Split into high and low groups
-                high = marker_study[gate_index:]
-                low = marker_study[:gate_index]
-
-                # Prepare for scaling the high and low dataframes
-                scaler_high = MinMaxScaler(feature_range=(0.5, 1))
-                scaler_low = MinMaxScaler(feature_range=(0, 0.5))
-
-                # Scale it
-                h = pd.DataFrame(scaler_high.fit_transform(high.values.reshape(-1, 1)), index = high.index)
-                l = pd.DataFrame(scaler_low.fit_transform(low.values.reshape(-1, 1)), index = low.index)
-
-                # Merge the high and low and resort it
-                scaled_data = pd.concat([l,h])
-                scaled_data = scaled_data.loc[~scaled_data.index.duplicated(keep='first')]
-                scaled_data = scaled_data.reindex(data.index)
-
-                # Return
-                return scaled_data
-
-            # Apply the function
-            r_manual_gating = lambda x: manual_gating(data=m_data, marker=x, gate=manual_gate_markers) # Create lamda function
-            all_manual_data = list(map(r_manual_gating, m_markers)) # Apply function
-            all_manual_data = pd.concat(all_manual_data, axis=1, sort=False)
-            all_manual_data.columns = m_markers
-
-        else:
-            all_manual_data = pd.DataFrame()
-
-
-        # If both manual and automatic gating was used, combine them into a single result
-        if not all_manual_data.empty:
-            all_scaled_data = all_manual_data
-        if not all_gmm_data.empty:
-            all_scaled_data = all_gmm_data
-        if not all_manual_data.empty and not all_gmm_data.empty:
-            all_scaled_data = all_gmm_data.merge(all_manual_data, how='outer', left_index=True, right_index=True)
-
-        # re index the columns
-        all_scaled_data = all_scaled_data.reindex(columns= data.columns)
-        return all_scaled_data
-
-    # Apply method of choice
-    if method == 'all':
-        all_scaled_data = rescale_independent (adata, gate=gate, return_gates=return_gates, failed_markers=failed_markers, save_fig=save_fig)
-    if method == 'by_image':
-        adata_list = [adata[adata.obs[imageid] == i] for i in adata.obs[imageid].unique()]
-        r_rescale_independent = lambda x: rescale_independent(adata=x, gate=gate, return_gates=return_gates, failed_markers=failed_markers,save_fig=save_fig) # Create lamda function
-        scaled_data = list(map(r_rescale_independent, adata_list)) # Apply function
-        all_scaled_data = pd.concat(scaled_data)
-
-    # Create a copy of the raw data
+    
+    # make a copy to raw data if raw is none
     if adata.raw is None:
         adata.raw = adata
+    
+    # Mapping between markers and gates in the given dataset
+    dataset_markers = list(adata.var.index)
+    dataset_images = list(adata.obs[imageid].unique())
+    m= pd.DataFrame(index=dataset_markers, columns=dataset_images).reset_index()
+    m= pd.melt(m, id_vars=[m.columns[0]])
+    m.columns = ['markers', 'imageid', 'gate']
+    # Manipulate m with and without provided manual fates
+    if gate is None:
+        gate_mapping = m.copy()
+    elif bool(set(list(gate.columns)) & set(dataset_images)) is False:
+        global_manual_m = pd.melt(gate, id_vars=[gate.columns[0]])
+        global_manual_m.columns = ['markers', 'imageid', 'm_gate']
+        gate_mapping = m.copy()
+        gate_mapping.gate = gate_mapping.gate.fillna(gate_mapping.markers.map(dict(zip(global_manual_m.markers, global_manual_m.m_gate))))
+    else:
+        manual_m = pd.melt(gate, id_vars=[gate.columns[0]])
+        manual_m.columns = ['markers', 'imageid', 'm_gate']
+        gate_mapping = pd.merge(m, manual_m,  how='left', left_on=['markers','imageid'], right_on = ['markers','imageid'])
+        gate_mapping['gate'] = gate_mapping['gate'].fillna(gate_mapping['m_gate'])
+        gate_mapping = gate_mapping.drop(columns='m_gate')
+    
+    # Addressing failed markers
+    def process_failed (adata_subset, foramted_failed_markers):
+        print('Processing Failed Marker in ' + str(adata_subset.obs[imageid].unique()[0]))
+        # prepare data
+        data_subset = pd.DataFrame(adata_subset.raw.X, columns=adata_subset.var.index, index=adata_subset.obs.index)
+        if log is True:
+            data_subset = np.log1p(data_subset)
+        
+        # subset markers in the subset
+        fm_sub = foramted_failed_markers[adata_subset.obs[imageid].unique()].dropna()
 
-    # Replace with normalized data
-    adata.X = all_scaled_data
-
-    # Return data
+            
+        def process_failed_internal (fail_mark, data_subset):
+            return data_subset[fail_mark].max()
+        r_process_failed_internal = lambda x: process_failed_internal (fail_mark=x,data_subset=data_subset)
+        f_g = list(map(r_process_failed_internal, [ x[0] for x in fm_sub.values]))
+        subset_gate = pd.DataFrame( {'markers': [ x[0] for x in fm_sub.values],  
+                       'imageid': adata_subset.obs[imageid].unique()[0],
+                       'gate': f_g,})     
+        # return
+        return subset_gate
+    
+    # Identify the failed markers
+    if failed_markers is not None:
+        # check if failed marker is a dict
+        if isinstance(failed_markers, dict) is False:
+            raise ValueError ('`failed_markers` should be a python dictionary, please refer documentation')
+        # create a copy 
+        fm = failed_markers.copy()
+        # seperate all from the rest
+        if 'all' in failed_markers:
+            all_failed = failed_markers['all']
+            if isinstance(all_failed, str):
+                all_failed = [all_failed]
+            failed_markers.pop('all', None)
+            
+            df = pd.DataFrame(columns = adata.obs[imageid].unique())
+            for i in  range(len(df.columns)):
+                df.loc[i] = all_failed[i]
+        # rest of the failed markers
+        fail = pd.DataFrame.from_dict(failed_markers)        
+        # merge
+        if 'all' in fm:
+            foramted_failed_markers = pd.concat([fail, df], axis=0)
+        else: 
+            foramted_failed_markers = fail
+        
+        # send the adata objects that need to be processed
+        # Check if any image needs to pass through the GMM protocol
+        adata_list = [adata[adata.obs[imageid] == i] for i in foramted_failed_markers.columns]
+        # apply the process_failed function
+        r_process_failed = lambda x: process_failed (adata_subset=x,foramted_failed_markers=foramted_failed_markers)
+        failed_gates = list(map(r_process_failed, adata_list))    
+        # combine the results and merge with gate_mapping
+        result = []
+        for i in range(len(failed_gates)):
+            result.append(failed_gates[i])
+        result = pd.concat(result, join='outer')
+        # use this to merge with gate_mapping
+        x1 = gate_mapping.set_index(['markers', 'imageid'])['gate']
+        x2 = result.set_index(['markers', 'imageid'])['gate']
+        x1.update(x2)
+        gate_mapping = x1.reset_index()
+        
+    # trim the data before applying GMM
+    def clipping (x):
+        clip = x.clip(lower =np.percentile(x,0.01), upper=np.percentile(x,99.99)).tolist()
+        return clip
+            
+    # Find GMM based gates
+    def gmm_gating (marker, data):
+        print('Finding the optimal gate by GMM for ' + str(marker))
+        data_gm = data[marker].values.reshape(-1, 1)
+        gmm = GaussianMixture(n_components=2, random_state=random_state).fit(data_gm)
+        gate = np.mean(gmm.means_)
+        return gate
+    
+    # Running gmm_gating on the dataset
+    def gmm_gating_internal (adata_subset, gate_mapping, method):
+        print('GMM for ' + str(adata_subset.obs[imageid].unique()))
+        data_subset = pd.DataFrame(adata_subset.raw.X, columns=adata_subset.var.index, index=adata_subset.obs.index)      
+        # find markers
+        if method == 'all':
+            image_specific = gate_mapping.copy()
+            marker_to_gate = list(gate_mapping[gate_mapping.gate.isnull()].markers.unique())
+        else:        
+            image_specific = gate_mapping[gate_mapping['imageid'].isin(adata_subset.obs[imageid].unique())]
+            marker_to_gate = image_specific[image_specific.gate.isnull()].markers.values   
+        # Apply clipping
+        data_subset_clipped = data_subset.apply(clipping)
+        # log transform data
+        if log is True:
+            data_subset_clipped = np.log1p(data_subset_clipped)
+        # identify the gates for the markers
+        r_gmm_gating = lambda x: gmm_gating(marker=x, data=data_subset_clipped) 
+        gates = list(map(r_gmm_gating, marker_to_gate))     
+        # create a df with results
+        result = image_specific[image_specific.gate.isnull()]
+        mapping = dict(zip(marker_to_gate, gates))
+        for i in result.index:
+            result.loc[i, 'gate'] = mapping[result.loc[i, 'markers']]
+        #result['gate'] = result['gate'].fillna(result['markers'].map(dict(zip(marker_to_gate, gates))))        
+        # return
+        return result
+    
+    
+    # Create a list of image IDs that need to go through the GMM
+    gmm_images = gate_mapping[gate_mapping.gate.isnull()].imageid.unique()  
+    
+    # Check if any image needs to pass through the GMM protocol
+    if len(gmm_images) > 0 :
+        # Create a list of adata that need to go through the GMM
+        if method == 'all':
+            adata_list = [adata]
+        else:
+            adata_list = [adata[adata.obs[imageid] == i] for i in gmm_images]
+        # run function
+        r_gmm_gating_internal = lambda x: gmm_gating_internal (adata_subset=x, 
+                                                               gate_mapping=gate_mapping,
+                                                               method=method) 
+        all_gates = list(map(r_gmm_gating_internal, adata_list))
+        
+        # combine the results and merge with gate_mapping
+        result = []
+        for i in range(len(all_gates)):
+            result.append(all_gates[i])
+        result = pd.concat(result, join='outer')
+        # use this to merge with gate_mapping
+        gate_mapping.gate = gate_mapping.gate.fillna(gate_mapping.markers.map(dict(zip(result.markers, result.gate))))
+            
+    
+    # Rescaling function
+    def data_scaler (adata_subset, gate_mapping):
+        print('Scaling Image ' + str(adata_subset.obs[imageid].unique()[0]))
+        # Organise data
+        data_subset = pd.DataFrame(adata_subset.raw.X, columns=adata_subset.var.index, index=adata_subset.obs.index)
+        if log is True:
+            data_subset = np.log1p(data_subset)
+        # subset markers in the subset
+        gate_mapping_sub = gate_mapping[gate_mapping['imageid'] == adata_subset.obs[imageid].unique()[0]]
+        
+        # organise gates
+        def data_scaler_internal (marker, gate_mapping_sub):
+            print('Scaling ' + str(marker))
+            # find the gate
+            moi = gate_mapping_sub[gate_mapping_sub.markers == marker]['gate'].values[0]
+            
+            # Find the closest value to the gate
+            absolute_val_array = np.abs(data_subset[marker].values - float(moi))
+            # throw error if the array has nan values
+            if np.isnan(absolute_val_array).any():
+                raise ValueError ("An exception occurred: " + str(marker) + ' has nan values')
+            # smallest diff
+            smallest_difference_index = absolute_val_array.argmin()
+            closest_element = data_subset[marker].values[smallest_difference_index]
+            
+            # rescale the data based on the identified gate
+            marker_study = data_subset[marker]
+            marker_study = marker_study.sort_values(axis=0)
+            # Find the index of the gate
+            gate_index = marker_study.index[marker_study == closest_element][0]
+            # Split into high and low groups
+            high = marker_study[gate_index:]
+            low = marker_study[:gate_index]
+            # Prepare for scaling the high and low dataframes
+            scaler_high = MinMaxScaler(feature_range=(0.5, 1))
+            scaler_low = MinMaxScaler(feature_range=(0, 0.5))
+            # Scale it
+            h = pd.DataFrame(scaler_high.fit_transform(high.values.reshape(-1, 1)), index = high.index)
+            l = pd.DataFrame(scaler_low.fit_transform(low.values.reshape(-1, 1)), index = low.index)
+            # Merge the high and low and resort it
+            scaled_data = pd.concat([l,h])
+            scaled_data = scaled_data.loc[~scaled_data.index.duplicated(keep='first')]
+            scaled_data = scaled_data.reindex(data_subset.index)
+            # return
+            return scaled_data
+        
+        # run internal function
+        r_data_scaler_internal = lambda x: data_scaler_internal (marker=x, gate_mapping_sub=gate_mapping_sub) 
+        scaled_subset = list(map(r_data_scaler_internal, gate_mapping_sub.markers.values))
+            
+        # combine the results and merge with gate_mapping
+        scaled_subset_result = []
+        for i in range(len(scaled_subset)):
+            scaled_subset_result.append(scaled_subset[i])
+        scaled_subset_result = pd.concat(scaled_subset_result, join='outer', axis=1)
+        scaled_subset_result.columns = gate_mapping_sub.markers.values
+        
+        # return
+        return scaled_subset_result
+    
+    # pass each dataset seperately
+    adata_list = [adata[adata.obs[imageid] == i] for i in adata.obs[imageid].unique()]
+    
+    # Run the scaler function
+    r_data_scaler = lambda x: data_scaler (adata_subset=x, gate_mapping=gate_mapping) 
+    scaled_subset = list(map(r_data_scaler, adata_list))  
+            
+    # combine the results and merge with gate_mapping
+    final_result = []
+    for i in range(len(scaled_subset)):
+        final_result.append(scaled_subset[i])
+    final_result = pd.concat(final_result, join='outer')
+    
+    # reindex the final_results
+    final_result = final_result.reindex(adata.obs.index)
+    
+    # save final gates
+    adata.uns['gates'] = gate_mapping.pivot_table(index=['markers'], columns=['imageid']).reset_index().droplevel(0, axis=1) 
+    
+    # add to the anndata
+    adata.X = final_result
+    
+    # return adata
     return adata

@@ -17,15 +17,9 @@
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import BallTree
-from scipy.sparse import csr_matrix
-from scipy.sparse import lil_matrix
 import scipy
-import argparse
-import sys
 import anndata
 import pathlib
-from sklearn.metrics.pairwise import cosine_similarity
-from scipy import sparse
 import numba
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import RobustScaler

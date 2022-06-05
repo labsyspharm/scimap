@@ -168,9 +168,8 @@ For markers that are not included in the `manual_gates.csv` file, the function
 will automatically try to determine a gate by running a gaussian mixture model
 algorithm on the data. <br>
 
-Finally, if a marker is included in the `manual_gates.csv` file but no gate value
-was provided (i.e. left empty). The function will do nothing. It will simply scale 
-the data between 0 and 1 and print out a warning.
+### Note (for >=v.0.22.0)
+Please note that passing manual gates for multiple images has been introduced in `scimap >=v.0.22.0`
 
 ```python
 # Load the manual gates and rescale the data based on the gates
