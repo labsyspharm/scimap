@@ -48,9 +48,9 @@ Parameters:
     failed_markers : dict, optional  
         Markers that were deemed to have failed based on prior visual inspection. This parameter accepts a python 
         dictionary with `key` as `imageid` and `value` as markers that failed in that particular `imageid`. 
-        Example: failed_markers = {'image_1': ['failed_marker_1'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}. 
+        Example: `failed_markers = {'image_1': ['failed_marker_1'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}`. 
         To make it easier to allow specifying markers that failed in `all` images within the dataset, the parameter also 
-        recognizes the special keyword `all`. For example, failed_markers = {'all': ['failed_marker_X'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}. 
+        recognizes the special keyword `all`. For example, `failed_markers = {'all': ['failed_marker_X'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}`. 
         The default is None.
         
     method : string, optional  
