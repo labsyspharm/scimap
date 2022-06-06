@@ -147,8 +147,10 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
             failed_markers.pop('all', None)
             
             df = pd.DataFrame(columns = adata.obs[imageid].unique())
-            for i in  range(len(df.columns)):
-                df.loc[i] = all_failed[i]
+            for i in range(len(all_failed)):
+                df.loc[i] = np.repeat(all_failed[i], len(df.columns))
+            #for i in  range(len(df.columns)):
+            #    df.loc[i] = all_failed[i]
         # rest of the failed markers
         fail = pd.DataFrame.from_dict(failed_markers)        
         # merge
@@ -318,7 +320,7 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
     final_result = final_result.reindex(adata.obs.index)
     
     # save final gates
-    adata.uns['gates'] = gate_mapping.pivot_table(index=['markers'], columns=['imageid']).reset_index().droplevel(0, axis=1) 
+    adata.uns['gates'] = gate_mapping.pivot_table(index=['markers'], columns=['imageid']).droplevel(0, axis=1)#.reset_index()
     
     # add to the anndata
     adata.X = final_result
