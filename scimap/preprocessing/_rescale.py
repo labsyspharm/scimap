@@ -152,7 +152,8 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
             #for i in  range(len(df.columns)):
             #    df.loc[i] = all_failed[i]
         # rest of the failed markers
-        fail = pd.DataFrame.from_dict(failed_markers)        
+        #fail = pd.DataFrame.from_dict(failed_markers)        
+        fail = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in failed_markers.items() ]))
         # merge
         if 'all' in fm:
             foramted_failed_markers = pd.concat([fail, df], axis=0)
@@ -272,7 +273,11 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
             marker_study = data_subset[marker]
             marker_study = marker_study.sort_values(axis=0)
             # Find the index of the gate
-            gate_index = marker_study.index[marker_study == closest_element][0]
+            # account for 0
+            if all(marker_study) == 0:
+                gate_index = pd.DataFrame(marker_study).tail(2).index[0]
+            else:
+                gate_index = marker_study.index[marker_study == closest_element][0]
             # Split into high and low groups
             high = marker_study[gate_index:]
             low = marker_study[:gate_index]
