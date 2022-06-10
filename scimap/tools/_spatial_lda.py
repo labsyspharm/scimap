@@ -99,7 +99,9 @@ Example:
             print("Identifying the " + str(knn) + " nearest neighbours for every cell")
             tree = BallTree(data[['x','y']], leaf_size= 2)
             ind = tree.query(data[['x','y']], k=knn, return_distance= False)
-        
+            #ind = [np.array(x) for x in ind]
+            ind = list(np.array(item) for item in ind)
+            
         # b) Local radius method
         if method == 'radius':
             print("Identifying neighbours within " + str(radius) + " pixels of every cell")
@@ -190,7 +192,7 @@ Example:
     # save the results in anndata object
     adata.uns[label] = arr # save the weight for each cell
     adata.uns[str(label)+'_probability'] = cell_weight # weights of each cell type
-    adata.uns[str(label)+'_model'] = lda_model
+    #adata.uns[str(label)+'_model'] = lda_model
     
     # return
     return adata
