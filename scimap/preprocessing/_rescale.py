@@ -274,7 +274,7 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
             marker_study = marker_study.sort_values(axis=0)
             # Find the index of the gate
             # account for 0
-            if all(marker_study) == 0:
+            if all(marker_study == 0):
                 gate_index = pd.DataFrame(marker_study).tail(2).index[0]
             else:
                 gate_index = marker_study.index[marker_study == closest_element][0]
@@ -291,6 +291,7 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
             scaled_data = pd.concat([l,h])
             scaled_data = scaled_data.loc[~scaled_data.index.duplicated(keep='first')]
             scaled_data = scaled_data.reindex(data_subset.index)
+            #scaled_data[scaled_data > 0.5].count(axis=1).sum()
             # return
             return scaled_data
         
@@ -304,6 +305,7 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
             scaled_subset_result.append(scaled_subset[i])
         scaled_subset_result = pd.concat(scaled_subset_result, join='outer', axis=1)
         scaled_subset_result.columns = gate_mapping_sub.markers.values
+        #scaled_subset_result[scaled_subset_result['CD3E'] > 0.5]['CD3E'].count(axis=1).sum()
         
         # return
         return scaled_subset_result
