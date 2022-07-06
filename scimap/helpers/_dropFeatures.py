@@ -22,7 +22,7 @@ def dropFeatures (adata, drop_markers=None, drop_cells=None,
                   drop_groups=None, groups_column=None,
                   subset_raw=True):
     """
-Parameters
+Parameters  
 
     adata : AnnData Object  
     
@@ -48,11 +48,9 @@ Parameters
         stored in `adata.raw`. Pass `True` to apply the same transformations to 
         `adata.raw` as well. The default is True.
 
+Returns  
 
-Returns
-
-    adata : TYPE
-        DESCRIPTION.
+    adata : Modified `adata` object
 
 Example
 
