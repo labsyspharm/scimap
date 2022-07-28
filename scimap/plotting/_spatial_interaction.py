@@ -151,7 +151,7 @@ Example:
         sns.clustermap(im, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
         
     else:
-        if len(interaction_map.columns) <= 3:
+        if len(interaction_map.columns) < 2:
             raise ValueError('Data for only a single image is available please set summarize_plot=True and try again')
         # convert first two columns to multi-index column
         #interaction_map = interaction_map.set_index(['phenotype','neighbour_phenotype'])
