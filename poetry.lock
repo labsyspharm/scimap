@@ -36,7 +36,7 @@ typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
 yarl = ">=1.0,<2.0"
 
 [package.extras]
-speedups = ["aiodns", "brotli", "cchardet"]
+speedups = ["Brotli", "aiodns", "cchardet"]
 
 [[package]]
 name = "aioitertools"
@@ -95,9 +95,9 @@ scipy = ">1.4"
 xlrd = "<2.0"
 
 [package.extras]
-dev = ["setuptools-scm", "black (>=20.8b1)", "docutils"]
-doc = ["sphinx (>=4.1,<4.2)", "sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.11.0)", "sphinx-issues", "scanpydoc (>=0.7.3)", "typing-extensions"]
-test = ["loompy (>=3.0.5)", "pytest (>=6.0)", "pytest-cov (>=2.10)", "zarr", "matplotlib", "sklearn", "openpyxl", "joblib", "boltons", "scanpy"]
+dev = ["black (>=20.8b1)", "docutils", "setuptools_scm"]
+doc = ["scanpydoc (>=0.7.3)", "sphinx (>=4.1,<4.2)", "sphinx-autodoc-typehints (>=1.11.0)", "sphinx-rtd-theme", "sphinx_issues", "typing_extensions"]
+test = ["boltons", "joblib", "loompy (>=3.0.5)", "matplotlib", "openpyxl", "pytest (>=6.0)", "pytest-cov (>=2.10)", "scanpy", "sklearn", "zarr"]
 
 [[package]]
 name = "appdirs"
@@ -125,17 +125,18 @@ python-versions = "*"
 
 [[package]]
 name = "astroid"
-version = "2.3.3"
+version = "2.11.7"
 description = "An abstract syntax tree for Python with inference support."
-category = "dev"
+category = "main"
 optional = false
-python-versions = ">=3.5.*"
+python-versions = ">=3.6.2"
 
 [package.dependencies]
-lazy-object-proxy = ">=1.4.0,<1.5.0"
-six = ">=1.12,<2.0"
-typed-ast = {version = ">=1.4.0,<1.5", markers = "implementation_name == \"cpython\" and python_version < \"3.8\""}
-wrapt = ">=1.11.0,<1.12.0"
+lazy-object-proxy = ">=1.4.0"
+setuptools = ">=20.0"
+typed-ast = {version = ">=1.4.0,<2.0", markers = "implementation_name == \"cpython\" and python_version < \"3.8\""}
+typing-extensions = {version = ">=3.10", markers = "python_version < \"3.10\""}
+wrapt = ">=1.11,<2"
 
 [[package]]
 name = "async-timeout"
@@ -173,10 +174,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
-docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
+dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six", "sphinx", "sphinx-notfound-page", "zope.interface"]
+docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
+tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six", "zope.interface"]
+tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six"]
 
 [[package]]
 name = "babel"
@@ -339,9 +340,9 @@ toolz = {version = ">=0.8.2", optional = true, markers = "extra == \"array\""}
 
 [package.extras]
 array = ["numpy (>=1.13.0)", "toolz (>=0.8.2)"]
-bag = ["cloudpickle (>=0.2.2)", "fsspec (>=0.6.0)", "toolz (>=0.8.2)", "partd (>=0.3.10)"]
+bag = ["cloudpickle (>=0.2.2)", "fsspec (>=0.6.0)", "partd (>=0.3.10)", "toolz (>=0.8.2)"]
 complete = ["bokeh (>=1.0.0,!=2.0.0)", "cloudpickle (>=0.2.2)", "distributed (>=2.0)", "fsspec (>=0.6.0)", "numpy (>=1.13.0)", "pandas (>=0.23.0)", "partd (>=0.3.10)", "toolz (>=0.8.2)"]
-dataframe = ["numpy (>=1.13.0)", "pandas (>=0.23.0)", "toolz (>=0.8.2)", "partd (>=0.3.10)", "fsspec (>=0.6.0)"]
+dataframe = ["fsspec (>=0.6.0)", "numpy (>=1.13.0)", "pandas (>=0.23.0)", "partd (>=0.3.10)", "toolz (>=0.8.2)"]
 delayed = ["cloudpickle (>=0.2.2)", "toolz (>=0.8.2)"]
 diagnostics = ["bokeh (>=1.0.0,!=2.0.0)"]
 distributed = ["distributed (>=2.0)"]
@@ -363,6 +364,17 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "dill"
+version = "0.3.6"
+description = "serialize all of python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+graph = ["objgraph (>=1.7.2)"]
+
+[[package]]
 name = "docstring-parser"
 version = "0.13"
 description = "\"Parse Python docstrings in reST, Google and Numpydoc format\""
@@ -371,7 +383,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-test = ["pytest", "black"]
+test = ["black", "pytest"]
 
 [[package]]
 name = "docutils"
@@ -406,9 +418,9 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-all = ["fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "zopfli (>=0.1.4)", "lz4 (>=1.7.4.2)", "matplotlib", "sympy", "skia-pathops (>=0.5.0)", "brotlicffi (>=0.8.0)", "scipy", "brotli (>=1.0.1)", "munkres", "unicodedata2 (>=14.0.0)", "xattr"]
+all = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "lz4 (>=1.7.4.2)", "matplotlib", "munkres", "scipy", "skia-pathops (>=0.5.0)", "sympy", "unicodedata2 (>=14.0.0)", "xattr", "zopfli (>=0.1.4)"]
 graphite = ["lz4 (>=1.7.4.2)"]
-interpolatable = ["scipy", "munkres"]
+interpolatable = ["munkres", "scipy"]
 lxml = ["lxml (>=4.0,<5)"]
 pathops = ["skia-pathops (>=0.5.0)"]
 plot = ["matplotlib"]
@@ -416,7 +428,7 @@ symfont = ["sympy"]
 type1 = ["xattr"]
 ufo = ["fs (>=2.2.0,<3)"]
 unicode = ["unicodedata2 (>=14.0.0)"]
-woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
+woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
 
 [[package]]
 name = "freetype-py"
@@ -461,7 +473,7 @@ abfs = ["adlfs"]
 adl = ["adlfs"]
 arrow = ["pyarrow (>=1)"]
 dask = ["dask", "distributed"]
-dropbox = ["dropboxdrivefs", "requests", "dropbox"]
+dropbox = ["dropbox", "dropboxdrivefs", "requests"]
 entrypoints = ["importlib-metadata"]
 fuse = ["fusepy"]
 gcs = ["gcsfs"]
@@ -470,7 +482,7 @@ github = ["requests"]
 gs = ["gcsfs"]
 gui = ["panel"]
 hdfs = ["pyarrow (>=1)"]
-http = ["requests", "aiohttp"]
+http = ["aiohttp", "requests"]
 libarchive = ["libarchive-c"]
 oci = ["ocifs"]
 s3 = ["s3fs"]
@@ -502,9 +514,9 @@ smart-open = ">=1.8.1"
 
 [package.extras]
 distributed = ["Pyro4 (>=4.27)"]
-docs = ["pytest", "mock", "cython", "testfixtures", "Morfessor (>=2.0.2a4)", "pyemd", "nmslib", "Pyro4 (>=4.27)", "visdom (>0.1.8.7)", "sphinx", "sphinx-gallery", "sphinxcontrib.programoutput", "sphinxcontrib-napoleon", "matplotlib", "memory-profiler", "annoy", "pyro4", "nltk", "statsmodels", "pandas"]
-test = ["pytest", "mock", "cython", "testfixtures", "Morfessor (>=2.0.2a4)", "pyemd", "nmslib", "visdom (>0.1.8.7)"]
-test-win = ["pytest", "mock", "cython", "testfixtures", "Morfessor (>=2.0.2a4)", "pyemd", "nmslib"]
+docs = ["Morfessor (>=2.0.2a4)", "Pyro4", "Pyro4 (>=4.27)", "annoy", "cython", "matplotlib", "memory-profiler", "mock", "nltk", "nmslib", "pandas", "pyemd", "pytest", "sphinx", "sphinx-gallery", "sphinxcontrib-napoleon", "sphinxcontrib.programoutput", "statsmodels", "testfixtures", "visdom (>=0.1.8,!=0.1.8.7)"]
+test = ["Morfessor (>=2.0.2a4)", "cython", "mock", "nmslib", "pyemd", "pytest", "testfixtures", "visdom (>=0.1.8,!=0.1.8.7)"]
+test-win = ["Morfessor (>=2.0.2a4)", "cython", "mock", "nmslib", "pyemd", "pytest", "testfixtures"]
 
 [[package]]
 name = "ghp-import"
@@ -518,7 +530,7 @@ python-versions = "*"
 python-dateutil = ">=2.8.1"
 
 [package.extras]
-dev = ["twine", "markdown", "flake8", "wheel"]
+dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "h5py"
@@ -570,7 +582,7 @@ texttable = ">=1.6.2"
 [package.extras]
 doc = ["Sphinx (>=4.2.0)", "sphinxbootstrap4theme (>=0.6.0)"]
 plotting = ["cairocffi (>=1.2.0)"]
-test = ["networkx (>=2.5)", "pytest (>=6.2.5)", "numpy (>=1.19.0)", "pandas (>=1.1.0)", "scipy (>=1.5.0)"]
+test = ["networkx (>=2.5)", "numpy (>=1.19.0)", "pandas (>=1.1.0)", "pytest (>=6.2.5)", "scipy (>=1.5.0)"]
 
 [[package]]
 name = "imageio"
@@ -586,15 +598,15 @@ pillow = ">=8.3.2"
 
 [package.extras]
 build = ["wheel"]
-dev = ["invoke", "pytest", "pytest-cov", "fsspec", "black", "flake8"]
-docs = ["sphinx", "numpydoc", "pydata-sphinx-theme"]
+dev = ["black", "flake8", "fsspec[github]", "invoke", "pytest", "pytest-cov"]
+docs = ["numpydoc", "pydata-sphinx-theme", "sphinx"]
 ffmpeg = ["imageio-ffmpeg", "psutil"]
 fits = ["astropy"]
-full = ["astropy", "black", "flake8", "fsspec", "gdal", "imageio-ffmpeg", "invoke", "itk", "numpydoc", "psutil", "pydata-sphinx-theme", "pytest", "pytest-cov", "sphinx", "tifffile", "wheel"]
+full = ["astropy", "black", "flake8", "fsspec[github]", "gdal", "imageio-ffmpeg", "invoke", "itk", "numpydoc", "psutil", "pydata-sphinx-theme", "pytest", "pytest-cov", "sphinx", "tifffile", "wheel"]
 gdal = ["gdal"]
 itk = ["itk"]
 linting = ["black", "flake8"]
-test = ["invoke", "pytest", "pytest-cov", "fsspec"]
+test = ["fsspec[github]", "invoke", "pytest", "pytest-cov"]
 tifffile = ["tifffile"]
 
 [[package]]
@@ -618,9 +630,9 @@ typing-extensions = {version = ">=3.6.4", markers = "python_version < \"3.8\""}
 zipp = ">=0.5"
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
+docs = ["jaraco.packaging (>=9)", "rst.linker (>=1.9)", "sphinx"]
 perf = ["ipython"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
+testing = ["flufl.flake8", "importlib-resources (>=1.3)", "packaging", "pyfakefs", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf (>=0.9.2)"]
 
 [[package]]
 name = "importlib-resources"
@@ -634,8 +646,8 @@ python-versions = ">=3.7"
 zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
+docs = ["jaraco.packaging (>=9)", "rst.linker (>=1.9)", "sphinx"]
+testing = ["pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "ipykernel"
@@ -653,11 +665,12 @@ jupyter-client = ">=6.1.12"
 matplotlib-inline = ">=0.1"
 nest-asyncio = "*"
 psutil = "*"
+setuptools = ">=60"
 tornado = ">=6.1"
 traitlets = ">=5.1.0"
 
 [package.extras]
-test = ["pytest (>=6.0)", "pytest-cov", "flaky", "ipyparallel", "pre-commit", "pytest-timeout"]
+test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=6.0)", "pytest-cov", "pytest-timeout"]
 
 [[package]]
 name = "ipython"
@@ -678,6 +691,7 @@ pexpect = {version = ">4.3", markers = "sys_platform != \"win32\""}
 pickleshare = "*"
 prompt-toolkit = ">=2.0.0,<3.0.0 || >3.0.0,<3.0.1 || >3.0.1,<3.1.0"
 pygments = "*"
+setuptools = ">=18.5"
 traitlets = ">=4.2"
 
 [package.extras]
@@ -686,10 +700,10 @@ doc = ["Sphinx (>=1.3)"]
 kernel = ["ipykernel"]
 nbconvert = ["nbconvert"]
 nbformat = ["nbformat"]
-notebook = ["notebook", "ipywidgets"]
+notebook = ["ipywidgets", "notebook"]
 parallel = ["ipyparallel"]
 qtconsole = ["qtconsole"]
-test = ["nose (>=0.10.1)", "requests", "testpath", "pygments", "nbformat", "ipykernel", "numpy (>=1.17)"]
+test = ["ipykernel", "nbformat", "nose (>=0.10.1)", "numpy (>=1.17)", "pygments", "requests", "testpath"]
 
 [[package]]
 name = "ipython-genutils"
@@ -703,14 +717,14 @@ python-versions = "*"
 name = "isort"
 version = "4.3.21"
 description = "A Python utility / library to sort Python imports."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
 pipfile = ["pipreqs", "requirementslib"]
 pyproject = ["toml"]
-requirements = ["pipreqs", "pip-api"]
+requirements = ["pip-api", "pipreqs"]
 xdg_home = ["appdirs (>=1.4.0)"]
 
 [[package]]
@@ -825,7 +839,7 @@ typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
 name = "lazy-object-proxy"
 version = "1.4.3"
 description = "A fast and thorough lazy object proxy."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -882,11 +896,11 @@ qtpy = ">=1.7.0"
 typing-extensions = "*"
 
 [package.extras]
-dev = ["ipython", "black", "flake8", "flake8-docstrings", "flake8-typing-imports", "isort", "mypy", "pre-commit", "pydocstyle", "tox-conda", "tox", "pytest", "pytest-qt", "pytest-cov", "pytest-mypy-plugins", "numpy", "tqdm (>=4.30.0)", "pillow (>=4.0)", "matplotlib", "toolz", "pyqt5 (>=5.12.0)", "pandas"]
+dev = ["black", "flake8", "flake8-docstrings", "flake8-typing-imports", "ipython", "isort", "matplotlib", "mypy", "numpy", "pandas", "pillow (>=4.0)", "pre-commit", "pydocstyle", "pyqt5 (>=5.12.0)", "pytest", "pytest-cov", "pytest-mypy-plugins", "pytest-qt", "toolz", "tox", "tox-conda", "tqdm (>=4.30.0)"]
 image = ["pillow (>=4.0)"]
 pyqt5 = ["pyqt5 (>=5.12.0)"]
 pyside2 = ["pyside2 (>=5.13)", "pyside2 (>=5.14)", "pyside2 (>=5.15)"]
-testing = ["tox", "pytest", "pytest-qt", "pytest-cov", "pytest-mypy-plugins", "numpy", "tqdm (>=4.30.0)", "pillow (>=4.0)", "matplotlib", "toolz", "pandas"]
+testing = ["matplotlib", "numpy", "pandas", "pillow (>=4.0)", "pytest", "pytest-cov", "pytest-mypy-plugins", "pytest-qt", "toolz", "tox", "tqdm (>=4.30.0)"]
 tqdm = ["tqdm (>=4.30.0)"]
 
 [[package]]
@@ -945,7 +959,7 @@ traitlets = "*"
 name = "mccabe"
 version = "0.6.1"
 description = "McCabe checker, plugin for flake8"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -1088,18 +1102,18 @@ vispy = ">=0.9.4"
 wrapt = ">=1.11.1"
 
 [package.extras]
-all = ["scikit-image", "PyQt5 (>=5.12.3,!=5.15.0)"]
+all = ["PyQt5 (>=5.12.3,!=5.15.0)", "scikit-image[data]"]
 build = ["black", "isort", "pyqt5"]
-bundle_build = ["briefcase (==0.3.1)", "tomlkit", "wheel", "dmgbuild (>=1.4.2)", "PySide2 (==5.15.2)"]
-bundle_run = ["imagecodecs", "pip", "PySide2 (==5.15.2)", "scikit-image", "zarr", "wheel", "pims", "numpy (==1.19.3)"]
-dev = ["pre-commit (>=2.9.0)", "black (==20.8b1)", "flake8 (==3.8.4)", "pydantic", "check-manifest (>=0.42)", "rich", "scikit-image", "PyQt5 (>=5.12.3,!=5.15.0)", "babel (>=2.9.0)", "pytest", "pytest-faulthandler", "pytest-order", "pytest-qt", "hypothesis (>=6.8.0)", "xarray", "fsspec", "zarr", "matplotlib", "scikit-image (>=0.18.1,!=0.19.0)", "pooch (>=1.3.0)", "semgrep", "meshzoo", "tensorstore (>=0.1.13)", "torch (>=1.7)"]
+bundle_build = ["PySide2 (==5.15.2)", "briefcase (==0.3.1)", "dmgbuild (>=1.4.2)", "tomlkit", "wheel"]
+bundle_run = ["PySide2 (==5.15.2)", "imagecodecs", "numpy (==1.19.3)", "pims", "pip", "scikit-image[data]", "wheel", "zarr"]
+dev = ["PyQt5 (>=5.12.3,!=5.15.0)", "babel (>=2.9.0)", "black (==20.8b1)", "check-manifest (>=0.42)", "flake8 (==3.8.4)", "fsspec", "hypothesis (>=6.8.0)", "matplotlib", "meshzoo", "pooch (>=1.3.0)", "pre-commit (>=2.9.0)", "pydantic[dotenv]", "pytest", "pytest-faulthandler", "pytest-order", "pytest-qt", "rich", "scikit-image (>=0.18.1,!=0.19.0)", "scikit-image[data]", "semgrep", "tensorstore (>=0.1.13)", "torch (>=1.7)", "xarray", "zarr"]
 pyqt = ["PyQt5 (>=5.12.3,!=5.15.0)"]
 pyqt5 = ["PyQt5 (>=5.12.3,!=5.15.0)"]
 pyside = ["PySide2 (>=5.13.2,!=5.15.0)"]
 pyside2 = ["PySide2 (>=5.13.2,!=5.15.0)"]
 qt = ["PyQt5 (>=5.12.3,!=5.15.0)"]
-release = ["PyGithub (>=1.44.1)", "twine (>=3.1.1)", "pygithub"]
-testing = ["babel (>=2.9.0)", "pytest", "pytest-faulthandler", "pytest-order", "pytest-qt", "hypothesis (>=6.8.0)", "xarray", "fsspec", "zarr", "matplotlib", "scikit-image (>=0.18.1,!=0.19.0)", "pooch (>=1.3.0)", "semgrep", "meshzoo", "tensorstore (>=0.1.13)", "torch (>=1.7)"]
+release = ["PyGithub (>=1.44.1)", "pygithub", "twine (>=3.1.1)"]
+testing = ["babel (>=2.9.0)", "fsspec", "hypothesis (>=6.8.0)", "matplotlib", "meshzoo", "pooch (>=1.3.0)", "pytest", "pytest-faulthandler", "pytest-order", "pytest-qt", "scikit-image (>=0.18.1,!=0.19.0)", "semgrep", "tensorstore (>=0.1.13)", "torch (>=1.7)", "xarray", "zarr"]
 
 [[package]]
 name = "napari-console"
@@ -1142,7 +1156,7 @@ python-versions = ">=3.6"
 importlib-metadata = {version = ">=1.5.0", markers = "python_version < \"3.8\""}
 
 [package.extras]
-dev = ["pytest", "pytest-cov", "pre-commit", "tox", "tox-conda"]
+dev = ["pre-commit", "pytest", "pytest-cov", "tox", "tox-conda"]
 test = ["pytest", "pytest-cov"]
 
 [[package]]
@@ -1160,7 +1174,7 @@ numpy = ">=1.16.0"
 vispy = ">=0.6.4"
 
 [package.extras]
-testing = ["pytest", "pytest-cov", "napari (>=0.4)", "pyqt5"]
+testing = ["napari (>=0.4)", "pyqt5", "pytest", "pytest-cov"]
 
 [[package]]
 name = "natsort"
@@ -1191,11 +1205,11 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-default = ["numpy (>=1.19)", "scipy (>=1.5,!=1.6.1)", "matplotlib (>=3.3)", "pandas (>=1.1)"]
+default = ["matplotlib (>=3.3)", "numpy (>=1.19)", "pandas (>=1.1)", "scipy (>=1.5,!=1.6.1)"]
 developer = ["black (==21.5b1)", "pre-commit (>=2.12)"]
-doc = ["sphinx (>=4.0,<5.0)", "pydata-sphinx-theme (>=0.6,<1.0)", "sphinx-gallery (>=0.9,<1.0)", "numpydoc (>=1.1)", "pillow (>=8.2)", "nb2plots (>=0.6)", "texext (>=0.6.6)"]
-extra = ["lxml (>=4.5)", "pygraphviz (>=1.7)", "pydot (>=1.4.1)"]
-test = ["pytest (>=6.2)", "pytest-cov (>=2.12)", "codecov (>=2.1)"]
+doc = ["nb2plots (>=0.6)", "numpydoc (>=1.1)", "pillow (>=8.2)", "pydata-sphinx-theme (>=0.6,<1.0)", "sphinx (>=4.0,<5.0)", "sphinx-gallery (>=0.9,<1.0)", "texext (>=0.6.6)"]
+extra = ["lxml (>=4.5)", "pydot (>=1.4.1)", "pygraphviz (>=1.7)"]
+test = ["codecov (>=2.1)", "pytest (>=6.2)", "pytest-cov (>=2.12)"]
 
 [[package]]
 name = "nose"
@@ -1225,7 +1239,7 @@ typer = "*"
 
 [package.extras]
 dev = ["black", "flake8", "flake8-docstrings", "ipython", "isort", "jedi (<0.18.0)", "magicgui", "mypy", "numpy", "pre-commit", "pydocstyle", "pytest", "pytest-cov", "rich", "typer"]
-docs = ["jinja2"]
+docs = ["Jinja2"]
 testing = ["magicgui", "napari-svg", "numpy", "pytest", "pytest-cov", "rich"]
 
 [[package]]
@@ -1239,6 +1253,7 @@ python-versions = ">=3.7,<3.11"
 [package.dependencies]
 llvmlite = ">=0.38.0rc1,<0.39"
 numpy = ">=1.18,<1.22"
+setuptools = "*"
 
 [[package]]
 name = "numcodecs"
@@ -1275,7 +1290,7 @@ Jinja2 = ">=2.10"
 sphinx = ">=1.8"
 
 [package.extras]
-testing = ["pytest", "pytest-cov", "matplotlib"]
+testing = ["matplotlib", "pytest", "pytest-cov"]
 
 [[package]]
 name = "ome-zarr"
@@ -1320,7 +1335,7 @@ python-dateutil = ">=2.7.3"
 pytz = ">=2017.2"
 
 [package.extras]
-test = ["pytest (>=4.0.2)", "pytest-xdist", "hypothesis (>=3.58)"]
+test = ["hypothesis (>=3.58)", "pytest (>=4.0.2)", "pytest-xdist"]
 
 [[package]]
 name = "parso"
@@ -1393,6 +1408,7 @@ numpy = ">=1.12"
 psutil = ">4"
 scikit-learn = ">=0.17"
 scipy = ">=1.5.1"
+setuptools = ">=18.0.1"
 
 [[package]]
 name = "pickleshare"
@@ -1428,8 +1444,20 @@ packaging = "*"
 
 [package.extras]
 numpy = ["numpy (>=1.17)"]
-test = ["pytest", "pytest-mpl", "pytest-cov", "pytest-subtests"]
+test = ["pytest", "pytest-cov", "pytest-mpl", "pytest-subtests"]
 uncertainties = ["uncertainties (>=3.0)"]
+
+[[package]]
+name = "platformdirs"
+version = "2.5.4"
+description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo (>=2022.9.29)", "proselint (>=0.13)", "sphinx (>=5.3)", "sphinx-autodoc-typehints (>=1.19.4)"]
+test = ["appdirs (==1.4.4)", "pytest (>=7.2)", "pytest-cov (>=4)", "pytest-mock (>=3.10)"]
 
 [[package]]
 name = "plotly"
@@ -1477,7 +1505,7 @@ optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
-test = ["ipaddress", "mock", "unittest2", "enum34", "pywin32", "wmi"]
+test = ["enum34", "ipaddress", "mock", "pywin32", "unittest2", "wmi"]
 
 [[package]]
 name = "psygnal"
@@ -1492,10 +1520,10 @@ typing-extensions = "*"
 
 [package.extras]
 build = ["Cython (>=3.0a7)"]
-dev = ["pyqt5", "black", "flake8", "flake8-docstrings", "ipython", "isort", "jedi (<0.18.0)", "mypy", "pre-commit", "pydocstyle", "pytest", "pytest-cov", "pytest-mypy-plugins", "pytest-qt", "qtpy", "wrapt"]
+dev = ["PyQt5", "black", "flake8", "flake8-docstrings", "ipython", "isort", "jedi (<0.18.0)", "mypy", "pre-commit", "pydocstyle", "pytest", "pytest-cov", "pytest-mypy-plugins", "pytest-qt", "qtpy", "wrapt"]
 proxy = ["wrapt"]
 testing = ["numpy", "pytest", "pytest-cov", "pytest-mypy-plugins", "wrapt"]
-testingqt = ["pyqt5", "pytest-qt", "qtpy"]
+testingqt = ["PyQt5", "pytest-qt", "qtpy"]
 
 [[package]]
 name = "ptyprocess"
@@ -1573,10 +1601,11 @@ macholib = {version = ">=1.8", markers = "sys_platform == \"darwin\""}
 pefile = {version = ">=2017.8.1", markers = "sys_platform == \"win32\""}
 pyinstaller-hooks-contrib = ">=2020.6"
 pywin32-ctypes = {version = ">=0.2.0", markers = "sys_platform == \"win32\""}
+setuptools = "*"
 
 [package.extras]
 encryption = ["tinyaes (>=1.0.0)"]
-hook_testing = ["pytest (>=2.7.3)", "execnet (>=1.5.0)", "psutil"]
+hook_testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
 
 [[package]]
 name = "pyinstaller-hooks-contrib"
@@ -1588,24 +1617,24 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pylint"
-version = "2.4.4"
+version = "2.13.9"
 description = "python code static checker"
-category = "dev"
+category = "main"
 optional = false
-python-versions = ">=3.5.*"
-develop = false
+python-versions = ">=3.6.2"
 
 [package.dependencies]
-astroid = ">=2.3.0,<2.4"
+astroid = ">=2.11.5,<=2.12.0-dev0"
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
-isort = ">=4.2.5,<5"
-mccabe = ">=0.6,<0.7"
+dill = ">=0.2"
+isort = ">=4.2.5,<6"
+mccabe = ">=0.6,<0.8"
+platformdirs = ">=2.2.0"
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
+typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""}
 
-[package.source]
-type = "git"
-url = "https://github.com/PyCQA/pylint"
-reference = "e169e83e52fedc6624235d45e8e8737294a0fedf"
-resolved_reference = "e169e83e52fedc6624235d45e8e8737294a0fedf"
+[package.extras]
+testutil = ["gitpython (>3)"]
 
 [[package]]
 name = "pymdown-extensions"
@@ -1707,7 +1736,7 @@ coverage = {version = ">=5.2.1", extras = ["toml"]}
 pytest = ">=4.6"
 
 [package.extras]
-testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
+testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtualenv"]
 
 [[package]]
 name = "pytest-describe"
@@ -1776,6 +1805,9 @@ description = "console colouring for python"
 category = "dev"
 optional = false
 python-versions = "*"
+
+[package.dependencies]
+setuptools = "*"
 
 [[package]]
 name = "pytomlpp"
@@ -1980,17 +2012,17 @@ umap-learn = ">=0.3.10"
 
 [package.extras]
 bbknn = ["bbknn"]
-dev = ["setuptools-scm", "black (>=20.8b1)", "docutils"]
-doc = ["sphinx (>=4.4)", "sphinx-rtd-theme (>=1.0)", "scanpydoc[typehints] (>=0.7.7)", "typing-extensions", "python-igraph", "myst-parser"]
+dev = ["black (>=20.8b1)", "docutils", "setuptools_scm"]
+doc = ["myst-parser", "python-igraph", "scanpydoc[typehints] (>=0.7.7)", "sphinx (>=4.4)", "sphinx-rtd-theme (>=1.0)", "typing_extensions"]
 harmony = ["harmonypy"]
-leiden = ["python-igraph", "leidenalg"]
-louvain = ["python-igraph", "louvain (>=0.6,!=0.6.2)"]
+leiden = ["leidenalg", "python-igraph"]
+louvain = ["louvain (>=0.6,!=0.6.2)", "python-igraph"]
 magic = ["magic-impute (>=2.0)"]
-rapids = ["cudf (>=0.9)", "cuml (>=0.9)", "cugraph (>=0.9)"]
+rapids = ["cudf (>=0.9)", "cugraph (>=0.9)", "cuml (>=0.9)"]
 scanorama = ["scanorama"]
 scrublet = ["scrublet"]
 skmisc = ["scikit-misc (>=0.1.3)"]
-test = ["pytest (>=4.4)", "pytest-nunit", "dask[array] (!=2.17.0)", "fsspec", "zappy", "zarr", "profimp", "flit-core"]
+test = ["dask[array] (!=2.17.0)", "flit_core", "fsspec", "profimp", "pytest (>=4.4)", "pytest-nunit", "zappy", "zarr"]
 
 [[package]]
 name = "scikit-image"
@@ -2012,9 +2044,9 @@ tifffile = ">=2019.7.26"
 
 [package.extras]
 data = ["pooch (>=1.3.0)"]
-docs = ["sphinx (>=1.8)", "sphinx-gallery (>=0.10.1)", "numpydoc (>=1.0)", "sphinx-copybutton", "pytest-runner", "scikit-learn", "matplotlib (>=3.3)", "dask[array] (>=0.15.0,!=2.17.0)", "cloudpickle (>=0.2.1)", "pandas (>=0.23.0)", "seaborn (>=0.7.1)", "pooch (>=1.3.0)", "tifffile (>=2020.5.30)", "myst-parser", "ipywidgets", "plotly (>=4.14.0)", "kaleido"]
-optional = ["simpleitk", "astropy (>=3.1.2)", "cloudpickle (>=0.2.1)", "dask[array] (>=1.0.0,!=2.17.0)", "matplotlib (>=3.0.3)", "pooch (>=1.3.0)", "pyamg", "qtpy"]
-test = ["asv", "codecov", "flake8", "matplotlib (>=3.0.3)", "pooch (>=1.3.0)", "pytest (>=5.2.0)", "pytest-cov (>=2.7.0)", "pytest-localserver", "pytest-faulthandler"]
+docs = ["cloudpickle (>=0.2.1)", "dask[array] (>=0.15.0,!=2.17.0)", "ipywidgets", "kaleido", "matplotlib (>=3.3)", "myst-parser", "numpydoc (>=1.0)", "pandas (>=0.23.0)", "plotly (>=4.14.0)", "pooch (>=1.3.0)", "pytest-runner", "scikit-learn", "seaborn (>=0.7.1)", "sphinx (>=1.8)", "sphinx-copybutton", "sphinx-gallery (>=0.10.1)", "tifffile (>=2020.5.30)"]
+optional = ["SimpleITK", "astropy (>=3.1.2)", "cloudpickle (>=0.2.1)", "dask[array] (>=1.0.0,!=2.17.0)", "matplotlib (>=3.0.3)", "pooch (>=1.3.0)", "pyamg", "qtpy"]
+test = ["asv", "codecov", "flake8", "matplotlib (>=3.0.3)", "pooch (>=1.3.0)", "pytest (>=5.2.0)", "pytest-cov (>=2.7.0)", "pytest-faulthandler", "pytest-localserver"]
 
 [[package]]
 name = "scikit-learn"
@@ -2031,10 +2063,10 @@ scipy = ">=1.1.0"
 threadpoolctl = ">=2.0.0"
 
 [package.extras]
-benchmark = ["matplotlib (>=2.2.3)", "pandas (>=0.25.0)", "memory-profiler (>=0.57.0)"]
-docs = ["matplotlib (>=2.2.3)", "scikit-image (>=0.14.5)", "pandas (>=0.25.0)", "seaborn (>=0.9.0)", "memory-profiler (>=0.57.0)", "sphinx (>=4.0.1)", "sphinx-gallery (>=0.7.0)", "numpydoc (>=1.0.0)", "Pillow (>=7.1.2)", "sphinx-prompt (>=1.3.0)", "sphinxext-opengraph (>=0.4.2)"]
-examples = ["matplotlib (>=2.2.3)", "scikit-image (>=0.14.5)", "pandas (>=0.25.0)", "seaborn (>=0.9.0)"]
-tests = ["matplotlib (>=2.2.3)", "scikit-image (>=0.14.5)", "pandas (>=0.25.0)", "pytest (>=5.0.1)", "pytest-cov (>=2.9.0)", "flake8 (>=3.8.2)", "black (>=21.6b0)", "mypy (>=0.770)", "pyamg (>=4.0.0)"]
+benchmark = ["matplotlib (>=2.2.3)", "memory-profiler (>=0.57.0)", "pandas (>=0.25.0)"]
+docs = ["Pillow (>=7.1.2)", "matplotlib (>=2.2.3)", "memory-profiler (>=0.57.0)", "numpydoc (>=1.0.0)", "pandas (>=0.25.0)", "scikit-image (>=0.14.5)", "seaborn (>=0.9.0)", "sphinx (>=4.0.1)", "sphinx-gallery (>=0.7.0)", "sphinx-prompt (>=1.3.0)", "sphinxext-opengraph (>=0.4.2)"]
+examples = ["matplotlib (>=2.2.3)", "pandas (>=0.25.0)", "scikit-image (>=0.14.5)", "seaborn (>=0.9.0)"]
+tests = ["black (>=21.6b0)", "flake8 (>=3.8.2)", "matplotlib (>=2.2.3)", "mypy (>=0.770)", "pandas (>=0.25.0)", "pyamg (>=4.0.0)", "pytest (>=5.0.1)", "pytest-cov (>=2.9.0)", "scikit-image (>=0.14.5)"]
 
 [[package]]
 name = "scipy"
@@ -2073,6 +2105,19 @@ python-versions = ">=3.6"
 stdlib_list = "*"
 
 [[package]]
+name = "setuptools"
+version = "65.5.1"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
+
+[[package]]
 name = "setuptools-scm"
 version = "6.4.2"
 description = "the blessed package to manage your versions by scm tags"
@@ -2082,6 +2127,7 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 packaging = ">=20.0"
+setuptools = "*"
 tomli = ">=1.0.0"
 
 [package.extras]
@@ -2097,7 +2143,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-all = ["pytest", "pytest-cov", "numpy"]
+all = ["numpy", "pytest", "pytest-cov"]
 test = ["pytest", "pytest-cov"]
 vectorized = ["numpy"]
 
@@ -2129,12 +2175,12 @@ optional = false
 python-versions = ">=3.6,<4.0"
 
 [package.extras]
-all = ["boto3", "google-cloud-storage", "azure-storage-blob", "azure-common", "azure-core", "requests"]
-azure = ["azure-storage-blob", "azure-common", "azure-core"]
+all = ["azure-common", "azure-core", "azure-storage-blob", "boto3", "google-cloud-storage", "requests"]
+azure = ["azure-common", "azure-core", "azure-storage-blob"]
 gcs = ["google-cloud-storage"]
 http = ["requests"]
 s3 = ["boto3"]
-test = ["boto3", "google-cloud-storage", "azure-storage-blob", "azure-common", "azure-core", "requests", "moto[server] (==1.3.14)", "pathlib2", "responses", "paramiko", "parameterizedtestcase", "pytest", "pytest-rerunfailures"]
+test = ["azure-common", "azure-core", "azure-storage-blob", "boto3", "google-cloud-storage", "moto[server] (==1.3.14)", "parameterizedtestcase", "paramiko", "pathlib2", "pytest", "pytest-rerunfailures", "requests", "responses"]
 webhdfs = ["requests"]
 
 [[package]]
@@ -2193,8 +2239,8 @@ sphinxcontrib-serializinghtml = ">=1.1.5"
 
 [package.extras]
 docs = ["sphinxcontrib-websupport"]
-lint = ["flake8 (>=3.5.0)", "isort", "mypy (>=0.931)", "docutils-stubs", "types-typed-ast", "types-requests"]
-test = ["pytest", "pytest-cov", "html5lib", "cython", "typed-ast"]
+lint = ["docutils-stubs", "flake8 (>=3.5.0)", "isort", "mypy (>=0.931)", "types-requests", "types-typed-ast"]
+test = ["cython", "html5lib", "pytest", "pytest-cov", "typed-ast"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -2205,7 +2251,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
+lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
 [[package]]
@@ -2217,7 +2263,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
+lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
 [[package]]
@@ -2229,8 +2275,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
-test = ["pytest", "html5lib"]
+lint = ["docutils-stubs", "flake8", "mypy"]
+test = ["html5lib", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -2241,7 +2287,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-test = ["pytest", "flake8", "mypy"]
+test = ["flake8", "mypy", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-qthelp"
@@ -2252,7 +2298,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
+lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
 [[package]]
@@ -2264,7 +2310,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
+lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
 [[package]]
@@ -2285,7 +2331,7 @@ scipy = ">=1.3"
 [package.extras]
 build = ["cython (>=0.29.26)"]
 develop = ["cython (>=0.29.26)"]
-docs = ["sphinx", "nbconvert", "jupyter-client", "ipykernel", "matplotlib", "nbformat", "numpydoc", "pandas-datareader"]
+docs = ["ipykernel", "jupyter_client", "matplotlib", "nbconvert", "nbformat", "numpydoc", "pandas-datareader", "sphinx"]
 
 [[package]]
 name = "stdlib-list"
@@ -2348,7 +2394,7 @@ python-versions = ">=3.7"
 numpy = ">=1.15.1"
 
 [package.extras]
-all = ["imagecodecs (>=2020.5.30)", "matplotlib (>=3.2)", "lxml"]
+all = ["imagecodecs (>=2020.5.30)", "lxml", "matplotlib (>=3.2)"]
 
 [[package]]
 name = "toml"
@@ -2413,7 +2459,7 @@ test = ["pytest"]
 name = "typed-ast"
 version = "1.4.3"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -2431,8 +2477,8 @@ click = ">=7.1.1,<9.0.0"
 [package.extras]
 all = ["colorama (>=0.4.3,<0.5.0)", "shellingham (>=1.3.0,<2.0.0)"]
 dev = ["autoflake (>=1.3.1,<2.0.0)", "flake8 (>=3.8.3,<4.0.0)"]
-doc = ["mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)", "mdx-include (>=1.4.1,<2.0.0)"]
-test = ["shellingham (>=1.3.0,<2.0.0)", "pytest (>=4.4.0,<5.4.0)", "pytest-cov (>=2.10.0,<3.0.0)", "coverage (>=5.2,<6.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "mypy (==0.910)", "black (>=22.3.0,<23.0.0)", "isort (>=5.0.6,<6.0.0)"]
+doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)"]
+test = ["black (>=22.3.0,<23.0.0)", "coverage (>=5.2,<6.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.910)", "pytest (>=4.4.0,<5.4.0)", "pytest-cov (>=2.10.0,<3.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "shellingham (>=1.3.0,<2.0.0)"]
 
 [[package]]
 name = "typing-extensions"
@@ -2460,7 +2506,7 @@ tqdm = "*"
 
 [package.extras]
 parametric_umap = ["tensorflow (>=2.1)", "tensorflow-probability (>=0.10)"]
-plot = ["pandas", "matplotlib", "datashader", "bokeh", "holoviews", "colorcet", "seaborn", "scikit-image"]
+plot = ["bokeh", "colorcet", "datashader", "holoviews", "matplotlib", "pandas", "scikit-image", "seaborn"]
 
 [[package]]
 name = "urllib3"
@@ -2471,8 +2517,8 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 
 [package.extras]
-brotli = ["brotlicffi (>=0.8.0)", "brotli (>=1.0.9)", "brotlipy (>=0.6.0)"]
-secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
+secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
@@ -2490,18 +2536,18 @@ kiwisolver = "*"
 numpy = "*"
 
 [package.extras]
-doc = ["pydata-sphinx-theme", "numpydoc", "sphinxcontrib-apidoc", "sphinx-gallery"]
-io = ["meshio", "pillow"]
+doc = ["numpydoc", "pydata-sphinx-theme", "sphinx-gallery", "sphinxcontrib-apidoc"]
+io = ["Pillow", "meshio"]
 ipython-static = ["ipython"]
 pyglet = ["pyglet (>=1.2)"]
 pyqt5 = ["pyqt5"]
 pyqt6 = ["pyqt6"]
-pyside = ["pyside"]
-pyside2 = ["pyside2"]
-pyside6 = ["pyside6"]
-sdl2 = ["pysdl2"]
+pyside = ["PySide"]
+pyside2 = ["PySide2"]
+pyside6 = ["PySide6"]
+sdl2 = ["PySDL2"]
 tk = ["pyopengltk"]
-wx = ["wxpython"]
+wx = ["wxPython"]
 
 [[package]]
 name = "watchdog"
@@ -2566,7 +2612,7 @@ numcodecs = ">=0.6.4"
 numpy = ">=1.7"
 
 [package.extras]
-jupyter = ["notebook", "ipytree"]
+jupyter = ["ipytree", "notebook"]
 
 [[package]]
 name = "zipp"
@@ -2577,13 +2623,13 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
+docs = ["jaraco.packaging (>=8.2)", "rst.linker (>=1.9)", "sphinx"]
+testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-flake8", "pytest-mypy"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<3.11"
-content-hash = "c8fe2186dd8475cadf0602e43544aebe81d78c10a156f8c8a09b14e9c7f3ea45"
+content-hash = "5cc96e7305e2d6a00ca57ceefcb59488478ca202bbf8c66be6e7e29c682d1a58"
 
 [metadata.files]
 aiobotocore = [
@@ -2695,8 +2741,8 @@ asciitree = [
     {file = "asciitree-0.3.3.tar.gz", hash = "sha256:4aa4b9b649f85e3fcb343363d97564aa1fb62e249677f2e18a96765145cc0f6e"},
 ]
 astroid = [
-    {file = "astroid-2.3.3-py3-none-any.whl", hash = "sha256:840947ebfa8b58f318d42301cf8c0a20fd794a33b61cc4638e28e9e61ba32f42"},
-    {file = "astroid-2.3.3.tar.gz", hash = "sha256:71ea07f44df9568a75d0f354c49143a4575d90645e9fead6dfb52c26a85ed13a"},
+    {file = "astroid-2.11.7-py3-none-any.whl", hash = "sha256:86b0a340a512c65abf4368b80252754cda17c02cdbbd3f587dddf98112233e7b"},
+    {file = "astroid-2.11.7.tar.gz", hash = "sha256:bb24615c77f4837c707669d16907331374ae8a964650a66999da3f5ca68dc946"},
 ]
 async-timeout = [
     {file = "async-timeout-4.0.2.tar.gz", hash = "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15"},
@@ -2880,6 +2926,10 @@ debugpy = [
 decorator = [
     {file = "decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"},
     {file = "decorator-5.1.1.tar.gz", hash = "sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330"},
+]
+dill = [
+    {file = "dill-0.3.6-py3-none-any.whl", hash = "sha256:a07ffd2351b8c678dfc4a856a3005f8067aea51d6ba6c700796a4d9e280f39f0"},
+    {file = "dill-0.3.6.tar.gz", hash = "sha256:e5db55f3687856d8fbdab002ed78544e1c4559a130302693d839dfe8f93f2373"},
 ]
 docstring-parser = [
     {file = "docstring_parser-0.13.tar.gz", hash = "sha256:66dd7eac7232202bf220fd98a5f11491863c01f958a75fdd535c7eccac9ced78"},
@@ -3708,6 +3758,10 @@ pint = [
     {file = "Pint-0.18-py2.py3-none-any.whl", hash = "sha256:4b37f3c470639ea6f96b0026c3364bde30631fa737092bdaf18ad3f4f76f252f"},
     {file = "Pint-0.18.tar.gz", hash = "sha256:8c4bce884c269051feb7abc69dbfd18403c0c764abc83da132e8a7222f8ba801"},
 ]
+platformdirs = [
+    {file = "platformdirs-2.5.4-py3-none-any.whl", hash = "sha256:af0276409f9a02373d540bf8480021a048711d572745aef4b7842dad245eba10"},
+    {file = "platformdirs-2.5.4.tar.gz", hash = "sha256:1006647646d80f16130f052404c6b901e80ee4ed6bef6792e1f238a8969106f7"},
+]
 plotly = [
     {file = "plotly-4.14.3-py2.py3-none-any.whl", hash = "sha256:d68fc15fcb49f88db27ab3e0c87110943e65fee02a47f33a8590f541b3042461"},
     {file = "plotly-4.14.3.tar.gz", hash = "sha256:7d8aaeed392e82fb8e0e48899f2d3d957b12327f9d38cdd5802bc574a8a39d91"},
@@ -3858,7 +3912,10 @@ pyinstaller-hooks-contrib = [
     {file = "pyinstaller-hooks-contrib-2022.3.tar.gz", hash = "sha256:9fa4ca03d058cba676c3cc16005076ce6a529f144c08b87c69998625fbd84e0a"},
     {file = "pyinstaller_hooks_contrib-2022.3-py2.py3-none-any.whl", hash = "sha256:9765e68552803327d58f6c5eca970bb245b7cdf073e2f912a2a3cb50360bc2d8"},
 ]
-pylint = []
+pylint = [
+    {file = "pylint-2.13.9-py3-none-any.whl", hash = "sha256:705c620d388035bdd9ff8b44c5bcdd235bfb49d276d488dd2c8ff1736aa42526"},
+    {file = "pylint-2.13.9.tar.gz", hash = "sha256:095567c96e19e6f57b5b907e67d265ff535e588fe26b12b5ebe1fc5645b2c731"},
+]
 pymdown-extensions = [
     {file = "pymdown-extensions-9.3.tar.gz", hash = "sha256:a80553b243d3ed2d6c27723bcd64ca9887e560e6f4808baa96f36e93061eaf90"},
     {file = "pymdown_extensions-9.3-py3-none-any.whl", hash = "sha256:b37461a181c1c8103cfe1660081726a0361a8294cbfda88e5b02cefe976f0546"},
@@ -4316,6 +4373,10 @@ seaborn = [
 ]
 session-info = [
     {file = "session_info-1.0.0.tar.gz", hash = "sha256:3cda5e03cca703f32ae2eadbd6bd80b6c21442cfb60e412c21cb8ad6d5cbb6b7"},
+]
+setuptools = [
+    {file = "setuptools-65.5.1-py3-none-any.whl", hash = "sha256:d0b9a8433464d5800cbe05094acf5c6d52a91bfac9b52bcfc4d41382be5d5d31"},
+    {file = "setuptools-65.5.1.tar.gz", hash = "sha256:e197a19aa8ec9722928f2206f8de752def0e4c9fc6953527360d1c36d94ddb2f"},
 ]
 setuptools-scm = [
     {file = "setuptools_scm-6.4.2-py3-none-any.whl", hash = "sha256:acea13255093849de7ccb11af9e1fb8bde7067783450cee9ef7a93139bddf6d4"},
