@@ -120,11 +120,16 @@ Example:
             
             
         # Idetify all the neighbourhoods that contains the user defined proximity phenotypes
-        for i in proximity:
-            print (str('Finding neighbourhoods with ') + str(i))
-            nn = neighbours[neighbours.isin([i])].dropna(how='all').index
-            neighbours = neighbours.loc[nn]
+        #for i in proximity:
+        #    print (str('Finding neighbourhoods with ') + str(i))
+        #    nn = neighbours[neighbours.isin([i])].dropna(how='all').index
+        #    neighbours = neighbours.loc[nn]
+        matches = np.ones(len(neighbours), bool)
+        for v in proximity:
+            matches &= (neighbours == v).any(axis=1)
+        neighbours = neighbours[matches]
         
+
         # Identify all the cells that was part of the neighbourhood in this analysis
         neighbours_ind = neighbours_ind.loc[neighbours.index]
         neighbours_ind_unique = pd.unique(neighbours_ind.values.ravel())
@@ -132,7 +137,7 @@ Example:
         # subset the neighbourhood cells to include only the cells in the user defined list
         cleaned_neighbours_ind_unique = [x for x in neighbours_ind_unique if str(x) != 'nan']
         d = data.loc[cleaned_neighbours_ind_unique]
-        d = d[d['phenotype'].isin(proximity)].index
+        d = d[d[phenotype].isin(proximity)].index
         
         # return neighbours for score and image_neighbours for plotting on image
         return {'neighbours': neighbours.index, 'image_neighbours': d }
@@ -159,11 +164,10 @@ Example:
     
     # Add it to the AnnData Object
     adata.obs[label] = np.where(adata.obs.index.isin(proximity_site_cells), '_'.join(proximity), "other")
-    
-    
+        
     ##### SCORING #####
     proximity_neigh = np.concatenate([d['neighbours'] for d in all_data], axis=0)
-    wh_d = adata.obs
+    wh_d = adata.obs.copy()
     wh_d[label] = np.where(wh_d.index.isin(proximity_neigh), '_'.join(proximity), "other")
     
     # Define a scoring system
