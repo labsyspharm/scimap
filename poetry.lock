@@ -2156,17 +2156,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
-name = "sklearn"
-version = "0.0"
-description = "A set of python modules for machine learning and data mining"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-scikit-learn = "*"
-
-[[package]]
 name = "smart-open"
 version = "5.2.1"
 description = "Utils for streaming large files (S3, HDFS, GCS, Azure Blob Storage, gzip, bz2...)"
@@ -2629,7 +2618,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<3.11"
-content-hash = "d9ffc3caf9bba3669a3bcdc7661fe882b4a390eb6d20ff2a1db60f653eec64c8"
+content-hash = "e1b2d4e00c902934aaf07011360c22941d8190f4073bd56c4b9653d5e0d72bd3"
 
 [metadata.files]
 aiobotocore = [
@@ -4413,9 +4402,6 @@ shapely = [
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
-]
-sklearn = [
-    {file = "sklearn-0.0.tar.gz", hash = "sha256:e23001573aa194b834122d2b9562459bf5ae494a2d59ca6b8aa22c85a44c0e31"},
 ]
 smart-open = [
     {file = "smart_open-5.2.1-py3-none-any.whl", hash = "sha256:71d14489da58b60ce12fc3ecb823facc59a8b23cd1b58edb97175640350d3a62"},

@@ -60,7 +60,7 @@ Example:
     if order_xaxis is not None:
         data = data.reindex(order_xaxis)
         
-     
+
     # Generate the x and y axis
     x  = data.index
     y_pd = data['Proximity Density'].values
@@ -68,18 +68,18 @@ Example:
     
     # Plot what user requests
     if plot_score == 'Proximity Density':
-        ax = sns.barplot(x, y_pd, color=color, **kwargs).set_title('Proximity Density')
+        ax = sns.barplot(x=x, y=y_pd, color=color, **kwargs).set_title('Proximity Density')
         ax = plt.xticks(rotation=90)
         plt.tight_layout()
     if plot_score == 'Proximity Volume':
-        ax = sns.barplot(x, y_pv, color=color, **kwargs).set_title('Proximity Volume')
+        ax = sns.barplot(x=x, y=y_pv, color=color, **kwargs).set_title('Proximity Volume')
         ax = plt.xticks(rotation=90)
         plt.tight_layout()
     if plot_score == 'both':
         fig, ax = plt.subplots(1,2)
-        sns.barplot(x, y_pd, color=color, ax=ax[0], **kwargs).set_title('Proximity Density')
+        sns.barplot(x=x, y=y_pd, color=color, ax=ax[0], **kwargs).set_title('Proximity Density')
         ax[0].tick_params(axis='x', rotation=90)
-        sns.barplot(x, y_pv, color=color, ax=ax[1], **kwargs).set_title('Proximity Volume')
+        sns.barplot(x=x, y=y_pv, color=color, ax=ax[1], **kwargs).set_title('Proximity Volume')
         ax[1].tick_params(axis='x', rotation=90)
         plt.tight_layout()
         fig.show()

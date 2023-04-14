@@ -34,8 +34,7 @@ plugins:
 - mkdocstrings:
     handlers:
       python:
-        rendering:
-          show_signature_annotations: no
+        options:
           heading_level: 4
 - search:
     prebuild_index: true

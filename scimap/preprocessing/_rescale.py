@@ -85,6 +85,8 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
 
     """
     
+    #log=True; imageid='imageid'; failed_markers=None; method='all'; random_state=0
+    
     # make a copy to raw data if raw is none
     if adata.raw is None:
         adata.raw = adata

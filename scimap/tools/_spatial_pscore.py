@@ -156,7 +156,7 @@ Example:
                                                    y_coordinate=y_coordinate,phenotype=phenotype,
                                                    method=method,radius=radius,knn=knn,
                                                    imageid=imageid,subset=subset,label=label) 
-    all_data = list(map(r_spatial_pscore_internal, adata_list)) # Apply function 
+    all_data = list(map(r_spatial_pscore_internal, adata_list)) # Apply function
     
     
     # Merge all the results into a single dataframe    
