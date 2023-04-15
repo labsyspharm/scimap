@@ -50,7 +50,6 @@ gensim = "^4.0"
 mkdocs-material = "^7.1.1"
 napari-ome-zarr = "^0.4.0"
 llvmlite = "^0.38.0"
-setuptools = "45.2.0"
 
 
 [tool.poetry.dev-dependencies]
