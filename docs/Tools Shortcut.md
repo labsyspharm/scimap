@@ -12,6 +12,7 @@ import scimap as sm
 |-----------------------------------------------------------------------------------------------|----------------------------------------------|
 | [`sm.pp.mcmicro_to_scimap`](All%20Functions/A.%20Pre%20Processing/sm.pp.mcmicro_to_scimap.md) | `mcmicro` output to scimap compatible object |
 | [`sm.pp.rescale`](All%20Functions/A.%20Pre%20Processing/sm.pp.rescale.md)                     | Manual/Auto gate based scaling of data       |
+| [`sm.pp.combat`](All%20Functions/A.%20Pre%20Processing/sm.pp.combat.md)                     | Batch correction tool      |
 
 
 ### Tools: `tl`

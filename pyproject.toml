@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "0.22.18"
+version = "1.0.0"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -50,6 +50,7 @@ gensim = "^4.0"
 mkdocs-material = "^7.1.1"
 napari-ome-zarr = "^0.4.0"
 llvmlite = "^0.38.0"
+combat = "^0.3.3"
 
 
 [tool.poetry.dev-dependencies]
@@ -99,4 +100,5 @@ skip-string-normalization = true
 #requires = ["poetry>=0.12"]
 #build-backend = "poetry.masonry.api"
 requires = ["poetry-core"]
+#requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
