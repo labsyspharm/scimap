@@ -50,26 +50,26 @@ def combat(
             The prefix for the key in `adata` that will contain the corrected data.
             If `replaceOriginal` is True, this parameter has no effect.
 
-        Returns:
+    Returns:
 
         adata (anndata):
             The corrected expression data is stored in a new layer `adata.layers['combat']`.
 
-        Examples:
+    Examples:
 
-            ```python
+        ```python
 
-            # applying batch correction using raw data
-            adata = combat (adata,
+        # applying batch correction using raw data
+        adata = combat (adata,
                         batch='imageid',
                         layers='raw',
                         log=True,
                         replaceOriginal=False,
                         label='combat')
 
-            # results will be available in adata.layers['combat']
+        # results will be available in adata.layers['combat']
 
-            ```
+        ```
     """
 
     # isolate the data
