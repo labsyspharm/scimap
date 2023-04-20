@@ -1,3 +1,11 @@
+---
+title: SCIMAP GET STARTED
+description: Spatial Single-Cell Analysis Toolkit
+hide:
+  - toc        # Hide table of contents
+  - navigation
+---
+
 # Getting Started
 
 Import Scimap as:

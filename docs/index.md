@@ -3,6 +3,7 @@ title: SCIMAP
 description: Spatial Single-Cell Analysis Toolkit
 hide:
   - toc        # Hide table of contents
+  - navigation
 ---
 
 # Home
