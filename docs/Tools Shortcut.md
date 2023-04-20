@@ -1,5 +1,5 @@
 ---
-title: SCIMAP TOOLS
+title: Shortcut
 description: Spatial Single-Cell Analysis Toolkit
 hide:
   - navigation

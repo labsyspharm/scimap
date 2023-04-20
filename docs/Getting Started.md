@@ -1,5 +1,5 @@
 ---
-title: SCIMAP GET STARTED
+title: Get Started
 description: Spatial Single-Cell Analysis Toolkit
 hide:
   - toc        # Hide table of contents
