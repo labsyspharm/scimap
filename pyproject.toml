@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "scimap"
-version = "1.0.1"
+version = "1.0.2"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -39,7 +39,7 @@ matplotlib = "^3.2.1"
 PhenoGraph = "^1.5.7"
 scanpy = "^1.6.0"
 mkdocs = "^1.1.2"
-plotly = "^4.12.0"
+plotly = "^5.14.1"
 TiffFile = "^2020.11.18"
 dask = {extras = ["array"], version = "^2.30.0"}
 zarr = "2.10.3"

@@ -3233,13 +3233,13 @@ python-dateutil = ">=2.0"
 
 [[package]]
 name = "pynndescent"
-version = "0.5.9"
+version = "0.5.10"
 description = "Nearest Neighbor Descent"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pynndescent-0.5.9.tar.gz", hash = "sha256:bacf78d914f44724528adcfea9681ddd6c873d14f4b0526c0ff6b9f243338042"},
+    {file = "pynndescent-0.5.10.tar.gz", hash = "sha256:5d5dc683c03ef55fe3ddf693859720ca18f85c6e6e5bb0b4f14870278d5288ad"},
 ]
 
 [package.dependencies]
@@ -3364,7 +3364,7 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 [[package]]
 name = "pytest-describe"
 version = "0.12.0"
-description = ""
+description = "Describe-style plugin for pytest"
 category = "dev"
 optional = false
 python-versions = "*"
@@ -4196,14 +4196,14 @@ stdlib_list = "*"
 
 [[package]]
 name = "setuptools"
-version = "67.6.1"
+version = "67.7.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.6.1-py3-none-any.whl", hash = "sha256:e728ca814a823bf7bf60162daf9db95b93d532948c4c0bea762ce62f60189078"},
-    {file = "setuptools-67.6.1.tar.gz", hash = "sha256:257de92a9d50a60b8e22abfcbb771571fde0dbf3ec234463212027a4eeecbe9a"},
+    {file = "setuptools-67.7.1-py3-none-any.whl", hash = "sha256:6f0839fbdb7e3cfef1fc38d7954f5c1c26bf4eebb155a55c9bf8faf997b9fb67"},
+    {file = "setuptools-67.7.1.tar.gz", hash = "sha256:bb16732e8eb928922eabaa022f881ae2b7cdcfaf9993ef1f5e841a96d32b8e0c"},
 ]
 
 [package.extras]
