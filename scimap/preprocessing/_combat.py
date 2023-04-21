@@ -25,34 +25,33 @@ def combat(
     layers=None,
     log=False,
     replaceOriginal=False,
-    label='combat',
-):
+    label='combat'):
+    
     """
     Parameters:
 
-        adata (AnnData object):
+        adata (AnnData object):  
             Annotated data matrix.
 
-        batch (str, optional):
+        batch (str, optional):  
             The batch key or column in `adata.obs` that indicates the batches for each cell.
 
         layers (str or None, optional):
-            The layer in `adata.layers` that contains the expression data to correct.
-            If None, `adata.X` is used. use `raw` to use the data stored in `adata.raw.X`
+            The layer in `adata.layers` that contains the expression data to correct. If None, 
+            `adata.X` is used. use `raw` to use the data stored in `adata.raw.X`
 
-        log (bool, optional):
+        log (bool, optional):  
             Whether to log transform the data before applying ComBat. Generally use it with `raw`.
 
         replaceOriginal (bool, optional):
             Whether to replace the original expression data in `adata` with the corrected data.
 
-        label (str, optional):
-            The prefix for the key in `adata` that will contain the corrected data.
-            If `replaceOriginal` is True, this parameter has no effect.
+        label (str, optional):  
+            The prefix for the key in `adata` that will contain the corrected data. If `replaceOriginal` is `True`, this parameter has no effect.  
 
     Returns:
 
-        adata (anndata):
+        adata (anndata):  
             The corrected expression data is stored in a new layer `adata.layers['combat']`.
 
     Examples:
@@ -161,5 +160,4 @@ if __name__ == '__main__':
         layers=args.layers,
         log=args.log,
         replaceOriginal=args.replaceOriginal,
-        label=args.label,
-    )
+        label=args.label)
