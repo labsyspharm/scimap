@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed May  3 16:09:24 2023
-@author: Ajit Johnson Nirmal
-Plot a 2D density plot of the expression of two markers.
+#Created on Wed May  3 16:09:24 2023
+#@author: Ajit Johnson Nirmal
+#Plot a 2D density plot of the expression of two markers.
 
+"""
+!!! abstract "Short Description"
+    The `sm.pl.densityPlot2D` function generates a 2D density plot of the expression 
+    of one or more specified markers. The function can be called with one or two 
+    marker names to generate a 2D density plot of expression of the first 
+    marker against the second marker or against all other markers in the dataset.
+
+## Function
 """
 
 import pandas as pd
