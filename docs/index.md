@@ -23,7 +23,11 @@ Scimap is a scalable toolkit for analyzing spatial molecular data. The underlyin
 <br>
 
 
-*SCIMAP* development is led by [Ajit Johnson Nirmal](https://ajitjohnson.com/) at the Laboratory of Systems Pharmacology, Harvard Medical School.
+*SCIMAP* development was led by [Ajit Johnson Nirmal](https://ajitjohnson.com/), Harvard Medical School.  
+Check out other tools from the [Nirmal Lab](https://nirmallab.com/tools/). 
+
 
 ### Funding
 This work was supported by the following NIH grant K99-CA256497
+
+

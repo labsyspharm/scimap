@@ -10,3 +10,4 @@ from ._pie import pie
 from ._cluster_plots import cluster_plots
 from ._addROI_image import addROI_image
 from ._umap import umap
+from .densityPlot2D import densityPlot2D

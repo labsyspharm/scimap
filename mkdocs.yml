@@ -30,6 +30,58 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
 
+nav:
+    - Home: 'index.md'
+    - Getting Started: 'Getting Started.md'
+    - Tools Shortcut: 'Tools Shortcut.md'
+    - SCIMAP Functions:
+        - Pre Processing:
+            - mcmicro_to_scimap: 'Functions/pp/mcmicro_to_scimap.md'
+            - rescale: 'Functions/pp/rescale.md'
+            - combat: 'Functions/pp/combat.md'
+        - Tools:
+            - phenotype_cells: 'Functions/tl/phenotype_cells.md'
+            - cluster: 'Functions/tl/cluster.md'
+            - umap: 'Functions/tl/umap.md'
+            - foldchange: 'Functions/tl/foldchange.md'
+            - spatial_distance: 'Functions/tl/spatial_distance.md'
+            - spatial_interaction: 'Functions/tl/spatial_interaction.md'
+            - spatial_count: 'Functions/tl/spatial_count.md'
+            - spatial_lda: 'Functions/tl/spatial_lda.md'
+            - spatial_expression: 'Functions/tl/spatial_expression.md'
+            - spatial_cluster: 'Functions/tl/spatial_cluster.md'
+            - spatial_pscore: 'Functions/tl/spatial_pscore.md'
+            - spatial_aggregate: 'Functions/tl/spatial_aggregate.md'
+            - spatial_similarity_search: 'Functions/tl/spatial_similarity_search.md'            
+        - Plotting Functions:
+            - image_viewer: 'Functions/pl/image_viewer.md'
+            - addROI_image: 'Functions/pl/addROI_image.md'
+            - gate_finder: 'Functions/pl/gate_finder.md'
+            - densityPlot2D: 'Functions/pl/densityPlot2D.md'
+            - cluster_plots: 'Functions/pl/cluster_plots.md'
+            - umap: 'Functions/pl/umap.md'
+            - foldchange: 'Functions/pl/foldchange.md'
+            - spatial_distance: 'Functions/pl/spatial_distance.md'
+            - spatial_interaction: 'Functions/pl/spatial_interaction.md'
+            - spatial_pscore: 'Functions/pl/spatial_pscore.md'
+            - stacked_barplot: 'Functions/pl/stacked_barplot.md'
+            - pie: 'Functions/pl/pie.md'
+            - voronoi: 'Functions/pl/voronoi.md'
+        - Helper Functions:
+            - classify: 'Functions/hl/classify.md'
+            - rename: 'Functions/hl/rename.md'
+            - addROI_omero: 'Functions/hl/addROI_omero.md'
+            - dropFeatures: 'Functions/hl/dropFeatures.md'
+            - animate: 'Functions/hl/animate.md'
+            - scimap_to_csv: 'Functions/hl/scimap_to_csv.md'
+    - Tutorials:
+        - Getting Started with Scimap: 'tutorials/1-scimap-tutorial-getting-started.md'
+        - Cell-Phenotyping using Scimap: 'tutorials/2-scimap-tutorial-cell-phenotyping.md'
+        - Cell-Phenotyping and adding ROIs: 'tutorials/3-Cell_Type_calling_and_adding_ROIs.md'
+        - CellType Proportion Exploration: 'tutorials/4-CellType_Proportion_Exploration.md'
+        - Simple Spatial Analysis: 'tutorials/5-Simple_Spatial_Analysis.md'
+        - Animate with scimap: 'tutorials/6_animate_with_scimap.md'
+
 plugins:
 - mkdocstrings:
     handlers:
