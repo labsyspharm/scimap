@@ -14,7 +14,7 @@ import sys, os
 @pytest.fixture
 def adata():
     import anndata as ad    
-    adata = ad.read(os. getcwd() + '/scimap/tests/_data/example_data.h5ad')
+    adata = ad.read(os.getcwd() + '/scimap/tests/_data/example_data.h5ad')
     return adata
 
 # test rename function 

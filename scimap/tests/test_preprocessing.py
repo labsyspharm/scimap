@@ -14,7 +14,7 @@ import sys, os
 @pytest.fixture
 def adata():
     from scimap.preprocessing._mcmicro_to_scimap import mcmicro_to_scimap
-    image_path = [os. getcwd() + '/scimap/tests/_data/example_data.csv']
+    image_path = [os.getcwd() + '/scimap/tests/_data/example_data.csv']
     adata = mcmicro_to_scimap (image_path, split='X_position', drop_markers=['BG1', 'BG2', 'BG3'])
     return adata
 

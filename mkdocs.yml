@@ -107,7 +107,11 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
 
+    
 extra:
+  analytics:
+    provider: google
+    property: G-22X9HCL4YP
   copyright: Copyright &copy; 2020 - 2022 Ajit Johnson Nirmal
   social:
     - icon: fontawesome/brands/twitter

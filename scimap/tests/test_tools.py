@@ -14,7 +14,7 @@ import anndata as ad
 
 @pytest.fixture
 def adata():
-    image_path = os. getcwd() + '/scimap/tests/_data/example_data.h5ad'
+    image_path = os.getcwd() + '/scimap/tests/_data/example_data.h5ad'
     adata = ad.read(image_path)
     return adata
 

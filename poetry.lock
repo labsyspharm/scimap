@@ -830,6 +830,37 @@ files = [
 ]
 
 [[package]]
+name = "fast-histogram"
+version = "0.11"
+description = "Fast simple 1D and 2D histograms"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "fast-histogram-0.11.tar.gz", hash = "sha256:9acb6fa5b6efd928663008965da186962bdeae20e6d5bbb3b1195dfbd1d906f0"},
+    {file = "fast_histogram-0.11-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:36581f96d7949c8b2070070dacdf4edd8fc66f1cd7ae4d8f98f55d91afcf93ed"},
+    {file = "fast_histogram-0.11-cp36-abi3-macosx_11_0_arm64.whl", hash = "sha256:8c1b274dcbf645150acecf3eea6cf0ff73eb53021eac55548b07e32b8999f230"},
+    {file = "fast_histogram-0.11-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e0f7379c20c7674c6d5fd3ad5c080199596001cb8d883abd7af3e7e2557096e0"},
+    {file = "fast_histogram-0.11-cp36-abi3-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ed5b7b28b47428df5175669f49dab64d8b10be6ffa63557001fa75625959cd8a"},
+    {file = "fast_histogram-0.11-cp36-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:12c0e3229010e52bb652b655c696baa444ee8faa271c523f1d29bdb8b13f0642"},
+    {file = "fast_histogram-0.11-cp36-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:021373e635cf0b601b16435fbdad77ec50f155386ca2189f5a004f54942f64e2"},
+    {file = "fast_histogram-0.11-cp36-abi3-win32.whl", hash = "sha256:17ab676338e623dd14afe0370125ad0dedd4e6e47c3b29eab117301a5f76022d"},
+    {file = "fast_histogram-0.11-cp36-abi3-win_amd64.whl", hash = "sha256:f31d6d789c993d48d328935a7be09f54fa930852319dc75222b824cfad51cfb3"},
+    {file = "fast_histogram-0.11-pp37-pypy37_pp73-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b68485df7bb5394fab5243afa727b2011d5c79af8cd7b4d87437813dcb5cbe1d"},
+    {file = "fast_histogram-0.11-pp37-pypy37_pp73-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8b9e68d712f78372b007cc429e25f081f9d3b9a505901bf1b7a23529bc5338f0"},
+    {file = "fast_histogram-0.11-pp38-pypy38_pp73-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:69754e31832b96d265faf42e3a83ae8deb4eac7033bbe7845158a43c03296554"},
+    {file = "fast_histogram-0.11-pp38-pypy38_pp73-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:23214d4f30588748f97b2e545d12b1b63ad89878f1d59f3771f5136b17653e3d"},
+    {file = "fast_histogram-0.11-pp39-pypy39_pp73-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:44f9db4a7fb046d1f5db49423264ffd73fae40b8de1eff41e527768238027c53"},
+    {file = "fast_histogram-0.11-pp39-pypy39_pp73-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c34caf613a25e9fe5d17e2f2210c15cbe52e4fd568b8e10d494a0bcb765ea72c"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[package.extras]
+test = ["hypothesis[numpy]", "pytest", "pytest-cov"]
+
+[[package]]
 name = "fasteners"
 version = "0.18"
 description = "A python package that provides useful locks"
@@ -2058,6 +2089,26 @@ files = [
     {file = "more-itertools-9.1.0.tar.gz", hash = "sha256:cabaa341ad0389ea83c17a94566a53ae4c9d07349861ecb14dc6d0345cf9ac5d"},
     {file = "more_itertools-9.1.0-py3-none-any.whl", hash = "sha256:d2bc7f02446e86a68911e58ded76d6561eea00cddfb2a91e7019bbb586c799f3"},
 ]
+
+[[package]]
+name = "mpl-scatter-density"
+version = "0.7"
+description = "Matplotlib helpers to make density scatter plots"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "mpl-scatter-density-0.7.tar.gz", hash = "sha256:cace750887916d3881b3a42ab5805769cc8d7eb70ef610938cbb57c967277620"},
+    {file = "mpl_scatter_density-0.7-py3-none-any.whl", hash = "sha256:721b4efeafcbc0ba4a5c1ecd8f401dc2d1aa6a372445c5b49e1da34e70a95ead"},
+]
+
+[package.dependencies]
+fast-histogram = ">=0.3"
+matplotlib = ">=3.0"
+numpy = "*"
+
+[package.extras]
+test = ["pytest", "pytest-cov", "pytest-mpl"]
 
 [[package]]
 name = "mpmath"
@@ -5198,4 +5249,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7,<3.11"
-content-hash = "e1b5b49e5a25d7f3d1aa0c7a9de302b02c1cd9e6811552d2f443583771234812"
+content-hash = "02eea1988a40ae6fa57849fb55915651cf9946602a8062c73851bc9b3052f9db"
