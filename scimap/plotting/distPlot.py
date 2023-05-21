@@ -98,6 +98,7 @@ Example:
                      markers=['CD45','CD3D','CD20'], 
                      plotGrid=True, 
                      ncols=5)
+        ```
     
     """
     
