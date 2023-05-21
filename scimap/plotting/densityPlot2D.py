@@ -27,7 +27,7 @@ mpl.rcParams['pdf.fonttype'] = 42
 
 def densityPlot2D (adata, 
                    markerA,  markerB=None, 
-                   layers=None, 
+                   layer=None, 
                    subset=None, 
                    imageid='imageid', 
                    ncols=None, 
@@ -53,7 +53,7 @@ Parameters:
         The name of the second marker or a list of second markers whose expression will be plotted. 
         If not provided, a 2D density plot of `markerA` against all markers in the dataset will be plotted.
 
-    layers (str or list of str, optional): 
+    layer (str or list of str, optional): 
         The layer in adata.layers that contains the expression data to use. 
         If None, adata.X is used. use `raw` to use the data stored in `adata.raw.X`
 
@@ -73,10 +73,12 @@ Parameters:
         The size of the figure in inches.
 
     hline (float or 'auto', optional):  
-        The y-coordinate of the horizontal line to plot. If set to `None`, a horizontal line is not plotted.
+        The y-coordinate of the horizontal line to plot. If set to `None`, a horizontal line is not plotted. 
+        Use 'auto' to draw a vline at the center point. 
 
     vline (float or 'auto', optional):  
-        The x-coordinate of the vertical line to plot. If set to `None`, a vertical line is not plotted.
+        The x-coordinate of the vertical line to plot. If set to `None`, a vertical line is not plotted. 
+        Use 'auto' to draw a vline at the center point. 
 
     fontsize (int, optional):  
         The size of the font of the axis labels.
@@ -132,7 +134,7 @@ Example:
     if subset is not None:
         if isinstance (subset, str):
             subset = [subset]
-        if layers == 'raw':
+        if layer == 'raw':
             bdata=adata.copy()
             bdata.X = adata.raw.X
             bdata = bdata[bdata.obs[imageid].isin(subset)]
@@ -143,14 +145,12 @@ Example:
         bdata=adata.copy()
               
     # isolate the data
-    if layers is None:
+    if layer is None:
         data = pd.DataFrame(bdata.X, index=bdata.obs.index, columns=bdata.var.index)
-    elif layers == 'raw':
+    elif layer == 'raw':
         data = pd.DataFrame(bdata.raw.X, index=bdata.obs.index, columns=bdata.var.index)
     else:
-        data = pd.DataFrame(
-            bdata.layers[layers], index=bdata.obs.index, columns=bdata.var.index
-        )
+        data = pd.DataFrame(bdata.layers[layer], index=bdata.obs.index, columns=bdata.var.index)
     
     # keep only columns that are required
     x = data[markerA]

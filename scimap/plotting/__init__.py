@@ -11,3 +11,5 @@ from ._cluster_plots import cluster_plots
 from ._addROI_image import addROI_image
 from ._umap import umap
 from .densityPlot2D import densityPlot2D
+from .distPlot import distPlot
+from .spatial_scatterPlot import spatial_scatterPlot

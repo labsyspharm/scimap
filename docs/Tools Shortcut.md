@@ -47,10 +47,12 @@ import scimap as sm
 | [`sm.pl.image_viewer`](Functions/pl/image_viewer.md)               | Opens the image with overlays on a `napari` browser                 |
 | [`sm.pl.addROI_image`](Functions/pl/addROI_image.md)               | Add ROI's with  `napari` browser                                    |
 | [`sm.pl.gate_finder`](Functions/pl/gate_finder.md)                 | Overlays gating positivity on the image for manual gating           |
+| [`sm.pl.distPlot`](Functions/pl/distPlot.md)               | Distribution plot of a given marker                                    |
 | [`sm.pl.densityPlot2D`](Functions/pl/densityPlot2D.md)               | 2D density plotting of marker expression                                    |
-| [`sm.pl.cluster_plots`](Functions/pl/cluster_plots.md)               | 2D density plotting of marker expression                                    |
+| [`sm.pl.cluster_plots`](Functions/pl/cluster_plots.md)               | Meta function that outputs umap, heatmap and ranked makers for each group                                     |
 | [`sm.pl.umap`](Functions/pl/umap.md)                               | Overlays markers on UMAP                                            |
 | [`sm.pl.foldchange`](Functions/pl/foldchange.md)                   | vizualize foldchange in phenotypes between samples/ROIs             |
+| [`sm.pl.spatial_scatterPlot`](Functions/pl/spatial_scatterPlot.md)       | Scatter plots of spatially resolved data                               |
 | [`sm.pl.spatial_distance`](Functions/pl/spatial_distance.md)       | Visualize distance between phenotypes                               |
 | [`sm.pl.spatial_interaction`](Functions/pl/spatial_interaction.md) | Heatmap of cell–cell interaction analysis                           |
 | [`sm.pl.spatial_pscore`](Functions/pl/spatial_pscore.md)           | Bar plot of the derived Spatial Proximity Scores                    |

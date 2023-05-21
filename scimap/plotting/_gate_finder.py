@@ -27,55 +27,63 @@ import os
 cache = Cache(2e9)  # Leverage two gigabytes of memory
 cache.register()
 
-def gate_finder (image_path, adata, marker_of_interest, from_gate = 6, to_gate = 8, increment = 0.1,
+def gate_finder (image_path, adata, marker_of_interest, layer='raw', log=True,
+                 from_gate = 6, to_gate = 8, increment = 0.1,
                  markers=None, channel_names = 'default', flip_y=True,
                  x_coordinate='X_centroid',y_coordinate='Y_centroid',
                  point_size=10,imageid='imageid',subset=None,seg_mask=None,**kwargs):
     """
 Parameters:
-    image_path : string  
+    image_path (str):  
         Location to the image file.
 
     adata : Ann Data Object  
 
-    marker_of_interest : string  
+    marker_of_interest (str):  
         Marker for which gate is to be defined e.g. 'CD45'.
+    
+    layer (str): 
+        The layer in adata.layers that contains the expression data to gate. 
+        If None, adata.X is used. use `raw` to use the data stored in `adata.raw.X`
+    
+    log (bool):  
+        Log transform the data before gating.
 
-    from_gate : int, optional  
+    from_gate (int):   
         Start value gate of interest.
 
-    to_gate : int, optional  
+    to_gate (int):    
         End value of the gate of interest.
         
-    flip_y : bool, optional  
+    flip_y (bool):  
         Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
         If the image overlays do not align to the cells, try again by setting this to `False`.
 
-    increment : float, optional  
+    increment (float):  
         Increments between the start and end values.
 
-    markers : string, optional  
+    markers (str):  
         Additional markers to be included in the plot for evaluation.
 
-    channel_names : list, optional  
+    channel_names (list):  
         List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
 
-    x_coordinate : string, optional  
+    x_coordinate (str):  
         X axis coordinate column name in AnnData object.
 
-    y_coordinate : string, optional  
+    y_coordinate (str):  
         Y axis coordinate column name in AnnData object.
 
-    point_size : int, optional  
+    point_size (int):  
         point size in the napari plot.
 
-    imageid : string, optional  
+    imageid (str):  
         Column name of the column containing the image id.
 
-    subset : string, optional  
+    subset (str):  
         imageid of a single image to be subsetted for analyis.
 
-    seg_mask : string, optional  
+    seg_mask (str):  
         Location to the segmentation mask file.
 
     **kwargs  
@@ -96,12 +104,42 @@ Example:
     if adata.raw is None:
         adata.raw = adata
 
+    # subset data if neede
+    if subset is not None:
+        if isinstance (subset, str):
+            subset = [subset]
+        if layer == 'raw':
+            bdata=adata.copy()
+            bdata.X = adata.raw.X
+            bdata = bdata[bdata.obs[imageid].isin(subset)]
+        else:
+            bdata=adata.copy()
+            bdata = bdata[bdata.obs[imageid].isin(subset)]
+    else:
+        bdata=adata.copy()
+              
+    # isolate the data
+    if layer is None:
+        data = pd.DataFrame(bdata.X, index=bdata.obs.index, columns=bdata.var.index)[[marker_of_interest]]
+    elif layer == 'raw':
+        data = pd.DataFrame(bdata.raw.X, index=bdata.obs.index, columns=bdata.var.index)[[marker_of_interest]]
+    else:
+        data = pd.DataFrame(bdata.layers[layer], index=bdata.obs.index, columns=bdata.var.index)[[marker_of_interest]]
+    
+    if log is True:
+        data = np.log1p(data)
+        
+
     # Copy of the raw data if it exisits
-    if adata.raw is not None:
-        adata.X = adata.raw.X
+    #if adata.raw is not None:
+    #    adata.X = adata.raw.X
+        
+    # Plot only the Image that is requested
+    #if subset is not None:
+    #    adata = adata[adata.obs[imageid] == subset]
 
     # Make a copy of the data with the marker of interest
-    data = pd.DataFrame(np.log1p(adata.X), columns = adata.var.index, index= adata.obs.index)[[marker_of_interest]]
+    #data = pd.DataFrame(np.log1p(adata.X), columns = adata.var.index, index= adata.obs.index)[[marker_of_interest]]
 
     # Generate a dataframe with various gates
     def gate (g, d):
@@ -122,10 +160,7 @@ Example:
     # Concat all the results into a single dataframe
     gates = pd.concat(gated_data, axis=1)
     
-    # Plot only the Image that is requested
-    if subset is not None:
-        adata = adata[adata.obs[imageid] == subset]
-        
+  
     # Recover the channel names from adata
     if channel_names == 'default':
         channel_names = adata.uns['all_markers']
