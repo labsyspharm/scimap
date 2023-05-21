@@ -59,7 +59,7 @@ def combat(
         ```python
 
         # applying batch correction using raw data
-        adata = combat (adata,
+        adata = sm.pp.combat (adata,
                         batch='imageid',
                         layers='raw',
                         log=True,
