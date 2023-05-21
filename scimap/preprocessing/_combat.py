@@ -22,64 +22,60 @@ import argparse
 def combat(
     adata,
     batch='imageid',
-    layers=None,
+    layer=None,
     log=False,
     replaceOriginal=False,
     label='combat'):
     
     """
-    Parameters:
+Parameters:
+    adata (AnnData object):  
+        Annotated data matrix.
 
-        adata (AnnData object):  
-            Annotated data matrix.
+    batch (str, optional):  
+        The batch key or column in `adata.obs` that indicates the batches for each cell.
 
-        batch (str, optional):  
-            The batch key or column in `adata.obs` that indicates the batches for each cell.
+    layer (str or None, optional):
+        The layer in `adata.layers` that contains the expression data to correct. If None, 
+        `adata.X` is used. use `raw` to use the data stored in `adata.raw.X`
 
-        layers (str or None, optional):
-            The layer in `adata.layers` that contains the expression data to correct. If None, 
-            `adata.X` is used. use `raw` to use the data stored in `adata.raw.X`
+    log (bool, optional):  
+        Whether to log transform the data before applying ComBat. Generally use it with `raw`.
 
-        log (bool, optional):  
-            Whether to log transform the data before applying ComBat. Generally use it with `raw`.
+    replaceOriginal (bool, optional):
+        Whether to replace the original expression data in `adata` with the corrected data.
 
-        replaceOriginal (bool, optional):
-            Whether to replace the original expression data in `adata` with the corrected data.
+    label (str, optional):  
+        The prefix for the key in `adata` that will contain the corrected data. If `replaceOriginal` is `True`, this parameter has no effect.  
 
-        label (str, optional):  
-            The prefix for the key in `adata` that will contain the corrected data. If `replaceOriginal` is `True`, this parameter has no effect.  
+Returns:
+    adata (anndata):  
+        The corrected expression data is stored in a new layer `adata.layers['combat']`.
 
-    Returns:
+Examples:
 
-        adata (anndata):  
-            The corrected expression data is stored in a new layer `adata.layers['combat']`.
+    ```python
 
-    Examples:
+    # applying batch correction using raw data
+    adata = sm.pp.combat (adata,
+                    batch='imageid',
+                    layer='raw',
+                    log=True,
+                    replaceOriginal=False,
+                    label='combat')
 
-        ```python
+    # results will be available in adata.layers['combat']
 
-        # applying batch correction using raw data
-        adata = sm.pp.combat (adata,
-                        batch='imageid',
-                        layers='raw',
-                        log=True,
-                        replaceOriginal=False,
-                        label='combat')
-
-        # results will be available in adata.layers['combat']
-
-        ```
+    ```
     """
 
     # isolate the data
-    if layers is None:
+    if layer is None:
         data = pd.DataFrame(adata.X, index=adata.obs.index, columns=adata.var.index)
-    elif layers == 'raw':
+    elif layer == 'raw':
         data = pd.DataFrame(adata.raw.X, index=adata.obs.index, columns=adata.var.index)
     else:
-        data = pd.DataFrame(
-            adata.layers[layers], index=adata.obs.index, columns=adata.var.index
-        )
+        data = pd.DataFrame(adata.layers[layer], index=adata.obs.index, columns=adata.var.index)
 
     # log the data if requested
     if log is True:
@@ -107,13 +103,13 @@ def combat(
 
     # replace original
     if replaceOriginal is True:
-        if layers is None:
+        if layer is None:
             adata.X = batchCorrected
-        elif layers == 'raw':
+        elif layer == 'raw':
             del adata.raw
             adata.raw = ad.AnnData(batchCorrected, obs=adata.obs)
         else:
-            adata.layers[layers] = batchCorrected
+            adata.layers[layer] = batchCorrected
 
     # return adata
     return adata
@@ -130,7 +126,7 @@ if __name__ == '__main__':
         help='The batch key or column in `adata.obs` that indicates the batches for each cell.',
     )
     parser.add_argument(
-        '--layers',
+        '--layer',
         type=str,
         default=None,
         help='The layer in `adata.layers` that contains the expression data to correct. If None, `adata.X` is used. use `raw` to use the data stored in `adata.raw.X`',
@@ -157,7 +153,7 @@ if __name__ == '__main__':
     combat(
         adata=args.adata,
         batch=args.batch,
-        layers=args.layers,
+        layer=args.layer,
         log=args.log,
         replaceOriginal=args.replaceOriginal,
         label=args.label)
