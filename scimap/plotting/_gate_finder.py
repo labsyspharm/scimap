@@ -249,7 +249,7 @@ Example:
         viewer.add_labels(seg_m, name='segmentation mask', visible=False)
 
     # subset the gates to include only the image of interest
-    gates = gates.loc[adata.obs.index,]
+    gates = gates.loc[bdata.obs.index,]
 
     # Add gating layer
     def add_phenotype_layer (adata, gates, phenotype_layer,x,y,viewer,point_size):
@@ -271,6 +271,6 @@ Example:
 
     # Run the function on all gating layer
     for i in gates.columns:
-        add_phenotype_layer (adata=adata, gates=gates, 
+        add_phenotype_layer (adata=bdata, gates=gates, 
                              phenotype_layer=i, x=x_coordinate, y=y_coordinate, 
                              viewer=viewer, point_size=point_size)
