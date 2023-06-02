@@ -29,23 +29,23 @@ Parameters:
 
     adata : AnnData Object  
 
-    gate : dataframe, optional  
+    gate (dataframe):   
         DataFrame with first column as markers and subsequent column with gate values for each image in the dataset.
         The column names should correspond to the unique `imageid`. If only one column of gate is provied 
         to a dataset with multiple images, the same gate will be applied to all images.
         Note: If gates are not provided or left out for a particular marker, the function will try to 
         automatically identify a gate based on applying gaussian mixture modeling algorithm (GMM). The default is None.
         
-    log : bool, optional  
+    log (bool):   
         By default the data stored in `adata.raw.X` is extracted for scaling. If the user wishes to log transform (log1p)
         it before applying the gates, this parameter can be set to True. Please note if the function is used to 
         identify gates based on GMM, it is recommended for the data to be log transformed. The default is True.
         
-    imageid : string, optional  
+    imageid (string):   
         The column containing the Image IDs. When passing manual gates the columns of the dataframe need to match 
         to the elements within the passed `imageid` column. The default is 'imageid'.
         
-    failed_markers : dict, optional  
+    failed_markers (dict):  
         Markers that were deemed to have failed based on prior visual inspection. This parameter accepts a python 
         dictionary with `key` as `imageid` and `value` as markers that failed in that particular `imageid`. 
         Example: `failed_markers = {'image_1': ['failed_marker_1'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}`. 
@@ -53,13 +53,13 @@ Parameters:
         recognizes the special keyword `all`. For example, `failed_markers = {'all': ['failed_marker_X'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}`. 
         The default is None.
         
-    method : string, optional  
+    method (string):  
         Two avialble option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid',
         users have the option to apply GMM by pooling all data togeather or to apply it to each image independently. 
         Please be aware of batch effects when passing 'all' to multiple images. In contrast, if there are not enough variation 
         within individual images, the GMM cannot reliably distinguish between the negative and positive populations as well.  
         
-    random_state : int, optional  
+    random_state (int):
         Seed for GMM. The default is 0.
 
 Returns:
