@@ -41,39 +41,38 @@ Parameters:
         Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it.
 
     remove_string_from_name (string):    
-        Used to celan up channel names. If a string is given, that particular string will be removed from all marker names.
-        If multiple images are passed, just use the string that appears in the first image.
+        Used to clean channel names. The given string will be removed from all marker names.
 
-    log : bool, optional  
-        Log the data (log1p transformation will be applied).
+    log (bool):  
+        Take Log of data (log1p transformation will be applied).
 
-    drop_markers : list, optional  
+    drop_markers (list):   
         List of markers to drop from the analysis. e.g. ["CD3D", "CD20"].
 
-    random_sample : int, optional  
-        Randomly sub-sample the data with the desired number of cells.
+    random_sample (int):  
+        Randomly sub-sample data, new sample contains desired number of cells.
 
-    CellId : string, optional  
+    CellId (string):  
         Name of the column that contains the cell ID.
 
-    unique_CellId: bool, optional  
+    unique_CellId (bool):   
         By default, the function creates a unique name for each cell/row by combining the 
         `CellId` and `imageid`. If you wish not to perform this operation please pass `False`.
         The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId`
         especially when loading multiple datasets togeather.  
 
-    split : string, optional  
+    split (string):  
         To split the CSV into counts table and meta data, pass in the name of the column
         that immediately follows the marker quantification.
 
-    custom_imageid: string, optional  
+    custom_imageid (string):    
         Pass a user defined Image ID. By default the name of the CSV file is used.
 
-    min_cells: int, optional  
-        If these many cells are not in the image, the image will be dropped.
+    min_cells (int):   
+        Images with less cells than int will be dropped
         Particulary useful when importing multiple images.
 
-    output_dir: string, optional  
+    output_dir (string):    
         Path to output directory. 
 
 Returns:
