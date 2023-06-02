@@ -19,76 +19,25 @@ import sys
 import pathlib
 
 
-def main(argv=sys.argv):
-    parser = argparse.ArgumentParser(
-        description='The function allows users to directly import the output from mcmicro'
-    )
-    parser.add_argument(
-        '--feature_table_path', nargs='*', required=True, 
-        help='List of path to the single-cell feature tables. Each Image should have a unique path supplied.'
-    )
-    parser.add_argument(
-        '--remove_dna', action='store_true', required=False,  default=True,
-        help='Remove the DNA channels from the final output. Looks for channels with the string dna in it.'
-    )
-    parser.add_argument(
-        '--remove_string_from_name', type=str, required=False, default=None,
-        help='Used to celan up channel names. If a string is given, that particular string will be removed from all marker names. If multiple images are passed, just use the string that appears in the first image.'
-    )
-    parser.add_argument(
-        '--log', required=False, default=True,
-        help='Log the data (log1p transformation will be applied).'
-    )
-    parser.add_argument(
-        '--drop_markers', nargs='*', required=False, default=None,
-        help='List of markers to drop from the analysis. e.g. ["CD3D", "CD20"]'
-    )
-    parser.add_argument(
-        '--random_sample', type=int, required=False, default=None,
-        help='Randomly sub-sample the data with the desired number of cells.'
-    )
-    parser.add_argument(
-        '--unique_CellId', required=False, default=True,
-        help='By default, the function creates a unique name for each cell/row by combining the `CellId` and `imageid`. If you wish not to perform this operation please pass `False`. The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId` especially when loading multiple datasets togeather.'
-    )
-    parser.add_argument(
-        '--CellId', type=str, required=False, default='CellID',
-        help='Name of the column that contains the cell ID.'
-    )
-    parser.add_argument(
-        '--split', type=str, required=False, default='X_centroid',
-        help='To split the CSV into counts table and meta data, pass in the name of the column that immediately follows the marker quantification.'
-    )
-    parser.add_argument( 
-        '--custom_imageid', type=str, required=False, default=None,
-        help='Pass a user defined Image ID. By default the name of the CSV file is used.'
-    )
-    parser.add_argument(
-        '--min_cells', type=int, required=False, default=None,
-        help='If these many cells are not in the image, the image will be dropped. Particulary useful when importing multiple images.'
-    )
-    parser.add_argument(
-        '--output_dir', type=str, required=False, default=None,
-        help='Path to output directory.'
-    )
-    args = parser.parse_args(argv[1:])
-    print(vars(args))
-    mcmicro_to_scimap(**vars(args))
-
-
-
-
-def mcmicro_to_scimap (feature_table_path,remove_dna=True,remove_string_from_name=None,
-                        log=True,drop_markers=None,random_sample=None, unique_CellId=True,
-                        CellId='CellID',split='X_centroid',custom_imageid=None,
-                        min_cells=None, output_dir=None):
+def mcmicro_to_scimap (feature_table_path,
+                       remove_dna=True,
+                       remove_string_from_name=None,
+                       log=True,
+                       drop_markers=None,
+                       random_sample=None, 
+                       unique_CellId=True,
+                       CellId='CellID',
+                       split='X_centroid',
+                       custom_imageid=None,
+                       min_cells=None, 
+                       output_dir=None):
     """
 Parameters:
 
-    feature_table_path : list  
-        List of path to the single-cell spatial feature tables. Each Image should have a unique path supplied.
+    feature_table_path (list):    
+        This is a list of paths that lead to the single-cell spatial feature tables. Each image should have a unique path assigned to it.
 
-    remove_dna : bool, optional  
+    remove_dna (bool):    
         Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it.
 
     remove_string_from_name : string, optional  
@@ -235,6 +184,61 @@ adata = sm.pp.mcmicro_to_scimap (feature_table_path, drop_markers= ['CD21', 'ACT
         # Return data
         return adata
 
-
+def main(argv=sys.argv):
+    parser = argparse.ArgumentParser(
+        description='The function allows users to directly import the output from mcmicro'
+    )
+    parser.add_argument(
+        '--feature_table_path', nargs='*', required=True, 
+        help='List of path to the single-cell feature tables. Each Image should have a unique path supplied.'
+    )
+    parser.add_argument(
+        '--remove_dna', action='store_true', required=False,  default=True,
+        help='Remove the DNA channels from the final output. Looks for channels with the string dna in it.'
+    )
+    parser.add_argument(
+        '--remove_string_from_name', type=str, required=False, default=None,
+        help='Used to celan up channel names. If a string is given, that particular string will be removed from all marker names. If multiple images are passed, just use the string that appears in the first image.'
+    )
+    parser.add_argument(
+        '--log', required=False, default=True,
+        help='Log the data (log1p transformation will be applied).'
+    )
+    parser.add_argument(
+        '--drop_markers', nargs='*', required=False, default=None,
+        help='List of markers to drop from the analysis. e.g. ["CD3D", "CD20"]'
+    )
+    parser.add_argument(
+        '--random_sample', type=int, required=False, default=None,
+        help='Randomly sub-sample the data with the desired number of cells.'
+    )
+    parser.add_argument(
+        '--unique_CellId', required=False, default=True,
+        help='By default, the function creates a unique name for each cell/row by combining the `CellId` and `imageid`. If you wish not to perform this operation please pass `False`. The function will use whatever is under `CellId`. In which case, please be careful to pass unique `CellId` especially when loading multiple datasets togeather.'
+    )
+    parser.add_argument(
+        '--CellId', type=str, required=False, default='CellID',
+        help='Name of the column that contains the cell ID.'
+    )
+    parser.add_argument(
+        '--split', type=str, required=False, default='X_centroid',
+        help='To split the CSV into counts table and meta data, pass in the name of the column that immediately follows the marker quantification.'
+    )
+    parser.add_argument( 
+        '--custom_imageid', type=str, required=False, default=None,
+        help='Pass a user defined Image ID. By default the name of the CSV file is used.'
+    )
+    parser.add_argument(
+        '--min_cells', type=int, required=False, default=None,
+        help='If these many cells are not in the image, the image will be dropped. Particulary useful when importing multiple images.'
+    )
+    parser.add_argument(
+        '--output_dir', type=str, required=False, default=None,
+        help='Path to output directory.'
+    )
+    args = parser.parse_args(argv[1:])
+    print(vars(args))
+    mcmicro_to_scimap(**vars(args))
+    
 if __name__ == '__main__':
     main()
