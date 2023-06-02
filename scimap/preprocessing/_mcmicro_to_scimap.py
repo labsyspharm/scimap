@@ -40,7 +40,7 @@ Parameters:
     remove_dna (bool):    
         Remove the DNA channels from the final output. Looks for channels with the string 'dna' in it.
 
-    remove_string_from_name : string, optional  
+    remove_string_from_name (string):    
         Used to celan up channel names. If a string is given, that particular string will be removed from all marker names.
         If multiple images are passed, just use the string that appears in the first image.
 
