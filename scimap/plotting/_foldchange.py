@@ -31,54 +31,54 @@ def foldchange (adata, label='foldchange',
 Parameters:
     adata : Anndata object
 
-    label : strong, optional  
+    label (strong):  
         label used when running `sm.tl.foldchange`.
 
-    p_val : float, optional  
+    p_val (float):  
         p_val cut-off above which is considered not-significant. The cells containing
         non-significant changes will be highlighted in the heatmap.
 
-    nonsig_color : string, optional  
+    nonsig_color (string):  
         Color used to highlight non-significant fold changes in the heatmap.
 
-    subset_xaxis : list, optional  
+    subset_xaxis (list):  
         Subset x-axis before plotting. Pass in a list of categories. eg- subset_xaxis = ['CelltypeA', 'CellTypeB']. 
 
-    subset_yaxis : list, optional  
+    subset_yaxis (list):  
         Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['ROI_1', 'ROI_5']. 
 
-    cmap : string, optional  
+    cmap (string):  
         Color map. Can be a name or a Colormap instance (e.g. 'magma', 'viridis').
 
-    log : bool, optional  
+    log (bool):  
         Convert foldchange to log2 scale.
 
-    center : float, optional  
+    center (float):  
         The center value to be used in heatmap.
 
-    method : string, optional  
+    method (string):  
         Two methods are available for plotting the foldchanges  
         a) Heatmap: Use `heatmap`  
         b) parallel coordinates plot : Use `parallel_coordinates`  
 
-    invert_axis : bool, optional  
+    invert_axis (bool):  
         Flip the axis of the plot.
 
-    parallel_coordinates_color : list, optional  
+    parallel_coordinates_color (list): 
         Custom colors for each category.
 
-    matplotlib_bbox_to_anchor : tuple, optional  
+    matplotlib_bbox_to_anchor (tuple):  
         Bounding box argument used along with matplotlib_legend_loc to control
         the legend location when using the matplotlib method.
 
-    matplotlib_legend_loc : TYPE, optional  
+    matplotlib_legend_loc (TYPE):  
         Location of legend used along with matplotlib_bbox_to_anchor to control
         the legend location when using the matplotlib method.
 
-    xticks_rotation : int, optional  
+    xticks_rotation (int):  
         Angle the x-axis ticks.
 
-    return_data: bool, optional  
+    return_data (bool):  
         Return the final data used for plotting.
 
     **kwargs : Additional keyword arguments passed to:  
