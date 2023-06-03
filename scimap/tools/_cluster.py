@@ -125,72 +125,72 @@ Parameters:
 
     adata : AnnData Object
 
-    method : string, optional  
+    method (string):  
         Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc.
 
-    subset_genes : list, optional  
+    subset_genes (list):  
         Pass a list of genes ['CD3D', 'CD20', 'KI67'] that should be included for the purpose of clustering. 
         By default the algorithm uses all genes in the dataset.
 
-    sub_cluster : Boolian, optional  
+    sub_cluster (bool):  
         If the user has already performed clustering or phenotyping previously and would like to
         sub-cluster within a particular cluster/phenotype, this option can be used.
 
-    sub_cluster_column : string, optional  
+    sub_cluster_column (string):  
         The column name that contains the cluster/phenotype information to be sub-clustered. 
         This is only required when sub_cluster is set to True.
 
-    sub_cluster_group : list, optional  
+    sub_cluster_group (list):  
         By default the program will sub-cluster all groups within column passed through the argument sub_cluster_column.
         If user wants to sub cluster only a subset of phenotypes/clusters this option can be used.
         Pass them as list e.g. ["tumor", "b cells"].     
 
-    parc_small_pop : int, optional  
+    parc_small_pop (int):  
         Smallest cluster population to be considered a community in PARC clustering.
 
-    parc_too_big_factor : float, optional  
+    parc_too_big_factor (float):  
         If a cluster exceeds this share of the entire cell population, then the PARC will be run on 
         the large cluster. at 0.4 it does not come into play.
 
-    k : int, optional  
+    k (int):  
         Number of clusters to return when using K-Means clustering.
 
-    n_pcs : int, optional  
+    n_pcs (int) :  
         Number of PC's to be used in leiden clustering. By default it uses all PC's.
 
-    resolution : float, optional  
+    resolution (float):  
         A parameter value controlling the coarseness of the clustering. 
         Higher values lead to more clusters.
 
-    phenograph_clustering_metric : string, optional  
+    phenograph_clustering_metric (string):  
         Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. 
         Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’, 
         ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, 
         ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
 
-    nearest_neighbors : int, optional  
+    nearest_neighbors (int):  
         Number of nearest neighbors to use in first step of graph construction. 
         This parameter is used both in leiden and phenograph clustering.
 
-    use_raw : bool, optional  
+    use_raw (bool):  
         If True, raw data will be used for clustering. 
         If False, normalized/scaled data within `adata.X` will be used.
 
-    log : boolian, optional  
+    log (bool):  
         If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. 
 
-    random_state : int, optional  
+    random_state (int):  
         Change the initialization of the optimization.
 
-    collapse_labels : bool, optional  
+    collapse_labels (bool):  
         While sub clustering only a few phenotypes/clusters, this argument helps to 
         group all the other phenotypes/clusters into a single category- 
         Helps in visualisation.
 
-    label : string, optional  
+    label (string):  
         Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].
 
-    output_dir : string, optional  
+    output_dir (string):  
         Path to output directory.
 
 
