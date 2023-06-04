@@ -39,14 +39,14 @@ Parameters:
     x_coordinate (float, required):  
         Column name containing the x-coordinates values.
 
-    y_coordinate (float, required):   
+    y_coordinate (float, required):  
         Column name containing the y-coordinates values.
 
-    phenotype (string, required):   
+    phenotype (string, required):  
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
 
-    method (string, optional):   
+    method (string, optional):  
         Two options are available: a) 'radius', b) 'knn'.  
         a) radius - Identifies the neighbours within a given radius for every cell.  
         b) knn - Identifies the K nearest neigbours for every cell.  
@@ -57,19 +57,19 @@ Parameters:
     knn (int, optional):  
         Number of cells considered for defining the local neighbhourhood.
 
-    imageid (string, optional):   
+    imageid (string, optional):  
         Column name of the column containing the image id.
 
-    subset (string, optional):   
+    subset (string, optional):  
         imageid of a single image to be subsetted for analyis.
 
-    num_motifs (int, optional):   
+    num_motifs (int, optional):  
         The number of requested latent motifs to be extracted from the training corpus.
 
-    random_state (int, optional):   
+    random_state (int, optional):  
         Either a randomState object or a seed to generate one. Useful for reproducibility.
 
-    label (string, optional):   
+    label (string, optional):  
         Key for the returned data, stored in `adata.uns`.
 
 Returns:
