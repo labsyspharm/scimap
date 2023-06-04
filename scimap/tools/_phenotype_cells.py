@@ -49,24 +49,24 @@ Parameters:
 
     adata : anndata object
     
-    phenotype : dataframe, required  
+    phenotype (dataframe):   
         A gating strategy for phenotyping the cells. An example `workflow` provided [here](https://github.com/ajitjohnson/scimap/blob/master/scimap/tests/_data/phenotype_workflow.csv).
         
-    gate : int, optional  
+    gate (int):  
         By default rescale function, scales the data such that values above 0.5 are considered positive cells.
         
-    label : string, optional  
+    label (string):  
         Name the column underwhich the final phenotype calling will be saved.
         
-    imageid : string, optional  
+    imageid (string):  
         Name of the column that contains the unique imageid. This is only utilized
         when the user uses `pheno_threshold_percent` or `pheno_threshold_abs` parameters.
         
-    pheno_threshold_percent : float, optional  
+    pheno_threshold_percent (float):  
         Accepts values between (0-100). If any particular phenotype is below the user defined threshold,
         it is recategorised as 'unknown. Generally used to deal with low background false positives.
         
-    pheno_threshold_abs : int, optional  
+    pheno_threshold_abs (int):  
         Serves the same purpose as that of pheno_threshold_percent. However, an absolute
         number can be passed. For example, if user passes in 10- any phenotype that contains
         less than 10 cells will be recategorized as unknown.
