@@ -27,26 +27,26 @@ Parameters:
 
     adata : AnnData object
 
-    x_coordinate : float, required  
+    x_coordinate (float, required):  
         Column name containing the x-coordinates values.
 
-    y_coordinate : float, required  
+    y_coordinate (float, required):  
         Column name containing the y-coordinates values.
     
-    z_coordinate : float, optional  
+    z_coordinate (float, optional):   
         Column name containing the z-coordinates values.
 
-    phenotype : string, required  
+    phenotype (string, required):   
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
 
-    subset : string, optional  
+    subset (string, optional):   
         imageid of a single image to be subsetted for analyis.
 
-    imageid : string, optional  
+    imageid (string, optional):   
         Column name of the column containing the image id.
 
-    label : string, optional  
+    label (string, optional):   
         Key for the returned data, stored in `adata.obs`.
 
 Returns:
