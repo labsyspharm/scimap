@@ -62,60 +62,60 @@ def addROI_image (image_path, adata, subset=None,imageid='imageid', overlay=None
                     overwrite=True, label='ROI', **kwargs):
     """
 Parameters:
-    image_path : string  
+    image_path (string):  
         Location to the image file (TIFF, OME.TIFF, ZARR supported)  
 
     adata : AnnData Object  
     
-    subset : list, optional  
+    subset (list):  
         Name of the image to which the ROI is to be added. Note if you have multiple images in the 
         adata object, you will need to add ROI's to each image one after the other independently.  
         
-    imageid : string, optional  
+    imageid (string):  
         In the event that the adata object contains multiple images, it is
         important that ROIs are added to each image seperately. Pass the name 
         of the column that contains the `imageid` and use it in conjunction with
         the `subset` parameter to add ROI's to a specific image.
 
-    seg_mask: string  
+    seg_mask (string):  
         Location to the segmentation mask file.  
 
-    overlay : string, optional  
+    overlay (string):  
         Name of the column with any categorical data such as phenotypes or clusters.
         
-    flip_y : bool, optional  
+    flip_y (bool):  
         Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
         If the image overlays do not align to the cells, try again by setting this to `False`.
         
-    overlay_category : list, optional  
+    overlay_category (list):  
         If only specfic categories within the overlay column is needed, pass their names as a list.
         If None, all categories will be used.
 
-    markers : list, optional  
+    markers (list):  
         Markers to be included. If none, all markers will be displayed.
 
-    channel_names : list, optional  
+    channel_names (list):  
         List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
 
-    x_coordinate : string, optional  
+    x_coordinate (string):  
         X axis coordinate column name in AnnData object.
 
-    y_coordinate : string, optional  
+    y_coordinate (string):  
         Y axis coordinate column name in AnnData object.
 
-    point_size : int, optional  
+    point_size (int):  
         point size in the napari plot.
     
-    overwrite : bool, optional  
+    overwrite (bool):  
         In the event you have multiple images in the adata object, ROI can be added to each image
         independently using the `imageid` and `subset` parameter. If you wish the results to be
         all saved with in the same column set this parameter to `False`. By default, the 
         function will overwrite the `label` column. 
         
-    n_jobs : int, optional  
+    n_jobs (int):  
         Number of cores to use. Default is to use all available cores.  
     
-    label : string, optional  
+    label (string):  
         Key for the returned data, stored in `adata.obs`.  
 
     **kwargs  
