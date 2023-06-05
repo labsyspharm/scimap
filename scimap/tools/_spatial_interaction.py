@@ -31,36 +31,36 @@ def spatial_interaction (adata,x_coordinate='X_centroid',y_coordinate='Y_centroi
     """
 Parameters:
     adata : AnnData object
-    x_coordinate (float):  
+    x_coordinate : float, required  
         Column name containing the x-coordinates values.
-    y_coordinate (float):  
+    y_coordinate : float, required  
         Column name containing the y-coordinates values.
-    z_coordinate (float):  
+    z_coordinate : float, optional  
         Column name containing the z-coordinates values.
-    phenotype (string):  
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
-    method (string):  
+    method : string, optional  
         Two options are available: a) 'radius', b) 'knn'.
         a) radius - Identifies the neighbours within a given radius for every cell.
         b) knn - Identifies the K nearest neigbours for every cell.
-    radius (int):  
+    radius : int, optional  
         The radius used to define a local neighbhourhood.
-    knn (int):  
+    knn : int, optional  
         Number of cells considered for defining the local neighbhourhood.
-    permutation (int):  
+    permutation : int, optional  
         The number of permutations to be performed for calculating the P-Value.
-    imageid (string):  
+    imageid : string, optional  
         Column name of the column containing the image id.
-    subset (string):  
+    subset : string, optional  
         imageid of a single image to be subsetted for analyis.
-    pval_method (string):  
+    pval_method : string, optional  
         Two options are available: a) 'histocat', b) 'zscore'.  
         a) P-values are calculated by subtracting the permuted mean from the observed mean
         divided by the number of permutations as described in the histoCAT manuscript (Denis et.al, Nature Methods 2017)  
         b) zscores are calculated from the mean and standard deviation and further p-values are
         derived by fitting the observed values to a normal distribution. The default is 'histocat'.
-    label (string):  
+    label : string, optional  
         Key for the returned data, stored in `adata.obs`. The default is 'spatial_interaction'.
 Returns:
     adata : AnnData object  

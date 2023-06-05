@@ -99,81 +99,81 @@ def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coo
 Parameters:
     adata : Anndata object
 
-    color_by : string, optional  
+    color_by (string):  
         Color the voronoi diagram based on categorical variable (e.g. cell types or neighbourhoods).
         Pass the name of the column which contains the categorical variable.
 
-    colors : string or Dict, optional  
+    colors (string or Dict):  
         Custom coloring the voronoi diagram. The parameter accepts `sns color palettes` or a python dictionary
         mapping the categorical variable with the required color.
 
-    x_coordinate : float, required  
+    x_coordinate (float):  
         Column name containing the x-coordinates values.
 
-    y_coordinate : float, required  
+    y_coordinate (float):  
         Column name containing the y-coordinates values.
            
-    flip_y : bool, optional  
+    flip_y (bool):  
         Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
         If the image overlays do not align to the cells, try again by setting this to `False`.
 
-    imageid : string, optional  
+    imageid (string):  
         Column name of the column containing the image id.
 
-    subset : string, optional  
+    subset (string):  
         imageid of a single image to be subsetted for plotting.
 
-    voronoi_edge_color : string, optional  
+    voronoi_edge_color (string):  
         A Matplotlib color for marking the edges of the voronoi. 
         If `facecolor` is passed, the edge color will always be the same as the face color.
 
-    voronoi_line_width : float, optional  
+    voronoi_line_width (float):  
         The linewidth of the marker edges. Note: The default edgecolors is 'face'. You may want to change this as well. 
 
-    voronoi_alpha : float, optional  
+    voronoi_alpha (float):  
         The alpha blending value, between 0 (transparent) and 1 (opaque).
 
-    x_lim : list, optional  
+    x_lim (list):  
         Pass the x-coordinates range [x1,x2].
 
-    y_lim : list, optional  
+    y_lim (list):  
         Pass the y-coordinates range [y1,y2].
 
-    overlay_points : string, optional  
+    overlay_points (string):  
         It is possible to overlay a scatter plot on top of the voronoi diagram.
         Pass the name of the column which contains categorical variable to be overlayed.
 
-    overlay_points_categories : list, optional  
+    overlay_points_categories (list):  
         If the passed column in `overlay_points` contains multiple categories, however the user is only
         interested in a subset of categories, those specific names can be passed as a list. By default all 
         categories will be overlayed on the voronoi diagram.
 
-    overlay_drop_categories : list, optional  
+    overlay_drop_categories (list):  
         Similar to `overlay_points_categories`. Here for ease of use, especially if large number of categories are present.
         The user can drop a set of categories.
 
-    overlay_points_colors : string or dict, optional  
+    overlay_points_colors (string or Dict):  
         Similar to `colors`.  
         User can pass in a  
         a) solid color (like `black`)  
         b) sns palettes name (like `Set1`)  
         c) python dictionary mapping the categories with custom colors
 
-    overlay_point_size : float, optional  
+    overlay_point_size (float):  
         Overlay scatter plot point size.
 
-    overlay_point_alpha : float, optional  
+    overlay_point_alpha (float):  
         The alpha blending value for the overlay, between 0 (transparent) and 1 (opaque).
 
-    overlay_point_shape : string, optional  
+    overlay_point_shape (string):  
         The marker style. marker can be either an instance of the class or the text shorthand for a particular marker.
 
-    plot_legend : bool, optional  
+    plot_legend (bool):  
         Define if the figure legend should be plotted.  
         Please note the figure legend may be out of view and you may need to resize the image to see it, especially 
         the legend for the scatter plot which will be on the left side of the plot.
 
-    legend_size : float, optional  
+    legend_size (float):  
         Resize the legend if needed.
 
 Example:

@@ -39,34 +39,34 @@ def spatial_count (adata,
 Parameters:
     adata : anndata object
 
-    x_coordinate (float):  
+    x_coordinate : float, required  
         Column name containing the x-coordinates values.
         
-    y_coordinate (float):  
+    y_coordinate : float, required  
         Column name containing the y-coordinates values.
         
-    phenotype (string):  
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
         
-    method (string):  
+    method : string, optional  
         Two options are available: a) `radius`, b) `knn`.  
         a) radius - Identifies the neighbours within a given radius for every cell.  
         b) knn - Identifies the K nearest neigbours for every cell.  
         
-    radius (int):  
+    radius : int, optional  
         The radius used to define a local neighbhourhood.
         
-    knn (int):  
+    knn : int, optional  
         Number of cells considered for defining the local neighbhourhood.
         
-    imageid (string):  
+    imageid : string, optional  
         Column name of the column containing the image id.
         
-    subset (string):  
+    subset : string, optional  
         imageid of a single image to be subsetted for analyis.
         
-    label (string):  
+    label : string, optional  
         Key for the returned data, stored in `adata.uns`.
 
 Returns:

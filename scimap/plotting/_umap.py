@@ -30,52 +30,52 @@ Parameters:
 
     adata : AnnData Object  
 
-    color : list, optional
+    color (list):  
         Keys for annotations of observations in `adata.obs.columns` or genes in `adata.var.index`. e.g. ['CD3D', 'SOX10']
         The default is None.
         
-    use_layer : string, optional  
+    use_layer (string):  
         Pass name of any `Layer` in AnnData. The default is `None` and `adata.X` is used.
         
-    use_raw : bool, optional  
+    use_raw (bool):  
         If set to `True`, values in `adata.raw.X` will be used to color the plot. The default is False.
         
-    log : bool, optional  
+    log (bool):  
         If set to `True`, the data will natural log transformed using `np.log1p()` for coloring. The default is False.
         
-    label : string, optional  
+    label (string):  
         The `label key` used when running `sm.tl.umap()`. The default is 'umap'.
         
-    cmap : string, optional  
+    cmap (string):  
         Color map to use for continous variables. Can be a name or a Colormap 
         instance (e.g. "magma”, "viridis"). The default is 'vlag'.
         
-    palette : dict, optional  
+    palette (dict):  
         Colors to use for plotting categorical annotation groups. 
         It accepts a `dict` mapping categories to colors. 
         e.g. `palette = {'T cells': '#000000', 'B cells': '#FFF675'}`.
         Auto color will be generated for other categories that are not specified. The default is None.
         
-    alpha : float, optional  
+    alpha (float):  
         blending value, between 0 (transparent) and 1 (opaque). The default is 0.8.
         
-    figsize : tuple, optional  
+    figsize (tuple):  
         Width, height in inches. The default is (10, 10).
         
-    s : int, optional  
+    s (int):  
         The marker size in points. The default is None.
         
-    ncols : int, optional  
+    ncols (int):  
         Number of panels per row. The default is None.
         
-    tight_layout : bool, optional  
+    tight_layout (bool):  
         Adjust the padding between and around subplots. If True it will ensure that
         the legends are visible. The default is False.
         
-    return_data : bool, optional  
+    return_data (bool):  
         Returns the data used for plotting. The default is False.
         
-    save_figure : string, optional  
+    save_figure (string):  
         Pass path to saving figure with file extension.
         e.g `\path\to\directory\figure.pdf` The default is None.
     
@@ -83,7 +83,7 @@ Parameters:
 
 Returns:
 
-    final_data : Dataframe
+    final_data (Dataframe):  
         If return_data is set to `True`.
 
 Example:

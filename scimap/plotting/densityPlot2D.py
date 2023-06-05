@@ -46,14 +46,14 @@ Parameters:
     adata (anndata): 
         Annotated data matrix containing single-cell gene expression data.
 
-    markerA (str): 
+    markerA (str):  
         The name of the first marker whose expression will be plotted.
 
-    markerB (list, optional): 
+    markerB (list, optional):  
         The name of the second marker or a list of second markers whose expression will be plotted. 
         If not provided, a 2D density plot of `markerA` against all markers in the dataset will be plotted.
 
-    layer (str or list of str, optional): 
+    layer (str or list of str, optional):  
         The layer in adata.layers that contains the expression data to use. 
         If None, adata.X is used. use `raw` to use the data stored in `adata.raw.X`
 

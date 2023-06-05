@@ -47,51 +47,51 @@ def image_viewer(
 ):
     """
     Parameters:
-        image_path (str):
+        image_path (str):  
             Location to the image file (TIFF, OME.TIFF, ZARR supported)
 
-        seg_mask (str, optional):
+        seg_mask (str):  
             Location to the segmentation mask file.
 
         adata (Ann Data Object):
 
-        flip_y (bool, optional):
+        flip_y (bool):  
             Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
             If the image overlays do not align to the cells, try again by setting this to `False`.
 
-        overlay (str, optional):
+        overlay (str):  
             Name of the column with any categorical data such as phenotypes or clusters.
 
-        overlay_category (list, optional):
+        overlay_category (list):  
             If only specfic categories within the overlay column is needed, pass their names as a list.
             If None, all categories will be used.
 
-        markers (list, optional):
+        markers (list):  
             Markers to be included. If none, all markers will be displayed.
 
-        channel_names (list, optional):
+        channel_names (list):  
             List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
 
-        x_coordinate (str, optional):
+        x_coordinate (str):  
             X axis coordinate column name in AnnData object.
 
-        y_coordinate (str, optional):
+        y_coordinate (str):  
             Y axis coordinate column name in AnnData object.
 
-        point_size (int, optional):
+        point_size (int):  
             point size in the napari plot.
 
-        point_color (str, dict, optional):
+        point_color (str, dict):  
             The default behavior is to assign auto colors, but you can also provide
             a color mapping using the point_color parameter. For instance, you can pass a
             dictionary that maps color values to specific categories (provided in the `overlay` parameter).
             Here is an example of such a color mapping: `point_color = {'cellTypeA': '#FFFFFF', 'cellTypeB': '#000000'}`.
             A single color can also be provided like `point_color = 'white'`
 
-        imageid (str, optional):
+        imageid (str):  
             Column name of the column containing the image id.
 
-        subset (str, optional):
+        subset (str):  
             imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.
 
         **kwargs
