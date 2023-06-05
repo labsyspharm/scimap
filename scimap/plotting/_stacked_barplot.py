@@ -33,51 +33,51 @@ def stacked_barplot (adata, x_axis='imageid', y_axis='phenotype', subset_xaxis=N
 Parameters:
     adata : AnnData Object
 
-    x_axis : string, required  
+    x_axis (string):  
         Column name of the data that need to be plotted in the x-axis.
 
-    y_axis : string, required  
+    y_axis (string):  
         Column name of the data that need to be plotted in the y-axis.
 
-    subset_xaxis : list, optional  
+    subset_xaxis (list):  
         Subset x-axis before plotting. Pass in a list of categories. eg- subset_xaxis = ['ROI_1', 'ROI_5']
 
-    subset_yaxis : list, optional  
+    subset_yaxis (list):  
         Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['Celltype_A', 'Celltype_B']
 
-    order_xaxis : list, optional  
+    order_xaxis (list):  
         Order the x-axis of the plot as needed. Pass in a list of categories. eg- order_xaxis = ['ROI_5', 'ROI_1']
         The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
         will generate NaN's.
 
-    order_yaxis : list, optional  
+    order_yaxis (list):  
         Order the y-axis of the plot as needed. Pass in a list of categories. eg- order_yaxis = ['Celltype_B', 'Celltype_A']
         The default is None and will be plotted based on alphabetic order. Please note that if you change the order, pass all categories, failure to do so
         will generate NaN's.
 
-    method : string, optional  
+    method (string):  
         Available options: 'percent' and 'absolute'. 
         1) Use Percent to plot the percent proportion.  
         2) Use 'absolute' to plot the plot the absolute number.  
 
-    plot_tool : string, optional  
+    plot_tool (string):  
         Available options: 'matplotlib' and 'plotly'.  
         1) matplotlib uses the standard python plotting method  
         2) plotly opens the plot in a local browser. Advantage is to be able   
         to hover over the plot and retreive data for plots with large number of categories.
 
-    matplotlib_cmap : string, optional  
+    matplotlib_cmap (string):  
         Colormap to select colors from. If string, load colormap with that name from matplotlib. 
 
-    matplotlib_bbox_to_anchor : tuple, optional  
+    matplotlib_bbox_to_anchor (tuple):  
         Bounding box argument used along with matplotlib_legend_loc to control
         the legend location when using the matplotlib method.
 
-    matplotlib_legend_loc : int, optional  
+    matplotlib_legend_loc (int):  
         Location of legend used along with matplotlib_bbox_to_anchor to control
         the legend location when using the matplotlib method.
 
-    return_data : bool, optional  
+    return_data (bool):  
         When True, return the data used for plotting.
 
     **kwargs : Additional keyword arguments passed to:  
