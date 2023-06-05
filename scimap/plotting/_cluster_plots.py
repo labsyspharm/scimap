@@ -62,22 +62,22 @@ def cluster_plots (adata, group_by, subsample=100000, palette ='viridis',
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
 
-    group_by : string, required    
+    group_by (string):  
         Name of the categorical column that contains the clustering results.
     
-    subsample : string, optional  
+    subsample (string):  
         Subsample number of observations.
     
-    palette : string, optional  
+    palette (string):  
         Colors to use for plotting categorical annotation groups.
     
-    size : string, optional  
+    size (string):  
         Point size of UMAP plot.
     
-    use_raw : string, optional  
+    use_raw (string):   
         Use `.raw` attribute of adata for coloring the matrixplot expression matrix.
         
-    output_dir : string, optional  
+    output_dir (string):  
         Path to output directory.
 
 Returns:
