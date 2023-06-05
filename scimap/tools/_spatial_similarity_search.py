@@ -44,70 +44,70 @@ def spatial_similarity_search (adata,ROI_column,
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.  
     
-    ROI_column : string, required  
+    ROI_column (string, required):  
         Column name containing the ROI or region for which the similarity is sorted. This should be a small region in the
         image that the user is interested in. The ROI can be added by using the `sm.pl.addROI_image` function.  
         
-    ROI_subset : list, optional  
+    ROI_subset (list, optional):  
         A list of ROI's within the `ROI_column` for which similarity is sorted. By default similarity is calculated for 
         every ROI within the `ROI_column`. The user can also restrict it to one or fewer ROI's by passing its name through 
         this parameter. The default is None.  
         
-    similarity_threshold : float, optional  
+    similarity_threshold (float, optional):  
         This threshold can be changed to adjust for the strictness of similarity. Often the user would need to run this 
         function with multiple `thresholds` to identify the best fit (based on visual interpretation of the results. 
         To decrease compute time during this process the  similarity vectors are saved and hence this parameter can be 
         coupled with `reuse_similarity_matrix` parameter for optimal run time efficiency. The default is 0.5.
         
-    x_coordinate : float, required  
+    x_coordinate (float, required):  
         Column name containing the x-coordinates values.
         
-    y_coordinate : float, required  
+    y_coordinate (float, required):  
         Column name containing the y-coordinates values.  
         
-    method : string, optional  
+    method (string, optional):  
         Two options are available: a) `radius`, b) `knn`.  
         a) `radius` - Identifies the neighbours within a given radius for every cell.  
         b) `knn` - Identifies the K nearest neigbours for every cell.  
         
-    radius : int, optional  
+    radius (int, optional):  
         The radius used to define a local neighbhourhood.
         
-    knn : int, optional  
+    knn (int, optional):  
         Number of cells considered for defining the local neighbhourhood.
         
-    imageid : string, optional  
+    imageid (string, optional):  
         Column name of the column containing the image id.
         
-    use_raw : boolian, optional  
+    use_raw (boolian, optional):  
         Argument to denote whether to use the raw data or scaled data after applying `sm.pp.rescale`.
         
-    subset : string, optional  
+    subset (string, optional):  
         imageid of a single image to be subsetted for analyis. Note, if this is used, the similarity will 
         not be computed for other images in the dataset. This is often used for quick look at a single image. 
         
-    label : string, optional  
+    label (string, optional):  
         Key for the returned data, stored in `adata.obs`. The results will be stored as [label]_ROIname
         
-    reuse_similarity_matrix : string, optional  
+    reuse_similarity_matrix (string, optional):  
         In order to save compute time for large datasets, this function can be run once and the `similarity_threshold` 
         can be adjusted multiple times to identify the regions that best resemble the input ROI. In order to use this 
         parameter, pass the `label` used when running this function for the first time. The defaul label is 
         `spatial_similarity_search`. The default is None.
 
-    morphological_features : list, optional  
+    morphological_features (list, optional):  
         For calculating the similarity between regions, in addition to the molecular/marker inforamtion, any additional 
         information such as morphological features pertaining to individual cells can be passed into the algorithm. 
         If the data was generated using the `mcmicro` pipeline these ['Area', 'MajorAxisLength','MinorAxisLength', 'Eccentricity', 'Solidity', 'Extent', 'Orientation'] 
         are the usual morphological features that are captured. These can be passed into this parameter. Note one can use any additional 
         feature that is stored in `adata.obs`. The default is None. 
 
-    use_only_morphological_features : bool, optional  
+    use_only_morphological_features (bool, optional):  
         If the user passes data through `morphological_features`, one also has an option to identify regions of similarity 
         just using the morphological features. If `morphological_features` is included and `use_only_morphological_features` 
         is set to `False`, both the morphological features and molecular features will be used. The default is False.
         
-    output_dir : string, optional  
+    output_dir (string, optional):  
         Path to output directory.
 
 Returns:

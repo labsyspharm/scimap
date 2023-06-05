@@ -103,39 +103,39 @@ def spatial_expression (adata,
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
 
-    x_coordinate : float, required  
+    x_coordinate (float):  
         Column name containing the x-coordinates values.
         
-    y_coordinate : float, required  
+    y_coordinate (float):  
         Column name containing the y-coordinates values.
         
-    method : string, optional  
+    method (string):  
         Two options are available: a) `radius`, b) `knn`.  
         a) `radius` - Identifies the neighbours within a given radius for every cell.  
         b) `knn` - Identifies the K nearest neigbours for every cell.  
         
-    radius : int, optional  
+    radius (int):  
         The radius used to define a local neighbhourhood.
         
-    knn : int, optional  
+    knn (int):  
         Number of cells considered for defining the local neighbhourhood.
         
-    imageid : string, optional  
+    imageid (string):  
         Column name of the column containing the image id.
         
-    subset : string, optional  
+    subset (string):  
         imageid of a single image to be subsetted for analyis.
         
-    use_raw : boolian, optional  
+    use_raw (bool):  
         Argument to denote whether to use the raw data or scaled data after applying `sm.pp.rescale`.
 
-    log : boolian, optional  
+    log (bool):  
         If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. 
         
-    label : string, optional  
+    label (string):  
         Key for the returned data, stored in `adata.uns`.
 
-    output_dir : string, optional  
+    output_dir (string):  
         Path to output directory.
 
 Returns:
