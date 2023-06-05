@@ -80,44 +80,44 @@ def spatial_cluster (adata, df_name='spatial_count', method = 'kmeans',k=10,
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
     
-    df_name (string):  
+    df_name : string, required  
         Label of the spatial analysis performed.
         By default if `sm.tl.spatial_count` was run the results will be saved under `spatial_count` and
         if `sm.tl.spatial_expression` was run, the results will be saved under `spatial_expression`.
 
-    method (string):  
+    method : string, optional  
         Clustering method to be used- Implemented methods- kmeans, phenograph and leiden.
 
-    k (int):  
+    k : int, optional  
         Number of clusters to return when using K-Means clustering.
 
-    phenotype (string):  
+    phenotype : string, optional  
         The column name that contains the cluster/phenotype information.
 
-    n_pcs (int):  
+    n_pcs : int, optional  
         Number of PC's to be used in leiden clustering. By default it uses all PC's.
 
-    resolution (float):  
+    resolution : float, optional  
         A parameter value controlling the coarseness of the clustering. 
         Higher values lead to more clusters.
 
-    phenograph_clustering_metric (string):  
+    phenograph_clustering_metric : string, optional  
         Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. 
         Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’, 
         ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, 
         ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
 
-    nearest_neighbors (int):  
+    nearest_neighbors : int, optional  
         Number of nearest neighbors to use in first step of graph construction. 
         This parameter is used both in leiden and phenograph clustering.
 
-    random_state (int):   
+    random_state : int, optional  
         Change the initialization of the optimization.
 
-    label (string):  
+    label : string, optional  
         Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [spatial_method used].
     
-    output_dir (string):  
+    output_dir : string, optional  
         Path to output directory.
 
 Returns:

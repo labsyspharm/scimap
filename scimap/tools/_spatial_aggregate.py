@@ -1,4 +1,4 @@
-    #!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created on Wed Aug 19 15:00:39 2020
 # @author: Ajit Johnson Nirmal
@@ -24,40 +24,40 @@ def spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid
 Parameters:
     adata : AnnData object
 
-    x_coordinate (float):  
+    x_coordinate : float, required  
         Column name containing the x-coordinates values.
 
-    y_coordinate (float):  
+    y_coordinate : float, required  
         Column name containing the y-coordinates values.
 
-    purity (int):  
+    purity : int, optional  
         Supply a value between 1 to 100. It is the percent purity of neighbouring cells.
         For e.g. if 60 is chosen, every neighbourhood is tested such that if a 
         particular phenotype makes up greater than 60% of the total 
         population it is annotated to be an aggregate of that particular phenotype.
 
-    phenotype (string):  
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
 
-    method (string):  
+    method : string, optional  
         Two options are available: a) 'radius', b) 'knn'.
         a) radius - Identifies the neighbours within a given radius for every cell.
         b) knn - Identifies the K nearest neigbours for every cell.
 
-    radius (int):  
+    radius : int, optional  
         The radius used to define a local neighbhourhood.
 
-    knn (int):  
+    knn : int, optional  
         Number of cells considered for defining the local neighbhourhood.
 
-    imageid (string):  
+    imageid : string, optional  
         Column name of the column containing the image id.
 
-    subset (string):  
+    subset : string, optional  
         imageid of a single image to be subsetted for analyis.
 
-    label (string):  
+    label : string, optional  
         Key for the returned data, stored in `adata.obs`.
 
 Returns:
