@@ -25,52 +25,52 @@ Parameters:
 
     adata : AnnData object
 
-    phenotype : string, optional  
+    phenotype (string, optional):  
         Column contaning the cell-type inforamtion or any categorical data to be displayed
         in the form of a pie plot.
 
-    group_by : string, optional  
+    group_by (string, optional):   
         Column that contains inforamtion on data groupings which leads to generation of
         pie plot for each group (e.g. image-id). If `None` is passed,
         the entire data is considered as a single group.
 
-    ncols : int, optional  
+    ncols (int, optional):   
         In case group_by is used, a grid of plots are returned. This paramenter
         controls the number of columns in that grid.
 
-    subset_phenotype : list, optional  
+    subset_phenotype (list, optional):   
         User can subset a list of categories within `phenotype` before plotting.
 
-    subset_groupby : list, optional  
+    subset_groupby (list, optional):  
         User can subset a list of categories within `group_by` before plotting.
 
-    label : list, optional  
+    label (list, optional):   
         A list of strings providing the labels for each wedge.
 
-    title : string, optional  
+    title (string, optional):   
         If `None`, the title of the pieplot is not plotted.
 
-    colors : list, optional  
+    colors (list, optional):   
         A sequence of colors through which the pie chart will cycle. If None, will use the 
         colors in the currently active cycle.
 
-    legend : bool, optional  
+    legend (bool, optional):   
         If True, color legends are plotted seperately.
 
-    legend_loc: string, optional  
+    legend_loc (string, optional):   
         Place a legend on the Axes.
 
-    autopct : None or str or callable, optional  
+    autopct (None or str or callable, optional):  
         If not None, is a string or function used to label the wedges with their numeric value. 
         The label will be placed inside the wedge. If it is a format string, 
         the label will be fmt % pct. If it is a function, it will be called.
 
-    wedgeprops : dict, optional  
+    wedgeprops (dict, optional):  
         Dict of arguments passed to the wedge objects making the pie. For example, you can pass in 
         wedgeprops = {'linewidth': 3} to set the width of the wedge border lines equal to 3. 
         For more details, look at the doc/arguments of the wedge object. By default clip_on=False.
 
-    return_data : bool, optional  
+    return_data (bool, optional):   
         Returns the data used for plotting.
 
     **kwargs :  
