@@ -25,33 +25,33 @@ Parameters:
 
     adata : AnnData object
 
-    pos : list, optional  
+    pos (list):  
         Pass a list of markers that should be expressed in the resultant cells.
 
-    neg : list, optional  
+    neg (list):  
         Pass a list of markers that should not be expressed in the resultant cells.
 
-    classify_label : string, optional  
+    classify_label (string):  
         Provide a name for the calssified cells.
 
-    subclassify_phenotype : list, optional  
+    subclassify_phenotype (list):  
         If only a subset of phenotypes require to classified, pass the name of those phenotypes as a list
         through this argument.
 
-    threshold: float, optional  
+    threshold (float):  
         Above or below the given value will be considered for positive and negative classification.
         If the data was scaled using the `sm.pp.rescale` function, 0.5 is the classification threshold.
 
-    phenotype : string, required  
+    phenotype (string):  
         Column name of the column containing the phenotype information. 
         This is important if `subclassify_phenotype` or `collapse_failed` arguments are used.
 
-    collapse_failed : bool, optional  
+    collapse_failed (bool):  
         If set to true, the cells that were not classified based on the given criteria will be
         binned into a single category named 'failed_classify'. When False, the phenotype
         inforamation for other cells will be borrowed from the `phenotype` argument.
 
-    label : string, optional  
+    label (string):  
         Key for the returned data, stored in `adata.obs`.
 
  Returns:
