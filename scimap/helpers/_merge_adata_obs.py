@@ -42,7 +42,7 @@ def merge_adata_obs (adata, output_dir=None):
 Parameters:
     adata : List of AnnData object loaded into memory or list of path to AnnData object.
         
-    output_dir : string, optional  
+    output_dir (string):  
         Path to output directory.
 
 Returns:
