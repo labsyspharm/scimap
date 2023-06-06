@@ -53,7 +53,7 @@ def scimap_to_csv (adata, data_type='raw', output_dir=None, file_name=None, Cell
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
 
-    data_type : string, optional  
+    data_type (string):  
         Three options are available:  
         1) 'raw' - The raw data will be returned.  
         2) 'log' - The raw data converted to log scale using `np.log1p` will be returned.  
@@ -61,18 +61,18 @@ Parameters:
         returned. Please note, if you have not scaled the data, whatever is within
         `adata.X` will be returned.
         
-    output_dir : string, optional  
+    output_dir (string):  
         Path to output directory.
     
-    file_name : string, optional
+    file_name (string):  
         Name the output csv file. Use in combination with `output_dir` parameter. If no
         file name is provided a default name `scimap_to_csv_file.csv` will be used. 
     
-    CellID : string, optional  
+    CellID (string):  
         Name of the column which contains the CellID. Default is `CellID`.  
 
 Returns:
-    merged : DataFrame  
+    merged (DataFrame):  
         A single dataframe containing the expression and metadata will be returned.
         
 Example:
