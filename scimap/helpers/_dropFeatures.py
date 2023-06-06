@@ -26,24 +26,24 @@ Parameters
 
     adata : AnnData Object  
     
-    drop_markers : list, optional  
+    drop_markers (list):  
         Provide a list of markers to drop. The default is None.
         
-    drop_cells : list, optional  
+    drop_cells (list):  
         Provide a list of cells (index name) to drop. The default is None.
         
-    drop_meta_columns : list, optional  
+    drop_meta_columns (list):  
         Provide a list of column names in `adata.obs` to drop. The default is None.
         
-    drop_groups : list, optional  
+    drop_groups (list):  
         Provide a list of categorical names to drop. 
         Works in conjunction with `groups_column`. The default is None.
         
-    groups_column : str, optional  
+    groups_column (str):  
         Pass the column name of the column that contains the categories passed to 
         `drop_groups`. The default is None.
     
-    subset_raw : bool, optional  
+    subset_raw (bool):  
         Generally any subsetting of `AnnData` object does not affect the raw data 
         stored in `adata.raw`. Pass `True` to apply the same transformations to 
         `adata.raw` as well. The default is True.
