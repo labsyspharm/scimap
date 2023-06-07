@@ -19,14 +19,14 @@ Parameters:
 
     adata : AnnData object
 
-    rename : dict  
+    rename (dict):  
         Pass a dictionary with 'values' as elements that need to be altered and 
         'keys' as the elements that they need to be transformed into.
 
-    from_column : string, required  
+    from_column (string):  
         Column that need to be modified.
 
-    to_column : string, required  
+    to_column (string):  
         Modified names will be stored in a new column with this name.
 
 Returns:

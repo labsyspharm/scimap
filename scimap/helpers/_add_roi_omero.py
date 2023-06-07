@@ -33,32 +33,32 @@ Parameters:
         Pandas dataframe of ROI's that have been extracted from Omero using the following script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
         Please note that the function currently does not handle overlapping ROI's and so make sure the ROI's are mutually exclusive.
 
-    x_coordinate : float, required  
+    x_coordinate (float):  
         Column name containing the x-coordinates values.
 
-    y_coordinate : float, required  
+    y_coordinate (float):  
         Column name containing the y-coordinates values.
     
-    imageid : string, optional  
+    imageid (string):  
         In the event that the adata object contains multiple images, it is
         important that ROIs are added to each image seperately. Pass the name 
         of the column that contains the `imageid` and use it in conjunction with
         the `subset` parameter to add ROI's to a specific image.
 
-    subset : list, optional  
+    subset (list):  
         Name of the image to which the ROI is to be added. Note if you have multiple images in the 
         adata object, you will need to add ROI's to each image one after the other independently. 
     
-    overwrite : bool, optional  
+    overwrite (bool):  
         In the event you have multiple images in the adata object, ROI can be added to each image
         independently using the `imageid` and `subset` parameter. If you wish the results to be
         all saved with in the same column set this parameter to `False`. By default, the 
         function will overwrite the `label` column. 
 
-    label : string, optional  
+    label (string):  
         Key for the returned data, stored in `adata.obs`.
         
-    n_jobs : int, optional  
+    n_jobs (int):  
         Number of cores to use. Default is to use all available cores.
 
 Returns:
