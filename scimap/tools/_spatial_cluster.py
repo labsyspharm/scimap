@@ -80,44 +80,44 @@ def spatial_cluster (adata, df_name='spatial_count', method = 'kmeans',k=10,
 Parameters:
     adata : AnnData object loaded into memory or path to AnnData object.
     
-    df_name : string, required  
+    df_name (string):  
         Label of the spatial analysis performed.
         By default if `sm.tl.spatial_count` was run the results will be saved under `spatial_count` and
         if `sm.tl.spatial_expression` was run, the results will be saved under `spatial_expression`.
 
-    method : string, optional  
+    method (string):  
         Clustering method to be used- Implemented methods- kmeans, phenograph and leiden.
 
-    k : int, optional  
+    k (int):  
         Number of clusters to return when using K-Means clustering.
 
-    phenotype : string, optional  
+    phenotype (string):  
         The column name that contains the cluster/phenotype information.
 
-    n_pcs : int, optional  
+    n_pcs (int):  
         Number of PC's to be used in leiden clustering. By default it uses all PC's.
 
-    resolution : float, optional  
+    resolution (float):  
         A parameter value controlling the coarseness of the clustering. 
         Higher values lead to more clusters.
 
-    phenograph_clustering_metric : string, optional  
+    phenograph_clustering_metric (string):  
         Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. 
         Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’, 
         ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, 
         ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
 
-    nearest_neighbors : int, optional  
+    nearest_neighbors (int):  
         Number of nearest neighbors to use in first step of graph construction. 
         This parameter is used both in leiden and phenograph clustering.
 
-    random_state : int, optional  
+    random_state (int):  
         Change the initialization of the optimization.
 
-    label : string, optional  
+    label (string):  
         Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [spatial_method used].
     
-    output_dir : string, optional  
+    output_dir (string):  
         Path to output directory.
 
 Returns:
