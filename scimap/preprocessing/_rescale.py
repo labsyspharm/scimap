@@ -16,6 +16,7 @@
 # Import library
 import pandas as pd
 import numpy as np
+import argparse
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.mixture import GaussianMixture
 
@@ -336,3 +337,24 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
     
     # return adata
     return adata
+
+# Make the Function CLI compatable
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--adata', type=str, help='')
+    parser.add_argument('--gate', type=str, help='')
+    parser.add_argument('--log', type=bool, default=None, help='')
+    parser.add_argument('--imageid', type=str, default='imageid', help='')
+    parser.add_argument('--failedmarkers', type=str, default=None, help='')
+    parser.add_argument('--method', type=str, default='all', help='')
+    parser.add_argument('--randomstate', type=str, default=0, help='')
+    args = parser.parse_args()
+    
+    rescale(adata=args.adata,
+            gate=args.gate, 
+            log=args.log, 
+            imageid=args.imageid, 
+            failed_markers=args.failedmarkers, 
+            method=args.method,
+            random_state=args.randomstate)
+    
