@@ -187,13 +187,14 @@ if __name__ == '__main__':
     parser.add_argument('--subsetphenotype', type=str, default=None, help='')
     parser.add_argument('--label', type=str, default='foldchange', help='')
     args = parser.parse_args()
-    addPredictions(adata=args.adata, 
+    
+    foldchange(adata=args.adata,
                    from_group=args.fromgroup, 
                    to_group=args.togroup, 
                    imageid=args.imageid, 
                    phenotype=args.phenotype, 
-                   normalize=args.normalize
-                   subset_phenotype=args.subsetphenotype
+                   normalize=args.normalize,
+                   subset_phenotype=args.subsetphenotype,
                    label=args.label)
     
    
