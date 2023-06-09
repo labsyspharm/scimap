@@ -22,6 +22,7 @@
 import scipy.stats as stats
 import pandas as pd
 import numpy as np
+import argparse
 
 # Function
 def foldchange (adata, from_group, to_group=None, imageid='imageid', phenotype='phenotype',
@@ -32,7 +33,7 @@ def foldchange (adata, from_group, to_group=None, imageid='imageid', phenotype='
 Parameters:
     adata : AnnData object
 
-    from_group (list, required):  
+    from_group (list):  
         Pass in the name of the sample or ROI that will serve as a reference for calculating fold change.
         If multiple sample names or ROI's are passed in as a list e.g. ['ROI1', 'ROI2''], please note that
         they will be combined for calculating the fold change. 
@@ -174,4 +175,25 @@ Example:
     
     return adata
 
+    # Make the Function CLI compatable
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='The function allows users to compute the foldchange (fc) in cell-type (phenotype) abundance between samples or ROIs.')
+    parser.add_argument('--adata', type=str, help='')
+    parser.add_argument('--fromgroup', type=str, help='')
+    parser.add_argument('--togroup', type=str, default=None, help='')
+    parser.add_argument('--imageid', type=str, default='imageid', help='')
+    parser.add_argument('--phenotype', type=str, default='phenotype', help='')
+    parser.add_argument('--normalize', type=bool, default=True, help='')
+    parser.add_argument('--subsetphenotype', type=str, default=None, help='')
+    parser.add_argument('--label', type=str, default='foldchange', help='')
+    args = parser.parse_args()
+    addPredictions(adata=args.adata, 
+                   from_group=args.fromgroup, 
+                   to_group=args.togroup, 
+                   imageid=args.imageid, 
+                   phenotype=args.phenotype, 
+                   normalize=args.normalize
+                   subset_phenotype=args.subsetphenotype
+                   label=args.label)
     
+   
