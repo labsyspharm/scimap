@@ -34,6 +34,7 @@
 # Library
 import numpy as np
 import pandas as pd
+import argparse
 
 
 def phenotype_cells (adata, 
@@ -331,3 +332,24 @@ Example:
     #    adata.obs[i] = phenotype_labels[i]
 
     return adata
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--adata', type=str, help='')
+    parser.add_argument('--phenotype', type=str, default='phenotype', help='')
+    parser.add_argument('--gate', type=int, default=0.5, help='')
+    parser.add_argument('--label', type=str, default='phenotype', help='')
+    parser.add_argument('--imageid', type=str, default='imageid', help='')
+    parser.add_argument('--pheno_threshold_percent', type=float, default=True, help='')
+    parser.add_argument('--pheno_threshold_abs', type=int, default=None, help='')
+    args = parser.parse_args()
+    
+    phenotype_cells(adata=args.adata,
+                   from_group=args.fromgroup, 
+                   to_group=args.togroup, 
+                   imageid=args.imageid, 
+                   phenotype=args.phenotype, 
+                   normalize=args.normalize,
+                   subset_phenotype=args.subsetphenotype,
+                   label=args.label)
+    
