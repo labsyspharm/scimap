@@ -345,8 +345,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     phenotype_cells(adata=args.adata,
-                   phenotype=args.fromgroup, 
-                   gate=args.togroup,
+                   phenotype=args.phenotype, 
+                   gate=args.gate,
                    label=args.label, 
                    imageid=args.imageid, 
                    phenotype_threshhold_percent=args.pheno_threshold_percent, 
