@@ -334,14 +334,14 @@ Example:
     return adata
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--adata', type=str, help='')
-    parser.add_argument('--phenotype', type=str, default='phenotype', help='')
-    parser.add_argument('--gate', type=int, default=0.5, help='')
-    parser.add_argument('--label', type=str, default='phenotype', help='')
-    parser.add_argument('--imageid', type=str, default='imageid', help='')
-    parser.add_argument('--pheno_threshold_percent', type=float, default=True, help='')
-    parser.add_argument('--pheno_threshold_abs', type=int, default=None, help='')
+    parser = argparse.ArgumentParser(description='The phenotyping function takes in the `scaled data` and a prior knowledge based `phenotype workflow` file to assign phenotype annotation to each cell in the dataset')
+    parser.add_argument('--adata', type=str, help='anndata object')
+    parser.add_argument('--phenotype', type=str, default='phenotype', help='A gating strategy for phenotyping the cells. An example `workflow` provided [here](https://github.com/ajitjohnson/scimap/blob/master/scimap/tests/_data/phenotype_workflow.csv).')
+    parser.add_argument('--gate', type=int, default=0.5, help='By default rescale function, scales the data such that values above 0.5 are considered positive cells.')
+    parser.add_argument('--label', type=str, default='phenotype', help='Name the column underwhich the final phenotype calling will be saved.')
+    parser.add_argument('--imageid', type=str, default='imageid', help='Name of the column that contains the unique imageid')
+    parser.add_argument('--pheno_threshold_percent', type=float, default=True, help='Accepts values between (0-100). If any particular phenotype is below the user defined threshold, it is recategorised as unknown')
+    parser.add_argument('--pheno_threshold_abs', type=int, default=None, help='Serves the same purpose as that of pheno_threshold_percent. However, an absolute number can be passed')
     args = parser.parse_args()
     
     phenotype_cells(adata=args.adata,
