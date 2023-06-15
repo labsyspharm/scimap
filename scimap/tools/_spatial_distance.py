@@ -13,6 +13,7 @@
 # Import library
 import pandas as pd
 from sklearn.neighbors import BallTree
+import argparse
 from joblib import Parallel, delayed
 import itertools
 
@@ -27,26 +28,26 @@ Parameters:
 
     adata : AnnData object
 
-    x_coordinate : float, required  
+    x_coordinate (float):  
         Column name containing the x-coordinates values.
 
-    y_coordinate : float, required  
+    y_coordinate (float):  
         Column name containing the y-coordinates values.
     
-    z_coordinate : float, optional  
+    z_coordinate (float, optional):  
         Column name containing the z-coordinates values.
 
-    phenotype : string, required  
+    phenotype (string):  
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
 
-    subset : string, optional  
+    subset (string):  
         imageid of a single image to be subsetted for analyis.
 
-    imageid : string, optional  
+    imageid (string):  
         Column name of the column containing the image id.
 
-    label : string, optional  
+    label (string):  
         Key for the returned data, stored in `adata.obs`.
 
 Returns:
@@ -122,6 +123,27 @@ Example:
     
     # return
     return adata
+
+if __name__ == '__main__':
+    # Create argparse parser
+    parser = argparse.ArgumentParser(description='Compute spatial distances.')
+
+    # Add arguments
+    parser.add_argument('--adata', type = str, help='Path to the AnnData object file.')
+    parser.add_argument('--x_coordinate', type = float, default='X_centroid', help='Column name for x-coordinates.')
+    parser.add_argument('--y_coordinate', type= float, default='Y_centroid', help='Column name for y-coordinates.')
+    parser.add_argument('--z_coordinate', type= float, help='Column name for z-coordinates.')
+    parser.add_argument('--phenotype', type=str, default='phenotype', help='Column name for phenotype information.')
+    parser.add_argument('--subset', type=str, help='Image ID of a single image to be subsetted for analysis.')
+    parser.add_argument('--imageid', type=str, default='imageid', help='Column name for image ID.')
+    parser.add_argument('--label', type=str, default='spatial_distance', help='Key for the returned data.')
+
+    # Parse the command line arguments
+    args = parser.parse_args()
+
+    # Call the spatial_distance function with the parsed arguments
+    spatial_distance(args.adata, args.x_coordinate, args.y_coordinate, args.z_coordinate,
+                     args.phenotype, args.subset, args.imageid, args.label)
     
         
 

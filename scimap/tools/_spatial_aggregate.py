@@ -205,7 +205,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Call the spatial_aggregate function with the parsed arguments
-    spatial_aggregate(adata, args.x_coordinate, args.y_coordinate, args.purity,
+    spatial_aggregate(args.adata, args.x_coordinate, args.y_coordinate, args.purity,
                       args.phenotype, args.method, args.radius, args.knn,
                       args.imageid, args.subset, args.label)
 
