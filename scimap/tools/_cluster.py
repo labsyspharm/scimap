@@ -25,7 +25,7 @@ try:
 except:
     pass
 
-
+#Command line compatible 
 def main(argv=sys.argv):
     parser = argparse.ArgumentParser(
         description='This function allows users to cluster the dataset. The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).'
@@ -477,5 +477,3 @@ Example:
         # Return data
         return adata
 
-if __name__ == '__main__':
-    main()
