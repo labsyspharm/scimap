@@ -340,14 +340,14 @@ adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']}
 
 # Make the Function CLI compatable
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--adata', type=str, help='')
-    parser.add_argument('--gate', type=str, help='')
-    parser.add_argument('--log', type=bool, default=None, help='')
-    parser.add_argument('--imageid', type=str, default='imageid', help='')
-    parser.add_argument('--failedmarkers', type=str, default=None, help='')
-    parser.add_argument('--method', type=str, default='all', help='')
-    parser.add_argument('--randomstate', type=str, default=0, help='')
+    parser = argparse.ArgumentParser(description='The function allows users to rescale the data.')
+    parser.add_argument('--adata', type=str, help='AnnData Object')
+    parser.add_argument('--gate', type=str, help='DataFrame with first column as markers and subsequent column with gate values for each image in the dataset')
+    parser.add_argument('--log', type=bool, default=None, help='If the user wishes to log transform (log1p) before applying the gates, this parameter can be set to True')
+    parser.add_argument('--imageid', type=str, default='imageid', help='The column containing the Image IDs')
+    parser.add_argument('--failedmarkers', type=str, default=None, help='Markers that were deemed to have failed based on prior visual inspection')
+    parser.add_argument('--method', type=str, default='all', help='Two avialble option are- all or by_image')
+    parser.add_argument('--randomstate', type=str, default=0, help='Seed for GMM. The default is 0')
     args = parser.parse_args()
     
     rescale(adata=args.adata,
