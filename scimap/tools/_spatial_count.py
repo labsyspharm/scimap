@@ -23,6 +23,7 @@
 # Import library
 import pandas as pd
 import numpy as np
+import argparse
 from sklearn.neighbors import BallTree
 
 # Function
@@ -39,34 +40,34 @@ def spatial_count (adata,
 Parameters:
     adata : anndata object
 
-    x_coordinate : float, required  
+    x_coordinate (float):  
         Column name containing the x-coordinates values.
         
-    y_coordinate : float, required  
+    y_coordinate (float):   
         Column name containing the y-coordinates values.
         
-    phenotype : string, required  
+    phenotype (string):   
         Column name of the column containing the phenotype information. 
         It could also be any categorical assignment given to single cells.
         
-    method : string, optional  
+    method (string):   
         Two options are available: a) `radius`, b) `knn`.  
         a) radius - Identifies the neighbours within a given radius for every cell.  
         b) knn - Identifies the K nearest neigbours for every cell.  
         
-    radius : int, optional  
+    radius (int):   
         The radius used to define a local neighbhourhood.
         
-    knn : int, optional  
+    knn (int):   
         Number of cells considered for defining the local neighbhourhood.
         
-    imageid : string, optional  
+    imageid (string):   
         Column name of the column containing the image id.
         
-    subset : string, optional  
+    subset (string):   
         imageid of a single image to be subsetted for analyis.
         
-    label : string, optional  
+    label (string):   
         Key for the returned data, stored in `adata.uns`.
 
 Returns:
@@ -173,3 +174,28 @@ Example:
     
     # Return        
     return adata
+
+if __name__ == '__main__':
+    # Create argparse parser
+    parser = argparse.ArgumentParser(description='Perform spatial counting analysis.')
+
+    # Add arguments
+    parser.add_argument('--adata',type=str ,help='Path to the AnnData object file.')
+    parser.add_argument('--x_coordinate',type=str, default='X_centroid', help='Column name for x-coordinates.')
+    parser.add_argument('--y_coordinate',type=str, default='Y_centroid', help='Column name for y-coordinates.')
+    parser.add_argument('--phenotype',type=str, default='phenotype', help='Column name for phenotype information.')
+    parser.add_argument('--method', type=str, default='radius', help='Method for identifying neighbors.')
+    parser.add_argument('--radius', type=int, default=30, help='Radius used to define a local neighborhood.')
+    parser.add_argument('--knn', type=int, default=10, help='Number of cells considered for defining the local neighborhood.')
+    parser.add_argument('--imageid', type=str, default='imageid', help='Column name for image ID.')
+    parser.add_argument('--subset', type=str, help='Image ID of a single image to be subsetted for analysis.')
+    parser.add_argument('--label', type=str, default='spatial_count', help='Key for the returned data.')
+
+    # Parse the command line arguments
+    args = parser.parse_args()
+
+
+    # Call the spatial_count function with the parsed arguments
+    spatial_count(adata, args.x_coordinate, args.y_coordinate, args.phenotype,
+                  args.method, args.radius, args.knn, args.imageid,
+                  args.subset, args.label)
