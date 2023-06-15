@@ -13,6 +13,7 @@
 # Import library
 import pandas as pd
 import numpy as np
+import argparse
 from sklearn.neighbors import BallTree
 
 # Function
@@ -182,4 +183,29 @@ Example:
     
     # Return        
     return adata
+
+if __name__ == '__main__':
+    # Create argparse parser
+    parser = argparse.ArgumentParser(description='Perform spatial aggregation analysis.')
+
+    # Add arguments
+    parser.add_argument('adata', help='Path to the AnnData object file.')
+    parser.add_argument('--x_coordinate', default='X_centroid', help='Column name for x-coordinates.')
+    parser.add_argument('--y_coordinate', default='Y_centroid', help='Column name for y-coordinates.')
+    parser.add_argument('--purity', type=int, default=60, help='Percent purity of neighboring cells.')
+    parser.add_argument('--phenotype', default='phenotype', help='Column name for phenotype information.')
+    parser.add_argument('--method', default='radius', help='Method for identifying neighbors.')
+    parser.add_argument('--radius', type=int, default=30, help='Radius used to define a local neighborhood.')
+    parser.add_argument('--knn', type=int, default=10, help='Number of cells considered for defining the local neighborhood.')
+    parser.add_argument('--imageid',type=str, default='imageid', help='Column name for image ID.')
+    parser.add_argument('--subset',type=str, help='Image ID of a single image to be subsetted for analysis.')
+    parser.add_argument('--label',type=str, default='spatial_aggregate', help='Key for the returned data.')
+
+    # Parse the command line arguments
+    args = parser.parse_args()
+
+    # Call the spatial_aggregate function with the parsed arguments
+    spatial_aggregate(adata, args.x_coordinate, args.y_coordinate, args.purity,
+                      args.phenotype, args.method, args.radius, args.knn,
+                      args.imageid, args.subset, args.label)
 
