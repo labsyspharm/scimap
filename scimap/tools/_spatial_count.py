@@ -194,7 +194,6 @@ if __name__ == '__main__':
     # Parse the command line arguments
     args = parser.parse_args()
 
-
     # Call the spatial_count function with the parsed arguments
     spatial_count(adata, args.x_coordinate, args.y_coordinate, args.phenotype,
                   args.method, args.radius, args.knn, args.imageid,
