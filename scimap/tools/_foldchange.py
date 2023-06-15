@@ -178,14 +178,14 @@ Example:
     # Make the Function CLI compatable
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='The function allows users to compute the foldchange (fc) in cell-type (phenotype) abundance between samples or ROIs.')
-    parser.add_argument('--adata', type=str, help='')
-    parser.add_argument('--fromgroup', type=str, help='')
-    parser.add_argument('--togroup', type=str, default=None, help='')
-    parser.add_argument('--imageid', type=str, default='imageid', help='')
-    parser.add_argument('--phenotype', type=str, default='phenotype', help='')
-    parser.add_argument('--normalize', type=bool, default=True, help='')
-    parser.add_argument('--subsetphenotype', type=str, default=None, help='')
-    parser.add_argument('--label', type=str, default='foldchange', help='')
+    parser.add_argument('--adata', type=str, help='AnnData object')
+    parser.add_argument('--fromgroup', type=str, help='Pass in the name of the sample or ROI that will serve as a reference for calculating fold change')
+    parser.add_argument('--togroup', type=str, default=None, help='By default the reference sample/ROI passed via from_group will be compared to all other groupswithin the same column')
+    parser.add_argument('--imageid', type=str, default='imageid', help='The column that contains the samples/ROI information.')
+    parser.add_argument('--phenotype', type=str, default='phenotype', help='The column that contains the cell-type/phenotype information.')
+    parser.add_argument('--normalize', type=bool, default=True, help='Inorder to account for the sample/ROI area, the cellular abundance is first normalized to the total number of cells within the respective sample/ROI')
+    parser.add_argument('--subsetphenotype', type=str, default=None, help='If users are interested in only a subset of cell-types, the names of those can be passed in through this parameter')
+    parser.add_argument('--label', type=str, default='foldchange', help='Key for the returned data, stored in `adata.uns`. The foldchange and p-values')
     args = parser.parse_args()
     
     foldchange(adata=args.adata,
