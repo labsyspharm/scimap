@@ -205,4 +205,30 @@ Example:
     # Return 
     return adata
 
+if __name__ == '__main__':
+    # Create argparse parser
+    parser = argparse.ArgumentParser(description='Calculate spatial proximity scores.')
+
+    # Add arguments
+    parser.add_argument('--adata',type=str, help='Path to the AnnData object file.')
+    parser.add_argument('--proximity',type=list, nargs='+', help='List of cell types for proximity scores.')
+    parser.add_argument('--score_by',type=str, default='imageid', help='Column name for comparing scores by ROIs.')
+    parser.add_argument('--x_coordinate',type=float, default='X_centroid', help='Column name for x-coordinates.')
+    parser.add_argument('--y_coordinate', type=float, default='Y_centroid', help='Column name for y-coordinates.')
+    parser.add_argument('--phenotype', type=str, default='phenotype', help='Column name for phenotype information.')
+    parser.add_argument('--method',type=str, default='radius', choices=['radius', 'knn'], help='Method for identifying neighbors.')
+    parser.add_argument('--radius', type=int, default=20, help='Radius used to define a local neighborhood.')
+    parser.add_argument('--knn', type=int, default=3, help='Number of cells considered for defining the local neighborhood.')
+    parser.add_argument('--imageid', type=str, default='imageid', help='Column name for image ID.')
+    parser.add_argument('--subset',type=str, help='Image ID of a single image to be subsetted for analysis.')
+    parser.add_argument('--label',type=str, default='spatial_pscore', help='Key for the returned data.')
+
+    # Parse the command-line arguments
+    args = parser.parse_args()
+
+    # Call the spatial_pscore function with the parsed arguments
+    spatial_pscore(args.adata, args.proximity, args.score_by, args.x_coordinate, args.y_coordinate,
+                   args.phenotype, args.method, args.radius, args.knn, args.imageid,
+                   args.subset, args.label)
+
          
