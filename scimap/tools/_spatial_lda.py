@@ -21,6 +21,7 @@ from sklearn.neighbors import BallTree
 import numpy as np
 import pandas as pd
 import re
+import argparse
 
 # Gensim
 import gensim
@@ -196,3 +197,29 @@ Example:
     
     # return
     return adata
+
+if __name__ == '__main__':
+    # Create argparse parser
+    parser = argparse.ArgumentParser(description='Perform spatial LDA.')
+
+    # Add arguments
+    parser.add_argument('--adata',type=str, help='Path to the AnnData object file.')
+    parser.add_argument('--x_coordinate',type=float, default='X_centroid', help='Column name for x-coordinates.')
+    parser.add_argument('--y_coordinate',type=float, default='Y_centroid', help='Column name for y-coordinates.')
+    parser.add_argument('--phenotype',type = float, default='phenotype', help='Column name for phenotype information.')
+    parser.add_argument('--method', type=str, default='radius', choices=['radius', 'knn'], help='Method for identifying neighbors.')
+    parser.add_argument('--radius', type=int, default=30, help='Radius used to define a local neighborhood.')
+    parser.add_argument('--knn', type=int, default=10, help='Number of cells considered for defining the local neighborhood.')
+    parser.add_argument('--imageid', default='imageid', help='Column name for image ID.')
+    parser.add_argument('--num_motifs', type=int, default=10, help='Number of requested latent motifs.')
+    parser.add_argument('--random_state', type=int, default=0, help='Random state for reproducibility.')
+    parser.add_argument('--subset',type=str, help='Image ID of a single image to be subsetted for analysis.')
+    parser.add_argument('--label',type=str, default='spatial_lda', help='Key for the returned data.')
+
+    # Parse the command-line arguments
+    args = parser.parse_args()
+
+    # Call the spatial_lda function with the parsed arguments
+    spatial_lda(args.adata, args.x_coordinate, args.y_coordinate, args.phenotype, args.method,
+                args.radius, args.knn, args.imageid, args.num_motifs, args.random_state,
+                args.subset, args.label)
