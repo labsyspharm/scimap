@@ -165,7 +165,8 @@ adata = sm.pp.mcmicro_to_scimap (feature_table_path, drop_markers= ['CD21', 'ACT
     # Create an anndata object
     adata = ad.AnnData(entire_data)
     adata.obs = meta
-    adata.uns['all_markers'] = markers
+    adata.uns['all_markers'] = markers                       
+    adata.obsm['spatial'] = adata.obs[['X_centroid','Y_centroid']].to_numpy()
 
     # Add log data
     if log is True:
