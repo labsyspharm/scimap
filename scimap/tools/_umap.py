@@ -13,6 +13,7 @@
 # libs
 import umap as um
 import numpy as np
+import argparse
 
 
 # function
@@ -24,43 +25,43 @@ Parameters:
 
     adata : AnnData Object  
     
-    use_layer : string, optional  
+    use_layer (string):  
         Pass name of any `Layer` in AnnData. The default is `None` and `adata.X` is used.
         
-    use_raw : bool, optional  
+    use_raw (bool):  
         If set to `True`, values in `adata.raw.X` will be used. The default is False.
         
-    log : bool, optional  
+    log (bool):  
         If set to `True`, the data will natural log transformed using `np.log1p()`. The default is False.
         
-    n_neighbors : int, optional  
+    n_neighbors (int):  
         The size of local neighborhood (in terms of number of neighboring sample points) 
         used for manifold approximation. Larger values result in more global views of the manifold, 
         while smaller values result in more local data being preserved. In general 
         values should be in the range 2 to 100. The default is 15.
         
-    n_components : int, optional  
+    n_components (int):  
         The dimension of the space to embed into. This defaults to 2 to provide easy visualization, 
         but can reasonably be set to any integer value in the range 2 to 100. The default is 2.
         
-    metric : TYPE, optional  
+    metric (string):  
         The metric to use to compute distances in high dimensional space. 
         Check `https://umap-learn.readthedocs.io/en/latest/api.html` for all available 
         options. The default is 'euclidean'.
         
-    min_dist : float, optional  
+    min_dist (float):  
         The effective minimum distance between embedded points. Smaller values will 
         result in a more clustered/clumped embedding where nearby points on the manifold 
         are drawn closer together, while larger values will result on a more even 
         dispersal of points. The value should be set relative to the spread value, 
         which determines the scale at which embedded points will be spread out. The default is 0.1.
         
-    random_state : int, optional  
+    random_state (int):  
         If int, random_state is the seed used by the random number generator; 
         If RandomState instance, random_state is the random number generator; 
         If None, the random number generator is the RandomState instance used by np.random. The default is 0.
         
-    label : string, optional  
+    label (string):  
         Key used to save the embeddings. 
         Check `adata.obsm[label]` for results. The default is 'umap'.
     
@@ -110,3 +111,31 @@ sm.pl.umap(adata)
     # return data
     adata.obsm[label] = embedding
     return adata
+
+parser = argparse.ArgumentParser(description='UMAP function')
+parser.add_argument('adata_file', help='Path to the AnnData file')
+parser.add_argument('--use-layer', type=str, default=None, help='Name of the layer to use')
+parser.add_argument('--use-raw', action='store_true', default=False, help='Use raw data')
+parser.add_argument('--log', action='store_true', default=False , help='Log-transform the data')
+parser.add_argument('--n-neighbors', type=int, default=15 , help='Number of neighbors')
+parser.add_argument('--n-components', type=int, default=2, help='Number of components')
+parser.add_argument('--metric', type=str, default='euclidian', help='Metric')
+parser.add_argument('--min-dist', type=float, default=0.1, help='Minimum distance')
+parser.add_argument('--random-state', type=int, default=0, help='Random state')
+parser.add_argument('--label', type=str, default='imageid', help='Label for embedding')
+args = parser.parse_args()
+
+adata_file = args.adata_file
+use_layer = args.use_layer
+use_raw = args.use_raw
+log = args.log
+n_neighbors = args.n_neighbors
+n_components = args.n_components
+metric = args.metric
+min_dist = args.min_dist
+random_state = args.random_state
+label = args.label
+
+umap (adata_file, use_layer, use_raw, log,
+          n_neighbors, n_components, metric,min_dist, random_state, 
+          label, **kwargs)
