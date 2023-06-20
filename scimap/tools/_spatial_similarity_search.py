@@ -367,32 +367,5 @@ Example:
         # Return data
         return adata
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Spatial Similarity Search')
-    parser.add_argument('adata', type=str, help='Path to AnnData object')
-    parser.add_argument('ROIcolumn', type=str, help='Column name containing the ROI or region')
-    parser.add_argument('--x_coordinate', type=str, default='X_centroid', help='Column name containing the x-coordinate values')
-    parser.add_argument('--y_coordinate', type=float, default='Y_centroid', help='Column name containing the y-coordinate values')
-    parser.add_argument('--similarity_threshold',type=float, default=0.5, help='Threshold for similarity')
-    parser.add_argument('--ROIsubset', type=float, help='List of ROI names for similarity sorting')
-    parser.add_argument('--method', default='radius', help='Method for identifying neighbors')
-    parser.add_argument('--radius', type=int, default=30, help='The radius used to define a local neighborhood')
-    parser.add_argument('--knn', type=int, default=10, help='Number of cells considered for defining the local neighborhood')
-    parser.add_argument('--imageid',type=str,default='imageid', help='Column name containing the image id')
-    parser.add_argument('--use_raw',type=bool , help='Use raw data instead of scaled data')
-    parser.add_argument('--subset',type=str ,help='Image ID to be subsetted for analysis')
-    parser.add_argument('--label',type=str, default='spatial_similarity_search', help='Key for the returned data')
-    parser.add_argument('--reuse_similarity_matrix',type=str ,help='Label used when running the function for the first time')
-    parser.add_argument('--morphological_features', type=str, help='Additional morphological features for similarity calculation')
-    parser.add_argument('--use_only_morphological_features', type=bool, help='Use only morphological features')
-    parser.add_argument('--output_dir',type=str, help='Output directory path')
 
-    args = parser.parse_args()
-    
-    
-    # Call the function with parsed arguments
-    spatial_similarity_search(args.adata, args.ROIcolumn, args.x_coordinate, args.y_coordinate,
-                              args.similarity_threshold, args.ROIsubset, args.method, args.radius,
-                              args.knn, args.imageid, args.use_raw, args.subset, args.label,
-                              args.reuse_similarity_matrix, args.morphological_features,
-                              args.use_only_morphological_features, args.output_dir)
+        
