@@ -18,6 +18,7 @@ import re
 import matplotlib.patches as mpatches
 import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
+import argparse
 
 
 def add_roi_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',
@@ -182,3 +183,29 @@ Example:
     
     # return
     return adata
+
+parser = argparse.ArgumentParser(description='Add ROI to AnnData object from Omero')
+
+parser.add_argument('adata', help='Path to the AnnData object')
+parser.add_argument('roi', help='Path to the ROI DataFrame')
+parser.add_argument('--x_coordinate', default='X_centroid', help='Column name for x-coordinates')
+parser.add_argument('--y_coordinate', default='Y_centroid', help='Column name for y-coordinates')
+parser.add_argument('--imageid', default='imageid', help='Column name for image IDs')
+parser.add_argument('--subset', help='List of image names to add ROIs')
+parser.add_argument('--overwrite', action='store_true', help='Overwrite the label column')
+parser.add_argument('--label', default='ROI', help='Key for the returned data')
+parser.add_argument('--n_jobs', type=int, default=-1, help='Number of cores to use')
+parser.add_argument('--verbose', action='store_true', help='Enable verbose mode')
+
+args = parser.parse_args()
+
+    # Call the add_roi_omero function
+result = add_roi_omero(args.adata,args.roi, x_coordinate=args.x_coordinate, y_coordinate=args.y_coordinate,
+                           imageid=args.imageid, subset=args.subset, overwrite=args.overwrite,
+                           label=args.label, n_jobs=args.n_jobs, verbose=args.verbose)
+
+    # Save the modified AnnData object
+result.write('modified_anndata.h5ad')
+
+if __name__ == '__main__':
+    add_roi_omero_command_line()
