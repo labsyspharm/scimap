@@ -108,7 +108,7 @@ Example:
             neighbours_ind = neighbours.copy() # neighbour DF
             
         # Map phenotype
-        phenomap = dict(zip(list(range(len(ind))), data[phenotype])) # Used for mapping
+        phenomap = dict(zip(list(range(len(ind))), data['phenotype_v3'])) # Used for mapping
         phenomap_ind = dict(zip(list(range(len(ind))), data.index)) # Used for mapping cell_nme
         
         # Loop through (all functionized methods were very slow)
@@ -137,7 +137,7 @@ Example:
         # subset the neighbourhood cells to include only the cells in the user defined list
         cleaned_neighbours_ind_unique = [x for x in neighbours_ind_unique if str(x) != 'nan']
         d = data.loc[cleaned_neighbours_ind_unique]
-        d = d[d[phenotype].isin(proximity)].index
+        d = d[d['phenotype_v3'].isin(proximity)].index
         
         # return neighbours for score and image_neighbours for plotting on image
         return {'neighbours': neighbours.index, 'image_neighbours': d }
