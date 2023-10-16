@@ -22,7 +22,7 @@ import numpy as np
 
 # Function
 def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                    phenotype='phenotype_v3',method='radius',radius=20,knn=3,
+                    phenotype='phenotype',method='radius',radius=20,knn=3,
                     imageid='imageid',subset=None, label='spatial_pscore'):
     """
 Parameters:
@@ -86,7 +86,7 @@ Example:
                                 imageid,subset,label):
 
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs['phenotype_v3']})
+        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
@@ -108,7 +108,7 @@ Example:
             neighbours_ind = neighbours.copy() # neighbour DF
             
         # Map phenotype
-        phenomap = dict(zip(list(range(len(ind))), data['phenotype_v3'])) # Used for mapping
+        phenomap = dict(zip(list(range(len(ind))), data['phenotype'])) # Used for mapping
         phenomap_ind = dict(zip(list(range(len(ind))), data.index)) # Used for mapping cell_nme
         
         # Loop through (all functionized methods were very slow)
@@ -137,7 +137,7 @@ Example:
         # subset the neighbourhood cells to include only the cells in the user defined list
         cleaned_neighbours_ind_unique = [x for x in neighbours_ind_unique if str(x) != 'nan']
         d = data.loc[cleaned_neighbours_ind_unique]
-        d = d[d['phenotype_v3'].isin(proximity)].index
+        d = d[d[phenotype].isin(proximity)].index
         
         # return neighbours for score and image_neighbours for plotting on image
         return {'neighbours': neighbours.index, 'image_neighbours': d }
