@@ -80,7 +80,7 @@ Example:
 ```
     """
     
-    
+    print(phenotype)
     # Start
     def spatial_pscore_internal (adata_subset,proximity,x_coordinate,y_coordinate,phenotype,method,radius,knn,
                                 imageid,subset,label):
