@@ -22,7 +22,7 @@ import numpy as np
 
 # Function
 def spatial_pscore (adata,proximity, score_by='imageid', x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                    phenotype='phenotype',method='radius',radius=20,knn=3,
+                    phenotype='phenotype_v3',method='radius',radius=20,knn=3,
                     imageid='imageid',subset=None, label='spatial_pscore'):
     """
 Parameters:
@@ -80,7 +80,7 @@ Example:
 ```
     """
     
-    print(phenotype)
+    
     # Start
     def spatial_pscore_internal (adata_subset,proximity,x_coordinate,y_coordinate,phenotype,method,radius,knn,
                                 imageid,subset,label):
@@ -108,7 +108,7 @@ Example:
             neighbours_ind = neighbours.copy() # neighbour DF
             
         # Map phenotype
-        phenomap = dict(zip(list(range(len(ind))), data['phenotype'])) # Used for mapping
+        phenomap = dict(zip(list(range(len(ind))), data[phenotype])) # Used for mapping
         phenomap_ind = dict(zip(list(range(len(ind))), data.index)) # Used for mapping cell_nme
         
         # Loop through (all functionized methods were very slow)
