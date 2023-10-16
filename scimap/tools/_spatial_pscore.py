@@ -86,7 +86,7 @@ Example:
                                 imageid,subset,label):
 
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype_v3]})
+        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs['phenotype_v3']})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
