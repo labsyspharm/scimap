@@ -137,7 +137,7 @@ Example:
         # subset the neighbourhood cells to include only the cells in the user defined list
         cleaned_neighbours_ind_unique = [x for x in neighbours_ind_unique if str(x) != 'nan']
         d = data.loc[cleaned_neighbours_ind_unique]
-        d = d[d[phenotype].isin(proximity)].index
+        d = d[d['phenotype'].isin(proximity)].index
         
         # return neighbours for score and image_neighbours for plotting on image
         return {'neighbours': neighbours.index, 'image_neighbours': d }

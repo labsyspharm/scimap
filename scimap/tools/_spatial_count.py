@@ -29,6 +29,7 @@ from sklearn.neighbors import BallTree
 def spatial_count (adata,
                    x_coordinate='X_centroid',
                    y_coordinate='Y_centroid',
+                   z_coordinate=None,
                    phenotype='phenotype',
                    method='radius',
                    radius=30,knn=10,
@@ -92,26 +93,43 @@ Example:
     ```
     """
 
-    def spatial_count_internal (adata_subset,x_coordinate,y_coordinate,phenotype,method,radius,knn,
+    def spatial_count_internal (adata_subset,x_coordinate,y_coordinate,z_coordinate,phenotype,method,radius,knn,
                                 imageid,subset,label):
+        
+        # Create a dataFrame with the necessary inforamtion
+        if z_coordinate is not None:
+            print("Including Z -axis")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        else:
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+
 
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        #data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
         if method == 'knn':
             print("Identifying the " + str(knn) + " nearest neighbours for every cell")
-            tree = BallTree(data[['x','y']], leaf_size= 2)
-            ind = tree.query(data[['x','y']], k=knn, return_distance= False)
+            if z_coordinate is not None:
+                tree = BallTree(data[['x','y','z']], leaf_size= 2)
+                ind = tree.query(data[['x','y','z']], k=knn, return_distance= False)
+            else:
+                tree = BallTree(data[['x','y']], leaf_size= 2)
+                ind = tree.query(data[['x','y']], k=knn, return_distance= False)
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
             neighbours.drop(0, axis=1, inplace=True) # Remove self neighbour
         
         # b) Local radius method
         if method == 'radius':
             print("Identifying neighbours within " + str(radius) + " pixels of every cell")
-            kdt = BallTree(data[['x','y']], metric='euclidean') 
-            ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+            if z_coordinate is not None:
+                kdt = BallTree(data[['x','y','z']], metric='euclidean') 
+                ind = kdt.query_radius(data[['x','y','z']], r=radius, return_distance=False)
+            else:
+                kdt = BallTree(data[['x','y']], metric='euclidean') 
+                ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+                
             for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
             
@@ -152,7 +170,9 @@ Example:
     # Apply function to all images and create a master dataframe
     # Create lamda function 
     r_spatial_count_internal = lambda x: spatial_count_internal(adata_subset=x,x_coordinate=x_coordinate,
-                                                   y_coordinate=y_coordinate,phenotype=phenotype,
+                                                   y_coordinate=y_coordinate,
+                                                   z_coordinate=z_coordinate,
+                                                   phenotype=phenotype,
                                                    method=method,radius=radius,knn=knn,
                                                    imageid=imageid,subset=subset,label=label) 
     all_data = list(map(r_spatial_count_internal, adata_list)) # Apply function 

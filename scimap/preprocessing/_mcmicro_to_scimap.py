@@ -18,7 +18,6 @@ import argparse
 import sys
 import pathlib
 
-
 def mcmicro_to_scimap (feature_table_path,
                        remove_dna=True,
                        remove_string_from_name=None,
