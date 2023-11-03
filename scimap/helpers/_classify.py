@@ -11,47 +11,57 @@
 ## Function
 """
 
-# Library
+
+#Library
 import pandas as pd
 import numpy as np
 
 
 # Functions
-def classify (adata, pos=None, neg=None, classify_label='passed_classify', 
-              phenotype=None, subclassify_phenotype=None, threshold = 0.5,
-              collapse_failed=True, label="classify"):
+def classify (adata, pos=None, neg=None, classify_label='passed_classify', failed_label='failed_classify',
+              phenotype=None,subclassify_phenotype=None,threshold = 0.5,
+              collapse_failed=True,label="classify",showPhenotypeLabel=False):
+    
     """
 Parameters:
 
     adata : AnnData object
 
-    pos (list):  
+    pos : list, optional  
         Pass a list of markers that should be expressed in the resultant cells.
 
-    neg (list):  
+    neg : list, optional  
         Pass a list of markers that should not be expressed in the resultant cells.
 
-    classify_label (string):  
-        Provide a name for the calssified cells.
+    classify_label : string, optional  
+        Provide a name for the classified cells.
 
-    subclassify_phenotype (list):  
+    failed_label : string, optional
+        Provide a name for cells that did not pass classify.
+
+    subclassify_phenotype : list, optional  
         If only a subset of phenotypes require to classified, pass the name of those phenotypes as a list
         through this argument.
 
-    threshold (float):  
+    threshold: float, optional  
         Above or below the given value will be considered for positive and negative classification.
         If the data was scaled using the `sm.pp.rescale` function, 0.5 is the classification threshold.
 
-    phenotype (string):  
+    phenotype : string, required  
         Column name of the column containing the phenotype information. 
         This is important if `subclassify_phenotype` or `collapse_failed` arguments are used.
 
-    collapse_failed (bool):  
+    collapse_failed : bool, optional  
         If set to true, the cells that were not classified based on the given criteria will be
         binned into a single category named 'failed_classify'. When False, the phenotype
-        inforamation for other cells will be borrowed from the `phenotype` argument.
+        information for other cells will be borrowed from the `phenotype` argument.
+        
+    showPhenotypeLabel : bool, optional
+        If set to True, returns the data under [phenotype]_[label] key,
+        stored in `adata.obs`. Each cell's classification status will be appended to its phenotype,
+        [phenotype]_[classified_label] or [phenotype]_[failed_label].
 
-    label (string):  
+    label : string, optional  
         Key for the returned data, stored in `adata.obs`.
 
  Returns:
@@ -85,6 +95,8 @@ Example:
         neg = [neg]
     if isinstance(subclassify_phenotype, str):
         subclassify_phenotype = [subclassify_phenotype]
+    if (showPhenotypeLabel):
+        phenotype_label=phenotype+"_"+label
     
     
     # Create a dataFrame with the necessary inforamtion
@@ -99,41 +111,62 @@ Example:
     # Subset cells that pass the pos criteria
     if pos is not None:
         for i in pos:
-            # subset data
             data = data[data[i] >= threshold]
-    
+                
     # Subset cells that pass the neg criteria 
     if neg is not None and not data.empty:
         for j in neg:
-            # subset data
             data = data[data[j] < threshold]
     
-    # cells that passed the classify criteria
+    # Cells that passed the classify criteria
     if data.empty:
         raise TypeError("No cells were found to satisfy your `classify` criteria")
     else:
-        classify_idx = data.index
-        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx)
-        classified.columns = [label]
-        #classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
+        # create new naming scheme for label and phenotype_label cols in classified
+        non_summary = pd.DataFrame({phenotype: adata.obs[phenotype]}) # gets the index and phenotype
+        non_summary[phenotype] = non_summary[phenotype].astype(str)
+
+        classify_idx=data.index
+        classified = pd.DataFrame(non_summary.loc[data.index]) #subsets phenotype rows to only classified cells
+        if showPhenotypeLabel:
+            classified[phenotype_label] = classified[phenotype]+"_"+classify_label # add phenotype_label col
+        classified[label]=pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx) # add label col
+        classified.drop([phenotype], axis='columns', inplace=True) # drop phenotype col, for merge        
 
 
-    if collapse_failed is True:
-        meta = pd.DataFrame(adata.obs.iloc[:, 0])
-        meta = meta.merge(classified, how='outer', left_index=True, right_index=True)
-        meta[label] = meta[label].fillna('failed_classify')
-        meta = meta[label] 
+
+    if collapse_failed is True: 
+        meta = non_summary # has index and phenotype col
+        meta = meta.merge(classified, how='outer', left_index=True, right_index=True) # gain classified col(s) and NaNs for non-matches
+        if showPhenotypeLabel is True:
+            meta[phenotype_label]= meta[phenotype_label].fillna(meta[phenotype].astype(str)+"_"+failed_label)
+            meta=meta[phenotype_label]
+        else: 
+            meta[label]=meta[label].fillna(failed_label)
+            meta=meta[label]
+    
+        
     else:
         if phenotype is None:
             raise ValueError("Please pass a column name to the PHENOTYPE argument")
-        meta = pd.DataFrame(adata.obs[phenotype])
-        classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
-        meta.update(classified)
-    
-    # Add to Anndata
+        
+        if showPhenotypeLabel is True: 
+            meta=non_summary # phenotype col
+            classified=pd.DataFrame({phenotype: classified[phenotype_label]}) # takes phenotype_label col and renames to phenotype, ensures it's a df
+            meta.update(classified) # updates with phenotype_label for only the classified cells
+        else:
+            meta= pd.DataFrame(adata.obs[phenotype])
+            classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
+            meta.update(classified) # updates with label for only the classified cells
+        
+            
+    # Add to Anndata 
     meta = meta.reindex(adata.obs.index)
-    adata.obs[label] = meta
-    
+    if showPhenotypeLabel is True:
+        adata.obs[phenotype_label]=meta
+    else:
+        adata.obs[label]=meta 
+            
     # return
     return adata
 
