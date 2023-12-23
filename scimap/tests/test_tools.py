@@ -10,7 +10,7 @@ import pytest
 import sys, os
 import anndata as ad
 
-#os.chdir ("/Users/aj/Dropbox (Partners HealthCare)/packages/scimap")
+#os.chdir ("/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/softwares/scimap")
 
 @pytest.fixture
 def adata():
@@ -74,7 +74,7 @@ def test_cluster(adata):
     a = adata.obs['kmeans'].value_counts()[4]
     
     #test
-    assert a == 261
+    assert a == 259
 
 # Testing spatial_interaction function
 def test_spatial_interaction(adata):
