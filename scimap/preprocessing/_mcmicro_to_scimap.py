@@ -77,15 +77,15 @@ Returns:
 
 Examples:
     
-    ```python
+    ```
     
     feature_table_path = ['/Users/aj/scimapExampleData/quantification/exemplar-001--unmicst_cell.csv',
                           '/Users/aj/scimapExampleData/quantification/exemplar-002--unmicst_cell.csv']
     
     adata = sm.pp.mcmicro_to_scimap(feature_table_path, drop_markers=['ELANE'], random_sample=5000)
     
-    
     ```
+    
     """
     
     # feature_table_path list or string
