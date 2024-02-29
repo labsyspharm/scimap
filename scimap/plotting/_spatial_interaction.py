@@ -170,19 +170,19 @@ Example:
             interaction_map.reset_index(inplace=True)
             p_val_df.reset_index(inplace=True)
             if subset_phenotype is not None:
-                interaction_map['phenotype'] = interaction_map['phenotype'].astype('category')
+                interaction_map['phenotype'] = interaction_map['phenotype'].astype('str').astype('category')
                 interaction_map['phenotype'] = interaction_map['phenotype'].cat.reorder_categories(subset_phenotype)
                 interaction_map = interaction_map.sort_values('phenotype')
                 # Do same for Pval
-                p_val_df['phenotype'] = p_val_df['phenotype'].astype('category')
+                p_val_df['phenotype'] = p_val_df['phenotype'].astype('str').astype('category')
                 p_val_df['phenotype'] = p_val_df['phenotype'].cat.reorder_categories(subset_phenotype)
                 p_val_df = p_val_df.sort_values('phenotype')
             if subset_neighbour_phenotype is not None:
-                interaction_map['neighbour_phenotype'] = interaction_map['neighbour_phenotype'].astype('category')
+                interaction_map['neighbour_phenotype'] = interaction_map['neighbour_phenotype'].astype('str').astype('category')
                 interaction_map['neighbour_phenotype'] = interaction_map['neighbour_phenotype'].cat.reorder_categories(subset_neighbour_phenotype)
                 interaction_map = interaction_map.sort_values('neighbour_phenotype')
                 # Do same for Pval
-                p_val_df['neighbour_phenotype'] = p_val_df['neighbour_phenotype'].astype('category')
+                p_val_df['neighbour_phenotype'] = p_val_df['neighbour_phenotype'].astype('str').astype('category')
                 p_val_df['neighbour_phenotype'] = p_val_df['neighbour_phenotype'].cat.reorder_categories(subset_neighbour_phenotype)
                 p_val_df = p_val_df.sort_values('neighbour_phenotype')
             if subset_phenotype and subset_neighbour_phenotype is not None:
