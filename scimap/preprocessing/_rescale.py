@@ -22,67 +22,58 @@ from sklearn.mixture import GaussianMixture
 
 
 # Function
-def rescale (adata, gate=None, log=True,
-             imageid='imageid', failed_markers=None,
-              method='all',random_state=0):
+def rescale (adata, 
+             gate=None, 
+             log=True,
+             imageid='imageid', 
+             failed_markers=None,
+             method='all',
+             random_state=0):
     """
 Parameters:
+    adata (AnnData Object):  
+        An annotated data object that contains single-cell expression data.
 
-    adata : AnnData Object  
+    gate (DataFrame, optional):   
+        A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values for each image in the dataset. Column names must correspond to unique `imageid` identifiers. If a single column of gate values is provided for a dataset with multiple images, the same gate will be uniformly applied to all. If no gates are provided for specific markers, the function attempts to automatically determine gates using a Gaussian Mixture Model (GMM). Defaults to None.
+        
+    log (bool, optional):  
+        If True, the data in `adata.raw.X` will be log-transformed (using log1p) before gate application. This transformation is recommended when automatic gate identification through GMM is performed, as it helps in normalizing data distributions. Defaults to True.
+        
+    imageid (str, optional):  
+        The name of the column in `adata` that contains Image IDs. This is necessary for matching manual gates specified in the `gate` DataFrame to their respective images. Defaults to 'imageid'.
+        
+    failed_markers (dict, optional):  
+        A dictionary mapping `imageid` to markers that failed quality control. This allows for the exclusion of specific markers from the analysis based on prior visual inspection or other criteria. The dictionary can use 'all' as a key to specify markers that failed across all images. Defaults to None.
+        
+    method (str, optional):  
+        Specifies the gating strategy: 'all' to pool data from all images for GMM application, or 'by_image' to apply GMM separately for each image. 'all' may introduce batch effects, while 'by_image' requires sufficient variation within each image to distinguish negative from positive populations effectively. Defaults to 'by_image'.
+        
+    random_state (int, optional):  
+        The seed used by the random number generator for GMM. Ensures reproducibility of results. Defaults to 0.
 
-    gate (dataframe):   
-        DataFrame with first column as markers and subsequent column with gate values for each image in the dataset.
-        The column names should correspond to the unique `imageid`. If only one column of gate is provied 
-        to a dataset with multiple images, the same gate will be applied to all images.
-        Note: If gates are not provided or left out for a particular marker, the function will try to 
-        automatically identify a gate based on applying gaussian mixture modeling algorithm (GMM). The default is None.
-        
-    log (bool):   
-        By default the data stored in `adata.raw.X` is extracted for scaling. If the user wishes to log transform (log1p)
-        it before applying the gates, this parameter can be set to True. Please note if the function is used to 
-        identify gates based on GMM, it is recommended for the data to be log transformed. The default is True.
-        
-    imageid (string):   
-        The column containing the Image IDs. When passing manual gates the columns of the dataframe need to match 
-        to the elements within the passed `imageid` column. The default is 'imageid'.
-        
-    failed_markers (dict):  
-        Markers that were deemed to have failed based on prior visual inspection. This parameter accepts a python 
-        dictionary with `key` as `imageid` and `value` as markers that failed in that particular `imageid`. 
-        Example: `failed_markers = {'image_1': ['failed_marker_1'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}`. 
-        To make it easier to allow specifying markers that failed in `all` images within the dataset, the parameter also 
-        recognizes the special keyword `all`. For example, `failed_markers = {'all': ['failed_marker_X'], 'image_2' : ['failed_marker_1', 'failed_marker_2']}`. 
-        The default is None.
-        
-    method (string):  
-        Two avialble option are- 'all' or 'by_image'. In the event that multiple images were loaded in with distinct 'imageid',
-        users have the option to apply GMM by pooling all data togeather or to apply it to each image independently. 
-        Please be aware of batch effects when passing 'all' to multiple images. In contrast, if there are not enough variation 
-        within individual images, the GMM cannot reliably distinguish between the negative and positive populations as well.  
-        
-    random_state (int):
-        Seed for GMM. The default is 0.
+    verbose (bool, optional):  
+        If True, detailed progress updates and diagnostic messages will be printed during the function's execution. This is useful for tracking the processing stages and debugging. Defaults to False.
 
 Returns:
-
-    Modified AnnData Object
-        The values in `adata.X` are replaced with the scaled data.
-        The final gates used for saving the data is also stored in `adata.uns['gates']`
+    Modified AnnData Object (AnnData):  
+        Returns the input `adata` object with updated expression data (`adata.X`) after rescaling. The gates applied, either provided manually or determined automatically, are stored within `adata.uns['gates']`.
 
 Example:
-```python
-# create a df with manual gates
-manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]}) 
-adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers={'all':['CD20', 'CD21']})
+    ```python
     
-# you could also import the gates as a pandas dataframe without index
-manual_gate = pd.read_csv('manual_gates.csv')
-adata = sm.pp.rescale (adata, gate=manual_gate, failed_markers={'all':['CD20', 'CD21']})
+    # Example with manual gates
+    manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]}) 
+    adata = sm.pp.rescale(adata, gate=manual_gate, failed_markers={'all': ['CD20', 'CD21']}, verbose=True)
+        
+    # Importing gates from a CSV
+    manual_gate = pd.read_csv('manual_gates.csv')
+    adata = sm.pp.rescale(adata, gate=manual_gate, failed_markers={'all': ['CD20', 'CD21']}, verbose=True)
+        
+    # Running without manual gates to use GMM for automatic gate determination
+    adata = sm.pp.rescale(adata, gate=None, failed_markers={'all': ['CD20', 'CD21']}, verbose=True)
     
-# The function can also be run without providing manual gates. This will trigger the GMM mode
-adata = sm.pp.rescale (adata, gate=None, failed_markers={'all':['CD20', 'CD21']})
-    
-```
+    ```
 
     """
     

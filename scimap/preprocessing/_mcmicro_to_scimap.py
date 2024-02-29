@@ -28,7 +28,8 @@ def mcmicro_to_scimap (feature_table_path,
                        CellId='CellID',
                        split='X_centroid',
                        custom_imageid=None,
-                       min_cells=None, 
+                       min_cells=None,
+                       verbose=True,
                        output_dir=None):
     """
 Parameters:
@@ -36,13 +37,13 @@ Parameters:
         A list containing file paths to single-cell spatial feature tables. Each path corresponds to a unique image's feature table.
 
     remove_dna (bool):  
-        If set to True, channels identified by containing the substring 'dna' are excluded from the final dataset. This parameter is useful for omitting DNA-related features.
+        If set to `True`, channels identified by containing the substring 'dna' are excluded from the final dataset. This parameter is useful for omitting DNA-related features.
     
     remove_string_from_name (str):  
         Specifies a substring to be removed from all channel names, aiding in the normalization of marker names across datasets.
     
     log (bool):  
-        If True, applies a log transformation (specifically log1p, which adds 1 before taking the logarithm) to the data. This is often used to normalize data distributions.
+        If `True`, applies a log transformation (specifically log1p, which adds 1 before taking the logarithm) to the data. This is often used to normalize data distributions.
     
     drop_markers (list of str):  
         A list of marker names to exclude from the analysis. For example, to remove specific markers, you would list them here: ["CD3D", "CD20"].
@@ -54,7 +55,7 @@ Parameters:
         The name of the column in the input data that contains cell identifiers. This is used to track individual cells across analyses.
     
     unique_CellId (bool):  
-        Determines whether to automatically generate a unique identifier for each cell by combining the `CellId` with an `imageid`. Set to False to use the original `CellId` values directly. This is crucial for maintaining unique cell identifiers, especially when integrating multiple datasets.
+        Determines whether to automatically generate a unique identifier for each cell by combining the `CellId` with an `imageid`. Set to `False` to use the original `CellId` values directly. This is crucial for maintaining unique cell identifiers, especially when integrating multiple datasets.
     
     split (str):  
         The name of the column that demarcates the boundary between quantitative marker data and additional metadata in the input CSV. Specifying this column allows for the separation of data into counts and metadata components.
@@ -64,6 +65,9 @@ Parameters:
     
     min_cells (int):  
         Sets a threshold for the minimum number of cells required for an image to be included in the analysis. Images with fewer cells than this number are excluded. This is useful for filtering out datasets with sparse cellular data.
+    
+    verbose (bool):  
+    If set to `True`, the function will print detailed messages about its progress and the steps being executed.
     
     output_dir (str):  
         The file path to the directory where output files will be saved. This parameter specifies the destination for any generated files.
@@ -94,7 +98,8 @@ Example:
     # Import data based on the location provided
     def load_process_data (image):
         # Print the data that is being processed
-        print(f"Loading {image.name}")
+        if verbose:
+            print(f"Loading {image.name}")
         d = pd.read_csv(image)
         # If the data does not have a unique image ID column, add one.
         if 'imageid' not in d.columns:
@@ -228,6 +233,10 @@ def main(argv=sys.argv):
     parser.add_argument(
         '--min_cells', type=int, required=False, default=None,
         help='If these many cells are not in the image, the image will be dropped. Particulary useful when importing multiple images.'
+    )
+    parser.add_argument(
+        '--verbose', required=False, default=True,
+        help='The function will print detailed messages about its progress.'
     )
     parser.add_argument(
         '--output_dir', type=str, required=False, default=None,
