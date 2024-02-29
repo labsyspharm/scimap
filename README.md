@@ -23,7 +23,7 @@ We strongly recommend installing `scimap` in a fresh virtual environment.
 
 ```
 # If you have conda installed
-conda create --name scimap python=3.8
+conda create --name scimap python=3.10
 conda activate scimap
 ```
 
