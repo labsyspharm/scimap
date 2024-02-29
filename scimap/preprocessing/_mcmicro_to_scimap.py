@@ -74,10 +74,8 @@ Returns:
         An annotated data object containing the processed single-cell spatial features, ready for downstream analysis.
 
 
-
 Example:
-    
-        ```python
+        ```
         
         feature_table_path = ['/Users/aj/scimapExampleData/quantification/exemplar-001--unmicst_cell.csv',
                               '/Users/aj/scimapExampleData/quantification/exemplar-002--unmicst_cell.csv']
