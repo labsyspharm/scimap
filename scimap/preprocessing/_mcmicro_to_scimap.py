@@ -31,21 +31,20 @@ def mcmicro_to_scimap (feature_table_path,
                        min_cells=None, 
                        output_dir=None):
     """
-Parameters:  
-    
-    feature_table_path (list of str):    
-    A list containing file paths to single-cell spatial feature tables. Each path corresponds to a unique image's feature table.
+Parameters:
+    feature_table_path (list of str):  
+        A list containing file paths to single-cell spatial feature tables. Each path corresponds to a unique image's feature table.
 
-    remove_dna (bool):    
+    remove_dna (bool):  
         If set to True, channels identified by containing the substring 'dna' are excluded from the final dataset. This parameter is useful for omitting DNA-related features.
     
-    remove_string_from_name (str):    
+    remove_string_from_name (str):  
         Specifies a substring to be removed from all channel names, aiding in the normalization of marker names across datasets.
     
     log (bool):  
         If True, applies a log transformation (specifically log1p, which adds 1 before taking the logarithm) to the data. This is often used to normalize data distributions.
     
-    drop_markers (list of str):   
+    drop_markers (list of str):  
         A list of marker names to exclude from the analysis. For example, to remove specific markers, you would list them here: ["CD3D", "CD20"].
     
     random_sample (int):  
@@ -54,40 +53,39 @@ Parameters:
     CellId (str):  
         The name of the column in the input data that contains cell identifiers. This is used to track individual cells across analyses.
     
-    unique_CellId (bool):   
+    unique_CellId (bool):  
         Determines whether to automatically generate a unique identifier for each cell by combining the `CellId` with an `imageid`. Set to False to use the original `CellId` values directly. This is crucial for maintaining unique cell identifiers, especially when integrating multiple datasets.
     
     split (str):  
         The name of the column that demarcates the boundary between quantitative marker data and additional metadata in the input CSV. Specifying this column allows for the separation of data into counts and metadata components.
     
-    custom_imageid (str):    
+    custom_imageid (str):  
         Allows for the specification of a custom Image ID for each dataset. By default, the Image ID is derived from the name of the input CSV file.
     
-    min_cells (int):   
+    min_cells (int):  
         Sets a threshold for the minimum number of cells required for an image to be included in the analysis. Images with fewer cells than this number are excluded. This is useful for filtering out datasets with sparse cellular data.
     
-    output_dir (str):    
+    output_dir (str):  
         The file path to the directory where output files will be saved. This parameter specifies the destination for any generated files.
 
 
-Returns:  
-
+Returns:
     AnnData Object (anndata):  
         An annotated data object containing the processed single-cell spatial features, ready for downstream analysis.
 
 
 
-Example:  
+Examples:
     
-```python
-
-feature_table_path = ['/Users/aj/scimapExampleData/quantification/exemplar-001--unmicst_cell.csv',
-                      '/Users/aj/scimapExampleData/quantification/exemplar-002--unmicst_cell.csv']
-
-adata = sm.pp.mcmicro_to_scimap(feature_table_path, drop_markers=['ELANE'], random_sample=5000)
-
-
-```
+    ```python
+    
+    feature_table_path = ['/Users/aj/scimapExampleData/quantification/exemplar-001--unmicst_cell.csv',
+                          '/Users/aj/scimapExampleData/quantification/exemplar-002--unmicst_cell.csv']
+    
+    adata = sm.pp.mcmicro_to_scimap(feature_table_path, drop_markers=['ELANE'], random_sample=5000)
+    
+    
+    ```
     """
     
     # feature_table_path list or string
