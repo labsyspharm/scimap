@@ -90,17 +90,17 @@ Example:
         ```python
         
         # Radius method for 2D data with absolute p-value calculation
-        adata = spatial_interaction(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+        adata = sm.tl.spatial_interaction(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                                     method='radius', radius=50, permutation=1000, pval_method='abs',
                                     label='interaction_radius_abs')
     
         # KNN method for 2D data with z-score based p-value calculation
-        adata = spatial_interaction(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+        adata = sm.tl.spatial_interaction(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                                     method='knn', knn=15, permutation=1000, pval_method='zscore',
                                     label='interaction_knn_zscore')
     
         # Radius method for 3D data analysis
-        adata = spatial_interaction(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+        adata = sm.tl.spatial_interaction(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                                     z_coordinate='Z_centroid', method='radius', radius=60, permutation=1000,
                                     pval_method='zscore', label='interaction_3D_zscore')
         
