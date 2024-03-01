@@ -5,18 +5,17 @@
 
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_expression`: The function allows users to compute a neighbourhood weighted matrix 
-    based on the expression values.
+    `sm.tl.spatial_expression`: This function generates a neighborhood weighted matrix from spatial data, integrating expression values to assess local cellular environments. 
+    
+    It employs two approaches for neighborhood definition:
 
-    The function supports two methods to define a local neighbourhood  
-    **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.  
-    **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell  
-
-    The resultant proportion matrix is saved with `adata.uns`. 
-
-    This can be further clustered to identify similar neighbourhoods. 
-    Use the [spatial_cluster] function to further group the neighbourhoods into 
-    Reccurent Cellular Neighbourhoods (RCNs)
+    - **Radius Method**: Identifies neighbors within a specified radius, enabling analyses based on physical proximity.
+    - **KNN Method**: Determines neighbors based on the K nearest neighbors, focusing on immediate spatial relationships.
+    
+    The output, a proportion matrix reflecting local expression patterns, is stored in `adata.uns`. 
+    This matrix can be further analyzed using the `spatial_cluster` function to identify Recurrent 
+    Cellular Neighborhoods (RCNs), facilitating the exploration of spatial expression dynamics and 
+    neighborhood-specific gene expression patterns.
 
 ## Function
 """
@@ -83,6 +82,10 @@ def main(argv=sys.argv):
         help='Key for the returned data, stored in `adata.uns`.'
     )
     parser.add_argument(
+        '--verbose', required=False, default=True,
+        help='The function will print detailed messages about its progress.'
+    )
+    parser.add_argument(
         '--output_dir', type=str, required=False, default=None,
         help='Path to output directory.'
     )
@@ -94,71 +97,79 @@ def main(argv=sys.argv):
 def spatial_expression (adata, 
                         x_coordinate='X_centroid',
                         y_coordinate='Y_centroid',
-                        method='radius', radius=30, 
-                        knn=10, imageid='imageid', 
-                        use_raw=True, log=True, subset=None,
+                        method='radius', 
+                        radius=30, 
+                        knn=10, 
+                        imageid='imageid', 
+                        use_raw=True, 
+                        log=True, 
+                        subset=None,
                         label='spatial_expression',
+                        verbose=True,
                         output_dir=None):
     """
 Parameters:
-    adata : AnnData object loaded into memory or path to AnnData object.
+        adata (anndata.AnnData):  
+            The annotated data matrix or path to an AnnData object, containing spatial gene expression data.
 
-    x_coordinate : float, required  
-        Column name containing the x-coordinates values.
-        
-    y_coordinate : float, required  
-        Column name containing the y-coordinates values.
-        
-    method : string, optional  
-        Two options are available: a) `radius`, b) `knn`.  
-        a) `radius` - Identifies the neighbours within a given radius for every cell.  
-        b) `knn` - Identifies the K nearest neigbours for every cell.  
-        
-    radius : int, optional  
-        The radius used to define a local neighbhourhood.
-        
-    knn : int, optional  
-        Number of cells considered for defining the local neighbhourhood.
-        
-    imageid : string, optional  
-        Column name of the column containing the image id.
-        
-    subset : string, optional  
-        imageid of a single image to be subsetted for analyis.
-        
-    use_raw : boolian, optional  
-        Argument to denote whether to use the raw data or scaled data after applying `sm.pp.rescale`.
+        x_coordinate (str, required):  
+            Column name in `adata` for the x-coordinates.
 
-    log : boolian, optional  
-        If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. 
+        y_coordinate (str, required):  
+            Column name in `adata` for the y-coordinates.
         
-    label : string, optional  
-        Key for the returned data, stored in `adata.uns`.
+        method (str, optional):  
+            Method for defining neighborhoods: 'radius' for fixed distance, 'knn' for K nearest neighbors.
+        
+        radius (int, optional):  
+            Radius for defining local neighborhoods when using the 'radius' method.
+        
+        knn (int, optional):  
+            Number of nearest neighbors to consider when using the 'knn' method.
+        
+        imageid (str, optional):  
+            Column name in `adata` for image identifiers, useful for analyses within specific images.
+        
+        use_raw (bool, optional):  
+            Whether to use raw or processed data for calculation. Log transformation is applied if `log=True`.
+        
+        log (bool, optional):  
+            Apply log transformation to the data (requires `use_raw=True`).
+        
+        subset (str, optional):  
+            Identifier for a subset of data, typically an image ID, for targeted analysis.
+        
+        label (str, optional):  
+            Custom label for storing the weighted matrix in `adata.uns`.
+        
+        verbose (bool, optional):  
+            If True, enables progress and informational messages.
+        
+        output_dir (str, optional):  
+            Directory path for saving output files.
 
-    output_dir : string, optional  
-        Path to output directory.
+    Returns:
+        adata (anndata.AnnData):  
+            The input `adata` object, updated with the spatial expression results in `adata.uns[label]`.
 
-Returns:
-    adata : AnnData object  
-        Updated AnnData object with the results stored in `adata.uns ['spatial_expression']`.
-        
-        
- Example:
+    Examples:
     ```python
-    # Running the radius method
-    adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',
-                                      y_coordinate='Y_centroid',
-                                      method='radius', radius=30, 
-                                      imageid='imageid', 
-                                      use_raw=True,subset=None,
-                                      label='spatial_expression_radius')
     
-    # Running the knn method
-    adata = sm.tl.spatial_expression (adata, x_coordinate='X_centroid',
-                                      y_coordinate='Y_centroid',
-                                      method='knn', knn=10, imageid='imageid', 
-                                      use_raw=True,subset=None,
-                                      label='spatial_expression_knn')
+    # Calculate spatial expression using a 30-pixel radius
+    adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                               method='radius', radius=30, use_raw=True,
+                               label='expression_radius_30')
+
+    # Calculate spatial expression using 10 nearest neighbors
+    adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                               method='knn', knn=10, use_raw=True,
+                               label='expression_knn_10')
+
+    # Analyze spatial expression within a specific image using radius method
+    adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                               method='radius', radius=50, imageid='imageid', subset='specific_image',
+                               label='expression_specific_image')
+    
     ```
     """
     
@@ -185,14 +196,16 @@ Returns:
         # Identify neighbourhoods based on the method used
         # a) KNN method
         if method == 'knn':
-            print("Identifying the " + str(knn) + " nearest neighbours for every cell")
+            if verbose:
+                print("Identifying the " + str(knn) + " nearest neighbours for every cell")
             tree = BallTree(data, leaf_size= 2)
             dist, ind = tree.query(data, k=knn, return_distance= True)
 
             
         # b) Local radius method
         if method == 'radius':
-            print("Identifying neighbours within " + str(radius) + " pixels of every cell")
+            if verbose:
+                print("Identifying neighbours within " + str(radius) + " pixels of every cell")
             kdt = BallTree(data, metric='euclidean')
             ind, dist = kdt.query_radius(data, r=radius, return_distance= True)
             
