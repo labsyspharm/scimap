@@ -107,11 +107,20 @@ Example:
     
     
     # Start
-    def spatial_pscore_internal (adata_subset,proximity,x_coordinate,y_coordinate,phenotype,method,radius,knn,
+    def spatial_pscore_internal (adata_subset,proximity,x_coordinate,y_coordinate,z_coordinate,phenotype,method,radius,knn,
                                 imageid,subset,label):
 
+        # Create a dataFrame with the necessary inforamtion
+        if z_coordinate is not None:
+            if verbose:
+                print("Including Z -axis")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        else:
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+
+
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        #data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
@@ -207,7 +216,9 @@ Example:
     # Create lamda function 
     r_spatial_pscore_internal = lambda x: spatial_pscore_internal(adata_subset=x,proximity=proximity,
                                                    x_coordinate=x_coordinate,
-                                                   y_coordinate=y_coordinate,phenotype=phenotype,
+                                                   y_coordinate=y_coordinate,
+                                                   z_coordinate=z_coordinate,
+                                                   phenotype=phenotype,
                                                    method=method,radius=radius,knn=knn,
                                                    imageid=imageid,subset=subset,label=label) 
     all_data = list(map(r_spatial_pscore_internal, adata_list)) # Apply function

@@ -21,6 +21,7 @@ from sklearn.neighbors import BallTree
 def spatial_aggregate (adata, 
                        x_coordinate='X_centroid',
                        y_coordinate='Y_centroid',
+                       z_coordinate= None,
                        purity = 60, 
                        phenotype='phenotype', 
                        method='radius', 
@@ -41,6 +42,9 @@ Parameters:
 
         y_coordinate (str, required):  
             The column name in `adata` containing the y-coordinates of cells.
+        
+        z_coordinate (str, required):  
+            The column name in `adata` containing the z-coordinates of cells.
 
         purity (int, optional):  
             The minimum percentage (between 1 and 100) of cells with a similar phenotype required in a neighborhood for it to be considered a cluster. 
@@ -98,20 +102,31 @@ Example:
     #if purity < 51:
     #    raise ValueError('purity should be set to a value greater than 50')
         
-    def spatial_aggregate_internal (adata_subset, x_coordinate,y_coordinate,phenotype,purity,
+    def spatial_aggregate_internal (adata_subset, x_coordinate,y_coordinate,z_coordinate,phenotype,purity,
                                     method,radius,knn,imageid,subset,label):
     
 
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        if z_coordinate is not None:
+            if verbose:
+                print("Including Z -axis")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        else:
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+
+        #data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
         if method == 'knn':
             if verbose:
                 print("Identifying the " + str(knn) + " nearest neighbours for every cell")
-            tree = BallTree(data[['x','y']], leaf_size= 2)
-            ind = tree.query(data[['x','y']], k=knn, return_distance= False)
+            if z_coordinate is not None:
+                tree = BallTree(data[['x','y','z']], leaf_size= 2)
+                ind = tree.query(data[['x','y','z']], k=knn, return_distance= False)
+            else:
+                tree = BallTree(data[['x','y']], leaf_size= 2)
+                ind = tree.query(data[['x','y']], k=knn, return_distance= False)
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
             neighbours.drop(0, axis=1, inplace=True) # Remove self neighbour
         
@@ -119,10 +134,35 @@ Example:
         if method == 'radius':
             if verbose:
                 print("Identifying neighbours within " + str(radius) + " pixels of every cell")
-            kdt = BallTree(data[['x','y']], leaf_size= 2) 
-            ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+            if z_coordinate is not None:
+                kdt = BallTree(data[['x','y','z']], metric='euclidean') 
+                ind = kdt.query_radius(data[['x','y','z']], r=radius, return_distance=False)
+            else:
+                kdt = BallTree(data[['x','y']], metric='euclidean') 
+                ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+                
             for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
+            
+            
+# =============================================================================
+#         if method == 'knn':
+#             if verbose:
+#                 print("Identifying the " + str(knn) + " nearest neighbours for every cell")
+#             tree = BallTree(data[['x','y']], leaf_size= 2)
+#             ind = tree.query(data[['x','y']], k=knn, return_distance= False)
+#             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
+#             neighbours.drop(0, axis=1, inplace=True) # Remove self neighbour
+#         
+#         # b) Local radius method
+#         if method == 'radius':
+#             if verbose:
+#                 print("Identifying neighbours within " + str(radius) + " pixels of every cell")
+#             kdt = BallTree(data[['x','y']], leaf_size= 2) 
+#             ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
+#             for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self
+#             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
+# =============================================================================
             
         # Map phenotype
         phenomap = dict(zip(list(range(len(ind))), data['phenotype'])) # Used for mapping
@@ -176,6 +216,7 @@ Example:
     r_spatial_aggregate_internal = lambda x: spatial_aggregate_internal(adata_subset=x,
                                                                           x_coordinate=x_coordinate,
                                                                           y_coordinate=y_coordinate,
+                                                                          z_coordinate=z_coordinate,
                                                                           phenotype=phenotype,
                                                                           method=method,
                                                                           radius=radius,knn=knn,

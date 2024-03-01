@@ -5,7 +5,8 @@
 
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_expression`: This function generates a neighborhood weighted matrix from spatial data, integrating expression values to assess local cellular environments. 
+    `sm.tl.spatial_expression`: This function generates a neighborhood weighted matrix from spatial data, 
+    integrating expression values to assess local cellular environments. 
       
     It employs two approaches for neighborhood definition:
 
@@ -48,6 +49,10 @@ def main(argv=sys.argv):
     parser.add_argument(
         '--y_coordinate', type=str, required=False, default='Y_centroid',
         help='Column name containing the y-coordinates values.'
+    )
+    parser.add_argument(
+        '--z_coordinate', type=str, required=False, default=None,
+        help='Column name containing the z-coordinates values.'
     )
     parser.add_argument(
         '--method', type=str, required=False, default='radius',
@@ -97,6 +102,7 @@ def main(argv=sys.argv):
 def spatial_expression (adata, 
                         x_coordinate='X_centroid',
                         y_coordinate='Y_centroid',
+                        z_coordinate=None,
                         method='radius', 
                         radius=30, 
                         knn=10, 
@@ -117,6 +123,9 @@ Parameters:
 
         y_coordinate (str, required):  
             Column name in `adata` for the y-coordinates.
+        
+        z_coordinate (str, optional):  
+            Column name in `adata` for the z-coordinates, for 3D spatial data analysis.
         
         method (str, optional):  
             Method for defining neighborhoods: 'radius' for fixed distance, 'knn' for K nearest neighbors.
@@ -187,27 +196,62 @@ Example:
             raise ValueError('Please run `sm.pp.rescale` first if you wish to use `use_raw = False`')
         
      
-    def spatial_expression_internal (adata_subset, x_coordinate, y_coordinate,log,
+    def spatial_expression_internal (adata_subset, x_coordinate, y_coordinate,z_coordinate,log,
                                      method, radius, knn, imageid, use_raw, subset,label):
          
+        
+        # Create a dataFrame with the necessary inforamtion
+        if z_coordinate is not None:
+            if verbose:
+                print("Including Z -axis")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate] })
+        else:
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate] })
+
+
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate]})
+        #data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate]})
         
         # Identify neighbourhoods based on the method used
+        
         # a) KNN method
         if method == 'knn':
             if verbose:
                 print("Identifying the " + str(knn) + " nearest neighbours for every cell")
-            tree = BallTree(data, leaf_size= 2)
-            dist, ind = tree.query(data, k=knn, return_distance= True)
-
-            
+            if z_coordinate is not None:
+                tree = BallTree(data, leaf_size= 2)
+                dist, ind = tree.query(data, k=knn, return_distance= True)
+            else:
+                tree = BallTree(data, leaf_size= 2)
+                dist, ind = tree.query(data, k=knn, return_distance= True)
+                
         # b) Local radius method
         if method == 'radius':
             if verbose:
                 print("Identifying neighbours within " + str(radius) + " pixels of every cell")
-            kdt = BallTree(data, metric='euclidean')
-            ind, dist = kdt.query_radius(data, r=radius, return_distance= True)
+            if z_coordinate is not None:
+                kdt = BallTree(data, metric='euclidean') 
+                ind, dist = kdt.query_radius(data, r=radius, return_distance=True)
+            else:
+                kdt = BallTree(data, metric='euclidean') 
+                ind, dist = kdt.query_radius(data, r=radius, return_distance=True)
+        
+# =============================================================================
+#         # a) KNN method
+#         if method == 'knn':
+#             if verbose:
+#                 print("Identifying the " + str(knn) + " nearest neighbours for every cell")
+#             tree = BallTree(data, leaf_size= 2)
+#             dist, ind = tree.query(data, k=knn, return_distance= True)
+# 
+#         # b) Local radius method
+#         if method == 'radius':
+#             if verbose:
+#                 print("Identifying neighbours within " + str(radius) + " pixels of every cell")
+#             kdt = BallTree(data, metric='euclidean')
+#             ind, dist = kdt.query_radius(data, r=radius, return_distance= True)
+#             
+# =============================================================================
             
         # Normalize range (0-1) and account for total number of cells 
         d = scipy.sparse.lil_matrix((len(data), len(data)))
@@ -252,6 +296,7 @@ Example:
     r_spatial_expression_internal = lambda x: spatial_expression_internal(adata_subset=x, 
                                                                 x_coordinate=x_coordinate, 
                                                                 y_coordinate=y_coordinate, 
+                                                                z_coordinate=z_coordinate,
                                                                 method=method, radius=radius, 
                                                                 knn=knn, imageid=imageid, 
                                                                 use_raw=use_raw, subset=subset,

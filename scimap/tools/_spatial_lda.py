@@ -114,15 +114,25 @@ Example:
     
 
     # Function
-    def spatial_lda_internal (adata_subset, x_coordinate,y_coordinate,phenotype, 
+    def spatial_lda_internal (adata_subset, x_coordinate,y_coordinate,z_coordinate,phenotype, 
                               method, radius, knn, imageid):
         
         # Print which image is being processed
         if verbose:
             print('Processing: ' + str(np.unique(adata_subset.obs[imageid])))
         
+        
+        # Create a dataFrame with the necessary inforamtion
+        if z_coordinate is not None:
+            if verbose:
+                print("Including Z -axis")
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        else:
+            data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+
+        
         # Create a DataFrame with the necessary inforamtion
-        data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
+        #data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         
         # Identify neighbourhoods based on the method used
         # a) KNN method
@@ -188,6 +198,7 @@ Example:
     r_spatial_lda_internal = lambda x: spatial_lda_internal(adata_subset=x,
                                                             x_coordinate=x_coordinate,
                                                             y_coordinate=y_coordinate,
+                                                            z_coordinate=z_coordinate,
                                                             phenotype=phenotype, 
                                                             method=method, 
                                                             radius=radius, 
