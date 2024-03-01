@@ -4,7 +4,11 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.pl.pie`: The function allows users to plot a pie plot for any categorical column of interest. 
+    `sm.pl.pie`: This function facilitates the creation of pie charts to visually 
+    represent the proportions of categories within any selected categorical column in 
+    an AnnData object. It provides an intuitive and straightforward way to assess 
+    the distribution of cell types, clusters, or any other categorical annotations, 
+    offering insights into the composition of the dataset.
 
 ## Function
 """
@@ -15,80 +19,89 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Function
-def pie (adata, phenotype='phenotype', group_by='imageid', ncols=None,
-         subset_phenotype=None, subset_groupby=None,
-         label='auto', title='auto', colors=None, autopct='%1.1f%%',
-         legend=False,legend_loc='upper right',
-         wedgeprops = {'linewidth': 0}, return_data=False, **kwargs):
+def pie (adata, 
+         phenotype='phenotype', 
+         group_by='imageid', 
+         ncols=None,
+         subset_phenotype=None, 
+         subset_groupby=None,
+         label='auto', 
+         title='auto', 
+         colors=None, 
+         autopct='%1.1f%%',
+         legend=False,
+         legend_loc='upper right',
+         wedgeprops = {'linewidth': 0}, 
+         return_data=False, **kwargs):
     """
 Parameters:
+        adata (anndata.AnnData):  
+            The annotated data matrix.
 
-    adata : AnnData object
+        phenotype (str, optional):  
+            Column in `adata.obs` containing the categorical data for pie chart visualization. 
 
-    phenotype (string, optional):  
-        Column contaning the cell-type inforamtion or any categorical data to be displayed
-        in the form of a pie plot.
+        group_by (str, optional):  
+            Column in `adata.obs` for defining groups. Each group will have its own pie chart. 
+            Default is 'imageid'. Pass None to treat all data as a single group.
 
-    group_by (string, optional):   
-        Column that contains inforamtion on data groupings which leads to generation of
-        pie plot for each group (e.g. image-id). If `None` is passed,
-        the entire data is considered as a single group.
+        ncols (int, optional):  
+            Number of columns in the grid layout when displaying multiple pie charts. 
+            Only applicable if `group_by` is used.
 
-    ncols (int, optional):   
-        In case group_by is used, a grid of plots are returned. This paramenter
-        controls the number of columns in that grid.
+        subset_phenotype (list, optional):  
+            List of categories within `phenotype` to include in the visualization.
 
-    subset_phenotype (list, optional):   
-        User can subset a list of categories within `phenotype` before plotting.
+        subset_groupby (list, optional):  
+            List of groups within `group_by` to include in the visualization.
 
-    subset_groupby (list, optional):  
-        User can subset a list of categories within `group_by` before plotting.
+        label (list, optional):  
+            Labels for each wedge in the pie charts. If 'auto', labels are automatically 
+            derived from `phenotype` categories.
 
-    label (list, optional):   
-        A list of strings providing the labels for each wedge.
+        title (str, optional):  
+            Title for the pie chart(s). If 'auto', titles are derived from `group_by` categories.
 
-    title (string, optional):   
-        If `None`, the title of the pieplot is not plotted.
+        colors (list, optional):  
+            Custom color sequence for the pie chart wedges.
 
-    colors (list, optional):   
-        A sequence of colors through which the pie chart will cycle. If None, will use the 
-        colors in the currently active cycle.
+        autopct (str or callable, optional):  
+            String or function used to label wedges with their numeric value. Default is '%1.1f%%'.
 
-    legend (bool, optional):   
-        If True, color legends are plotted seperately.
+        legend (bool, optional):  
+            Whether to display a legend for the pie chart. Default is False.
 
-    legend_loc (string, optional):   
-        Place a legend on the Axes.
+        legend_loc (str, optional):  
+            Location of the legend. Default is 'upper right'.
 
-    autopct (None or str or callable, optional):  
-        If not None, is a string or function used to label the wedges with their numeric value. 
-        The label will be placed inside the wedge. If it is a format string, 
-        the label will be fmt % pct. If it is a function, it will be called.
+        wedgeprops (dict, optional):  
+            Properties passed to the wedge objects, such as `{'linewidth': 3}`.
 
-    wedgeprops (dict, optional):  
-        Dict of arguments passed to the wedge objects making the pie. For example, you can pass in 
-        wedgeprops = {'linewidth': 3} to set the width of the wedge border lines equal to 3. 
-        For more details, look at the doc/arguments of the wedge object. By default clip_on=False.
+        return_data (bool, optional):  
+            If True, returns the data used for plotting instead of the pie chart(s).
 
-    return_data (bool, optional):   
-        Returns the data used for plotting.
+        **kwargs:  
+            Additional keyword arguments passed to `matplotlib.pyplot.pie`.
 
-    **kwargs :  
-        Keyword arguments to pass on to `matplotlib.pyplot.pie`.
+Returns:
+    plot and dataframe( matplotlib, pandas DF):
+        If `return_data` is True, returns a pandas DataFrame used for plotting.
 
-Returns:  
-    Returns data used for plotting if `return_data = True`
-    
 Example:
-```python
-    # pie plot showing stromal tumor content among the different samples
-    sm.pl.pie (adata, phenotype='Tumor_Stroma', group_by='imageid', 
-               autopct='%1.1f%%',
-               textprops={'fontsize': 8, 'color': '#1d3557', 'fontweight': 'bold'},
-               ncols=5, label=None, title=None, 
-               colors=['#a8dadc','#e63946'], 
-               wedgeprops = {'linewidth': 0.8})
-```
+    ```python
+    
+    # Basic pie chart visualization of cell phenotypes
+    sm.pl.pie(adata, phenotype='cell_type', group_by='sample_id', ncols=3)
+
+    # Advanced visualization with custom colors and pie chart properties
+    sm.pl.pie(adata, phenotype='cell_type', group_by='condition', ncols=4, colors=['#ff9999','#66b3ff','#99ff99'],
+              wedgeprops={'edgecolor': 'black', 'linewidth': 2}, autopct='%1.1f%%', legend=True, legend_loc='best')
+
+    # Subsetted visualization focusing on specific phenotypes and groups
+    sm.pl.pie(adata, phenotype='cell_type', group_by='treatment', subset_phenotype=['T cells', 'B cells'],
+              subset_groupby=['Control', 'Treated'], ncols=2, legend=True, legend_loc='lower left')
+    
+    ```
     """
     
     
