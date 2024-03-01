@@ -66,15 +66,15 @@ Example:
     ```python
     
     # Calculate spatial distance in 2D
-    adata = spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+    adata = sm.tl.spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                              phenotype='cell_type', label='2D_distance')
 
     # Calculate spatial distance in 3D
-    adata = spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+    adata = sm.tl.spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                              z_coordinate='Z_centroid', phenotype='cell_type', label='3D_distance')
 
     # Calculate spatial distance for a specific image subset
-    adata = spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+    adata = sm.tl.spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                              phenotype='cell_type', imageid='image_id', subset='image01',
                              label='distance_image01')
     

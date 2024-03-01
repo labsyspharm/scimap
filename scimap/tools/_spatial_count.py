@@ -84,17 +84,17 @@ Example:
     ```python
     
     # Analyze spatial relationships using the radius method
-    adata = spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+    adata = sm.tl.spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                           phenotype='phenotype', method='radius', radius=50,
                           label='neighborhood_radius50')
 
     # Explore spatial neighborhoods with KNN
-    adata = spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+    adata = sm.tl.spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                           phenotype='phenotype', method='knn', knn=15,
                           label='neighborhood_knn15')
 
     # 3D spatial analysis using a radius method
-    adata = spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+    adata = sm.tl.spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                           z_coordinate='Z_centroid', phenotype='phenotype', method='radius', radius=30,
                           label='neighborhood_3D_radius30')
     
