@@ -16,67 +16,78 @@ import numpy as np
 from sklearn.neighbors import BallTree
 
 # Function
-def spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                       purity = 60, phenotype='phenotype', method='radius', radius=30, knn=10, 
-                       imageid='imageid',subset=None,label='spatial_aggregate'):
+def spatial_aggregate (adata, 
+                       x_coordinate='X_centroid',
+                       y_coordinate='Y_centroid',
+                       purity = 60, 
+                       phenotype='phenotype', 
+                       method='radius', 
+                       radius=30, 
+                       knn=10, 
+                       imageid='imageid',
+                       subset=None,
+                       verbose=True,
+                       label='spatial_aggregate'):
     """
     
 Parameters:
-    adata : AnnData object
+        adata (anndata.AnnData):  
+            The annotated data matrix of shape (n_obs, n_vars), where rows correspond to cells and columns to genes, used for spatial analysis.
 
-    x_coordinate : float, required  
-        Column name containing the x-coordinates values.
+        x_coordinate (str, required):  
+            The column name in `adata` containing the x-coordinates of cells.
 
-    y_coordinate : float, required  
-        Column name containing the y-coordinates values.
+        y_coordinate (str, required):  
+            The column name in `adata` containing the y-coordinates of cells.
 
-    purity : int, optional  
-        Supply a value between 1 to 100. It is the percent purity of neighbouring cells.
-        For e.g. if 60 is chosen, every neighbourhood is tested such that if a 
-        particular phenotype makes up greater than 60% of the total 
-        population it is annotated to be an aggregate of that particular phenotype.
+        purity (int, optional):  
+            The minimum percentage (between 1 and 100) of cells with a similar phenotype required in a neighborhood for it to be considered a cluster. 
 
-    phenotype : string, required  
-        Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells.
+        phenotype (str, required):  
+            The column name in `adata` representing cell phenotype information or any other categorical classification of cells.
 
-    method : string, optional  
-        Two options are available: a) 'radius', b) 'knn'.
-        a) radius - Identifies the neighbours within a given radius for every cell.
-        b) knn - Identifies the K nearest neigbours for every cell.
+        method (str, optional):  
+            The neighborhood definition method: 'radius' for radial distance-based neighborhoods or 'knn' for k-nearest neighbors-based neighborhoods. 
 
-    radius : int, optional  
-        The radius used to define a local neighbhourhood.
+        radius (int, optional):  
+            The radius used to define a neighborhood around each cell, applicable when `method='radius'`. Measured in the same units as x and y coordinates.
 
-    knn : int, optional  
-        Number of cells considered for defining the local neighbhourhood.
+        knn (int, optional):  
+            The number of nearest neighbors to consider for defining a neighborhood around each cell, applicable when `method='knn'`.
 
-    imageid : string, optional  
-        Column name of the column containing the image id.
+        imageid (str, optional):  
+            The column name in `adata` containing identifiers for different images, allowing for analysis within specific images.
 
-    subset : string, optional  
-        imageid of a single image to be subsetted for analyis.
+        subset (str, optional):  
+            The identifier of a specific image to restrict the analysis to. If provided, analysis will only be performed on this subset.
 
-    label : string, optional  
-        Key for the returned data, stored in `adata.obs`.
+        label (str, optional):  
+            The key under which to store the results in `adata.obs`, allowing for customized labeling of the output.
+        
+        verbose (bool):  
+        If set to `True`, the function will print detailed messages about its progress and the steps being executed.
 
 Returns:
-    adata : AnnData object
-        Updated AnnData object with the results stored in `adata.obs['spatial_aggregate']`.
-        
-        
-Example:
-```python
-    # Running the radius method
-    adata = sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        phenotype='phenotype', method='radius', radius=30, purity = 60,
-                        imageid='imageid',subset=None,label='spatial_aggregate_radius')
+        adata (anndata.AnnData):    
+            The input AnnData object updated with the results stored under `adata.obs[label]`, where `label` is the specified output label.
+            
+Examples:
+    ```python
+    # Analyze spatial aggregation using the radius method
+    adata = sm.tl.spatial_aggregate(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                                    phenotype='phenotype', method='radius', radius=30, purity=60,
+                                    imageid='imageid', subset=None, label='spatial_aggregate_radius')
     
-    # Running the knn method
-    adata =  sm.tl.spatial_aggregate (adata, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                        phenotype='phenotype', method='knn', knn=10, purity = 60,
-                        imageid='imageid',subset=None,label='spatial_aggregate_knn')
-```
+    # Analyze spatial aggregation using the knn method
+    adata = sm.tl.spatial_aggregate(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                                    phenotype='phenotype', method='knn', knn=10, purity=60,
+                                    imageid='imageid', subset=None, label='spatial_aggregate_knn')
+    
+    # Subset analysis to a specific image using the radius method
+    adata = sm.tl.spatial_aggregate(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                                    phenotype='phenotype', method='radius', radius=30, purity=60,
+                                    imageid='imageid', subset='image_01', label='spatial_aggregate_image_01')
+    ```
     """
     
     # Error statements
@@ -93,7 +104,8 @@ Example:
         # Identify neighbourhoods based on the method used
         # a) KNN method
         if method == 'knn':
-            print("Identifying the " + str(knn) + " nearest neighbours for every cell")
+            if verbose:
+                print("Identifying the " + str(knn) + " nearest neighbours for every cell")
             tree = BallTree(data[['x','y']], leaf_size= 2)
             ind = tree.query(data[['x','y']], k=knn, return_distance= False)
             neighbours = pd.DataFrame(ind.tolist(), index = data.index) # neighbour DF
@@ -101,7 +113,8 @@ Example:
         
         # b) Local radius method
         if method == 'radius':
-            print("Identifying neighbours within " + str(radius) + " pixels of every cell")
+            if verbose:
+                print("Identifying neighbours within " + str(radius) + " pixels of every cell")
             kdt = BallTree(data[['x','y']], leaf_size= 2) 
             ind = kdt.query_radius(data[['x','y']], r=radius, return_distance=False)
             for i in range(0, len(ind)): ind[i] = np.delete(ind[i], np.argwhere(ind[i] == i))#remove self

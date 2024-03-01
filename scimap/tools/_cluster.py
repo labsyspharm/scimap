@@ -193,8 +193,19 @@ Returns:
 Example:
     ```python
     
-    adata = sm.tl.cluster(adata, k=10, method='kmeans', sub_cluster_column='phenotype', use_raw=True)
+    # Example 1: Basic K-Means clustering without sub-clustering
+    adata = sm.tl.cluster(adata, method='kmeans', k=10, use_raw=True, log=True, random_state=42)
     
+    # Example 2: Phenograph clustering with a specific subset of genes and increased nearest neighbors
+    subset_genes = ['CD3D', 'CD19', 'CD4', 'CD8A']
+    adata = sm.tl.cluster(adata, method='phenograph', subset_genes=subset_genes, nearest_neighbors=50, phenograph_clustering_metric='euclidean', use_raw=False)
+    
+    # Example 3: Leiden clustering using principal components with a higher resolution for finer clusters
+    adata = sm.tl.cluster(adata, method='leiden', n_pcs=20, resolution=1, use_raw=False, log=False)
+    
+    # Example 4: Sub-clustering within a specific phenotype group using Leiden, with results labeled distinctly
+    adata = sm.tl.cluster(adata, method='leiden', sub_cluster=True, sub_cluster_column='phenotype', sub_cluster_group=['B cells'], n_pcs=15, resolution=1, label='B_cell_subclusters', verbose=True)
+     
     
     ```
     """
