@@ -148,11 +148,11 @@ Parameters:
         output_dir (str, optional):  
             Directory path for saving output files.
 
-    Returns:
+Returns:
         adata (anndata.AnnData):  
             The input `adata` object, updated with the spatial expression results in `adata.uns[label]`.
 
-    Example:
+Example:
         ```python
         
         # Calculate spatial expression using a 30-pixel radius
