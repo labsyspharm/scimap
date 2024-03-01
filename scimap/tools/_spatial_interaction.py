@@ -40,7 +40,7 @@ def spatial_interaction (adata,
                          label='spatial_interaction'):
     """
 Parameters:
-        adata (AnnData):  
+        adata (anndata.AnnData):  
             Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
 
         x_coordinate (str, required):  
@@ -83,7 +83,7 @@ Parameters:
             Custom label for storing results in `adata.obs`.
 
 Returns:
-        AnnData:  
+        adata (anndata.AnnData):  
             Updated `adata` object with spatial interaction results in `adata.obs[label]`.
 
 Example:
