@@ -96,7 +96,7 @@ Returns:
         Image (napari): 
             Displays the visualization using napari viewer.
 
-Examples
+Example:
     ```python
     
     # Basic visualization with phenotype overlay
