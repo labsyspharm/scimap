@@ -4,9 +4,10 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.hl.classify`: Helper function that allow users to annotate cells based on positivity/negativity 
-    of defined markers. Users can classify the entire data or a subset of data that 
-    has been previously phenotyped or clustered.
+    `sm.hl.classify`: This utility function enables users to annotate cells by assessing 
+    the presence or absence of specific markers. It offers flexibility to apply classifications 
+    across the entire dataset or within previously defined subsets, such as phenotyped or 
+    clustered cell groups, facilitating targeted analyses based on marker expression.
 
 ## Function
 """
@@ -18,74 +19,76 @@ import numpy as np
 
 
 # Functions
-def classify (adata, pos=None, neg=None, classify_label='passed_classify', failed_label='failed_classify',
-              phenotype=None,subclassify_phenotype=None,threshold = 0.5,
-              collapse_failed=True,label="classify",showPhenotypeLabel=False):
+def classify (adata, 
+              pos=None, 
+              neg=None, 
+              classify_label='passed_classify', 
+              failed_label='failed_classify',
+              phenotype=None,
+              subclassify_phenotype=None,
+              threshold = 0.5,
+              collapse_failed=True,
+              label="classify",
+              showPhenotypeLabel=False,
+              verbose=True):
     
     """
 Parameters:
+        adata (anndata.AnnData):  
+            The annotated data matrix for classification.
+            
+        pos (list, optional):  
+            Markers that should be expressed in the cells of interest.
+            
+        neg (list, optional):  
+            Markers that should not be expressed in the cells of interest.
+            
+        classify_label (str, optional):  
+            Label for cells that meet the classification criteria.
+            
+        failed_label (str, optional):  
+            Label for cells that do not meet the classification criteria.
+            
+        phenotype (str, required if subclassify_phenotype or collapse_failed is used):  
+            Column in `adata.obs` containing the phenotype information.
+            
+        subclassify_phenotype (list, optional):  
+            Phenotypes within which classification should be performed.
+            
+        threshold (float, optional):  
+            Threshold for determining positive or negative expression.
+            
+        collapse_failed (bool, optional):  
+            If True, unclassified cells are grouped under a single failed label.
+            
+        label (str, optional):  
+            Key under which classification results are stored in `adata.obs`.
+            
+        showPhenotypeLabel (bool, optional):  
+            If True, appends classification status to existing phenotype labels in the results.
+            
+        verbose (bool, optional):  
+            If True, prints progress and informational messages during the classification process.
 
-    adata : AnnData object
+Returns:
+        adata (anndata.AnnData):  
+            The input AnnData object, updated with classification results in `adata.obs[label]`.
 
-    pos : list, optional  
-        Pass a list of markers that should be expressed in the resultant cells.
-
-    neg : list, optional  
-        Pass a list of markers that should not be expressed in the resultant cells.
-
-    classify_label : string, optional  
-        Provide a name for the classified cells.
-
-    failed_label : string, optional
-        Provide a name for cells that did not pass classify.
-
-    subclassify_phenotype : list, optional  
-        If only a subset of phenotypes require to classified, pass the name of those phenotypes as a list
-        through this argument.
-
-    threshold: float, optional  
-        Above or below the given value will be considered for positive and negative classification.
-        If the data was scaled using the `sm.pp.rescale` function, 0.5 is the classification threshold.
-
-    phenotype : string, required  
-        Column name of the column containing the phenotype information. 
-        This is important if `subclassify_phenotype` or `collapse_failed` arguments are used.
-
-    collapse_failed : bool, optional  
-        If set to true, the cells that were not classified based on the given criteria will be
-        binned into a single category named 'failed_classify'. When False, the phenotype
-        information for other cells will be borrowed from the `phenotype` argument.
-        
-    showPhenotypeLabel : bool, optional
-        If set to True, returns the data under [phenotype]_[label] key,
-        stored in `adata.obs`. Each cell's classification status will be appended to its phenotype,
-        [phenotype]_[classified_label] or [phenotype]_[failed_label].
-
-    label : string, optional  
-        Key for the returned data, stored in `adata.obs`.
-
- Returns:
-
-    adata : AnnData  
-        Updated AnnData Object.
-    
-    
 Example:
-```python
-    # Classify all cells with both pos and neg markers 
-    # (Identify cytotoxic T-cells)
-    adata = sm.hl.classify(adata, pos=['CD3D','CD8A'], neg=['ASMA'])
+    ```python
     
-    # Classify specific sub-types of cells
-    adata = sm.hl.classify(adata, pos=['CD3D','FOXP3'], 
-    neg=['ASMA'], subclassify_phenotype=['T cells','Regulatory T cells'])
+    # Basic classification with positive and negative markers
+    adata = sm.hl.classify(adata, pos=['CD3D', 'CD8A'], neg=['PDGFRB'], label='T_cell_classification')
     
-    # Classify specific sub-types of cells and borrow labels 
-    # from another column
-    adata = sm.hl.classify(adata, pos=['CD3D'], neg=['ASMA'], 
-    subclassify_phenotype=['T cells'], collapse_failed=False, 
-    phenotype='phenotype')
-```
+    # Classify specific phenotypes, preserving original phenotype labels for unclassified cells
+    adata = sm.hl.classify(adata, pos=['CD19'], neg=['CD3D'], subclassify_phenotype=['B cells'],
+                     phenotype='cell_type', collapse_failed=False, label='B_cell_subclassification')
+
+    # Use showPhenotypeLabel to append classification status to existing phenotype labels
+    adata = sm.hl.classify(adata, pos=['CD34'], neg=['CD45'], phenotype='cell_type',
+                     showPhenotypeLabel=True, label='stem_cell_classification', verbose=True)
+    
+    ```
     """
     
     # clean the input

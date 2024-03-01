@@ -159,13 +159,13 @@ Example:
     adata = sm.tl.umap(adata)
     
     # Basic animation with default UMAP and spatial coordinates
-    animate(adata)
+    sm.hl.animate(adata)
 
     # Customized animation with specific cell-type coloring and reverse transition
-    animate(adata, color='cell_type', reverse=False, save_animation='umap_to_spatial.gif')
+    sm.hl.animate(adata, color='cell_type', reverse=False, save_animation='umap_to_spatial.gif')
 
     # Animation with a subset of images, using custom palette and increased frame interval
-    animate(adata, color='condition', palette={'Control': '#1f77b4', 'Treated': '#ff7f0e'}, 
+    sm.hl.animate(adata, color='condition', palette={'Control': '#1f77b4', 'Treated': '#ff7f0e'}, 
             subset='image_01', interval=100, save_animation='custom_animation.gif')
     
     ```
