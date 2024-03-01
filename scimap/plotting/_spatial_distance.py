@@ -4,8 +4,14 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.pl.spatial_distance`: The function allows users to visualize the average shortest distance between phenotypes of interest.
-    Run `sm.tl.spatial_distance` before running this function.
+    `sm.pl.spatial_distance`: This function enables the visualization of the average 
+    shortest distances between selected phenotypes or cell types, offering insights 
+    into spatial relationships within biological samples. To accurately generate 
+    these visual representations, it's essential to first compute spatial distances 
+    using `sm.tl.spatial_distance`. This preparatory step ensures the data necessary 
+    for creating comprehensive heatmaps, numeric comparisons, and distribution plots is 
+    available, facilitating a deeper understanding of spatial patterning and interactions 
+    among cell populations.
 
 ## Function
 """
@@ -18,141 +24,102 @@ import seaborn as sns; sns.set(color_codes=True)
 sns.set_style("white")
 
 
-def spatial_distance (adata, spatial_distance='spatial_distance',phenotype='phenotype',imageid='imageid',log=False,
-                      method='heatmap',heatmap_summarize=True,heatmap_na_color='grey',heatmap_cmap='vlag_r',
-                      heatmap_row_cluster=False,heatmap_col_cluster=False,heatmap_standard_scale=0,
-                      distance_from=None,distance_to=None,x_axis = None,y_axis = None,facet_by = None,plot_type = None,
-                      return_data = False, subset_col=None, subset_value=None,
+def spatial_distance (adata, 
+                      spatial_distance='spatial_distance',
+                      phenotype='phenotype',
+                      imageid='imageid',
+                      log=False,
+                      method='heatmap',
+                      heatmap_summarize=True,
+                      heatmap_na_color='grey',
+                      heatmap_cmap='vlag_r',
+                      heatmap_row_cluster=False,
+                      heatmap_col_cluster=False,
+                      heatmap_standard_scale=0,
+                      distance_from=None,
+                      distance_to=None,
+                      x_axis = None,
+                      y_axis = None,
+                      facet_by = None,
+                      plot_type = None,
+                      return_data = False, 
+                      subset_col=None, 
+                      subset_value=None,
                       **kwargs):
     """
 Parameters:
+        adata (anndata.AnnData):  
+            The annotated data matrix with spatial distance calculations.
 
-    adata : AnnData object
+        spatial_distance (str, optional):  
+            Key in `adata.uns` where spatial distance data is stored, typically the output of `sm.tl.spatial_distance`.
 
-    spatial_distance : string, optional
-        In order to locate the spatial_distance data within the AnnData object please provide the output
-        label/columnname of `sm.tl.spatial_distance` function.
+        phenotype (str):  
+            Column in `adata.obs` containing phenotype or cell type annotations.
 
-    phenotype : string, required
-        Column name of the column containing the phenotype information.
-        It could also be any categorical assignment given to single cells.
+        imageid (str, optional):  
+            Column in `adata.obs` identifying different images or samples.
 
-    imageid : string, optional
-        Column name of the column containing the image id.
+        log (bool, optional):  
+            If True, applies log transformation to the distance data.
 
-    log : bool, optional
-        Convert distance to log scale.
+        method (str, optional):  
+            Visualization method: 'heatmap', 'numeric', or 'distribution'.
 
-    method : string, optional
-        Three options are available.
-        1) heatmap - generates a heatmap of average shortest distance between all phenotypes.
-        2) numeric - can be used to generate boxplot, violin plot etc between a given set of phenotypes.
-        3) distribution - can be used to generate distribution plots between a given set of phenotypes.
+        heatmap_summarize (bool, optional):  
+            If True, summarizes distances across all images or samples for the heatmap.
 
-    heatmap_summarize : bool, optional
-        In the event multiple images are present in the dataset, True allows to calculate the
-        average across all the images.
+        heatmap_na_color (str, optional):  
+            Color for NA values in the heatmap.
 
-    heatmap_na_color : string, optional
-        Color for NA values within the heatmap.
+        heatmap_cmap (str, optional):  
+            Colormap for the heatmap.
 
-    heatmap_cmap : string, optional
-        Color map to use for continous variables.
-        Can be a name or a Colormap instance (e.g. 'magma', 'viridis').
+        heatmap_row_cluster, heatmap_col_cluster (bool, optional):  
+            If True, clusters rows or columns in the heatmap.
 
-    heatmap_row_cluster : bool, optional
-        Cluster Rows.
+        heatmap_standard_scale (int, optional):  
+            Standardizes rows (0) or columns (1) in the heatmap.
 
-    heatmap_col_cluster : bool, optional
-        Cluster Columns.
+        distance_from, distance_to (str, optional):  
+            Phenotypes of interest for distance calculation in 'numeric' or 'distribution' plots.
 
-    heatmap_standard_scale : int, optional
-        Either 0 (rows) or 1 (columns). Whether or not to standardize that dimension,
-        meaning for each row or column, subtract the minimum and divide each by its maximum.
+        x_axis, y_axis (str, optional):  
+            Axes labels for 'numeric' or 'distribution' plots.
 
-    distance_from : string, optional
-        In the event of using method = 'numeric' or 'distribution', this argument is required.
-        Pass a phenotype of interest. If distance_from is provided and distance_to is not provided,
-        the function will plot the average distance from the phenotype of interest to all
-        phenotypes present within the dataset.
+        facet_by (str, optional):  
+            Categorizes plots into subplots based on this column.
 
-    distance_to : string, optional
-        In the event of using method = 'numeric' or 'distribution', this argument is required.
-        Pass a phenotype of interest. The function will plot the average shortest between two phenotypes of
-        interest (distance_from and distance_to).
+        plot_type (str, optional):  
+            For 'numeric' plots: options include 'box', 'violin', etc. For 'distribution' plots: 'hist', 'kde', etc.
 
-    x_axis : string, optional
-        In the event of using method = 'numeric' or 'distribution', this argument is required.
-        This determines the elements present in the x-axis of the resultant plot.
-        Allowed arguments are: 'group', 'distance', 'imageid'.
+        subset_col (str, optional):  
+            Column name for subsetting data before plotting.
 
-    y_axis : string, optional
-        In the event of using method = 'numeric' or 'distribution', this argument is required.
-        This determines the elements present in the y-axis of the numeric plot and if the user uses the distribution
-        plot this argument is used to overlaying multiple categories within the same distribution plot.
-        Allowed arguments are: 'group', 'distance', 'imageid'.
+        subset_value (list, optional):  
+            Values in `subset_col` to include in the plot.
 
-    facet_by : string, optional
-         In the event of using method = 'numeric' or 'distribution', this argument can be used to
-         generate sub-plots. Allowed arguments are: 'group', 'imageid'.
-
-    plot_type : string, optional
-        In the event of using method = 'numeric' or 'distribution', this argument is required.
-        For `numeric` plot, the following options are available: “strip”, “swarm”, “box”, “violin”, “boxen”, “point”, “bar”, or “count”.
-        For `distribution` plot, the following options are available: “hist”, “kde”, “ecdf”.
-        The default for `numeric` plot is 'boxen'.
-        The default for `distribution` plot is 'kde`.
-
-    subset_col : string, optional
-        If the users wants to consider only a subset of observations while plotting, this argument in conjuction to
-        `subset_value` can be used.
-        For example, in the event of a multi-image dataset, the `sm.tl.spatial_distance` was run on all images
-        but the user is interested in plotting only a subset of images. Pass the name of the column which contains
-        the categories to be subsetted.
-
-    subset_value : list, optional
-        If the users wants to consider only a subset of observations while plotting, this argument in conjuction to
-        `subset_col` can be used. Pass a list of the categories to be subsetted.
-
-    **kwargs : dict
-        Are passed to sns.clustermap. Pass other parameters that works with `sns.clustermap`, `sns.catplot` or `sns.displot`
-        e.g. `linecolor='black'`.
+        **kwargs:  
+            Additional keyword arguments for plotting functions.
 
 Returns:
-    Heatmap or Numeric Plot or Distribution Plot.
+    Plot and dataFrame (matplotlib, pandasDF):
+        If `return_data` is True, returns the data frame used for plotting; otherwise, displays the plot.
 
 Example:
-```python
-    # summary heatmap
-    sm.pl.spatial_distance (adata)
+    ```python
+    
+    # Generate a heatmap of spatial distances
+    sm.pl.spatial_distance(adata, method='heatmap', phenotype='cell_type', imageid='sample_id')
 
-    # Heatmap without summarizing the individual images
-    sm.pl.spatial_distance (adata, heatmap_summarize=False,
-    imageid='ImageId')
+    # Numeric plot showing distance from one phenotype to all others
+    sm.pl.spatial_distance(adata, method='numeric', distance_from='Tumor', phenotype='cell_type', plot_type='boxen')
 
-    # Numeric plot of shortest distance of phenotypes
-    # from tumor cells
-    sm.pl.spatial_distance (adata, method='numeric',
-    distance_from='Tumor CD30+',imageid='ImageId')
-
-    # Distribution plot of shortest distance of phenotypes
-    # from tumor cells
-    sm.pl.spatial_distance (adata, method='distribution',
-    distance_from='Tumor CD30+',imageid='ImageId',
-    x_axis="distance", y_axis="imageid", plot_type="kde")
-
-    # Numeric plot of shortest distance of phenotypes from
-    # tumor cells to M2 Macrophages
-    sm.pl.spatial_distance (adata, method='numeric',
-    distance_from='Tumor CD30+',distance_to = 'M2 Macrophages',
-    imageid='ImageId')
-
-    # Distribution plot of shortest distance of phenotypes from
-    # tumor cells to M2 Macrophages
-    sm.pl.spatial_distance (adata, method='distribution',
-    distance_from='Tumor CD30+',distance_to = 'M2 Macrophages',
-    imageid='ImageId')
-```
+    # Distribution plot comparing distances between two specific phenotypes
+    sm.pl.spatial_distance(adata, method='distribution', distance_from='Tumor', distance_to='Stroma', 
+                     plot_type='kde', x_axis='distance', y_axis='group')
+    
+    ```
     """
 
 

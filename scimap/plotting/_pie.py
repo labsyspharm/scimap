@@ -84,7 +84,7 @@ Parameters:
             Additional keyword arguments passed to `matplotlib.pyplot.pie`.
 
 Returns:
-    plot and dataframe( matplotlib, pandas DF):
+    plot and dataFrame (matplotlib, pandas DF):
         If `return_data` is True, returns a pandas DataFrame used for plotting.
 
 Example:
