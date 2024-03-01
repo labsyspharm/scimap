@@ -4,7 +4,13 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-The `sm.tl.foldchange` function computes the fold change in cell-type abundance between samples or ROIs, using the `from_group` parameter to specify the reference group by its column name in `imageid`. It normalizes cell abundance to the total cell count within each sample/ROI to adjust for size differences, a feature that can be disabled. The function uses a Fisher exact test to calculate p-values, assessing the statistical significance of the observed changes. Results are stored in the `.uns` section of the Anndata object for easy access and further analysis.
+    The `sm.tl.foldchange` function computes the fold change in cell-type abundance between samples or ROIs, 
+    using the `from_group` parameter to specify the reference group by its column name in `imageid`. 
+    It normalizes cell abundance to the total cell count within each sample/ROI to adjust for size differences, 
+    a feature that can be disabled. The function uses a Fisher exact test to calculate p-values, assessing the 
+    statistical significance of the observed changes.  
+    
+    Results are stored in the `.uns` section of the Anndata object for easy access and further analysis.
 
 ## Function
 """
@@ -61,8 +67,9 @@ Returns:
         The input `adata` object, updated with fold change analysis results. The fold change values and p-values can be found in `adata.uns['<label>_fc']` and `adata.uns['<label>_pval']`, respectively.
     
 
-Examples:
+Example:
     ```python
+    
     # Basic usage with automatic comparison to all other groups
     adata = sm.tl.foldchange(adata, from_group=['ROI1'], imageid='imageid', phenotype='phenotype', normalize=True, label='roi_comparison')
     
@@ -71,6 +78,7 @@ Examples:
     
     # Focusing on specific cell types for fold change analysis
     adata = sm.tl.foldchange(adata, from_group=['ROI1'], to_group=['ROI3', 'ROI4'], subset_phenotype=['T cells', 'B cells', 'Macrophages'], label='subset_phenotype_comparison')
+    
     ```
 
     """

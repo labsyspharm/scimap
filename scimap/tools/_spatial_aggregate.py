@@ -4,8 +4,10 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_aggregate`: The function allows users to find regions of aggregration of similar cells.
-    Use the `purity` parameter to fine-tune percent of similar cells within a given `radius`. 
+    `sm.tl.spatial_aggregate`: This function identifies spatial clusters of phenotypically similar cells 
+    within specified regions. By adjusting the `purity` parameter, users can specify the minimum 
+    percentage of similarity required among cells within a defined `radius` or nearest neighbors, 
+    enabling precise delineation of cellular aggregates.
 
 ## Function
 """
@@ -71,8 +73,9 @@ Returns:
         adata (anndata.AnnData):    
             The input AnnData object updated with the results stored under `adata.obs[label]`, where `label` is the specified output label.
             
-Examples:
+Example:
     ```python
+    
     # Analyze spatial aggregation using the radius method
     adata = sm.tl.spatial_aggregate(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                                     phenotype='phenotype', method='radius', radius=30, purity=60,
@@ -87,6 +90,7 @@ Examples:
     adata = sm.tl.spatial_aggregate(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
                                     phenotype='phenotype', method='radius', radius=30, purity=60,
                                     imageid='imageid', subset='image_01', label='spatial_aggregate_image_01')
+    
     ```
     """
     
