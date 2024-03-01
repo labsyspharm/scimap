@@ -25,59 +25,62 @@ import numpy as np
 import argparse
 
 # Function
-def foldchange (adata, from_group, to_group=None, imageid='imageid', phenotype='phenotype',
-                normalize=True, subset_phenotype=None, label='foldchange'):
+def foldchange (adata, 
+                from_group, 
+                to_group=None, 
+                imageid='imageid', 
+                phenotype='phenotype',
+                normalize=True, 
+                subset_phenotype=None, 
+                label='foldchange',
+                verbose=True):
     """
     
 
 Parameters:
-    adata : AnnData object
+    adata (anndata.AnnData):
+        The input AnnData object containing single-cell data for fold change analysis.
 
-    from_group (list):  
-        Pass in the name of the sample or ROI that will serve as a reference for calculating fold change.
-        If multiple sample names or ROI's are passed in as a list e.g. ['ROI1', 'ROI2''], please note that
-        they will be combined for calculating the fold change. 
+    from_group (list of str):  
+        Specifies the reference sample(s) or Region of Interest (ROI) for calculating fold change. If multiple samples or ROIs are provided (e.g., ['ROI1', 'ROI2']), they will be aggregated to serve as a singular reference point for comparison.
 
-    to_group (list):  
-        By default the reference sample/ROI passed via `from_group` will be compared to all other groups
-        within the same column. However if users wish to restrict the comparision to a subset of
-        samples/ROI's they can be passed though this paramenter as a list. e.g. ['ROI3', 'ROI4']. 
+    to_group (list of str, optional):  
+        Defines a specific set of samples/ROIs to compare against the reference group specified in `from_group`. If not provided, the reference will be compared to all other groups within the `imageid` column. For example, ['ROI3', 'ROI4'].
 
-    imageid (string):  
-        The column that contains the samples/ROI information.
+    imageid (str):  
+        The column in `adata.obs` that holds the sample/ROI identifiers.
 
-    phenotype (string):  
-        The column that contains the cell-type/phenotype information.
+    phenotype (str):  
+        The column in `adata.obs` that contains cell type or phenotype information.
 
     normalize (bool):  
-        Inorder to account for the sample/ROI area, the cellular abundance is first normalized
-        to the total number of cells within the respective sample/ROI. Please note if you pass values in
-        `subset_phenotype`, the abundance normalization is restricted to the total cells of the 
-        cell types passed in via `subset_phenotype`.
+        If True, adjusts cell counts based on the total number of cells within each sample/ROI to account for differences in sample/ROI area. If `subset_phenotype` is provided, normalization considers only the total cells of the specified cell types.
 
-    subset_phenotype (list):  
-        If users are interested in only a subset of cell-types, the names of those can be passed in through
-        this parameter. The data is subsetted to include only these cell types before computing foldchange.
+    subset_phenotype (list of str, optional):  
+        Limits the analysis to a particular subset of cell types. Only cell types listed here will be included in the fold change computation.
 
-    label (string):   
-        Key for the returned data, stored in `adata.uns`. The foldchange and p-values 
-        are returned seperately with the postfix `_fc` and `_pval`. 
+    label (str):   
+        Designates the key under which the fold change results (both fold change values and p-values) are stored in `adata.uns`. The results will be accessible as `<label>_fc` for fold changes and `<label>_pval` for p-values.
+
+    verbose (bool):  
+        Enables the display of detailed progress updates and information about the execution steps when set to True.
 
 Returns:
-    adata : Updated anndata object
-        Check `adata.uns['foldchange_fc']` and `adata.uns['foldchange_pval']` for results.
+    adata (anndata.AnnData):
+        The input `adata` object, updated with fold change analysis results. The fold change values and p-values can be found in `adata.uns['<label>_fc']` and `adata.uns['<label>_pval']`, respectively.
     
-    
-Example:
-    ```python
-    adata = sm.tl.foldchange (adata, from_group='image_1', to_group=None, 
-                              imageid='imageid', phenotype='phenotype',
-                              normalize=True, 
-                              subset_phenotype=['Tcells','Bcells','Macs'], 
-                              label='foldchange')
-    
-    ```
 
+Examples:
+    ```python
+    # Basic usage with automatic comparison to all other groups
+    adata = sm.tl.foldchange(adata, from_group=['ROI1'], imageid='imageid', phenotype='phenotype', normalize=True, label='roi_comparison')
+    
+    # Specifying a subset of groups for comparison
+    adata = sm.tl.foldchange(adata, from_group=['image_1'], to_group=['image_2', 'image_3'], imageid='imageid', phenotype='phenotype', normalize=True, label='specific_roi_comparison')
+    
+    # Focusing on specific cell types for fold change analysis
+    adata = sm.tl.foldchange(adata, from_group=['ROI1'], to_group=['ROI3', 'ROI4'], subset_phenotype=['T cells', 'B cells', 'Macrophages'], label='subset_phenotype_comparison')
+    ```
 
     """
     
@@ -137,7 +140,8 @@ Example:
     to_data_total = abs(to_data_consolidated.sub( to_data_consolidated.sum(axis=1), axis=0))
     
     # 
-    print('calculating P values')
+    if verbose:
+        print('calculating P values')
     p_vals = []
     for i in from_data_consolidated.columns:
         a = from_data_consolidated[i][0]
@@ -186,6 +190,7 @@ if __name__ == '__main__':
     parser.add_argument('--normalize', type=bool, default=True, help='Inorder to account for the sample/ROI area, the cellular abundance is first normalized to the total number of cells within the respective sample/ROI')
     parser.add_argument('--subsetphenotype', type=str, default=None, help='If users are interested in only a subset of cell-types, the names of those can be passed in through this parameter')
     parser.add_argument('--label', type=str, default='foldchange', help='Key for the returned data, stored in `adata.uns`. The foldchange and p-values')
+    parser.add_argument('--verbose', required=False, default=True, help='The function will print detailed messages about its progress.')
     args = parser.parse_args()
     
     foldchange(adata=args.adata,
