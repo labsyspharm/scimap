@@ -3,8 +3,12 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.hl.scimap_to_csv`:  Helper function that allows users to save the contents of the `scimap` object as a csv file.
-    Please not that anything that it only saves elements that are within `adata.X or adata.raw.X ` and `adata.obs`.
+    `sm.hl.scimap_to_csv`: This utility function facilitates exporting the contents of a 
+    `scimap` object (AnnData) to a CSV file, combining gene expression data from 
+    `adata.X` or `adata.raw.X` with cell metadata from `adata.obs`. 
+    It provides a streamlined way to save and share data for further analysis or 
+    documentation. Note that the export focuses on the expression matrix and 
+    associated cell annotations. It does not export information saved in `adata.uns`
 
 ## Function
 """
@@ -48,37 +52,53 @@ def main(argv=sys.argv):
     
 
 # Function
-def scimap_to_csv (adata, data_type='raw', output_dir=None, file_name=None, CellID='CellID'):
+def scimap_to_csv (adata, 
+                   data_type='raw', 
+                   output_dir=None, 
+                   file_name=None, 
+                   CellID='CellID',
+                   verbose=True):
     """
 Parameters:
-    adata : AnnData object loaded into memory or path to AnnData object.
+        adata (anndata.AnnData):  
+            The annotated data matrix to export.
 
-    data_type (string):  
-        Three options are available:  
-        1) 'raw' - The raw data will be returned.  
-        2) 'log' - The raw data converted to log scale using `np.log1p` will be returned.  
-        3) 'scaled' - If you have scaled the data using the `sm.pp.rescale`, that will be
-        returned. Please note, if you have not scaled the data, whatever is within
-        `adata.X` will be returned.
+        data_type (str, optional):  
+            Specifies the type of data to export. Options include:
+            - 'raw': Exports the raw data.
+            - 'log': Exports the data after applying a log transformation with `np.log1p`.
+            - 'scaled': Exports the data if it has been scaled using `sm.pp.rescale`. 
+              If not scaled, the contents of `adata.X` are exported. 
         
-    output_dir (string):  
-        Path to output directory.
-    
-    file_name (string):  
-        Name the output csv file. Use in combination with `output_dir` parameter. If no
-        file name is provided a default name `scimap_to_csv_file.csv` will be used. 
-    
-    CellID (string):  
-        Name of the column which contains the CellID. Default is `CellID`.  
+        output_dir (str, optional):  
+            The directory where the CSV file will be saved. If not specified, the file is saved in the current working directory.
+
+        file_name (str, optional):  
+            The name of the output CSV file. If not provided, a default name `scimap_to_csv_file.csv` is used.
+
+        CellID (str, optional):  
+            The column name in the output CSV file that will contain the Cell IDs. 
+
+        verbose (bool, optional):  
+            If True, prints messages about the export process.
 
 Returns:
-    merged (DataFrame):  
-        A single dataframe containing the expression and metadata will be returned.
-        
+        DataFrame (csv):  
+            The function does not return a value but saves the specified data to a CSV file in the designated directory.
+
 Example:
-```python
-    data = sm.hl.scimap_to_csv (adata, data_type='raw')
-```
+        ```python
+        
+        # Export raw data to CSV
+        sm.hl.scimap_to_csv(adata, data_type='raw', output_dir='/path/to/save', file_name='raw_data.csv')
+    
+        # Export log-transformed data to CSV, with a custom CellID column name
+        sm.hl.scimap_to_csv(adata, data_type='log', output_dir='/path/to/save', file_name='log_data.csv', CellID='UniqueCellID')
+    
+        # Export scaled data to Cobject
+        data = sm.hl.scimap_to_csv(adata, data_type='scaled')
+        
+    ```
     """
     
     # Load the andata object    
