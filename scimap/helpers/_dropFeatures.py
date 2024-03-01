@@ -6,10 +6,10 @@
 
 """
 !!! abstract "Short Description"
-    `sm.hl.dropFeatures`:  A handy function that allows users to susbet the anndata object.  
-    
-    The function can be used to drop markers, cells, columns in metadata, groups of cells 
-    belonging to a certain category. 
+    `sm.hl.dropFeatures`: This versatile function streamlines the process of 
+    refining an AnnData object by enabling users to selectively remove markers, 
+    cells, metadata columns, and specific cell groups. It facilitates targeted 
+    dataset curation, ensuring analyses are performed on relevant and clean data subsets.
 
 ## Function
 """
@@ -17,62 +17,60 @@
 import numpy as np
 import anndata as ad
 
-def dropFeatures (adata, drop_markers=None, drop_cells=None, 
+def dropFeatures (adata, 
+                  drop_markers=None, 
+                  drop_cells=None, 
                   drop_meta_columns=None,
-                  drop_groups=None, groups_column=None,
-                  subset_raw=True):
+                  drop_groups=None, 
+                  groups_column=None,
+                  subset_raw=True,
+                  verbose=True):
     """
-Parameters  
+Parameters:
+        adata (anndata.AnnData):  
+            Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
+        
+        drop_markers (list, optional):  
+            A list of gene or marker names to be removed from `adata.var`. 
+        
+        drop_cells (list, optional):  
+            A list of cell identifiers (index names) to be removed from `adata.obs`. 
+        
+        drop_meta_columns (list, optional):  
+            A list of metadata column names to be removed from `adata.obs`. 
+        
+        drop_groups (list, optional):  
+            A list of category names to be removed based on the column specified by `groups_column`. 
+        
+        groups_column (str, optional):  
+            The name of the column in `adata.obs` that contains the categorical data for `drop_groups`. 
+        
+        subset_raw (bool, optional):  
+            If True, the same dropping operations are applied to `adata.raw`.
+        
+        verbose (bool, optional):  
+            If True, print messages about the dropping process. 
 
-    adata : AnnData Object  
+Returns:
+        adata (anndata.AnnData):  
+            The AnnData object after the specified features have been removed.
+
+Example:
+        ```python
+        # Example 1: Drop specific markers from the dataset
+        adata = dropFeatures(adata, drop_markers=['CD3D', 'CD19'])
     
-    drop_markers (list):  
-        Provide a list of markers to drop. The default is None.
-        
-    drop_cells (list):  
-        Provide a list of cells (index name) to drop. The default is None.
-        
-    drop_meta_columns (list):  
-        Provide a list of column names in `adata.obs` to drop. The default is None.
-        
-    drop_groups (list):  
-        Provide a list of categorical names to drop. 
-        Works in conjunction with `groups_column`. The default is None.
-        
-    groups_column (str):  
-        Pass the column name of the column that contains the categories passed to 
-        `drop_groups`. The default is None.
+        # Example 2: Remove cells based on their identifiers
+        adata = dropFeatures(adata, drop_cells=['cell_001', 'cell_002'])
     
-    subset_raw (bool):  
-        Generally any subsetting of `AnnData` object does not affect the raw data 
-        stored in `adata.raw`. Pass `True` to apply the same transformations to 
-        `adata.raw` as well. The default is True.
+        # Example 3: Remove metadata columns from adata.obs
+        adata = dropFeatures(adata, drop_meta_columns=['Batch', 'Condition'])
+    
+        # Example 4: Exclude specific groups from a categorical column in adata.obs
+        adata = dropFeatures(adata, drop_groups=['B cell', 'NK cell'], groups_column='Cell_Type')
+        
+        ```
 
-Returns  
-
-    adata : Modified `adata` object
-
-Example
-
-```python
-
-# Drop certain genes 
-drop_markers = ['ELANE', 'CD57']
-adata = sm.hl.dropFeatures (adata, drop_markers=drop_markers)
-
-# Drop a few cells
-drop_cells = ['unmicst-exemplar-001_cell_1', 'unmicst-exemplar-001_cell_2','unmicst-exemplar-001_cell_3']
-adata = sm.hl.dropFeatures (adata, drop_cells=drop_cells)
-
-# Drop a few columns from `adata.obs`
-drop_meta_columns = ['ROI', 'shapes']
-adata = sm.hl.dropFeatures (adata, drop_meta_columns=drop_meta_columns)
-
-# Drop two cell-types from the 'phenotype' column
-drop_groups = ['Unknown', 'Treg']
-adata = sm.hl.dropFeatures (adata, drop_groups=drop_groups, groups_column = 'phenotype')
-
-```
     """
     
     # Drop Markers
