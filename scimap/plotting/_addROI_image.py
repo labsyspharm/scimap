@@ -18,8 +18,8 @@
       
     It's crucial that each ROI is unique and non-overlapping to maintain data integrity. 
       
-    Additionally, this tool serves as a valuable quality control (QC) step, allowing 
-    users to mark regions of varying quality for selective inclusion or exclusion in subsequent analyses.
+    *Additionally, this tool serves as a valuable quality control (QC) step, allowing 
+    users to mark regions of varying quality for selective inclusion or exclusion in subsequent analyses.*
         
 ## Function
 """
@@ -135,10 +135,10 @@ Example:
     ```python
     
     # Add ROIs to an image with specific overlays
-    addROI_image(image_path='/path/to/image.ome.tif', adata=adata, overlay='cell_type', label='Detailed_ROI')
+    sm.pl.addROI_image(image_path='/path/to/image.ome.tif', adata=adata, overlay='cell_type', label='Detailed_ROI')
 
     # Add ROIs with segmentation masks and specific overlay categories
-    addROI_image(image_path='/path/to/image.ome.tif', adata=adata, seg_mask='/path/to/seg_mask.tif',
+    sm.pl.addROI_image(image_path='/path/to/image.ome.tif', adata=adata, seg_mask='/path/to/seg_mask.tif',
                  overlay='phenotype', overlay_category=['Tumor', 'Stroma'], label='Cancer_Tissue_ROI')
 
 

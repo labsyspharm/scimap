@@ -67,13 +67,13 @@ Example:
         ```python
         
         # Example 1: Merge AnnData objects already loaded in memory
-        combined_adata = merge_adata_obs(adata_list=[adata1, adata2])
+        combined_adata = sm.hl.merge_adata_obs(adata_list=[adata1, adata2])
     
         # Example 2: Merge AnnData objects from file paths
-        combined_adata = merge_adata_obs(adata_list=['./data/adata1.h5ad', './data/adata2.h5ad'])
+        combined_adata = sm.hl.merge_adata_obs(adata_list=['./data/adata1.h5ad', './data/adata2.h5ad'])
     
         # Example 3: Merge AnnData objects and save the combined object to a specified directory
-        combined_adata = merge_adata_obs(adata_list=[adata1, adata2], output_dir='./merged_data')
+        combined_adata = sm.hl.merge_adata_obs(adata_list=[adata1, adata2], output_dir='./merged_data')
         
         ```
     """

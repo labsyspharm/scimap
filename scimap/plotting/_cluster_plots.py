@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 !!! abstract "Short Description"
-    `sm.pl.cluster_plots`: A quick meta function that outputs umap plots, heatmap of the expression matrix
-    and ranked makers for each group provided by the user (generally run after using the `sm.tl.cluster` function)
+    `sm.pl.cluster_plots`: This versatile function streamlines the visualization 
+    process by generating UMAP plots, heatmaps of the expression matrix, and 
+    lists of ranked marker genes for each user-defined group, typically following 
+    clustering analysis via `sm.tl.cluster`. It offers a comprehensive overview of 
+    clustering results, facilitating the exploration of spatial patterns, 
+    molecular profiles, and key markers distinguishing each cluster.
 
 ## Function
 """
@@ -55,39 +59,54 @@ def main(argv=sys.argv):
     cluster_plots(**vars(args))
 
 # Function
-def cluster_plots (adata, group_by, subsample=100000, palette ='viridis', 
+def cluster_plots (adata, 
+                   group_by, 
+                   subsample=100000, 
+                   palette ='viridis', 
                    use_raw=False,
                    size=None, output_dir=None):
     """
 Parameters:
-    adata : AnnData object loaded into memory or path to AnnData object.
+        adata (anndata.AnnData):  
+            The annotated data matrix.
 
-    group_by (string):  
-        Name of the categorical column that contains the clustering results.
-    
-    subsample (string):  
-        Subsample number of observations.
-    
-    palette (string):  
-        Colors to use for plotting categorical annotation groups.
-    
-    size (string):  
-        Point size of UMAP plot.
-    
-    use_raw (string):   
-        Use `.raw` attribute of adata for coloring the matrixplot expression matrix.
-        
-    output_dir (string):  
-        Path to output directory.
+        group_by (str):  
+            The column name in `adata.obs` that contains the clustering labels to visualize.
+
+        subsample (int, optional):  
+            The number of cells to randomly subsample from the dataset for visualization to enhance performance. 
+            Default is 100000. If set to None, no subsampling is performed.
+
+        palette (str, optional):  
+            The name of a matplotlib colormap to use for coloring clusters. Default is 'viridis'.
+
+        use_raw (bool, optional):  
+            If True, uses the `.raw` attribute of `adata` for extracting expression data for the matrix plot. 
+            Default is False.
+
+        size (int, optional):  
+            The size of the points in the UMAP plot. Default is 40.
+
+        output_dir (str, optional):  
+            The directory where the plots should be saved. If not specified, plots are shown but not saved.
 
 Returns:
-    plots :   
-        UMAP, matrixplot and ranked makers per group.
-        
+        plots (matplotlib):  
+            The function does not return a value but generates and optionally saves the specified plots.
+
 Example:
-```python
-    sm.pl.cluster_plots (adata, group_by='spatial_kmeans')
-```
+    ```python
+    
+    # Generate cluster plots using default settings
+    sm.pl.cluster_plots(adata, group_by='leiden')
+
+    # Generate cluster plots with a custom palette and subsampling
+    sm.pl.cluster_plots(adata, group_by='leiden', palette='plasma', subsample=50000)
+
+    # Generate cluster plots without subsampling, using raw data, and save them to a directory
+    sm.pl.cluster_plots(adata, group_by='leiden', subsample=None, use_raw=True, output_dir='./cluster_plots')
+    
+    ```
     """
     
     # Load the data 
