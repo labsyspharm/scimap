@@ -41,7 +41,7 @@ def phenotype_cells (adata,
     """
     
 Parameters:
-    adata (AnnData):  
+    adata (anndata.AnnData):  
         The input AnnData object containing single-cell data for phenotyping.
 
     phenotype (pd.DataFrame):  
@@ -66,7 +66,7 @@ Parameters:
         If set to `True`, the function will print detailed messages about its progress and the steps being executed.
 
 Returns:
-    AnnData:  
+    adata (anndata.AnnData):  
         The input AnnData object, updated to include the phenotype classifications for each cell. The phenotyping results can be found in `adata.obs[label]`, where `label` is the name specified by the user for the phenotype column.
 
 Example:    

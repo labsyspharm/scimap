@@ -4,8 +4,11 @@
 # @author: Ajit Johnson Nirmal 
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_cluster`: This function allows users to cluster the spatial neighbourhood matrix 
-    genereated by either `sm.tl.spatial_expression`, `sm.tl.spatial_count`, `sm.tl.spatial_lda` etc.
+    `sm.tl.spatial_cluster`: This function clusters cells based on their spatial 
+    neighborhood matrices, which can be derived from analyses such as `sm.tl.spatial_expression`, 
+    `sm.tl.spatial_count`, or `sm.tl.spatial_lda`. By leveraging various clustering algorithms, 
+    including k-means, phenograph, and leiden, it enables the identification of spatially 
+    coherent cell groups or microenvironments within tissue sections.
 
 ## Function
 """
@@ -62,6 +65,10 @@ def main(argv=sys.argv):
         help='Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].'
     )
     parser.add_argument(
+        '--verbose', required=False, default=True,
+        help='The function will print detailed messages about its progress.'
+    )
+    parser.add_argument(
         '--output_dir', type=str, required=False, default=None,
         help='Path to output directory.'
     )
@@ -71,64 +78,75 @@ def main(argv=sys.argv):
 
 
 # Function
-def spatial_cluster (adata, df_name='spatial_count', method = 'kmeans',k=10,
-                     n_pcs=None, resolution=1, phenograph_clustering_metric='euclidean', 
-                     nearest_neighbors=30, random_state=0,label=None, output_dir=None):
+def spatial_cluster (adata, 
+                     df_name='spatial_count', 
+                     method = 'kmeans',
+                     k=10,
+                     n_pcs=None, 
+                     resolution=1, 
+                     phenograph_clustering_metric='euclidean', 
+                     nearest_neighbors=30, 
+                     random_state=0,
+                     label=None, 
+                     verbose=True,
+                     output_dir=None):
     """
     
 
 Parameters:
-    adata : AnnData object loaded into memory or path to AnnData object.
-    
-    df_name (string):  
-        Label of the spatial analysis performed.
-        By default if `sm.tl.spatial_count` was run the results will be saved under `spatial_count` and
-        if `sm.tl.spatial_expression` was run, the results will be saved under `spatial_expression`.
-
-    method (string):  
-        Clustering method to be used- Implemented methods- kmeans, phenograph and leiden.
-
-    k (int):  
-        Number of clusters to return when using K-Means clustering.
-
-    phenotype (string):  
-        The column name that contains the cluster/phenotype information.
-
-    n_pcs (int):  
-        Number of PC's to be used in leiden clustering. By default it uses all PC's.
-
-    resolution (float):  
-        A parameter value controlling the coarseness of the clustering. 
-        Higher values lead to more clusters.
-
-    phenograph_clustering_metric (string):  
-        Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. 
-        Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’, 
-        ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, 
-        ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
-
-    nearest_neighbors (int):  
-        Number of nearest neighbors to use in first step of graph construction. 
-        This parameter is used both in leiden and phenograph clustering.
-
-    random_state (int):  
-        Change the initialization of the optimization.
-
-    label (string):  
-        Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [spatial_method used].
-    
-    output_dir (string):  
-        Path to output directory.
+        adata (anndata.AnnData):  
+            Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
+        
+        df_name (str):  
+            Specifies the label of the spatial analysis results to use for clustering. Default options are 'spatial_count' and 'spatial_expression'.
+        
+        method (str):  
+            The clustering method to apply. Supported methods include 'kmeans', 'phenograph', and 'leiden'.
+        
+        k (int):  
+            Number of clusters to form when using K-Means clustering. Applies only if method='kmeans'.
+        
+        n_pcs (int, optional):  
+            Number of principal components to use in 'leiden' clustering. If None, all components are used.
+        
+        resolution (float):  
+            Controls the granularity of clustering. Higher values lead to more clusters. Applies to 'leiden' and 'phenograph'.
+        
+        phenograph_clustering_metric (str):  
+            The metric for defining nearest neighbors in 'phenograph' clustering. Choices include 'euclidean', 'manhattan', 'cosine', etc.
+        
+        nearest_neighbors (int):  
+            Number of nearest neighbors to consider in the graph construction step, for 'leiden' and 'phenograph'.
+        
+        random_state (int):  
+            Seed for random number generation, ensuring reproducible results.
+        
+        label (str, optional):  
+            Custom label for storing results in `adata.obs`. Defaults to method name (e.g., 'spatial_kmeans').
+        
+        verbose (bool):  
+        If set to `True`, the function will print detailed messages about its progress and the steps being executed.
+        
+        output_dir (str, optional):  
+            Directory path for saving output files. If None, results are not saved to disk.
 
 Returns:
-    adata : AnnData Object  
-        Returns an updated anndata object with a new column. check- adata.obs [spatial_method used]
-        
+        adata (anndata.AnnData):  
+            The input `adata` object updated with clustering results in `adata.obs[label]`.
+
 Example:
-```python
-    adata = sm.tl.spatial_cluster (adata, k= 10, method = 'kmeans') # results will be saved under adata.obs['spatial_kmeans']
-```
+    ```python
+    # Apply K-Means clustering
+    adata = sm.tl.spatial_cluster(adata, df_name='spatial_count', method='kmeans', k=10, label='cluster_kmeans')
+
+    # Apply Leiden clustering with specific resolution and principal components
+    adata = sm.tl.spatial_cluster(adata, df_name='spatial_expression', method='leiden', resolution=0.5, n_pcs=20, label='cluster_leiden')
+
+    # Apply Phenograph clustering with a specific metric and nearest neighbors
+    adata = sm.tl.spatial_cluster(adata, df_name='spatial_lda', method='phenograph', phenograph_clustering_metric='manhattan', nearest_neighbors=15, label='cluster_phenograph')
+    ```
     """
+    
 
     # Load the andata object    
     if isinstance(adata, str):
