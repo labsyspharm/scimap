@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 """
 !!! abstract "Short Description"
-    `sm.pl.merge_adata_obs`: The function allows users to combine multiple anndata objects that are from the same image or dataset 
-    but differ in the stored metadata `.obs`. For example, multiple clustering methods could have been run in parallel
-    leading to generation of multiple anndata objects. This allows to merge them togeather into a single object. Please
-    note this cannot be used to merge anndata objects from different images/ datasets. 
+    `sm.pl.merge_adata_obs`: This function is designed to consolidate multiple AnnData 
+    objects originating from the same image or dataset into a single cohesive unit. 
+    It is particularly useful when each object contains distinct metadata in `.obs`, 
+    such as results from various clustering algorithms executed in parallel. 
+    By merging these objects, users can streamline analyses and comparisons within 
+    a unified framework. It's important to note that this function is intended for 
+    merging objects from the same source and may not be suitable for combining 
+    data across different images or datasets.
 
 ## Function
 """
@@ -35,28 +39,43 @@ def main(argv=sys.argv):
     
     
 
-def merge_adata_obs (adata, output_dir=None):
+def merge_adata_obs (adata, 
+                     output_dir=None,
+                     verbose=True):
     
     
     """
 Parameters:
-    adata : List of AnnData object loaded into memory or list of path to AnnData object.
+        adata_list (list of anndata.AnnData or list of str):  
+            A list containing AnnData objects to be merged or paths to AnnData files. 
+            Each item in the list should either be an AnnData object already loaded into memory 
+            or a string representing the path to an AnnData file.
+
+        output_dir (str, optional):  
+            The directory where the merged AnnData object should be saved. 
+            If specified, the merged object is saved to this directory as 'merged_adata.h5ad'.
+            If not specified, the merged AnnData object is not automatically saved to disk.
         
-    output_dir (string):  
-        Path to output directory.
+        verbose (bool, optional):  
+            If True, prints messages about the renaming process. 
 
 Returns:
-    AnnData :   
-        Combined anndata object.
-        
+        adata (anndata.AnnData):  
+            A single AnnData object resulting from the merger of input AnnData objects or files.
+
 Example:
-```python
-    # combining multiple anndata objects in memory
-    adata = sm.hl.merge_adata_obs (adata = [bdata, cdata])
+        ```python
+        
+        # Example 1: Merge AnnData objects already loaded in memory
+        combined_adata = merge_adata_obs(adata_list=[adata1, adata2])
     
-    # combining multiple anndata objects by providing their saved loaction
-    adata = sm.hl.merge_adata_obs (adata = ['path to bdata.h5ad', 'path to cdata.h5ad'])
-```
+        # Example 2: Merge AnnData objects from file paths
+        combined_adata = merge_adata_obs(adata_list=['./data/adata1.h5ad', './data/adata2.h5ad'])
+    
+        # Example 3: Merge AnnData objects and save the combined object to a specified directory
+        combined_adata = merge_adata_obs(adata_list=[adata1, adata2], output_dir='./merged_data')
+        
+        ```
     """
     
     #adata = ["/Users/aj/Downloads/mcmicro_output.h5ad", "/Users/aj/Downloads/mcmicro_output_1.h5ad"]

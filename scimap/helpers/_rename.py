@@ -37,7 +37,7 @@ Parameters:
             The name of the new column in `adata.obs` where the renamed categories will be stored. Defaults to 'phenotype_renamed'.
 
         verbose (bool, optional):  
-            If True, prints messages about the renaming process. Defaults to True.
+            If True, prints messages about the renaming process. 
 
 Returns:
         adata (anndata.AnnData):  
