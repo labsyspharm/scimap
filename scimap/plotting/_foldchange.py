@@ -4,8 +4,12 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.pl.foldchange`: The Function allows users to visualize foldchange in abundance of celltypes between samples/ROI's. 
-    Run `sm.tl.foldchange` first to compute the foldchange.
+    `sm.pl.foldchange`: This function facilitates the visualization of fold changes in cell type 
+    abundance across samples or Regions of Interest (ROIs), offering insights into differential 
+    expression or abundance patterns. It is designed to work with data processed by `sm.tl.foldchange`, 
+    which should be executed beforehand to calculate the fold changes. Through heatmap or parallel 
+    coordinates presentations, users can effectively interpret variations, highlighting significant 
+    shifts and guiding further analyses.
 
 ## Function
 """
@@ -19,93 +23,92 @@ from pandas.plotting import parallel_coordinates
 sns.set_style("white")
 
 # Function
-def foldchange (adata, label='foldchange', 
-                p_val=0.05, nonsig_color='grey',subset_xaxis=None,subset_yaxis=None,
-                cmap = 'vlag', log=True,center=0, 
-                method='heatmap', invert_axis=None,
-                parallel_coordinates_color=None,matplotlib_bbox_to_anchor=(1.04,1),
-                matplotlib_legend_loc='upper left',xticks_rotation=90,
+def foldchange (adata, 
+                label='foldchange', 
+                p_val=0.05, 
+                nonsig_color='grey',
+                subset_xaxis=None,
+                subset_yaxis=None,
+                cmap = 'vlag', 
+                log=True,
+                center=0, 
+                method='heatmap', 
+                invert_axis=None,
+                parallel_coordinates_color=None,
+                matplotlib_bbox_to_anchor=(1.04,1),
+                matplotlib_legend_loc='upper left',
+                xticks_rotation=90,
                 return_data = False,
                 **kwargs):
     """
 Parameters:
-    adata : Anndata object
+        adata (anndata.AnnData):  
+            The annotated data matrix with fold change calculations.
 
-    label (strong):  
-        label used when running `sm.tl.foldchange`.
+        label (str):  
+            Label key from `adata.uns` indicating the fold change data to visualize.
 
-    p_val (float):  
-        p_val cut-off above which is considered not-significant. The cells containing
-        non-significant changes will be highlighted in the heatmap.
+        p_val (float):  
+            P-value threshold for significance; values above this threshold are considered non-significant.
 
-    nonsig_color (string):  
-        Color used to highlight non-significant fold changes in the heatmap.
+        nonsig_color (str):  
+            Color for non-significant changes in the visualization.
 
-    subset_xaxis (list):  
-        Subset x-axis before plotting. Pass in a list of categories. eg- subset_xaxis = ['CelltypeA', 'CellTypeB']. 
+        subset_xaxis (list, optional):  
+            Categories to include from the x-axis for plotting.
 
-    subset_yaxis (list):  
-        Subset y-axis before plotting. Pass in a list of categories. eg- subset_yaxis = ['ROI_1', 'ROI_5']. 
+        subset_yaxis (list, optional):  
+            Categories to include from the y-axis for plotting.
 
-    cmap (string):  
-        Color map. Can be a name or a Colormap instance (e.g. 'magma', 'viridis').
+        cmap (str):  
+            Colormap for the heatmap visualization.
 
-    log (bool):  
-        Convert foldchange to log2 scale.
+        log (bool):  
+            If True, fold changes are converted to log2 scale for visualization.
 
-    center (float):  
-        The center value to be used in heatmap.
+        center (float):  
+            The value at which the colormap is centered.
 
-    method (string):  
-        Two methods are available for plotting the foldchanges  
-        a) Heatmap: Use `heatmap`  
-        b) parallel coordinates plot : Use `parallel_coordinates`  
+        method (str):  
+            Plotting method, either 'heatmap' for a heatmap or 'parallel_coordinates' for a parallel coordinates plot.
 
-    invert_axis (bool):  
-        Flip the axis of the plot.
+        invert_axis (bool, optional):  
+            If True, inverts the x and y axes in the plot. Default is False.
 
-    parallel_coordinates_color (list): 
-        Custom colors for each category.
+        parallel_coordinates_color (list, optional):  
+            Specifies custom colors for parallel coordinates plot.
 
-    matplotlib_bbox_to_anchor (tuple):  
-        Bounding box argument used along with matplotlib_legend_loc to control
-        the legend location when using the matplotlib method.
+        matplotlib_bbox_to_anchor (tuple):  
+            Adjusts the legend position in parallel coordinates plot.
 
-    matplotlib_legend_loc (TYPE):  
-        Location of legend used along with matplotlib_bbox_to_anchor to control
-        the legend location when using the matplotlib method.
+        matplotlib_legend_loc (str):  
+            Specifies the location of the legend.
 
-    xticks_rotation (int):  
-        Angle the x-axis ticks.
+        xticks_rotation (int):  
+            Rotation angle for x-axis tick labels.
 
-    return_data (bool):  
-        Return the final data used for plotting.
-
-    **kwargs : Additional keyword arguments passed to:  
-        a) sns.clustermap  
-        b) pandas.parallel_coordinates  
+        return_data (bool):  
+            If True, returns the data frame used for plotting instead of the plot.
 
 Returns:
-    Plot:  
-        Data used for the plot if `return_data = True`
-    
+    Dataframe/ plot (pandas, matplotlib):  
+        If `return_data` is True, returns a pandas DataFrame used for plotting. Otherwise, displays the plot.
+
 Example:
-```python
-    # Heatmap of foldchnage  
-    sm.pl.foldchange (adata, label='foldchange', method='heatmap',
-                     p_val=0.05, nonsig_color='grey',
-                     cmap = 'vlag', log=True, center=0, linecolor='black',linewidths=0.7,
-                     vmin=-5, vmax=5, row_cluster=False)
+    ```python
     
-    # Parallel_coordinates plot of the foldchanges
-    foldchange (adata, label='foldchange', 
-                log=True, method='parallel_coordinates', invert_axis=True,
-                parallel_coordinates_color=['black','blue','green','red','#000000'],
-                matplotlib_bbox_to_anchor=(1.04,1),
-                matplotlib_legend_loc='upper left',
-                xticks_rotation=90,
-                return_data = False
-```
+    # Generate a heatmap of fold changes with custom settings
+    sm.pl.foldchange(adata, label='foldchange', method='heatmap', cmap='coolwarm', log=True,
+                     p_val=0.05, nonsig_color='lightgrey', xticks_rotation=45)
+
+    # Create a parallel coordinates plot to visualize fold changes across groups
+    sm.pl.foldchange(adata, label='foldchange', method='parallel_coordinates', log=True,
+                     parallel_coordinates_color=['red', 'blue', 'green'], invert_axis=True)
+
+    # Return the data frame used for fold change visualization
+    df_foldchange = sm.pl.foldchange(adata, label='foldchange', return_data=True)
+    
+    ```
     """
         
     # set color for heatmap
