@@ -74,6 +74,7 @@ nav:
             - rename: 'Functions/hl/rename.md'
             - addROI_omero: 'Functions/hl/addROI_omero.md'
             - dropFeatures: 'Functions/hl/dropFeatures.md'
+            - merge_adata_obs: 'Functions/hl/merge_adata_obs.md'
             - animate: 'Functions/hl/animate.md'
             - scimap_to_csv: 'Functions/hl/scimap_to_csv.md'
     - Tutorials:
