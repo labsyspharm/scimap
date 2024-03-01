@@ -4,11 +4,12 @@
 
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_similarity_search`: The function allows users to identify regions within a image 
-    that are similar to a user defined region based on the underlying molecular profile.
-
-    The result is saved within `adata.obs`. The user can visualize the results on the image using
-    `sm.pl.image_viewer` and then modify the `similarity_threshold` parameter to attain the best redults. 
+    `sm.tl.spatial_similarity_search`: This function enables the discovery of regions 
+    within spatial datasets that resemble a specified region of interest (ROI) 
+    in terms of molecular characteristics. Outcomes are stored in `adata.obs`, 
+    facilitating subsequent visualization with `sm.pl.image_viewer`. 
+    Users can iteratively adjust the `similarity_threshold` to refine results, 
+    optimizing the identification of molecularly similar areas.
 
 ## Function
 """
@@ -107,16 +108,16 @@ Example:
         ```python
         
         # Basic spatial similarity search within a specific ROI using radius method
-        adata = spatial_similarity_search(adata, ROI_column='Tumor_ROI', similarity_threshold=0.6,
+        adata = sm.tl.spatial_similarity_search(adata, ROI_column='Tumor_ROI', similarity_threshold=0.6,
                                           ROI_subset=['Tumor_ROI_1'], method='radius', radius=40,
                                           label='tumor_similarity')
     
         # Adjusting similarity threshold and reusing similarity matrix
-        adata = spatial_similarity_search(adata, ROI_column='Tumor_ROI', similarity_threshold=0.8,
+        adata = sm.tl.spatial_similarity_search(adata, ROI_column='Tumor_ROI', similarity_threshold=0.8,
                                           reuse_similarity_matrix='tumor_similarity', label='tumor_similarity_adjusted')
     
         # Incorporating morphological features in similarity search
-        adata = spatial_similarity_search(adata, ROI_column='Immune_ROI', similarity_threshold=0.5,
+        adata = sm.tl.spatial_similarity_search(adata, ROI_column='Immune_ROI', similarity_threshold=0.5,
                                           morphological_features=['Area', 'MajorAxisLength'],
                                           use_only_morphological_features=True, label='immune_similarity_morph')
         

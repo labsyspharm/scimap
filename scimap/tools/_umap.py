@@ -16,70 +16,68 @@ import numpy as np
 
 
 # function
-def umap (adata, use_layer=None, use_raw=False, log=False,
-          n_neighbors=15, n_components=2, metric='euclidean',min_dist=0.1, random_state=0, 
+def umap (adata, 
+          use_layer=None, 
+          use_raw=False, 
+          log=False,
+          n_neighbors=15, 
+          n_components=2, 
+          metric='euclidean',
+          min_dist=0.1, 
+          random_state=0, 
           label='umap', **kwargs):
     """
 Parameters:
-
-    adata : AnnData Object  
-    
-    use_layer : string, optional  
-        Pass name of any `Layer` in AnnData. The default is `None` and `adata.X` is used.
-        
-    use_raw : bool, optional  
-        If set to `True`, values in `adata.raw.X` will be used. The default is False.
-        
-    log : bool, optional  
-        If set to `True`, the data will natural log transformed using `np.log1p()`. The default is False.
-        
-    n_neighbors : int, optional  
-        The size of local neighborhood (in terms of number of neighboring sample points) 
-        used for manifold approximation. Larger values result in more global views of the manifold, 
-        while smaller values result in more local data being preserved. In general 
-        values should be in the range 2 to 100. The default is 15.
-        
-    n_components : int, optional  
-        The dimension of the space to embed into. This defaults to 2 to provide easy visualization, 
-        but can reasonably be set to any integer value in the range 2 to 100. The default is 2.
-        
-    metric : TYPE, optional  
-        The metric to use to compute distances in high dimensional space. 
-        Check `https://umap-learn.readthedocs.io/en/latest/api.html` for all available 
-        options. The default is 'euclidean'.
-        
-    min_dist : float, optional  
-        The effective minimum distance between embedded points. Smaller values will 
-        result in a more clustered/clumped embedding where nearby points on the manifold 
-        are drawn closer together, while larger values will result on a more even 
-        dispersal of points. The value should be set relative to the spread value, 
-        which determines the scale at which embedded points will be spread out. The default is 0.1.
-        
-    random_state : int, optional  
-        If int, random_state is the seed used by the random number generator; 
-        If RandomState instance, random_state is the random number generator; 
-        If None, the random number generator is the RandomState instance used by np.random. The default is 0.
-        
-    label : string, optional  
-        Key used to save the embeddings. 
-        Check `adata.obsm[label]` for results. The default is 'umap'.
-    
-    **kwargs : Other `umap` parameters. Check `https://umap-learn.readthedocs.io/en/latest/api.html`  
+        adata (anndata.AnnData):  
+            Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
+            
+        use_layer (str, optional):  
+            Specifies a layer in `adata.layers` for UMAP. Defaults to using `adata.X`.
+            
+        use_raw (bool, optional):  
+            Whether to use `adata.raw.X` for the analysis.
+            
+        log (bool, optional):  
+            Applies natural log transformation to the data if `True`.
+            
+        n_neighbors (int, optional):  
+            Number of neighboring points used in manifold approximation.
+            
+        n_components (int, optional):  
+            Dimensionality of the target embedding space.
+            
+        metric (str, optional):  
+            Metric used to compute distances in high-dimensional space.
+            
+        min_dist (float, optional):  
+            Effective minimum distance between embedded points.
+            
+        random_state (int, optional):  
+            Seed used by the random number generator for reproducibility.
+            
+        label (str, optional):  
+            Key for storing UMAP results in `adata.obsm`.
 
 Returns:
+        adata (anndata.AnnData):  
+            The input `adata` object, updated with UMAP embedding results in `adata.obsm[label]`.
 
-    adata : Modified AnnData object
-        Embedding stored in `adata.obsm[label]`.
-    
 Example:
-```python
-# Run UMAP
-adata = sm.tl.umap(adata)
+        ```python
+        
+        # Basic UMAP reduction
+        adata = umap(adata, n_neighbors=15, min_dist=0.1, label='umap_basic')
     
-# plot results
-sm.pl.umap(adata)
-```
-
+        # UMAP using specific layer and log transformation
+        adata = umap(adata, use_layer='counts', log=True, n_neighbors=30, min_dist=0.05, label='umap_layer_log')
+    
+        # UMAP with a different metric and higher dimensionality
+        adata = umap(adata, metric='manhattan', n_components=3, n_neighbors=50, label='umap_manhattan_3d')
+        
+        # plot results
+        sm.pl.umap(adata)
+        
+        ```
     """
 
     # adata_layer=None;use_raw=False;log=False;n_neighbors=15;n_components=2;metric='euclidean';min_dist=0.1;
