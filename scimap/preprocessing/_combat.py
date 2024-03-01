@@ -53,7 +53,6 @@ Returns:
         The corrected expression data is stored in a new layer `adata.layers['combat']`.
 
 Examples:
-
     ```python
 
     # applying batch correction using raw data

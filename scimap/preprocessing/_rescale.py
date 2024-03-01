@@ -28,32 +28,33 @@ def rescale (adata,
              imageid='imageid', 
              failed_markers=None,
              method='all',
+             verbose=True,
              random_state=0):
     """
 Parameters:
-    adata (AnnData Object):  
+    adata (AnnData Object, required):  
         An annotated data object that contains single-cell expression data.
 
     gate (DataFrame, optional):   
-        A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values for each image in the dataset. Column names must correspond to unique `imageid` identifiers. If a single column of gate values is provided for a dataset with multiple images, the same gate will be uniformly applied to all. If no gates are provided for specific markers, the function attempts to automatically determine gates using a Gaussian Mixture Model (GMM). Defaults to None.
+        A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values for each image in the dataset. Column names must correspond to unique `imageid` identifiers. If a single column of gate values is provided for a dataset with multiple images, the same gate will be uniformly applied to all. If no gates are provided for specific markers, the function attempts to automatically determine gates using a Gaussian Mixture Model (GMM). 
         
     log (bool, optional):  
-        If True, the data in `adata.raw.X` will be log-transformed (using log1p) before gate application. This transformation is recommended when automatic gate identification through GMM is performed, as it helps in normalizing data distributions. Defaults to True.
+        If `True`, the data in `adata.raw.X` will be log-transformed (using log1p) before gate application. This transformation is recommended when automatic gate identification through GMM is performed, as it helps in normalizing data distributions. 
         
     imageid (str, optional):  
-        The name of the column in `adata` that contains Image IDs. This is necessary for matching manual gates specified in the `gate` DataFrame to their respective images. Defaults to 'imageid'.
+        The name of the column in `adata` that contains Image IDs. This is necessary for matching manual gates specified in the `gate` DataFrame to their respective images. 
         
     failed_markers (dict, optional):  
-        A dictionary mapping `imageid` to markers that failed quality control. This allows for the exclusion of specific markers from the analysis based on prior visual inspection or other criteria. The dictionary can use 'all' as a key to specify markers that failed across all images. Defaults to None.
+        A dictionary mapping `imageid` to markers that failed quality control. This allows for the exclusion of specific markers from the analysis based on prior visual inspection or other criteria. The dictionary can use `all` as a key to specify markers that failed across all images. 
         
     method (str, optional):  
-        Specifies the gating strategy: 'all' to pool data from all images for GMM application, or 'by_image' to apply GMM separately for each image. 'all' may introduce batch effects, while 'by_image' requires sufficient variation within each image to distinguish negative from positive populations effectively. Defaults to 'by_image'.
+        Specifies the gating strategy: `all` to pool data from all images for GMM application, or `by_image` to apply GMM separately for each image. `all` may introduce batch effects, while `by_image` requires sufficient variation within each image to distinguish negative from positive populations effectively. 
         
     random_state (int, optional):  
-        The seed used by the random number generator for GMM. Ensures reproducibility of results. Defaults to 0.
+        The seed used by the random number generator for GMM. Ensures reproducibility of results.
 
     verbose (bool, optional):  
-        If True, detailed progress updates and diagnostic messages will be printed during the function's execution. This is useful for tracking the processing stages and debugging. Defaults to False.
+        If `True`, detailed progress updates and diagnostic messages will be printed during the function's execution.
 
 Returns:
     Modified AnnData Object (AnnData):  
@@ -64,14 +65,14 @@ Example:
     
     # Example with manual gates
     manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]}) 
-    adata = sm.pp.rescale(adata, gate=manual_gate, failed_markers={'all': ['CD20', 'CD21']}, verbose=True)
+    adata = sm.pp.rescale(adata, gate=manual_gate, failed_markers={'all': ['CD20', 'CD21']})
         
     # Importing gates from a CSV
     manual_gate = pd.read_csv('manual_gates.csv')
-    adata = sm.pp.rescale(adata, gate=manual_gate, failed_markers={'all': ['CD20', 'CD21']}, verbose=True)
+    adata = sm.pp.rescale(adata, gate=manual_gate, failed_markers={'all': ['CD20', 'CD21']})
         
     # Running without manual gates to use GMM for automatic gate determination
-    adata = sm.pp.rescale(adata, gate=None, failed_markers={'all': ['CD20', 'CD21']}, verbose=True)
+    adata = sm.pp.rescale(adata, gate=None, failed_markers={'all': ['CD20', 'CD21']})
     
     ```
 
@@ -84,8 +85,8 @@ Example:
         adata.raw = adata
     
     # Mapping between markers and gates in the given dataset
-    dataset_markers = list(adata.var.index)
-    dataset_images = list(adata.obs[imageid].unique())
+    dataset_markers = adata.var.index.tolist()
+    dataset_images = adata.obs[imageid].unique().tolist()    
     m= pd.DataFrame(index=dataset_markers, columns=dataset_images).reset_index()
     m= pd.melt(m, id_vars=[m.columns[0]])
     m.columns = ['markers', 'imageid', 'gate']
@@ -106,7 +107,8 @@ Example:
     
     # Addressing failed markers
     def process_failed (adata_subset, foramted_failed_markers):
-        print('Processing Failed Marker in ' + str(adata_subset.obs[imageid].unique()[0]))
+        if verbose:
+            print('Processing Failed Marker in ' + str(adata_subset.obs[imageid].unique()[0]))
         # prepare data
         data_subset = pd.DataFrame(adata_subset.raw.X, columns=adata_subset.var.index, index=adata_subset.obs.index)
         if log is True:
@@ -178,7 +180,8 @@ Example:
             
     # Find GMM based gates
     def gmm_gating (marker, data):
-        print('Finding the optimal gate by GMM for ' + str(marker))
+        if verbose:
+            print('Finding the optimal gate by GMM for ' + str(marker))
         data_gm = data[marker].values.reshape(-1, 1)
         gmm = GaussianMixture(n_components=2, random_state=random_state).fit(data_gm)
         gate = np.mean(gmm.means_)
@@ -186,7 +189,8 @@ Example:
     
     # Running gmm_gating on the dataset
     def gmm_gating_internal (adata_subset, gate_mapping, method):
-        print('GMM for ' + str(adata_subset.obs[imageid].unique()))
+        if verbose:
+            print('GMM for ' + str(adata_subset.obs[imageid].unique()))
         data_subset = pd.DataFrame(adata_subset.raw.X, columns=adata_subset.var.index, index=adata_subset.obs.index)      
         # find markers
         if method == 'all':
@@ -240,7 +244,8 @@ Example:
     
     # Rescaling function
     def data_scaler (adata_subset, gate_mapping):
-        print('Scaling Image ' + str(adata_subset.obs[imageid].unique()[0]))
+        if verbose:
+            print('Scaling Image ' + str(adata_subset.obs[imageid].unique()[0]))
         # Organise data
         data_subset = pd.DataFrame(adata_subset.raw.X, columns=adata_subset.var.index, index=adata_subset.obs.index)
         if log is True:
@@ -250,7 +255,8 @@ Example:
         
         # organise gates
         def data_scaler_internal (marker, gate_mapping_sub):
-            print('Scaling ' + str(marker))
+            if verbose:
+                print('Scaling ' + str(marker))
             # find the gate
             moi = gate_mapping_sub[gate_mapping_sub.markers == marker]['gate'].values[0]
             
@@ -338,6 +344,7 @@ if __name__ == '__main__':
     parser.add_argument('--imageid', type=str, default='imageid', help='The column containing the Image IDs')
     parser.add_argument('--failedmarkers', type=str, default=None, help='Markers that were deemed to have failed based on prior visual inspection')
     parser.add_argument('--method', type=str, default='all', help='Two avialble option are- all or by_image')
+    parser.add_argument('--verbose', type=bool, default=None, help='The function will print detailed messages about its progress')
     parser.add_argument('--randomstate', type=str, default=0, help='Seed for GMM. The default is 0')
     args = parser.parse_args()
     
