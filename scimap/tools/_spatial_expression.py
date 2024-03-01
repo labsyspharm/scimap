@@ -6,7 +6,7 @@
 """
 !!! abstract "Short Description"
     `sm.tl.spatial_expression`: This function generates a neighborhood weighted matrix from spatial data, integrating expression values to assess local cellular environments. 
-    
+      
     It employs two approaches for neighborhood definition:
 
     - **Radius Method**: Identifies neighbors within a specified radius, enabling analyses based on physical proximity.
@@ -157,7 +157,7 @@ Parameters:
     
     # Calculate spatial expression using a 30-pixel radius
     adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-                               method='radius', radius=30, use_raw=True,
+                               method='radius', radius=30, 
                                label='expression_radius_30')
 
     # Calculate spatial expression using 10 nearest neighbors
