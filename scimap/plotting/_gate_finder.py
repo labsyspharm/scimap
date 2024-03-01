@@ -66,16 +66,16 @@ Parameters:
             Specifies the layer in `adata` containing expression data. Defaults to 'raw' for `adata.raw.X`.
 
         log (bool, optional):
-            Applies log transformation to expression data if set to True. Defaults to True.
+            Applies log transformation to expression data if set to True. 
 
         from_gate (int, optional):
-            Starting gate threshold value for the marker of interest. Defaults to 6.
+            Starting gate threshold value for the marker of interest. 
 
         to_gate (int, optional):
-            Ending gate threshold value for the marker of interest. Defaults to 8.
+            Ending gate threshold value for the marker of interest. 
 
         increment (float, optional):
-            Incremental step size between `from_gate` and `to_gate`. Defaults to 0.1.
+            Incremental step size between `from_gate` and `to_gate`. 
 
         markers (list, optional):
             A list of additional markers to include in visualization for context.
@@ -90,16 +90,16 @@ Parameters:
             Columns in `adata.obs` specifying cell coordinates. Defaults are 'X_centroid' and 'Y_centroid'.
 
         point_size (int, optional):
-            Size of points in the visualization. Defaults to 10.
+            Size of points in the visualization. 
 
         imageid (str, optional):
-            Column in `adata.obs` identifying images for datasets with multiple images. Defaults to 'imageid'.
+            Column in `adata.obs` identifying images for datasets with multiple images. 
 
         subset (str, optional):
-            Specific image identifier for targeted analysis, typically an image ID. Defaults to None.
+            Specific image identifier for targeted analysis, typically an image ID. 
 
         seg_mask (str, optional):
-            Path to a segmentation mask file to overlay. Defaults to None.
+            Path to a segmentation mask file to overlay.
 
         **kwargs:
             Additional arguments passed to the visualization tool.

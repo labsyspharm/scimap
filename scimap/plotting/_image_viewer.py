@@ -4,8 +4,11 @@
 # @author: Ajit Johnson Nirmal, Yuan Chen
 """
 !!! abstract "Short Description"
-    `sm.pl.image_viewer`: The function allows users to open OME-TIFF images inside 
-    Napari and overlay any any categorical column such as cluster annotation or phenotypes.
+    `sm.pl.image_viewer`: This function enables users to view OME-TIFF images within 
+    the Napari viewer, offering the capability to overlay points based on any categorical 
+    column, such as cluster annotations or phenotypes. It provides a dynamic and interactive 
+    way to visually explore spatial distributions and relationships of cells directly 
+    on the source images, enriching the analysis with spatial context and insights.
 
 ## Function
 """
@@ -46,66 +49,63 @@ def image_viewer(
     **kwargs,
 ):
     """
-    Parameters:
+Parameters:
         image_path (str):  
-            Location to the image file (TIFF, OME.TIFF, ZARR supported)
+            Path to the image file. Supports TIFF, OME.TIFF, and ZARR formats.
 
-        seg_mask (str):  
-            Location to the segmentation mask file.
+        adata (anndata.AnnData):  
+            The annotated data matrix.
 
-        adata (Ann Data Object):
+        overlay (str, optional):  
+            Column in `adata.obs` containing categorical data for visualization, such as phenotypes or clusters.
 
-        flip_y (bool):  
-            Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
-            If the image overlays do not align to the cells, try again by setting this to `False`.
+        flip_y (bool, optional):  
+            If True, inverts the Y-axis to match image coordinates. 
 
-        overlay (str):  
-            Name of the column with any categorical data such as phenotypes or clusters.
+        overlay_category (list, optional):  
+            Specific categories within `overlay` to display. If None, all categories are shown.
 
-        overlay_category (list):  
-            If only specfic categories within the overlay column is needed, pass their names as a list.
-            If None, all categories will be used.
+        markers (list, optional):  
+            List of markers to include in the visualization. If None, all available markers are displayed.
 
-        markers (list):  
-            Markers to be included. If none, all markers will be displayed.
+        channel_names (list or str, optional):  
+            Specifies the order of channels in the image. Default uses all markers in `adata.uns['all_markers']`.
 
-        channel_names (list):  
-            List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
+        x_coordinate, y_coordinate (str, optional):  
+            Columns in `adata.obs` specifying cell coordinates. Default to 'X_centroid' and 'Y_centroid'.
 
-        x_coordinate (str):  
-            X axis coordinate column name in AnnData object.
+        point_size (int, optional):  
+            Size of the points in the visualization. 
 
-        y_coordinate (str):  
-            Y axis coordinate column name in AnnData object.
+        point_color (str or dict, optional):  
+            Color(s) for the points. Can specify a single color or a dictionary mapping categories to colors.
 
-        point_size (int):  
-            point size in the napari plot.
+        imageid (str, optional):  
+            Column in `adata.obs` identifying different images in the dataset. Useful for datasets with multiple images.
 
-        point_color (str, dict):  
-            The default behavior is to assign auto colors, but you can also provide
-            a color mapping using the point_color parameter. For instance, you can pass a
-            dictionary that maps color values to specific categories (provided in the `overlay` parameter).
-            Here is an example of such a color mapping: `point_color = {'cellTypeA': '#FFFFFF', 'cellTypeB': '#000000'}`.
-            A single color can also be provided like `point_color = 'white'`
+        subset (str, optional):  
+            Identifier for a specific image to analyze, used in conjunction with `imageid`.
 
-        imageid (str):  
-            Column name of the column containing the image id.
+        seg_mask (str, optional):  
+            Path to a segmentation mask file to overlay.
 
-        subset (str):  
-            imageid of a single image to be subsetted for analyis. Only useful when multiple images are being analyzed together.
+        **kwargs:  
+            Additional arguments passed to the napari viewer.
 
-        **kwargs
-            Other arguments that can be passed to napari viewer
+Returns:
+        Image (napari): 
+            Displays the visualization using napari viewer.
 
-    Returns:
-        Napari Viewer (image viewer):
-
-    Example:
+Examples
     ```python
-        image_path = '/Users/aj/Desktop/ptcl_tma/image.ome.tif'
-        sm.pl.image_viewer (image_path, adata, overlay='phenotype',overlay_category=None,
-                    markers=['CD31', "CD3D","DNA11",'CD19','CD45','CD163','FOXP3'],
-                    point_size=7,point_color='white')
+    
+    # Basic visualization with phenotype overlay
+    sm.pl.image_viewer(image_path='/path/to/image.ome.tif', adata=adata, overlay='phenotype', point_size=5)
+
+    # Visualization with segmentation mask and custom point colors
+    sm.pl.image_viewer(image_path='/path/to/image.ome.tif', adata=adata, seg_mask='/path/to/mask.tif',
+                 overlay='phenotype', point_color={'T cell': 'green', 'B cell': 'blue'}, point_size=7)
+
     ```
     """
 
