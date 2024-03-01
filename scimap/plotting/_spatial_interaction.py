@@ -4,8 +4,14 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.pl.spatial_interaction`: The function allows users to plot a heatmap to visualize spatial interaction output. 
-    The intensity represents abundance of co-occurrence (scaled) observed and blank regions represent non-significant results.
+    `sm.pl.spatial_interaction`: This function provides a sophisticated approach to 
+    visualizing spatial interactions between cell types or phenotypes through heatmaps. 
+    It adeptly highlights the frequency and significance of co-occurrence patterns, 
+    where the intensity of colors reflects the scaled abundance of interactions. 
+    Non-significant results are clearly marked with blank regions, offering a clear 
+    demarcation of areas where interactions do not meet the specified threshold of significance. 
+    This visualization tool is invaluable for uncovering intricate spatial relationships 
+    and potential signaling networks within complex tissue environments.
 
 ## Function
 """
@@ -18,68 +24,72 @@ import matplotlib
 sns.set_style("white")
 
 # Function
-def spatial_interaction (adata, spatial_interaction='spatial_interaction',
-                         summarize_plot=True, p_val=0.05,
-                         row_cluster=False, col_cluster=False,
-                         cmap = 'vlag', nonsig_color='grey', 
-                         subset_phenotype=None, subset_neighbour_phenotype=None,
-                         binary_view=False, return_data=False, **kwargs):
+def spatial_interaction (adata, 
+                         spatial_interaction='spatial_interaction',
+                         summarize_plot=True, 
+                         p_val=0.05,
+                         row_cluster=False, 
+                         col_cluster=False,
+                         cmap = 'vlag', 
+                         nonsig_color='grey', 
+                         subset_phenotype=None, 
+                         subset_neighbour_phenotype=None,
+                         binary_view=False, 
+                         return_data=False, **kwargs):
     """
 Parameters:
-    adata : AnnData object
+        adata (anndata.AnnData):  
+            The annotated data matrix with spatial interaction calculations.
 
-    spatial_interaction : string, optional  
-        In order to locate the spatial_interaction data within the AnnData object please provide the output 
-        label/columnname of `sm.tl.spatial_interaction` function.
+        spatial_interaction (str, optional):  
+            Key in `adata.uns` where spatial interaction data is stored, typically the output of `sm.tl.spatial_interaction`.
 
-    summarize_plot : bool, optional  
-        In the event of analyzing multiple images, this argument allows users to
-        plot the average cell-cell interaction across all images.
+        summarize_plot (bool, optional):  
+            If True, summarizes cell-cell interactions across all images or samples to provide an aggregated view.
 
-    p_val : float, optional  
-        P-value cut-off above which interactions are not considered significant.
+        p_val (float, optional):  
+            Threshold for significance of interactions. Interactions with a P-value above this threshold are considered non-significant.
 
-    row_cluster : bool, optional  
-        Cluster Rows.
+        row_cluster, col_cluster (bool, optional):  
+            If True, performs hierarchical clustering on rows or columns in the heatmap to group similar patterns of interaction.
 
-    col_cluster : bool, optional  
-        Cluster Columns.
+        cmap (str, optional):  
+            Colormap for the heatmap visualization. Default is 'vlag'.
 
-    subset_phenotype : list, optional  
-        If user requires to visualize a subset of phenotypes, it can be passed here. 
-        e.g.  `subset_phenotype = ['celltype_A', 'celltype_B']`.
+        nonsig_color (str, optional):  
+            Color used to represent non-significant interactions in the heatmap.
 
-    subset_neighbour_phenotype : list, optional  
-        If user requires to visualize a subset of interacting phenotypes, it can be passed here. 
-        e.g.  `subset_neighbour_phenotype = ['celltype_C', 'celltype_D']`.
+        subset_phenotype, subset_neighbour_phenotype (list, optional):  
+            Subsets of phenotypes or neighboring phenotypes to include in the analysis and visualization.
 
-    cmap : string, optional  
-        Color map to use for continous variables. 
-        Can be a name or a Colormap instance (e.g. 'magma', 'viridis').
+        binary_view (bool, optional):  
+            If True, visualizes interactions in a binary manner, highlighting presence or absence of significant interactions without intensity gradation.
 
-    nonsig_color : string, optional  
-        Color for non-significant interactions (Interactions above the P-value cut-off will use this color).
+        return_data (bool, optional):  
+            If True, returns the DataFrame used for plotting instead of the plot itself.
 
-    binary_view : bool, optional  
-        Removes the intensity of intreaction and plots significant interactions and avoidance in a binary format.
+        **kwargs:  
+            Additional keyword arguments for seaborn's clustermap function, such as `linecolor` and `linewidths`.
 
-    return_data : bool, optional  
-        When True, return the data used for plotting.
-
-    **kwargs : key:value pairs  
-        Pass other parameters that works with `sns.clustermap`. e.g. `linecolor='black'`
+Returns:
+        pandas.DataFrame (dataframe):  
+            Only if `return_data` is True. The DataFrame containing the data used for plotting.
 
 Example:
-```python
-    # spatial_interaction heatmap for a single image
-    sm.pl.spatial_interaction(adata, summarize_plot=True, 
-    row_cluster=True, linewidths=0.75, linecolor='black')
+    ```python
     
-    # spatial_interaction heatmap for multiple images
-    sns.set(font_scale=0.6)
-    sm.pl.spatial_interaction(adata, summarize_plot=False, 
-    row_cluster=True, col_cluster=True, yticklabels=True)
-```
+    # Basic visualization of spatial interactions with default settings
+    sm.pl.spatial_interaction(adata)
+
+    # Detailed heatmap of spatial interactions, excluding non-significant interactions
+    sm.pl.spatial_interaction(adata, summarize_plot=False, p_val=0.01, cmap='coolwarm', nonsig_color='lightgrey',
+                        binary_view=True, row_cluster=True, col_cluster=True)
+
+    # Visualizing specific phenotypes interactions, with custom colormap and binary view
+    sm.pl.spatial_interaction(adata, subset_phenotype=['T cells', 'B cells'], subset_neighbour_phenotype=['Macrophages'],
+                        cmap='seismic', binary_view=True, row_cluster=True, col_cluster=False, 
+                        figsize=(10, 8), dendrogram_ratio=(.1, .2), cbar_pos=(0, .2, .03, .4))
+    ```
     """
     
     # set color for heatmap
