@@ -125,7 +125,7 @@ Parameters:
             Custom label for storing results in `adata.obs`. Defaults to method name (e.g., 'spatial_kmeans').
         
         verbose (bool):  
-        If set to `True`, the function will print detailed messages about its progress and the steps being executed.
+            If set to `True`, the function will print detailed messages about its progress and the steps being executed.
         
         output_dir (str, optional):  
             Directory path for saving output files. If None, results are not saved to disk.

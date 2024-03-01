@@ -4,18 +4,19 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    The `sm.tl.spatial_count` function allows users to compute a neighbourhood matrix 
-    using any categorical variable (e.g. cell-types) as input.
+    `sm.tl.spatial_count` computes a neighborhood matrix from spatial data using categorical variables, 
+    such as cell types, to identify local cell clusters. It offers two neighborhood definition methods:
 
-    The function supports two methods to define a local neighbourhood <br>
-    **Radius method**: Can be used to identifies the neighbours within a user defined radius for every cell.
-    **KNN method**: Can be used to identifies the neighbours based on K nearest neigbours for every cell
-        
-    The resultant neighbourhood matrix is saved with `adata.uns`. 
-
-    This can be further clustered to identify similar neighbourhoods. 
-    Use the [spatial_cluster] function to further group the neighbourhoods into 
-    Reccurent Cellular Neighbourhoods (RCNs)
+    - **Radius Method**: Identifies neighbors within a specified radius for each cell, allowing for 
+    the exploration of spatial relationships based on physical proximity.
+    - **KNN Method**: Determines neighbors based on the K nearest neighbors, focusing on the closest 
+    spatial associations irrespective of physical distance.
+    
+    The generated neighborhood matrix is stored in `adata.uns`, providing a basis for further analysis. 
+    To uncover Recurrent Cellular Neighborhoods (RCNs) that share similar spatial patterns, users can 
+    cluster the neighborhood matrix using the `spatial_cluster` function. This approach enables the 
+    identification of spatially coherent cell groups, facilitating insights into the cellular 
+    architecture of tissues.
 
 ## Function
 """
@@ -35,61 +36,68 @@ def spatial_count (adata,
                    radius=30,knn=10,
                    imageid='imageid',
                    subset=None,
+                   verbose=True,
                    label='spatial_count'):
     """
 Parameters:
-    adata : anndata object
-
-    x_coordinate : float, required  
-        Column name containing the x-coordinates values.
+        adata (anndata.AnnData):  
+            Annotated data matrix with spatial information.
         
-    y_coordinate : float, required  
-        Column name containing the y-coordinates values.
+        x_coordinate (str, required):  
+            Column name containing x-coordinates.
         
-    phenotype : string, required  
-        Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells.
+        y_coordinate (str, required):  
+            Column name containing y-coordinates.
         
-    method : string, optional  
-        Two options are available: a) `radius`, b) `knn`.  
-        a) radius - Identifies the neighbours within a given radius for every cell.  
-        b) knn - Identifies the K nearest neigbours for every cell.  
+        z_coordinate (str, optional):  
+            Column name containing z-coordinates, for 3D spatial data.
         
-    radius : int, optional  
-        The radius used to define a local neighbhourhood.
+        phenotype (str, required):  
+            Column name containing phenotype or any categorical cell classification.
         
-    knn : int, optional  
-        Number of cells considered for defining the local neighbhourhood.
+        method (str, optional):  
+            Neighborhood definition method: 'radius' for fixed distance, 'knn' for K nearest neighbors.
         
-    imageid : string, optional  
-        Column name of the column containing the image id.
+        radius (int, optional):  
+            Radius used to define neighborhoods (applicable when method='radius').
         
-    subset : string, optional  
-        imageid of a single image to be subsetted for analyis.
+        knn (int, optional):  
+            Number of nearest neighbors to consider (applicable when method='knn').
         
-    label : string, optional  
-        Key for the returned data, stored in `adata.uns`.
+        imageid (str, optional):  
+            Column name containing image identifiers, for analyses limited to specific images.
+        
+        subset (str, optional):  
+            Specific image identifier for subsetting data before analysis.
+        
+        verbose (bool, optional):  
+            If True, prints progress and informational messages.
+        
+        label (str, optional):  
+            Key for storing results in `adata.uns`.
 
 Returns:
-    adata : anndata object  
-        Updated AnnData object with the results stored in `adata.uns ['spatial_count']`.
-    
+        adata (anndata.AnnData):  
+            Updated AnnData object with the neighborhood matrix stored in `adata.uns[label]`.
+
 Example:
     ```python
-    # Running the radius method
-    adata = sm.tl.spatial_count (adata,x_coordinate='X_centroid',
-                                 y_coordinate='Y_centroid',
-                                 phenotype='phenotype',
-                                 method='radius',radius=30,
-                                 imageid='imageid',subset=None,
-                                 label='spatial_count_radius')
     
-    # Running the knn method
-    adata = sm.tl.spatial_count (adata,x_coordinate='X_centroid',
-                                 y_coordinate='Y_centroid',
-                                 phenotype='phenotype',method='knn',
-                                 knn=10, imageid='imageid',
-                                 subset=None,label='spatial_count_knn')
+    # Analyze spatial relationships using the radius method
+    adata = spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                          phenotype='phenotype', method='radius', radius=50,
+                          label='neighborhood_radius50')
+
+    # Explore spatial neighborhoods with KNN
+    adata = spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                          phenotype='phenotype', method='knn', knn=15,
+                          label='neighborhood_knn15')
+
+    # 3D spatial analysis using a radius method
+    adata = spatial_count(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                          z_coordinate='Z_centroid', phenotype='phenotype', method='radius', radius=30,
+                          label='neighborhood_3D_radius30')
+    
     ```
     """
 
@@ -98,7 +106,8 @@ Example:
         
         # Create a dataFrame with the necessary inforamtion
         if z_coordinate is not None:
-            print("Including Z -axis")
+            if verbose:
+                print("Including Z -axis")
             data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         else:
             data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
@@ -110,7 +119,8 @@ Example:
         # Identify neighbourhoods based on the method used
         # a) KNN method
         if method == 'knn':
-            print("Identifying the " + str(knn) + " nearest neighbours for every cell")
+            if verbose:
+                print("Identifying the " + str(knn) + " nearest neighbours for every cell")
             if z_coordinate is not None:
                 tree = BallTree(data[['x','y','z']], leaf_size= 2)
                 ind = tree.query(data[['x','y','z']], k=knn, return_distance= False)
@@ -122,7 +132,8 @@ Example:
         
         # b) Local radius method
         if method == 'radius':
-            print("Identifying neighbours within " + str(radius) + " pixels of every cell")
+            if verbose:
+                print("Identifying neighbours within " + str(radius) + " pixels of every cell")
             if z_coordinate is not None:
                 kdt = BallTree(data[['x','y','z']], metric='euclidean') 
                 ind = kdt.query_radius(data[['x','y','z']], r=radius, return_distance=False)

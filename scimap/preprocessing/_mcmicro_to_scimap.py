@@ -67,7 +67,7 @@ Parameters:
         Sets a threshold for the minimum number of cells required for an image to be included in the analysis. Images with fewer cells than this number are excluded. This is useful for filtering out datasets with sparse cellular data.
     
     verbose (bool):  
-    If set to `True`, the function will print detailed messages about its progress and the steps being executed.
+        If set to `True`, the function will print detailed messages about its progress and the steps being executed.
     
     output_dir (str):  
         The file path to the directory where output files will be saved. This parameter specifies the destination for any generated files.
