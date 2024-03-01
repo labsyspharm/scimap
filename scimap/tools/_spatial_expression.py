@@ -153,24 +153,24 @@ Parameters:
             The input `adata` object, updated with the spatial expression results in `adata.uns[label]`.
 
     Examples:
-    ```python
+        ```python
+        
+        # Calculate spatial expression using a 30-pixel radius
+        adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                                   method='radius', radius=30, 
+                                   label='expression_radius_30')
     
-    # Calculate spatial expression using a 30-pixel radius
-    adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-                               method='radius', radius=30, 
-                               label='expression_radius_30')
-
-    # Calculate spatial expression using 10 nearest neighbors
-    adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-                               method='knn', knn=10, use_raw=True,
-                               label='expression_knn_10')
-
-    # Analyze spatial expression within a specific image using radius method
-    adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-                               method='radius', radius=50, imageid='imageid', subset='specific_image',
-                               label='expression_specific_image')
+        # Calculate spatial expression using 10 nearest neighbors
+        adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                                   method='knn', knn=10, use_raw=True,
+                                   label='expression_knn_10')
     
-    ```
+        # Analyze spatial expression within a specific image using radius method
+        adata = spatial_expression(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                                   method='radius', radius=50, imageid='imageid', subset='specific_image',
+                                   label='expression_specific_image')
+        
+        ```
     """
     
     # Load the andata object    
