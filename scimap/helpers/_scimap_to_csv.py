@@ -87,7 +87,7 @@ Returns:
             The function does not return a value but saves the specified data to a CSV file in the designated directory.
 
 Example:
-        ```python
+    ```python
         
         # Export raw data to CSV
         sm.hl.scimap_to_csv(adata, data_type='raw', output_dir='/path/to/save', file_name='raw_data.csv')
