@@ -4,8 +4,10 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.tl.spatial_distance`: The function allows users to calculate 
-    the average shortest between phenotypes or clusters of interest (3D data supported).
+    `sm.tl.spatial_distance`: This function computes the average shortest distance 
+    between specified phenotypes or clusters, supporting analysis of both 2D and 3D spatial data. 
+    It facilitates the quantitative assessment of spatial relationships among cellular phenotypes 
+    or clusters within tissue sections or 3D cultures.
 
 ## Function
 """
@@ -17,58 +19,78 @@ from joblib import Parallel, delayed
 import itertools
 
 # Function
-def spatial_distance (adata,x_coordinate='X_centroid',y_coordinate='Y_centroid',
+def spatial_distance (adata,
+                      x_coordinate='X_centroid',
+                      y_coordinate='Y_centroid',
                       z_coordinate=None,
-                      phenotype='phenotype',subset=None,imageid='imageid',
+                      phenotype='phenotype',
+                      subset=None,
+                      imageid='imageid',
+                      verbose=True,
                       label='spatial_distance'):
     """
     
 Parameters:
-
-    adata : AnnData object
-
-    x_coordinate : float, required  
-        Column name containing the x-coordinates values.
-
-    y_coordinate : float, required  
-        Column name containing the y-coordinates values.
-    
-    z_coordinate : float, optional  
-        Column name containing the z-coordinates values.
-
-    phenotype : string, required  
-        Column name of the column containing the phenotype information. 
-        It could also be any categorical assignment given to single cells.
-
-    subset : string, optional  
-        imageid of a single image to be subsetted for analyis.
-
-    imageid : string, optional  
-        Column name of the column containing the image id.
-
-    label : string, optional  
-        Key for the returned data, stored in `adata.obs`.
+        adata (anndata.AnnData):  
+            Annotated data matrix with spatial information.
+        
+        x_coordinate (str, required):  
+            Column name containing x-coordinates.
+        
+        y_coordinate (str, required):  
+            Column name containing y-coordinates.
+        
+        z_coordinate (str, optional):  
+            Column name containing z-coordinates, for 3D spatial data analysis.
+        
+        phenotype (str, required):  
+            Column name containing the phenotype information or any categorical cell classification.
+        
+        subset (str, optional):  
+            Identifier for a subset of data to analyze, typically an image ID.
+        
+        imageid (str, optional):  
+            Column name containing image identifiers, useful for analyzing distances within specific images.
+        
+        verbose (bool, optional):  
+            If True, prints progress and informational messages during the calculation.
+        
+        label (str, optional):  
+            Custom label for storing results in `adata.uns`.
 
 Returns:
-    adata : AnnData object  
-        Updated AnnData object with the results stored in `adata.uns ['spatial_distance']`.
-        
-Example:
-```python
-    adata = sm.tl.spatial_distance (adata,x_coordinate='X_position',
-    y_coordinate='Y_position',imageid='ImageId')
-```     
+        adata (anndata.AnnData):  
+            The input `adata` object, updated with the spatial distance results stored in `adata.uns[label]`.
 
+Example:
+    ```python
+    
+    # Calculate spatial distance in 2D
+    adata = spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                             phenotype='cell_type', label='2D_distance')
+
+    # Calculate spatial distance in 3D
+    adata = spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                             z_coordinate='Z_centroid', phenotype='cell_type', label='3D_distance')
+
+    # Calculate spatial distance for a specific image subset
+    adata = spatial_distance(adata, x_coordinate='X_centroid', y_coordinate='Y_centroid',
+                             phenotype='cell_type', imageid='image_id', subset='image01',
+                             label='distance_image01')
+    
+    ```
     """
     
     
     def spatial_distance_internal (adata_subset,x_coordinate,y_coordinate,z_coordinate,
                                    phenotype,subset,imageid,label):
         
-        print("Processing Image: " + str(adata_subset.obs[imageid].unique()[0]))
+        if verbose:
+            print("Processing Image: " + str(adata_subset.obs[imageid].unique()[0]))
         # Create a dataFrame with the necessary inforamtion
         if z_coordinate is not None:
-            print("Including Z -axis")
+            if verbose:
+                print("Including Z -axis")
             data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'z': adata_subset.obs[z_coordinate], 'phenotype': adata_subset.obs[phenotype]})
         else:
             data = pd.DataFrame({'x': adata_subset.obs[x_coordinate], 'y': adata_subset.obs[y_coordinate], 'phenotype': adata_subset.obs[phenotype]})
