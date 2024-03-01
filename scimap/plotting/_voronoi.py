@@ -26,7 +26,8 @@ from scipy.spatial import Voronoi
 import matplotlib.patches as mpatches
 
 # Function
-def voronoi_finite_polygons_2d(vor, radius=None):
+def voronoi_finite_polygons_2d(vor, 
+                               radius=None):
 
     if vor.points.shape[1] != 2:
         raise ValueError("Requires 2D input")
@@ -90,11 +91,29 @@ def voronoi_finite_polygons_2d(vor, radius=None):
 
 # Actual function
 
-def voronoi (adata, color_by=None, colors=None, x_coordinate='X_centroid', y_coordinate='Y_centroid',
-             imageid='imageid',subset=None, x_lim=None, y_lim=None, flip_y=True,
-             voronoi_edge_color='black', voronoi_line_width=0.1, voronoi_alpha=0.5, size_max=np.inf,
-             overlay_points=None, overlay_points_categories=None, overlay_drop_categories=None, overlay_points_colors=None,
-             overlay_point_size = 5, overlay_point_alpha= 1, overlay_point_shape=".", plot_legend=True, legend_size = 6, **kwargs):
+def voronoi (adata, 
+             color_by=None, 
+             colors=None, 
+             x_coordinate='X_centroid', 
+             y_coordinate='Y_centroid',
+             imageid='imageid',
+             subset=None, 
+             x_lim=None, 
+             y_lim=None, 
+             flip_y=True,
+             voronoi_edge_color='black', 
+             voronoi_line_width=0.1, 
+             voronoi_alpha=0.5, 
+             size_max=np.inf,
+             overlay_points=None, 
+             overlay_points_categories=None, 
+             overlay_drop_categories=None, 
+             overlay_points_colors=None,
+             overlay_point_size = 5, 
+             overlay_point_alpha= 1, 
+             overlay_point_shape=".", 
+             plot_legend=True, 
+             legend_size = 6, **kwargs):
     """
 Parameters:
     adata : Anndata object
