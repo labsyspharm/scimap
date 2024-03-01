@@ -4,8 +4,15 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.tl.cluster`: This function allows users to cluster the dataset. 
-    The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).
+    `sm.tl.cluster`: This function is designed for clustering cells within the dataset, facilitating the identification of distinct cell populations based on their expression profiles or other relevant features. It supports three popular clustering algorithms:
+    
+    - **kmeans**: A partitioning method that divides the dataset into `k` clusters, each represented by the centroid of the data points in the cluster. It is suitable for identifying spherical clusters in the feature space.
+    
+    - **phenograph**: Based on community detection in graphs, Phenograph clusters cells by constructing a k-nearest neighbor graph and then detecting communities within this graph. This method is particularly effective for identifying clusters with varying densities and sizes.
+    
+    - **leiden**: An algorithm that refines the cluster partitioning by optimizing a modularity score, leading to the detection of highly connected communities. It is known for its ability to uncover fine-grained and highly cohesive clusters.
+        
+    Each algorithm has its own set of parameters and assumptions, making some more suitable than others for specific types of dataset characteristics. Users are encouraged to select the clustering algorithm that best matches their data's nature and their analytical goals.
 
 ## Function
 """
@@ -20,15 +27,12 @@ import argparse
 import sys
 import anndata
 import pathlib
-try:
-    import parc
-except:
-    pass
+
 
 #Command line compatible 
 def main(argv=sys.argv):
     parser = argparse.ArgumentParser(
-        description='This function allows users to cluster the dataset. The function supports four clustering algorithm (kmeans, phenograph, leiden and parc).'
+        description='This function allows users to cluster the dataset. The function supports three clustering algorithm (kmeans, phenograph and leiden).'
     )
     parser.add_argument(
         '--adata', required=True, 
@@ -36,7 +40,7 @@ def main(argv=sys.argv):
     )
     parser.add_argument(
         '--method', type=str, required=False, default='kmeans',
-        help='Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc.'
+        help='Clustering method to be used- Implemented methods- kmeans, phenograph and leiden.'
     )
     parser.add_argument(
         '--subset_genes', type=list, required=False, default=None,
@@ -53,14 +57,6 @@ def main(argv=sys.argv):
     parser.add_argument(
         '--sub_cluster_group', type=list, required=False, default=None,
         help='By default the program will sub-cluster all groups within column passed through the argument sub_cluster_column. If user wants to sub cluster only a subset of phenotypes/clusters this option can be used. Pass them as list e.g. ["tumor", "b cells"].'
-    )
-    parser.add_argument(
-        '--parc_small_pop', type=int, required=False, default=50,
-        help='Smallest cluster population to be considered a community in PARC clustering.'
-    )
-    parser.add_argument(
-        '--parc_too_big_factor', type=float, required=False, default=0.4,
-        help='If a cluster exceeds this share of the entire cell population, then the PARC will be run on the large cluster. at 0.4 it does not come into play.'
     )
     parser.add_argument(
         '--k', type=int, required=False, default=10,
@@ -103,6 +99,10 @@ def main(argv=sys.argv):
         help='Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].'
     )
     parser.add_argument(
+        '--verbose', required=False, default=True,
+        help='The function will print detailed messages about its progress.'
+    )
+    parser.add_argument(
         '--output_dir', type=str, required=False, default=None,
         help='Path to output directory.'
     )
@@ -112,100 +112,91 @@ def main(argv=sys.argv):
 
 
 
-def cluster (adata, method='kmeans', subset_genes=None,
-             sub_cluster=False, sub_cluster_column='phenotype', sub_cluster_group = None,
-             parc_small_pop= 50, parc_too_big_factor=0.4, 
-             k= 10, n_pcs=None, resolution=1, 
-             phenograph_clustering_metric='euclidean', nearest_neighbors= 30, 
-             use_raw=True, log=True, random_state=0, collapse_labels= False,
-             label=None, output_dir=None):
+def cluster (adata, method='kmeans', 
+             subset_genes=None,
+             sub_cluster=False, 
+             sub_cluster_column='phenotype', 
+             sub_cluster_group = None,
+             k= 10, 
+             n_pcs=None, 
+             resolution=1, 
+             phenograph_clustering_metric='euclidean', 
+             nearest_neighbors= 30, 
+             use_raw=True, 
+             log=True, 
+             random_state=0, 
+             collapse_labels= False,
+             label=None, 
+             verbose=True,
+             output_dir=None):
     """
     
 Parameters:
+    adata (AnnData):  
+        The input AnnData object containing single-cell data for clustering.
 
-    adata : AnnData Object
+    method (str):  
+        Specifies the clustering algorithm to be used. Currently supported algorithms include 'kmeans', 'phenograph', and 'leiden'.
 
-    method (string):  
-        Clustering method to be used- Implemented methods- kmeans, phenograph, leiden and parc.
+    subset_genes (list of str, optional):  
+        A list of gene names to be used specifically for clustering. If not provided, all genes in the dataset are used.
 
-    subset_genes (list):  
-        Pass a list of genes ['CD3D', 'CD20', 'KI67'] that should be included for the purpose of clustering. 
-        By default the algorithm uses all genes in the dataset.
+    sub_cluster (bool, optional):  
+        Enables sub-clustering within an existing cluster or phenotype. Useful for further dissecting identified groups. 
 
-    sub_cluster (bool):  
-        If the user has already performed clustering or phenotyping previously and would like to
-        sub-cluster within a particular cluster/phenotype, this option can be used.
+    sub_cluster_column (str, optional):  
+        The column in `adata.obs` that contains the cluster or phenotype labels for sub-clustering. Required if `sub_cluster` is `True`.
 
-    sub_cluster_column (string):  
-        The column name that contains the cluster/phenotype information to be sub-clustered. 
-        This is only required when sub_cluster is set to True.
+    sub_cluster_group (list of str, optional):  
+        Specifies the clusters or phenotypes to be sub-clustered. If not provided, all groups in `sub_cluster_column` will be sub-clustered.
 
-    sub_cluster_group (list):  
-        By default the program will sub-cluster all groups within column passed through the argument sub_cluster_column.
-        If user wants to sub cluster only a subset of phenotypes/clusters this option can be used.
-        Pass them as list e.g. ["tumor", "b cells"].     
+    k (int, optional):  
+        The number of clusters to generate when using the K-Means algorithm.
 
-    parc_small_pop (int):  
-        Smallest cluster population to be considered a community in PARC clustering.
+    n_pcs (int, optional):  
+        The number of principal components to use for Leiden clustering. Defaults to using all available PCs.
 
-    parc_too_big_factor (float):  
-        If a cluster exceeds this share of the entire cell population, then the PARC will be run on 
-        the large cluster. at 0.4 it does not come into play.
+    resolution (float, optional):  
+        Adjusts the granularity of clustering, applicable for Leiden clustering. Higher values yield more clusters.
 
-    k (int):  
-        Number of clusters to return when using K-Means clustering.
+    phenograph_clustering_metric (str, optional):  
+        Defines the distance metric for nearest neighbor calculation in Phenograph. Choices include 'cityblock', 'cosine', 'euclidean', 'manhattan', and others. Note: 'correlation' and 'cosine' metrics may slow down the performance.
 
-    n_pcs (int) :  
-        Number of PC's to be used in leiden clustering. By default it uses all PC's.
+    nearest_neighbors (int, optional):  
+        The number of nearest neighbors to consider during the initial graph construction phase in both Leiden and Phenograph clustering.
 
-    resolution (float):  
-        A parameter value controlling the coarseness of the clustering. 
-        Higher values lead to more clusters.
+    use_raw (bool, optional):  
+        Determines whether raw data (`adata.raw`) or processed data (`adata.X`) should be used for clustering. Default is to use processed data.
 
-    phenograph_clustering_metric (string):  
-        Distance metric to define nearest neighbors. Note that performance will be slower for correlation and cosine. 
-        Available methods- cityblock’, ‘cosine’, ‘euclidean’, ‘manhattan’, braycurtis’, ‘canberra’, ‘chebyshev’, 
-        ‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, 
-        ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’
+    log (bool, optional):  
+        If True, applies logarithmic transformation to raw data before clustering. Requires `use_raw` to be True.
 
-    nearest_neighbors (int):  
-        Number of nearest neighbors to use in first step of graph construction. 
-        This parameter is used both in leiden and phenograph clustering.
+    random_state (int, optional):  
+        Seed for random number generation, ensuring reproducibility of clustering results.
 
-    use_raw (bool):  
-        If True, raw data will be used for clustering. 
-        If False, normalized/scaled data within `adata.X` will be used.
+    collapse_labels (bool, optional):  
+        When sub-clustering a subset of groups, this merges all other groups into a single category, aiding in visualization.
 
-    log (bool):  
-        If `True`, the log of raw data is used. Set use_raw = `True` for this to take effect. 
+    label (str, optional):  
+        The key under which the clustering results are stored in `adata.obs`. Defaults to the name of the clustering method used.
+    
+    verbose (bool):  
+    If set to `True`, the function will print detailed messages about its progress and the steps being executed.
 
-    random_state (int):  
-        Change the initialization of the optimization.
-
-    collapse_labels (bool):  
-        While sub clustering only a few phenotypes/clusters, this argument helps to 
-        group all the other phenotypes/clusters into a single category- 
-        Helps in visualisation.
-
-    label (string):  
-        Key or optional column name for the returned data, stored in `adata.obs`. The default is adata.obs [method used].
-
-    output_dir (string):  
-        Path to output directory.
-
+    output_dir (str, optional):  
+        Specifies the directory where output files, if any, should be saved.
 
 Returns:
-
-    adata : AnnData Object
-        Returns an updated `anndata` object with a new column. check- adata.obs [method used]
+    AnnData (modified AnnData):  
+        The input `adata` object, updated to include a new column in `adata.obs` corresponding to the clustering results. The column name matches the `label` parameter or defaults to the clustering method used.
         
 Example:
-
-```python
-    adata = sm.tl.cluster (adata, k= 10, method = 'kmeans', 
-    sub_cluster_column='phenotype', use_raw = True)
-```
-
+    ```python
+    
+    adata = sm.tl.cluster(adata, k=10, method='kmeans', sub_cluster_column='phenotype', use_raw=True)
+    
+    
+    ```
     """
 
     # Load the andata object    
@@ -240,9 +231,11 @@ Example:
         
         # clustering
         if pheno is not None:
-            print('Leiden clustering ' + str(pheno))
+            if verbose: 
+                print('Leiden clustering ' + str(pheno))
         else:
-            print('Leiden clustering')
+            if verbose:
+                print('Leiden clustering')
             
         sc.tl.pca(data_subset)
         if n_pcs is None:
@@ -281,9 +274,11 @@ Example:
             
         # K-means clustering
         if pheno is not None:
-            print('Kmeans clustering ' + str(pheno))
+            if verbose:
+                print('Kmeans clustering ' + str(pheno))
         else:
-            print('Kmeans clustering')
+            if verbose:
+                print('Kmeans clustering')
         
         kmeans = KMeans(n_clusters=k, random_state=random_state).fit(data_subset)
         
@@ -319,9 +314,11 @@ Example:
         
         # Phenograph clustering
         if pheno is not None:
-            print('Phenograph clustering ' + str(pheno))
+            if verbose:
+                print('Phenograph clustering ' + str(pheno))
         else:
-            print('Phenograph clustering')
+            if verbose:
+                print('Phenograph clustering')
         
         sc.tl.pca(data_subset)
         result = sce.tl.phenograph(data_subset.obsm['X_pca'], k = nearest_neighbors, primary_metric=phenograph_clustering_metric)
@@ -337,48 +334,6 @@ Example:
         # return labels
         return cluster_labels
         
-    
-    # PARC clustering
-    # https://github.com/ShobiStassen/PARC
-    def parc_clustering (pheno, adata, random_state,resolution,parc_too_big_factor,parc_small_pop):
-        
-        # subset the data to be clustered
-        if pheno is not None:
-            cell_subset =  adata.obs[adata.obs[sub_cluster_column] == pheno].index
-        else:
-            cell_subset = adata.obs.index
-        
-        # Usage of scaled or raw data
-        if use_raw == True:
-            data_subset = adata[cell_subset]
-            if log is True:
-                data_subset.X = np.log1p(data_subset.raw.X)
-            else:
-                data_subset.X = data_subset.raw.X      
-        else:
-            data_subset = adata[cell_subset]
-        
-        # Phenograph clustering
-        if pheno is not None:
-            print('Parc clustering ' + str(pheno))
-        else:
-            print('Parc clustering')
-        
-        sc.tl.pca(data_subset)
-        parc1 = parc.PARC(data_subset.obsm['X_pca'], random_seed=random_state, parc_small_pop = parc_small_pop, resolution_parameter=resolution,parc_too_big_factor=parc_too_big_factor)  
-        parc1.run_PARC() # Run Parc
-        
-
-        # Rename the labels
-        cluster_labels = list(map(str,parc1.labels))
-        if pheno is not None:
-            cluster_labels = list(map(lambda orig_string: pheno + '-' + orig_string, cluster_labels))
-        
-        # Make it into a dataframe
-        cluster_labels = pd.DataFrame(cluster_labels, index = data_subset.obs.index)
-        
-        # return labels
-        return cluster_labels
     
     # Use user defined genes for clustering
     if subset_genes is not None:
@@ -403,10 +358,7 @@ Example:
                 pheno = (bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1).index[bdata.obs[sub_cluster_column].value_counts() > nearest_neighbors+1]
             if method == 'leiden':
                 pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
-            if method == 'parc':
-                pheno = (bdata.obs[sub_cluster_column].value_counts() > 1).index[bdata.obs[sub_cluster_column].value_counts() > 1]
-                
-        
+
     # Run the specified method
     if method == 'kmeans':
         if sub_cluster == True:  
@@ -431,14 +383,7 @@ Example:
         else:
             all_cluster_labels = leiden_clustering(pheno=None, adata=bdata, nearest_neighbors=nearest_neighbors, n_pcs=n_pcs, resolution=resolution)
             
-            
-    if method == 'parc':
-        if sub_cluster == True:
-            r_parc_clustering = lambda x: parc_clustering(pheno=x, adata=bdata, random_state=random_state,resolution=resolution,parc_too_big_factor=parc_too_big_factor,parc_small_pop=parc_small_pop) # Create lamda function 
-            all_cluster_labels = list(map(r_parc_clustering, pheno)) # Apply function 
-        else:
-            all_cluster_labels = parc_clustering(pheno=None, adata=bdata, random_state=random_state,resolution=resolution,parc_too_big_factor=parc_too_big_factor,parc_small_pop=parc_small_pop)
-       
+
     
     # Merge all the labels into one and add to adata
     if sub_cluster == True:
