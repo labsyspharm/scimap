@@ -94,19 +94,19 @@ Example:
     ```python
     
     # Default stacked bar plot showing percentage composition
-    stacked_barplot(adata, x_axis='sample_id', y_axis='cell_type', method='percent')
+    sm.pl.stacked_barplot(adata, x_axis='sample_id', y_axis='cell_type', method='percent')
 
     # Stacked bar plot using absolute counts with matplotlib customization
-    stacked_barplot(adata, x_axis='region', y_axis='phenotype', method='absolute', plot_tool='matplotlib', 
+    sm.pl.stacked_barplot(adata, x_axis='region', y_axis='phenotype', method='absolute', plot_tool='matplotlib', 
                     matplotlib_cmap='tab20', figsize=(12, 6), edgecolor='white')
 
     # Interactive stacked bar plot using Plotly with subset and custom order
-    stacked_barplot(adata, x_axis='condition', y_axis='cell_state', subset_xaxis=['Control', 'Treated'], 
+    sm.pl.stacked_barplot(adata, x_axis='condition', y_axis='cell_state', subset_xaxis=['Control', 'Treated'], 
                     order_yaxis=['State1', 'State2', 'State3'], method='percent', plot_tool='plotly', 
                     color_discrete_map={'State1': '#1f77b4', 'State2': '#ff7f0e', 'State3': '#2ca02c'})
 
     # Retrieve data used for plotting
-    data_df = stacked_barplot(adata, x_axis='batch', y_axis='cell_type', return_data=True)
+    data_df = sm.pl.stacked_barplot(adata, x_axis='batch', y_axis='cell_type', return_data=True)
     
     ```
     """

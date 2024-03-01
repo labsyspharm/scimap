@@ -6,7 +6,15 @@
 
 """
 !!! abstract "Short Description"
-    `sm.pl.umap`: The function allows users to generate a scatter plot of the UMAP. 
+    `sm.pl.umap`: This function facilitates the creation of scatter plots based 
+    on UMAP (Uniform Manifold Approximation and Projection) embeddings stored 
+    in an AnnData object. It offers extensive customization options for visualizing 
+    high-dimensional data reduced to two dimensions, including the ability to color 
+    points by gene expression levels, metadata annotations, or other categorical or 
+    continuous variables. Users can leverage this function to explore and interpret 
+    complex datasets visually, enhancing the understanding of underlying biological 
+    variations and relationships.
+    
 ## Function
 """
 
@@ -22,82 +30,89 @@ import seaborn as sns
 import matplotlib.patches as mpatches
 
 # function
-def umap (adata, color=None, use_layer=None, use_raw=False, log=False, label='umap',
-          cmap='vlag', palette=None, alpha=0.8, figsize=(5, 5), s=None, ncols=None, 
-          tight_layout=False, return_data=False, save_figure=None, **kwargs):
+def umap (adata, 
+          color=None, 
+          use_layer=None, 
+          use_raw=False, 
+          log=False, 
+          label='umap',
+          cmap='vlag', 
+          palette=None, 
+          alpha=0.8, 
+          figsize=(5, 5), 
+          s=None, 
+          ncols=None, 
+          tight_layout=False, 
+          return_data=False, 
+          save_figure=None, **kwargs):
     """
 Parameters:
+        adata (anndata.AnnData):  
+            The annotated data matrix.
 
-    adata : AnnData Object  
+        color (list, optional):  
+            List of keys from `adata.obs.columns` or `adata.var.index` to color the plot. 
+            Allows multiple keys for facetted plotting.
 
-    color (list):  
-        Keys for annotations of observations in `adata.obs.columns` or genes in `adata.var.index`. e.g. ['CD3D', 'SOX10']
-        The default is None.
-        
-    use_layer (string):  
-        Pass name of any `Layer` in AnnData. The default is `None` and `adata.X` is used.
-        
-    use_raw (bool):  
-        If set to `True`, values in `adata.raw.X` will be used to color the plot. The default is False.
-        
-    log (bool):  
-        If set to `True`, the data will natural log transformed using `np.log1p()` for coloring. The default is False.
-        
-    label (string):  
-        The `label key` used when running `sm.tl.umap()`. The default is 'umap'.
-        
-    cmap (string):  
-        Color map to use for continous variables. Can be a name or a Colormap 
-        instance (e.g. "magma”, "viridis"). The default is 'vlag'.
-        
-    palette (dict):  
-        Colors to use for plotting categorical annotation groups. 
-        It accepts a `dict` mapping categories to colors. 
-        e.g. `palette = {'T cells': '#000000', 'B cells': '#FFF675'}`.
-        Auto color will be generated for other categories that are not specified. The default is None.
-        
-    alpha (float):  
-        blending value, between 0 (transparent) and 1 (opaque). The default is 0.8.
-        
-    figsize (tuple):  
-        Width, height in inches. The default is (10, 10).
-        
-    s (int):  
-        The marker size in points. The default is None.
-        
-    ncols (int):  
-        Number of panels per row. The default is None.
-        
-    tight_layout (bool):  
-        Adjust the padding between and around subplots. If True it will ensure that
-        the legends are visible. The default is False.
-        
-    return_data (bool):  
-        Returns the data used for plotting. The default is False.
-        
-    save_figure (string):  
-        Pass path to saving figure with file extension.
-        e.g `\path\to\directory\figure.pdf` The default is None.
-    
-    **kwargs : Other `matplotlib` parameters. 
+        use_layer (str, optional):  
+            Specifies the AnnData layer to use for UMAP calculations. Defaults to using `adata.X`.
+
+        use_raw (bool, optional):  
+            If True, uses `adata.raw.X` for coloring the plot, useful for visualizing gene expression on UMAP.
+
+        log (bool, optional):  
+            Applies log transformation (`np.log1p`) to the data before plotting. Useful for gene expression data.
+
+        label (str, optional):  
+            Key in `adata.obsm` where UMAP coordinates are stored.
+
+        cmap (str, optional):  
+            Colormap for continuous variables. Supports matplotlib colormap names and objects.
+
+        palette (dict, optional):  
+            Specific colors for different categories as a dictionary mapping from categories to colors.
+
+        alpha (float, optional):  
+            Transparency level of the points. Ranges from 0 (transparent) to 1 (opaque).
+
+        figsize (tuple, optional):  
+            Figure size specified as (width, height) in inches.
+
+        s (int, optional):  
+            Size of the points in the plot.
+
+        ncols (int, optional):  
+            Number of columns for facetted plotting.
+
+        tight_layout (bool, optional):  
+            Adjusts subplot params for a tight layout.
+
+        return_data (bool, optional):  
+            If True, returns the DataFrame containing data used for plotting instead of displaying the plot.
+
+        save_figure (str, optional):  
+            Path and filename to save the figure. File extension determines the format (e.g., `.pdf`, `.png`).
+
+        **kwargs:  
+            Additional keyword arguments passed to matplotlib plot function.
 
 Returns:
-
-    final_data (Dataframe):  
-        If return_data is set to `True`.
+        Plot (matplotlib):
+                Optionally returns the data used for plotting if `return_data=True`.
 
 Example:
-```python
-
-# Run UMAP
-adata = sm.tl.umap(adata)
+    ```python
     
-# plot results
-sm.pl.umap(adata, color=['CD3D', 'SOX10'])
+    # Basic UMAP visualization with default settings
+    sm.pl.umap(adata, color='cell_type')
 
+    # UMAP visualization with log transformation and custom colormap
+    sm.pl.umap(adata, color='gene_expression', log=True, cmap='coolwarm')
 
-```
-
+    # Facetted UMAP plotting with custom point size and saved figure
+    sm.pl.umap(adata, color=['cell_type', 'condition'], s=100, figsize=(10, 5), save_figure='/path/to/umap_plot.png')
+    
+    ```
     """
     
     # check if umap tool has been run
