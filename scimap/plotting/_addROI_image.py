@@ -5,23 +5,22 @@
 
 """
 !!! abstract "Short Description"
-    `sm.pl.addROI_image`: The function allows users to add ROIs to the data. 
-    The function opens the image in a `napari` viewer and allows users to use the 
-    shapes layer to add ROIs.   
-    
-    If the user is interesed in adding different ROI's (e.g. Tumor, Stroma, Tumor-Stromal-interface), 
-    each of these should be drawn in a seperate `shape layer`. 
-    
-    Please note that a single `shape layer` can contain multiple seperate annotated regions. 
-    All annotated regions within a single shape layer will be pooled into a single ROI. 
-    
-    The `shape layers` can be **renamed** to users choice of ROI name.  
-    
-    Please note: All ROI's have to be unique and cannot overlap.  
-    
-    *This function could also be used as a QC step to annotate regions of poor/ good quality 
-    and later subsetted (keep or remove) for further analysis.*  
-    
+    `sm.pl.addROI_image`: This function enhances spatial data analysis by enabling the addition o
+    f Regions of Interest (ROIs) directly onto images within an AnnData object, utilizing the 
+    `napari` viewer for intuitive graphical interaction. Users can delineate distinct areas such 
+    as 'Tumor', 'Stroma', or 'Tumor-Stromal-interface' on separate `shape layers` within the viewer, 
+    allowing for detailed spatial annotations.
+      
+    Multiple, non-overlapping annotations within a single shape layer are aggregated 
+    into one ROI, facilitating categorization based on spatial characteristics. 
+    Shape layers can be conveniently renamed to reflect the desired ROI names, ensuring 
+    clarity and specificity in annotations.
+      
+    It's crucial that each ROI is unique and non-overlapping to maintain data integrity. 
+      
+    Additionally, this tool serves as a valuable quality control (QC) step, allowing 
+    users to mark regions of varying quality for selective inclusion or exclusion in subsequent analyses.
+        
 ## Function
 """
 
@@ -54,81 +53,96 @@ cache.register()
 
 
 # Function
-def addROI_image (image_path, adata, subset=None,imageid='imageid', overlay=None, flip_y=True,
-                    overlay_category=None,markers=None,channel_names='default',
-                    x_coordinate='X_centroid',y_coordinate='Y_centroid',point_size=10,
-                    point_color=None,seg_mask=None,
-                    n_jobs=-1, verbose=False, 
-                    overwrite=True, label='ROI', **kwargs):
+def addROI_image (image_path, 
+                  adata, 
+                  subset=None,
+                  imageid='imageid', 
+                  overlay=None, 
+                  flip_y=True,
+                  overlay_category=None,
+                  markers=None,
+                  channel_names='default',
+                  x_coordinate='X_centroid',
+                  y_coordinate='Y_centroid',
+                  point_size=10,
+                  point_color=None,
+                  seg_mask=None,
+                  n_jobs=-1, 
+                  verbose=False, 
+                  overwrite=True, 
+                  label='ROI', **kwargs):
     """
 Parameters:
-    image_path (string):  
-        Location to the image file (TIFF, OME.TIFF, ZARR supported)  
+        image_path (str):  
+            Path to the image file. Supports TIFF, OME.TIFF, and ZARR formats.
+            
+        adata (anndata.AnnData):  
+            The annotated data matrix to which ROIs will be added.
+            
+        subset (list, optional):  
+            Specifies the image(s) within `adata` to annotate. Necessary if `adata` contains multiple images.
+            
+        imageid (str, optional):  
+            Column in `adata.obs` identifying images, for datasets with multiple images. 
+            
+        overlay (str, optional):  
+            Column in `adata.obs` with categorical data to overlay on the image, such as cell phenotypes.
+            
+        flip_y (bool, optional):  
+            If True, inverts the Y-axis to match image coordinates. Default is True.
+            
+        overlay_category (list, optional):  
+            Specific categories within `overlay` to visualize. If None, all categories are shown.
+            
+        markers (list, optional):  
+            Specific markers to display. If None, all available markers are included.
+            
+        channel_names (list or str, optional):  
+            Names of image channels, in order as they appear in the image. Defaults to markers in `adata.uns['all_markers']` if 'default'.
+            
+        x_coordinate, y_coordinate (str, optional):  
+            Column names in `adata.obs` for cell coordinates. Defaults are 'X_centroid' and 'Y_centroid'.
+            
+        point_size (int, optional):  
+            Size of points in the visualization. 
+            
+        point_color (str, optional):  
+            Color of points in the visualization. If None, colors are automatically assigned.
+            
+        seg_mask (str, optional):  
+            Path to a segmentation mask file to be overlaid. 
+            
+        n_jobs (int, optional):  
+            Number of parallel jobs to use. Defaults to -1, using all available cores.
+            
+        verbose (bool, optional):  
+            If True, prints messages about the process. 
+            
+        overwrite (bool, optional):  
+            If True, overwrites existing ROI data in `adata.obs`. 
+            
+        label (str, optional):  
+            Key under which ROI data will be stored in `adata.obs`.
+            
+        **kwargs:  
+            Additional keyword arguments passed to the napari viewer.
 
-    adata : AnnData Object  
-    
-    subset (list):  
-        Name of the image to which the ROI is to be added. Note if you have multiple images in the 
-        adata object, you will need to add ROI's to each image one after the other independently.  
-        
-    imageid (string):  
-        In the event that the adata object contains multiple images, it is
-        important that ROIs are added to each image seperately. Pass the name 
-        of the column that contains the `imageid` and use it in conjunction with
-        the `subset` parameter to add ROI's to a specific image.
-
-    seg_mask (string):  
-        Location to the segmentation mask file.  
-
-    overlay (string):  
-        Name of the column with any categorical data such as phenotypes or clusters.
-        
-    flip_y (bool):  
-        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
-        If the image overlays do not align to the cells, try again by setting this to `False`.
-        
-    overlay_category (list):  
-        If only specfic categories within the overlay column is needed, pass their names as a list.
-        If None, all categories will be used.
-
-    markers (list):  
-        Markers to be included. If none, all markers will be displayed.
-
-    channel_names (list):  
-        List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
-
-    x_coordinate (string):  
-        X axis coordinate column name in AnnData object.
-
-    y_coordinate (string):  
-        Y axis coordinate column name in AnnData object.
-
-    point_size (int):  
-        point size in the napari plot.
-    
-    overwrite (bool):  
-        In the event you have multiple images in the adata object, ROI can be added to each image
-        independently using the `imageid` and `subset` parameter. If you wish the results to be
-        all saved with in the same column set this parameter to `False`. By default, the 
-        function will overwrite the `label` column. 
-        
-    n_jobs (int):  
-        Number of cores to use. Default is to use all available cores.  
-    
-    label (string):  
-        Key for the returned data, stored in `adata.obs`.  
-
-    **kwargs  
-        Other arguments that can be passed to napari viewer
-    
 Returns:
-    Modified Anndata object.
+        adata (anndata.AnnData):  
+            The AnnData object with updated ROI annotations.
 
 Example:
-```python
-    image_path = '/Users/aj/Desktop/ptcl_tma/image.ome.tif'
-    adata = sm.pl.addROI_image (image_path, adata, label="Tumor Regions")
-```
+    ```python
+    
+    # Add ROIs to an image with specific overlays
+    addROI_image(image_path='/path/to/image.ome.tif', adata=adata, overlay='cell_type', label='Detailed_ROI')
+
+    # Add ROIs with segmentation masks and specific overlay categories
+    addROI_image(image_path='/path/to/image.ome.tif', adata=adata, seg_mask='/path/to/seg_mask.tif',
+                 overlay='phenotype', overlay_category=['Tumor', 'Stroma'], label='Cancer_Tissue_ROI')
+
+
+    ```
     """
     
     #TODO
