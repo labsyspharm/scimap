@@ -4,8 +4,11 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.pl.gate_finder`: The function opens the OME-TIFF image inside Napari and overlays points to help with the 
-    identifying manual gates for each marker. Use the `sm.pp.rescale` function to apply the identified gates to your data.
+    `sm.pl.gate_finder`: This function leverages Napari to display OME-TIFF images, 
+    overlaying points that assist in manually determining gating thresholds for specific markers. 
+    By visualizing marker expression spatially, users can more accurately define gates. 
+    Subsequently, the identified gating parameters can be applied to the dataset using `sm.pp.rescale`, 
+    enabling precise control over data segmentation and analysis based on marker expression levels.
 
 ## Function
 """
@@ -49,70 +52,83 @@ def gate_finder(
     **kwargs,
 ):
     """
-    Parameters:
+Parameters:
         image_path (str):
-            Location to the image file.
+            Path to the high-resolution image file (supports formats like TIFF, OME.TIFF).
 
-        adata : Ann Data Object
+        adata (anndata.AnnData):
+            The annotated data matrix.
 
         marker_of_interest (str):
-            Marker for which gate is to be defined e.g. 'CD45'.
+            The target marker for which the gating threshold is to be determined.
 
-        layer (str):
-            The layer in adata.layers that contains the expression data to gate.
-            If None, adata.X is used. use `raw` to use the data stored in `adata.raw.X`
+        layer (str, optional):
+            Specifies the layer in `adata` containing expression data. Defaults to 'raw' for `adata.raw.X`.
 
-        log (bool):
-            Log transform the data before gating.
+        log (bool, optional):
+            Applies log transformation to expression data if set to True. Defaults to True.
 
-        from_gate (int):
-            Start value gate of interest.
+        from_gate (int, optional):
+            Starting gate threshold value for the marker of interest. Defaults to 6.
 
-        to_gate (int):
-            End value of the gate of interest.
+        to_gate (int, optional):
+            Ending gate threshold value for the marker of interest. Defaults to 8.
 
-        flip_y (bool):
-            Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
-            If the image overlays do not align to the cells, try again by setting this to `False`.
+        increment (float, optional):
+            Incremental step size between `from_gate` and `to_gate`. Defaults to 0.1.
 
-        increment (float):
-            Increments between the start and end values.
+        markers (list, optional):
+            A list of additional markers to include in visualization for context.
 
-        markers (str):
-            Additional markers to be included in the plot for evaluation.
+        channel_names (list or str, optional):
+            Names of the channels in the image, in order. Defaults to 'default', using `adata.uns['all_markers']`.
 
-        channel_names (list):
-            List of channels in the image in the exact order as image. The default is `adata.uns['all_markers']`
+        flip_y (bool, optional):
+            Inverts the Y-axis to match image coordinates if set to True. Defaults to True.
 
-        x_coordinate (str):
-            X axis coordinate column name in AnnData object.
+        x_coordinate, y_coordinate (str, optional):
+            Columns in `adata.obs` specifying cell coordinates. Defaults are 'X_centroid' and 'Y_centroid'.
 
-        y_coordinate (str):
-            Y axis coordinate column name in AnnData object.
+        point_size (int, optional):
+            Size of points in the visualization. Defaults to 10.
 
-        point_size (int):
-            point size in the napari plot.
+        imageid (str, optional):
+            Column in `adata.obs` identifying images for datasets with multiple images. Defaults to 'imageid'.
 
-        imageid (str):
-            Column name of the column containing the image id.
+        subset (str, optional):
+            Specific image identifier for targeted analysis, typically an image ID. Defaults to None.
 
-        subset (str):
-            imageid of a single image to be subsetted for analyis.
+        seg_mask (str, optional):
+            Path to a segmentation mask file to overlay. Defaults to None.
 
-        seg_mask (str):
-            Location to the segmentation mask file.
+        **kwargs:
+            Additional arguments passed to the visualization tool.
 
-        **kwargs
-            Other arguments that can be passed to napari viewer.
+Returns:
+        Image (napari): 
+            Displays the visualization using napari viewer.
 
-    Example:
+Example:
     ```python
-        image_path = '/Users/aj/Desktop/ptcl_tma/image.ome.tif'
-        sm.pl.gate_finder (image_path, adata, marker_of_interest='CD45',
-                     from_gate = 6, to_gate = 8, increment = 0.1,
-                     markers=['DNA10'], channel_names = 'default',
-                     x_coordinate='X_position',y_coordinate='Y_position',point_size=10,
-                     subset= '77', seg_mask=None)
+    
+    # Visualize gating thresholds for CD45 on a specific image
+    sm.pl.gate_finder(
+        image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD45',
+        from_gate=4, to_gate=10, increment=0.2, flip_y=False, point_size=12,
+        subset='Sample1', seg_mask='/path/to/seg_mask.tif')
+
+    # Log-transformed gating for a marker with additional markers and custom channel names
+    sm.pl.gate_finder(
+        image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD3',
+        log=True, from_gate=3, to_gate=7, increment=0.1, markers=['CD19', 'CD4'],
+        channel_names=['DAPI', 'CD3', 'CD19', 'CD4'], point_size=15)
+
+    # Explore gating for multiple markers across different segments
+    sm.pl.gate_finder(
+        image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD8',
+        layer='expression', from_gate=5, to_gate=9, increment=0.05, markers=['CD8', 'PD1'],
+        subset='TumorRegion', seg_mask='/path/to/tumor_seg_mask.tif')
+    
     ```
     """
 

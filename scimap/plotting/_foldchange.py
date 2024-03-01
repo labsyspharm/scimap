@@ -91,24 +91,24 @@ Parameters:
             If True, returns the data frame used for plotting instead of the plot.
 
 Returns:
-    Dataframe/ plot (pandas, matplotlib):  
-        If `return_data` is True, returns a pandas DataFrame used for plotting. Otherwise, displays the plot.
+        Dataframe; plot (pandas, matplotlib):  
+            If `return_data` is True, returns a pandas DataFrame used for plotting. Otherwise, displays the plot.
 
 Example:
-    ```python
+        ```python
+        
+        # Generate a heatmap of fold changes with custom settings
+        sm.pl.foldchange(adata, label='foldchange', method='heatmap', cmap='coolwarm', log=True,
+                         p_val=0.05, nonsig_color='lightgrey', xticks_rotation=45)
     
-    # Generate a heatmap of fold changes with custom settings
-    sm.pl.foldchange(adata, label='foldchange', method='heatmap', cmap='coolwarm', log=True,
-                     p_val=0.05, nonsig_color='lightgrey', xticks_rotation=45)
-
-    # Create a parallel coordinates plot to visualize fold changes across groups
-    sm.pl.foldchange(adata, label='foldchange', method='parallel_coordinates', log=True,
-                     parallel_coordinates_color=['red', 'blue', 'green'], invert_axis=True)
-
-    # Return the data frame used for fold change visualization
-    df_foldchange = sm.pl.foldchange(adata, label='foldchange', return_data=True)
+        # Create a parallel coordinates plot to visualize fold changes across groups
+        sm.pl.foldchange(adata, label='foldchange', method='parallel_coordinates', log=True,
+                         parallel_coordinates_color=['red', 'blue', 'green'], invert_axis=True)
     
-    ```
+        # Return the data frame used for fold change visualization
+        df_foldchange = sm.pl.foldchange(adata, label='foldchange', return_data=True)
+        
+        ```
     """
         
     # set color for heatmap
