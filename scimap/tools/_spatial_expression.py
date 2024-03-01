@@ -152,7 +152,7 @@ Parameters:
         adata (anndata.AnnData):  
             The input `adata` object, updated with the spatial expression results in `adata.uns[label]`.
 
-    Examples:
+    Example:
         ```python
         
         # Calculate spatial expression using a 30-pixel radius
