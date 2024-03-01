@@ -6,14 +6,14 @@
 
 """
 !!! abstract "Short Description"
-    `sm.hl.animate`:  The function allows users to generate an animation between UMAP 
-    space and physical X and Y coordinates.  
-    
-    Depending on the computer configuration and how the function is run like jupyter notebook 
-    the live view maynot render smoothly or render at all and hence 
-    saving the animation is highly recommended. However `imagemagick` needs to be installed to 
-    be able to write the animation to disk. Please follow this link to install `imagemagick`: 
-    https://imagemagick.org/script/download.php
+    `sm.hl.animate`: This function creates dynamic animations transitioning between 
+    UMAP embeddings and physical X and Y coordinates, offering a visual bridge between 
+    abstract and physical data representations. Given varying computer configurations and 
+    execution environments (such as Jupyter notebooks), real-time animation playback may 
+    experience performance issues or may not display properly. Therefore, it is strongly advised 
+    to save animations to disk. Note that saving requires `imagemagick` installed on your system. 
+    Installation instructions for `imagemagick` can be found 
+    at: https://imagemagick.org/script/download.php
 
 ## Function
 """
@@ -36,139 +36,143 @@ def animate (adata, color=None,
              x_coordinate='X_centroid', 
              y_coordinate='Y_centroid',
              flip_y=True,
-             imageid='imageid', subset=None,
-             use_layer=None, use_raw=False, log=False,
-             subsample=None,random_state=0,
-             n_frames=50, interval=50,reverse=True,final_frame=5, 
-             s=None, alpha=1,  cmap='vlag',
-             tight_layout=True,plot_legend=False,
-             title=None, fontsize=20,watermark=True,
-             figsize=(5,5), pltStyle=None,
+             imageid='imageid', 
+             subset=None,
+             layer=None, 
+             use_raw=False, 
+             log=False,
+             subsample=None,
+             random_state=0,
+             n_frames=50, 
+             interval=50,
+             reverse=True,
+             final_frame=5, 
+             s=None, 
+             alpha=1,  
+             cmap='vlag',
+             tight_layout=True,
+             plot_legend=False,
+             title=None, 
+             fontsize=20,
+             watermark=True,
+             figsize=(5,5), 
+             pltStyle=None,
+             verbose=True,
              save_animation=None,**kwargs):
     """
 Parameters:
-    ----------
-    adata : AnnData Object  
-        
-    color (list):  
-        Keys for annotations of observations in `adata.obs.columns` or genes in `adata.var.index`. 
-        e.g. `color = ['CD3D']` or `color = ['phenotype']`. Please note only one value can be passed at a time.
-        The default is None.
-        
-    palette (dict):  
-        Colors to use for plotting categorical annotation groups. 
-        It accepts a `dict` mapping categories to colors. 
-        e.g. `palette = {'T cells': '#000000', 'B cells': '#FFF675'}`.
-        Auto color will be generated for categories that are not specified. The default is None.
-
-    embedding (string):  
-        The `label key` used when running `sm.tl.umap()`. The default is 'umap'.
-        
-    x_coordinate (string):  
-        Column that contains the `x_coordinates`. The default is 'X_centroid'.
-        
-    y_coordinate (string):  
-        Column that contains the `y_coordinates`. The default is 'Y_centroid'.
+    adata (anndata.AnnData):   
+        The annotated data object to be visualized.
     
-    flip_y (bool):  
-        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
-        If the image overlays do not align to the cells, try again by setting this to `False`.
-        
-    imageid (string):  
-        Name of the column that contains the unique imageid. The default is 'imageid'.
-        
-    subset (list):  
-        Unique imageid of a image to be subsetted for plotting. Please note as the coordinate
-        system for each images would be unique, only a single image should be passed at a time. 
-        Please use this parameter in conjuction with `imageid` to subset a single 
-        image. The Function automatically subsets the `UMAP` coordinates. The default is None.
-        
-    use_layer (string):  
-        Pass name of any `Layer` in AnnData. The default is `None` and `adata.X` is used.
-        
-    use_raw (bool):  
-        If set to `True`, values in `adata.raw.X` will be used to color the plot. The default is False.
-        
-    log (bool):  
-        If set to `True`, the data will natural log transformed using `np.log1p()` for coloring. The default is False.
-        
-    subsample (float):  
-        Accepts a value between 0-1; Randomly subsamples the data if needed for large images. The default is None.
-        
-    random_state (int):  
-        Seed for random number generator. The default is 0.
-        
-    n_frames (int):  
-        Number of frames inbetween the UMAP coordinates and the physical coordinates. 
-        Higher numbers create a smoother animation. The default is 50.
-        
-    interval (int):  
-        interval between frames in milliseconds. The default is 50.
-        
-    reverse (bool):  
-        If `True` animation will also include `Physical -> UMAP`. The default is True.
+    color (list, optional):  
+        Identifiers for annotations or genes to color the animation. Accepts a single annotation name. 
     
-    final_frame (int):  
-        The number of frames at the end. Increasing this can be useful to vizualize the 
-        last frame for a longer time. The default is 5.
-        
-    s (int):  
-        The marker size in points. The default is None.
-        
-    alpha (float):  
-        blending value, between 0 (transparent) and 1 (opaque). The default is 1.
-        
-    cmap (string):  
-        Color map to use for continous variables. Can be a name or a Colormap 
-        instance (e.g. "magma”, "viridis"). The default is 'vlag'.
-        
-    tight_layout (bool):  
-        Adjust the padding between and around subplots. If True it will ensure that
-        the legends are visible. The default is True.
-        
-    plot_legend (bool):  
-        Plots the legend. The default is False.
-
-    title (bool or string):  
-        Add a title to your plot. If `True`, it will add the default name of the plot.
-        However, a custom name can be passed through this parameter as well. 
-        e.g. `title = "custom title"`. The default is None.
+    palette (dict, optional):  
+        Custom color mapping for categorical annotations. Unspecified categories are automatically colored. 
     
-    fontsize (int):  
-        Font size of the title. The default is 20.
+    embedding (str, optional):  
+        Specifies the UMAP embedding label in `adata.obsm`. 
     
-    watermark (bool):  
-        Shows `made with scimap` in the bottom of the plot. The default is True.
-        
-    figsize (tuple):  
-        Width, height in inches. The default is (10, 10).
+    x_coordinate, y_coordinate (str, optional):  
+        Columns in `adata.obs` for spatial coordinates. Defaults are 'X_centroid' and 'Y_centroid', respectively.
     
-    pltStyle (string):  
-        Plot styles offered by matplotlib. e.g. `dark_background`. The default is True.
-        
-    save_animation (string):  
-        Pass path to saving animation. Please note depending on the computer specs the live 
-        view may not be optimal and hence saving the animation is recommended. 
-        e.g `\path\to\directory\figure` The default is None.
-        
-    **kwargs : Other `matplotlib` parameters.   
+    flip_y (bool, optional):  
+        Whether to invert the Y-axis, useful if the Y-coordinates appear flipped. 
+    
+    imageid (str, optional):  
+        Column name in `adata.obs` that identifies unique images, for datasets containing multiple images. 
+    
+    subset (list, optional):  
+        Identifiers for specific images to visualize, used in conjunction with `imageid`.
+    
+    layer (str, optional):  
+        Specifies a layer in `adata.layers` to use for the animation. Default is None, using `adata.X`.
+    
+    use_raw (bool, optional):  
+        Whether to use data from `adata.raw.X` for coloring. 
+    
+    log (bool, optional):  
+        Applies natural log transformation to the data if True. 
+    
+    subsample (float, optional):  
+        Fraction of data to randomly subsample for large datasets, between 0-1. 
+    
+    random_state (int, optional):  
+        Seed for the random number generator, ensuring reproducibility. 
+    
+    n_frames (int, optional):  
+        Number of frames between UMAP and spatial coordinates, affecting animation smoothness. 
+    
+    interval (int, optional):  
+        Time interval between frames in milliseconds. 
+    
+    reverse (bool, optional):  
+        If True, includes a reverse transition from UMAP to spatial coordinates. 
+    
+    final_frame (int, optional):  
+        Number of frames to display the final frame, enhancing visualization. 
+    
+    s (int, optional):  
+        Marker size in points. 
+    
+    alpha (float, optional):  
+        Opacity of markers, between 0 (transparent) and 1 (opaque). 
+    
+    cmap (str, optional):  
+        Colormap for continuous variables. 
+    
+    tight_layout (bool, optional):  
+        Adjusts subplot padding, ensuring visibility of legends. 
+    
+    plot_legend (bool, optional):  
+        Whether to display the legend. 
+    
+    title (bool or str, optional):  
+        Adds a title to the plot. Custom titles can be specified. 
+    
+    fontsize (int, optional):  
+        Font size for the title. 
+    
+    watermark (bool, optional):  
+        Displays a 'made with scimap' watermark. 
+    
+    figsize (tuple, optional):  
+        Figure dimensions in inches. 
+    
+    pltStyle (str, optional):  
+        Matplotlib plot style to use. 
+    
+    save_animation (str, optional):  
+        File path to save the animation. Saving is recommended for optimal viewing. 
+    
+    **kwargs : Additional matplotlib parameters.
+ 
 
 Returns:
-
-    Animation
-        Can be saved as `gif` using save_animation parameter.
+        Animation:  
+            An interactive animation or saved file illustrating the dynamic transition.
 
 Example:
-```python
+    ```python
+    
+    # Run UMAP
+    adata = sm.tl.umap(adata)
+    
+    # Basic animation with default UMAP and spatial coordinates
+    animate(adata)
 
-# Run UMAP
-adata = sm.tl.umap(adata)
+    # Customized animation with specific cell-type coloring and reverse transition
+    animate(adata, color='cell_type', reverse=False, save_animation='umap_to_spatial.gif')
 
-# Run animation and color it by the identified cell-types
-sm.hl.animate (adata, color='phenotype')
+    # Animation with a subset of images, using custom palette and increased frame interval
+    animate(adata, color='condition', palette={'Control': '#1f77b4', 'Treated': '#ff7f0e'}, 
+            subset='image_01', interval=100, save_animation='custom_animation.gif')
+    
+    ```
 
-```
     """
+    
+    
 
     # intrapolation function between co-ordinate sytems
     def tween(e1, e2, n_frames, final_frame):
@@ -218,8 +222,8 @@ sm.hl.animate (adata, color='phenotype')
         if any(item in color for item in list(adata.var.index)):
             # find the index of the marker
             marker_index = np.where(np.isin(list(adata.var.index), color))[0]
-            if use_layer is not None:
-                adatavar = adata.layers[use_layer][:, np.r_[marker_index]]
+            if layer is not None:
+                adatavar = adata.layers[layer][:, np.r_[marker_index]]
             elif use_raw is True:
                 adatavar = adata.raw.X[:, np.r_[marker_index]]
             else:
@@ -446,7 +450,8 @@ sm.hl.animate (adata, color='phenotype')
     
      
     if save_animation is not None:
-        print ('Saving file- This can take several minutes to hours for large files')
+        if verbose:
+            print ('Saving file- This can take several minutes to hours for large files')
         anim.save( save_animation + '_scimap.gif', writer='imagemagick', fps=24)
 
     # save animation

@@ -4,9 +4,14 @@
 # @author: Ajit Johnson Nirmal and Yuan Chen
 """
 !!! abstract "Short Description"
-    `sm.hl.addROI_omero`: The function allows users to add annotations that have been 
+    `sm.hl.add_roi_omero`: This function seamlessly integrates Regions of Interest (
+        ROIs) extracted from Omero into AnnData objects, enriching spatial datasets 
+    with precise, user-defined annotations for focused analysis.  
+      
+    The function allows users to add annotations that have been 
     extracted from Omero using the following 
     script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
+
 
 ## Function
 """
@@ -20,56 +25,70 @@ import scipy.spatial.distance as sdistance
 from joblib import Parallel, delayed
 
 
-def addROI_omero (adata, roi, x_coordinate='X_centroid',y_coordinate='Y_centroid',
-                   imageid='imageid', subset=None, overwrite=True,
-                   label='ROI', n_jobs=-1, verbose=False):
+def addROI_omero (adata, 
+                  roi, 
+                  x_coordinate='X_centroid',
+                  y_coordinate='Y_centroid',
+                  imageid='imageid', 
+                  subset=None, 
+                  overwrite=True,
+                  label='ROI', 
+                  n_jobs=-1, 
+                  verbose=False):
     
     """
 Parameters:
+        adata (anndata.AnnData):  
+            Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
 
-    adata : AnnData object
+        roi (DataFrame):  
+            DataFrame containing ROI coordinates and identifiers, obtained from Omero.
 
-    roi (DataFrame):  
-        Pandas dataframe of ROI's that have been extracted from Omero using the following script: https://gist.github.com/Yu-AnChen/58754f960ccd540e307ed991bc6901b0.
-        Please note that the function currently does not handle overlapping ROI's and so make sure the ROI's are mutually exclusive.
+        x_coordinate (str, required):  
+            Column name in `adata` for the x-coordinates.
 
-    x_coordinate (float):  
-        Column name containing the x-coordinates values.
+        y_coordinate (str, required):  
+            Column name in `adata` for the y-coordinates.
 
-    y_coordinate (float):  
-        Column name containing the y-coordinates values.
-    
-    imageid (string):  
-        In the event that the adata object contains multiple images, it is
-        important that ROIs are added to each image seperately. Pass the name 
-        of the column that contains the `imageid` and use it in conjunction with
-        the `subset` parameter to add ROI's to a specific image.
+        imageid (str):  
+            Column name in `adata.obs` identifying distinct images in the dataset.
 
-    subset (list):  
-        Name of the image to which the ROI is to be added. Note if you have multiple images in the 
-        adata object, you will need to add ROI's to each image one after the other independently. 
-    
-    overwrite (bool):  
-        In the event you have multiple images in the adata object, ROI can be added to each image
-        independently using the `imageid` and `subset` parameter. If you wish the results to be
-        all saved with in the same column set this parameter to `False`. By default, the 
-        function will overwrite the `label` column. 
+        subset (list, optional):  
+            Specific image identifier(s) for targeted ROI addition.
 
-    label (string):  
-        Key for the returned data, stored in `adata.obs`.
-        
-    n_jobs (int):  
-        Number of cores to use. Default is to use all available cores.
+        overwrite (bool):  
+            If True, replaces existing ROI data; if False, appends new ROI data without overwriting.
+
+        label (str):  
+            Label under which ROI data will be stored in `adata.obs`.
+
+        n_jobs (int):  
+            Number of jobs for parallel processing. Defaults to -1, using all cores.
+
+        verbose (bool):  
+            If set to `True`, the function will print detailed messages about its progress and the steps being executed.
 
 Returns:
-    adata
-        Modified AnnData object. Check `adata.obs` for an additional column.
-    
+        adata (anndata.AnnData):  
+            The updated `adata` object with ROI annotations added to `adata.obs[label]`.
+
 Example:
-```python
-    roi = pd.read_csv('ROI/ROI_Z147_1_750.csv')
-    adata = sm.hl.addROI_omero (adata, roi, label='aj_ROI')
-```
+        ```python
+        
+        # load the ROI's
+        roi_df = pd.read_csv('path/to/roi.csv')
+        
+        # Add ROIs to a single image dataset
+        adata = sm.hl.add_roi_omero(adata, roi=roi_df, label='Sample_ROI')
+    
+        # Add ROIs to a specific image in a dataset containing multiple images
+        adata = sm.hl.add_roi_omero(adata, roi=roi_df, imageid='image_column', subset=['image_01'], label='Image1_ROI')
+    
+        # Append multiple ROI datasets to the same column in AnnData without overwriting
+        adata = sm.hl.add_roi_omero(adata, roi=roi_df_first_set, label='Combined_ROI', overwrite=False)
+        adata = sm.hl.add_roi_omero(adata, roi=roi_df_second_set, label='Combined_ROI', overwrite=False)
+        
+        ```
     """
     
     # create data matrix that has the co-ordinates

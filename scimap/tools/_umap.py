@@ -6,7 +6,13 @@
 
 """
 !!! abstract "Short Description"
-    `sm.tl.umap`: The function allows users to perform dimensionality reduction using UMAP 
+    `sm.tl.umap`: This function enables dimensionality reduction on high-dimensional 
+    datasets using UMAP, allowing for the visualization of complex data structures 
+    in a lower-dimensional space. It supports customization through various parameters, 
+    including data source selection, logarithmic transformation, and manifold 
+    approximation settings, accommodating a wide range of analytical needs. Results 
+    are stored in `adata.obsm`, ready for subsequent visualization or analysis.
+    
 ## Function
 """
 
@@ -66,13 +72,13 @@ Example:
         ```python
         
         # Basic UMAP reduction
-        adata = umap(adata, n_neighbors=15, min_dist=0.1, label='umap_basic')
+        adata = sm.tl.umap(adata, n_neighbors=15, min_dist=0.1, label='umap_basic')
     
         # UMAP using specific layer and log transformation
-        adata = umap(adata, use_layer='counts', log=True, n_neighbors=30, min_dist=0.05, label='umap_layer_log')
+        adata = sm.tl.umap(adata, use_layer='counts', use_raw=True, log=True, n_neighbors=30, min_dist=0.05, label='umap_layer_log')
     
         # UMAP with a different metric and higher dimensionality
-        adata = umap(adata, metric='manhattan', n_components=3, n_neighbors=50, label='umap_manhattan_3d')
+        adata = sm.tl.umap(adata, metric='manhattan', n_components=3, n_neighbors=50, label='umap_manhattan_3d')
         
         # plot results
         sm.pl.umap(adata)
