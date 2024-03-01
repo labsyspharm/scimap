@@ -47,7 +47,7 @@ def spatial_lda (adata,
     """
 Parameters:
         adata (anndata.AnnData):  
-            Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
+            AnnData object, containing spatial gene expression data.
 
         x_coordinate (str, required):  
             Column name in `adata` denoting the x-coordinates.
