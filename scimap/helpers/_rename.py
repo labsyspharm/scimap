@@ -4,7 +4,10 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.hl.rename`: The function allows users to rename any string within a column to another and saved in a new column.
+    `sm.hl.rename`: This function offers a straightforward way to rename specific 
+    categories within a chosen column of an AnnData object, with the new names 
+    being stored in a separate column. It streamlines the process of updating or 
+    consolidating category labels for enhanced data clarity and analysis.
 
 ## Function
 """
@@ -13,36 +16,51 @@ import functools
 import re
 
 # Function
-def rename (adata, rename, from_column='phenotype', to_column='phenotype_renamed'):
+def rename (adata, 
+            rename, 
+            from_column='phenotype', 
+            to_column='phenotype_renamed',
+            verbose=True):
     """
 Parameters:
+        adata (anndata.AnnData):  
+            Annotated data matrix or path to an AnnData object, containing spatial gene expression data.
 
-    adata : AnnData object
+        rename (dict):  
+            A dictionary mapping existing category names (values) to new category names (keys). 
+            Each key corresponds to the new name, and its value is a list of existing names to be consolidated under this new name.
 
-    rename (dict):  
-        Pass a dictionary with 'values' as elements that need to be altered and 
-        'keys' as the elements that they need to be transformed into.
+        from_column (str, optional):  
+            The name of the column in `adata.obs` where the categories to be renamed are located. Defaults to 'phenotype'.
 
-    from_column (string):  
-        Column that need to be modified.
+        to_column (str, optional):  
+            The name of the new column in `adata.obs` where the renamed categories will be stored. Defaults to 'phenotype_renamed'.
 
-    to_column (string):  
-        Modified names will be stored in a new column with this name.
+        verbose (bool, optional):  
+            If True, prints messages about the renaming process. Defaults to True.
 
 Returns:
-    adata : Modified AnnData Object  
-    
-Example:
-```python
+        adata (anndata.AnnData):  
+            The AnnData object after applying the renaming operation, with the newly named categories stored in the specified `adata.obs[to_column]`.
 
-    rename= {'tumor': ['cd45 neg tumor', 'cd8 tumor', 'cd4 tumor'],
-             'macrophages': ['m1 macrophages', 'm2 macrophages']}
-    Here we are renaming cd45 neg tumor, cd8 tumor and cd4 tumor into 'tumor' and 
-    m1 macrophages and m2 macrophages into macrophages
+Example:
+    ```python
     
-    adata = sm.hl.rename_clusters (adata, rename, from_column='phenotype', 
-                                    to_column='phenotype_renamed')
-```
+    # Example 1: Simplify phenotype labels
+    rename_dict = {'tumor': ['cd45 neg tumor', 'cd8 tumor', 'cd4 tumor'],
+                   'macrophages': ['m1 macrophages', 'm2 macrophages']}
+    adata = sm.hl.rename(adata, rename=rename_dict, from_column='phenotype', to_column='simplified_phenotype')
+
+    # Example 2: Merge similar phenotypes under a common name
+    merge_dict = {'immune cells': ['cd45+', 't-cells', 'b-cells']}
+    adata = sm.hl.rename(adata, rename=merge_dict, from_column='cell_type', to_column='merged_cell_type')
+
+    # Example 3: Rename and create a new column for easier identification
+    new_names = {'activated': ['activated_tcells', 'activated_bcells'],
+                 'resting': ['resting_tcells', 'resting_bcells']}
+    adata = sm.hl.rename(adata, rename=new_names, from_column='status', to_column='status_simplified')
+    
+    ```
     """
     
     # Sanity check: if the values are not list convert them into list
@@ -58,7 +76,8 @@ Example:
      
     # Rename
     for i in name:
-        print ('Renaming ' + str(i) + ' to ' + str(name[i]))
+        if verbose:
+            print ('Renaming ' + str(i) + ' to ' + str(name[i]))
         #rename_from = [x.replace(i, name[i]) for x in rename_from]
         s = str(i)
         s = s.replace('+', '\+')

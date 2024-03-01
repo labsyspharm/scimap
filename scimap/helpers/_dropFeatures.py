@@ -58,16 +58,16 @@ Returns:
 Example:
         ```python
         # Example 1: Drop specific markers from the dataset
-        adata = dropFeatures(adata, drop_markers=['CD3D', 'CD19'])
+        adata = sm.hl.dropFeatures(adata, drop_markers=['CD3D', 'CD19'])
     
         # Example 2: Remove cells based on their identifiers
-        adata = dropFeatures(adata, drop_cells=['cell_001', 'cell_002'])
+        adata = sm.hl.dropFeatures(adata, drop_cells=['cell_001', 'cell_002'])
     
         # Example 3: Remove metadata columns from adata.obs
-        adata = dropFeatures(adata, drop_meta_columns=['Batch', 'Condition'])
+        adata = sm.hl.dropFeatures(adata, drop_meta_columns=['Batch', 'Condition'])
     
         # Example 4: Exclude specific groups from a categorical column in adata.obs
-        adata = dropFeatures(adata, drop_groups=['B cell', 'NK cell'], groups_column='Cell_Type')
+        adata = sm.hl.dropFeatures(adata, drop_groups=['B cell', 'NK cell'], groups_column='Cell_Type')
         
         ```
 
