@@ -22,6 +22,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(color_codes=True)
 sns.set_style("white")
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 def main(argv=sys.argv):
     parser = argparse.ArgumentParser(
         description='Helper function that allows users to save the contents of the `scimap` object as a csv file.'

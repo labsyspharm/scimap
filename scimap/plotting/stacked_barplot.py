@@ -26,6 +26,9 @@ import plotly.io as pio
 pio.renderers.default = 'browser'
 sns.set(style="white")
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 
 # Function
 def stacked_barplot (adata, 

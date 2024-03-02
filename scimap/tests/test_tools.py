@@ -21,7 +21,7 @@ def adata():
 # Testing the phenotyping function
 def test_phenotype(adata):
     import pandas as pd
-    from scimap.tools._phenotype_cells import phenotype_cells
+    from scimap.tools.phenotype_cells import phenotype_cells
 
     # Load phenotype and test phenotyping
     phenotype = pd.read_csv(os. getcwd() + '/scimap/tests/_data/phenotype_workflow.csv')
@@ -33,7 +33,7 @@ def test_phenotype(adata):
 
 # Testing the spatial_count function
 def test_spatial_count(adata):
-    from scimap.tools._spatial_count import spatial_count
+    from scimap.tools.spatial_count import spatial_count
     
     adata = spatial_count (adata,x_coordinate='X_position',y_coordinate='Y_position',
                            phenotype='phenotype',method='radius',radius=30,
@@ -45,7 +45,7 @@ def test_spatial_count(adata):
     
 # Testing the spatial_expression function
 def test_spatial_expression(adata):
-    from scimap.tools._spatial_expression import spatial_expression
+    from scimap.tools.spatial_expression import spatial_expression
     
     adata = spatial_expression (adata, x_coordinate='X_position',y_coordinate='Y_position',
                                 method='radius', radius=30, imageid='ImageId', 
@@ -57,7 +57,7 @@ def test_spatial_expression(adata):
     
 # Testing the spatial_aggregate function
 def test_spatial_aggregate(adata):
-    from scimap.tools._spatial_aggregate import spatial_aggregate
+    from scimap.tools.spatial_aggregate import spatial_aggregate
     
     adata = spatial_aggregate (adata, x_coordinate='X_position',y_coordinate='Y_position',
                            purity = 60, phenotype='phenotype', method='radius', radius=30,
@@ -69,7 +69,7 @@ def test_spatial_aggregate(adata):
     
 # Testing cluster function
 def test_cluster(adata):
-    from scimap.tools._cluster import cluster
+    from scimap.tools.cluster import cluster
     adata = cluster (adata,  method = 'kmeans', k= 5, use_raw = True)
     a = adata.obs['kmeans'].value_counts()[4]
     
@@ -78,7 +78,7 @@ def test_cluster(adata):
 
 # Testing spatial_interaction function
 def test_spatial_interaction(adata):
-    from scimap.tools._spatial_interaction import spatial_interaction
+    from scimap.tools.spatial_interaction import spatial_interaction
     adata = spatial_interaction (adata,  method = 'knn', knn= 5, permutation = 10, imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
     a = adata.uns['spatial_interaction']
     
@@ -87,7 +87,7 @@ def test_spatial_interaction(adata):
     
 # Testing spatial_distance function
 def test_spatial_distance(adata):
-    from scimap.tools._spatial_distance import spatial_distance
+    from scimap.tools.spatial_distance import spatial_distance
     adata = spatial_distance (adata, imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position')
     a = adata.uns['spatial_distance']
     
@@ -96,7 +96,7 @@ def test_spatial_distance(adata):
     
 # Testing spatial_pscore function
 def test_spatial_pscore(adata):
-    from scimap.tools._spatial_pscore import spatial_pscore
+    from scimap.tools.spatial_pscore import spatial_pscore
     adata = spatial_pscore (adata, imageid='ImageId',x_coordinate='X_position',y_coordinate='Y_position', 
                             score_by='ImageId', proximity= ['Tumor CD30+', 'M2 Macrophages'])
     a = adata.uns['spatial_pscore']['All Cells'].values
@@ -106,7 +106,7 @@ def test_spatial_pscore(adata):
 
 # Testing spatial_lda function
 def test_spatial_lda (adata):
-    from scimap.tools._spatial_lda import spatial_lda
+    from scimap.tools.spatial_lda import spatial_lda
     adata = spatial_lda (adata, num_motifs=10, radius=30,imageid='ImageId',
                          x_coordinate='X_position',y_coordinate='Y_position')
     a = round(adata.uns['spatial_lda']['Motif_0'][0], 3)
@@ -116,7 +116,7 @@ def test_spatial_lda (adata):
     
 # Testing foldchange function
 def test_foldchange (adata):
-    from scimap.tools._foldchange import foldchange
+    from scimap.tools.foldchange import foldchange
     import numpy as np
     # prepare
     x = np.repeat('ROI1', round(adata.shape[0]/2))

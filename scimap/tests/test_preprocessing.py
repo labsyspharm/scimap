@@ -13,7 +13,7 @@ import sys, os
 
 @pytest.fixture
 def adata():
-    from scimap.preprocessing._mcmicro_to_scimap import mcmicro_to_scimap
+    from scimap.preprocessing.mcmicro_to_scimap import mcmicro_to_scimap
     image_path = [os.getcwd() + '/scimap/tests/_data/example_data.csv']
     adata = mcmicro_to_scimap (image_path, split='X_position', drop_markers=['BG1', 'BG2', 'BG3'])
     return adata
@@ -25,7 +25,7 @@ def test_mcmicro_to_scimap(adata):
 def test_rescale(adata):
     import pandas as pd
     import numpy as np
-    from scimap.preprocessing._rescale import rescale
+    from scimap.preprocessing.rescale import rescale
 
     # test rescaling data
     manual_gate = pd.DataFrame({'marker': ['CD3D', 'KI67'], 'gate': [7, 8]})

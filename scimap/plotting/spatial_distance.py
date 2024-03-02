@@ -23,6 +23,9 @@ import numpy as np
 import seaborn as sns; sns.set(color_codes=True)
 sns.set_style("white")
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 
 def spatial_distance (adata, 
                       spatial_distance='spatial_distance',

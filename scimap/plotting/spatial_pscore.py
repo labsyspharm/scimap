@@ -20,6 +20,9 @@
 import seaborn as sns; sns.set_theme(style='white', color_codes=True)
 import matplotlib.pyplot as plt
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 # Function
 def spatial_pscore (adata, 
                     label='spatial_pscore', 

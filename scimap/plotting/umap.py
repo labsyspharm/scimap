@@ -29,6 +29,9 @@ import matplotlib.colors as colors
 import seaborn as sns
 import matplotlib.patches as mpatches
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 # function
 def umap (adata, 
           color=None, 

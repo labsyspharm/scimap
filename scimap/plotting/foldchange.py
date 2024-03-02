@@ -22,6 +22,9 @@ import numpy as np
 from pandas.plotting import parallel_coordinates
 sns.set_style("white")
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 # Function
 def foldchange (adata, 
                 label='foldchange', 

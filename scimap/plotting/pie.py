@@ -18,6 +18,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 # Function
 def pie (adata, 
          phenotype='phenotype', 

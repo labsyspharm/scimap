@@ -38,6 +38,9 @@ except:
 from scipy.spatial import Voronoi
 import matplotlib.patches as mpatches
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 # Function
 def voronoi_finite_polygons_2d(vor, 
                                radius=None):

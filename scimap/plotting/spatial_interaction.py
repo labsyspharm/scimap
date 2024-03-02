@@ -23,6 +23,9 @@ import pandas as pd
 import matplotlib
 sns.set_style("white")
 
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype'] = 42
+
 # Function
 def spatial_interaction (adata, 
                          spatial_interaction='spatial_interaction',
