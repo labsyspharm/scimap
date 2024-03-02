@@ -5,11 +5,24 @@
 # Adapted from https://stackoverflow.com/questions/20515554/colorize-voronoi-diagram/20678647#20678647
 
 """
-!!!
 !!! abstract "Short Description"
-    `sm.pl.voronoi`: The function allows users to generate a voronoi diagram and color it based on 
-    any categorical column. Please note, voronoi diagrams are best fitted for small regions with 
-    upto 5000 cells. Any larger, the voronoi plots are uninterpretable and takes a long time to generate.
+    `sm.pl.voronoi`: This function enables the visualization of spatial data through the creation of Voronoi diagrams, 
+    offering a distinctive method to explore the spatial distribution of cells or features within a defined area. 
+    Users can color these diagrams according to values from any categorical column in their dataset, 
+    such as cell type or tissue compartment, particularly good looking for manuscripts.
+
+    Key considerations for optimal use of this function include:
+    
+    - **Application Scope**: Voronoi diagrams are particularly effective for analyzing small to moderately sized spatial regions, 
+    supporting regions with up to 5,000 cells. This constraint ensures both interpretability and performance are maintained, 
+    as larger regions can result in complex visualizations that are difficult to interpret and may require extended processing times.
+    
+    - **Performance and Interpretability**: While Voronoi diagrams offer insightful visualizations for spatial data, their 
+    utility diminishes with increasing dataset size. For regions containing more than 5,000 cells, the generated plots may become 
+    cluttered and challenging to interpret, alongside experiencing significant delays in generation time.
+    Users are encouraged to segment larger datasets into smaller, manageable regions or utilize alternative visualization methods 
+    suitable for high-density spatial data.
+        
 
 ## Function
 """
@@ -116,99 +129,102 @@ def voronoi (adata,
              legend_size = 6, **kwargs):
     """
 Parameters:
-    adata : Anndata object
+        adata (anndata.AnnData): 
+            An AnnData object containing the spatial data to be visualized.
+        
+        color_by (str, optional):  
+            The name of the column used to color the Voronoi diagram. Typically, this column represents categorical 
+            variables such as cell types or tissue compartments.
+        
+        colors (str or Dict, optional):  
+            Custom color mapping for the Voronoi diagram. Can be specified as a seaborn color palette name or a dictionary 
+            mapping categories to colors.
+        
+        x_coordinate (str, optional):  
+            The column name containing the x-coordinates.
+        
+        y_coordinate (str, optional):  
+            The column name containing the y-coordinates.
+        
+        imageid (str, optional):  
+            The column name containing identifiers for different images or spatial contexts.
+        
+        subset (str, optional):  
+            Specifies the identifier of a single image to focus the visualization on.
+        
+        x_lim (list, optional):  
+            The x-axis limits for the plot as a list of two elements: [xmin, xmax].
+        
+        y_lim (list, optional):  
+            The y-axis limits for the plot as a list of two elements: [ymin, ymax].
+        
+        flip_y (bool, optional):  
+            If set to True, the y-axis will be flipped. This may be necessary for some datasets where y-coordinates are 
+            inverted.
+        
+        voronoi_edge_color (str, optional):  
+            The color of the edges of the Voronoi cells.
+        
+        voronoi_line_width (float, optional):  
+            The line width of the Voronoi cell edges.
+        
+        voronoi_alpha (float, optional):  
+            The opacity of the Voronoi cells, ranging from 0 (completely transparent) to 1 (completely opaque).
+        
+        size_max (float, optional): 
+            The maximum size for the Voronoi cells. Can be used to limit the cell size in the visualization.
+        
+        overlay_points (str, optional):  
+            The name of the column to use for overlaying points on the Voronoi diagram.
+        
+        overlay_points_categories (list, optional):  
+            Specific categories within the `overlay_points` column to include in the overlay.
+        
+        overlay_drop_categories (list, optional):  
+            Specific categories within the `overlay_points` column to exclude from the overlay.
+        
+        overlay_points_colors (str or Dict, optional):  
+            Custom color mapping for the overlay points. Can be specified as a seaborn color palette name or a dictionary 
+            mapping categories to colors.
+        
+        overlay_point_size (float, optional):  
+            The size of the overlay points.
+        
+        overlay_point_alpha (float, optional):  
+            The opacity of the overlay points, ranging from 0 (completely transparent) to 1 (completely opaque).
+        
+        overlay_point_shape (str, optional):  
+            The shape of the overlay points.
+        
+        plot_legend (bool, optional):  
+            Whether to display a legend for the plot.
+        
+        legend_size (float, optional):  
+            The font size of the legend text.
 
-    color_by (string):  
-        Color the voronoi diagram based on categorical variable (e.g. cell types or neighbourhoods).
-        Pass the name of the column which contains the categorical variable.
-
-    colors (string or Dict):  
-        Custom coloring the voronoi diagram. The parameter accepts `sns color palettes` or a python dictionary
-        mapping the categorical variable with the required color.
-
-    x_coordinate (float):  
-        Column name containing the x-coordinates values.
-
-    y_coordinate (float):  
-        Column name containing the y-coordinates values.
-           
-    flip_y (bool):  
-        Flip the Y-axis if needed. Some algorithms output the XY with the Y-coordinates flipped.
-        If the image overlays do not align to the cells, try again by setting this to `False`.
-
-    imageid (string):  
-        Column name of the column containing the image id.
-
-    subset (string):  
-        imageid of a single image to be subsetted for plotting.
-
-    voronoi_edge_color (string):  
-        A Matplotlib color for marking the edges of the voronoi. 
-        If `facecolor` is passed, the edge color will always be the same as the face color.
-
-    voronoi_line_width (float):  
-        The linewidth of the marker edges. Note: The default edgecolors is 'face'. You may want to change this as well. 
-
-    voronoi_alpha (float):  
-        The alpha blending value, between 0 (transparent) and 1 (opaque).
-
-    x_lim (list):  
-        Pass the x-coordinates range [x1,x2].
-
-    y_lim (list):  
-        Pass the y-coordinates range [y1,y2].
-
-    overlay_points (string):  
-        It is possible to overlay a scatter plot on top of the voronoi diagram.
-        Pass the name of the column which contains categorical variable to be overlayed.
-
-    overlay_points_categories (list):  
-        If the passed column in `overlay_points` contains multiple categories, however the user is only
-        interested in a subset of categories, those specific names can be passed as a list. By default all 
-        categories will be overlayed on the voronoi diagram.
-
-    overlay_drop_categories (list):  
-        Similar to `overlay_points_categories`. Here for ease of use, especially if large number of categories are present.
-        The user can drop a set of categories.
-
-    overlay_points_colors (string or Dict):  
-        Similar to `colors`.  
-        User can pass in a  
-        a) solid color (like `black`)  
-        b) sns palettes name (like `Set1`)  
-        c) python dictionary mapping the categories with custom colors
-
-    overlay_point_size (float):  
-        Overlay scatter plot point size.
-
-    overlay_point_alpha (float):  
-        The alpha blending value for the overlay, between 0 (transparent) and 1 (opaque).
-
-    overlay_point_shape (string):  
-        The marker style. marker can be either an instance of the class or the text shorthand for a particular marker.
-
-    plot_legend (bool):  
-        Define if the figure legend should be plotted.  
-        Please note the figure legend may be out of view and you may need to resize the image to see it, especially 
-        the legend for the scatter plot which will be on the left side of the plot.
-
-    legend_size (float):  
-        Resize the legend if needed.
+Returns:
+        Plot (matplotlib):
+                Returns a plot.
 
 Example:
+        ```python
+        
     
-    ```python
-    sm.pl.voronoi(adata, color_by='phenotype', colors=None, 
-             x_coordinate='X_position', y_coordinate='Y_position',
-             imageid='ImageId',subset=None,
-             voronoi_edge_color = 'black',voronoi_line_width = 0.2, 
-             voronoi_alpha = 0.5, size_max=np.inf,
-             overlay_points='phenotype', overlay_points_categories=None, 
-             overlay_drop_categories=None,
-             overlay_point_size = 5, overlay_point_alpha= 1, 
-             overlay_point_shape=".", plot_legend=False, legend_size=6)
+        #E xample 1: Basic Voronoi plot with default settings
     
-    ```
+        sm.pl.voronoi(adata)
+    
+        
+        # Example 2: Voronoi plot colored by cell type, with customized colors and overlay points for a specific phenotype
+    
+        sm.pl.voronoi(adata, color_by='cell_type', colors='Set2', overlay_points='phenotype', overlay_points_colors={'phenotype1': 'red', 'phenotype2': 'blue'}, plot_legend=True)
+    
+        
+        # Example 3: Voronoi plot for a specific image subset, with adjusted alpha and line width, and without flipping the y-axis
+    
+        sm.pl.voronoi(adata, subset='image_01', voronoi_alpha=0.7, voronoi_line_width=0.5)
+        
+        ```
 
     """
     
