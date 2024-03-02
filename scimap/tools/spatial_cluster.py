@@ -14,7 +14,7 @@
 """
 
 # Import library
-from scimap.tools._cluster import cluster
+from scimap.tools.cluster import cluster
 import anndata as ad
 import argparse
 import sys
