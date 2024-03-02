@@ -2,4 +2,4 @@
 hide:
   - toc        # Hide table of contents
 ---
-::: scimap.plotting._cluster_plots
+::: scimap.plotting.cluster_plots

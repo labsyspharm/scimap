@@ -2,4 +2,4 @@
 hide:
   - toc        # Hide table of contents
 ---
-::: scimap.tools._cluster
+::: scimap.tools.cluster

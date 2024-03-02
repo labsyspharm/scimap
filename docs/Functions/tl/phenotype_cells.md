@@ -2,4 +2,4 @@
 hide:
   - toc        # Hide table of contents
 ---
-::: scimap.tools._phenotype_cells
+::: scimap.tools.phenotype_cells

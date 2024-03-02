@@ -2,4 +2,4 @@
 hide:
   - toc        # Hide table of contents
 ---
-::: scimap.tools._spatial_lda
+::: scimap.tools.spatial_lda
