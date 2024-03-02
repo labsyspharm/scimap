@@ -43,7 +43,7 @@ def densityPlot2D (adata,
 
     """
 Parameters:
-    adata (anndata): 
+    adata (anndata.AnnData): 
         Annotated data matrix containing single-cell gene expression data.
 
     markerA (str):  

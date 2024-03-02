@@ -55,7 +55,7 @@ def spatial_scatterPlot (adata,
                          **kwargs):
     """
 Parameters:
-    adata (anndata):   
+    adata (anndata.AnnData):   
         Pass the `adata` loaded into memory or a path to the `adata` 
         file (.h5ad).
     
@@ -138,7 +138,6 @@ Returns:
         provided outputDir.
 
 Example:
-
         ```python
         
         customColors = { 'Unknown' : '#e5e5e5',

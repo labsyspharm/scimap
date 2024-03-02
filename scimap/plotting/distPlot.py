@@ -36,7 +36,7 @@ def distPlot(adata,
 
     """
 Parameters:
-    adata (AnnData): 
+    adata (anndata.AnnData): 
         Annotated data object.
     
     layer (str, optional): 
@@ -86,11 +86,9 @@ Parameters:
 
 Returns:
     Plot (image):
-        If `outputDir` is provided the plot will saved within the
-        provided outputDir.
+        If `outputDir` is provided the plot will saved within the provided outputDir.
 
 Example:
-
         ```python
         
         sm.pl.distPlot(adata, 
