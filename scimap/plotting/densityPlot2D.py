@@ -5,10 +5,10 @@
 
 """
 !!! abstract "Short Description"
-    The `sm.pl.densityPlot2D` function generates a 2D density plot of the expression 
-    of one or more specified markers. The function can be called with one or two 
-    marker names to generate a 2D density plot of expression of the first 
-    marker against the second marker or against all other markers in the dataset.
+    The `sm.pl.densityPlot2D` function crafts 2D density plots to visualize expression 
+    levels of one or two specified markers. When a single marker is provided, it depicts 
+    its expression distribution across the dataset. With two markers, it contrasts the expression 
+    of the first against the second, offering insights into their co-expression or distribution patterns. 
 
 ## Function
 """
@@ -104,12 +104,13 @@ Returns:
         Otherwise, the plot is saved in the provided `outputDir` directory.
 
 Example:
-    ```
+    ```python
+    
     # create a 2D density plot of the expression of 'CD3D' against 'CD8A' in the dataset 'adata'
-    densityPlot2D(adata, markerA='CD3D', markerB='CD8A')
+    sm.pl.densityPlot2D(adata, markerA='CD3D', markerB='CD8A')
 
     # create a 2D density plot of the expression of 'CD3D' against all markers in the dataset 'adata'
-    densityPlot2D(adata, markerA='CD3D')
+    sm.pl.densityPlot2D(adata, markerA='CD3D')
     ```
 
     """
