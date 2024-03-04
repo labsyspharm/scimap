@@ -112,9 +112,8 @@ extra_css:
   
 copyright: Copyright &copy; 2024 | Nirmal Lab | www.nirmallab.com
 
-    
 extra:
-    generator: false
+  generator: false
   analytics:
     provider: google
     property: G-22X9HCL4YP
