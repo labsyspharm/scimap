@@ -110,12 +110,16 @@ Parameters:
         Description of parameter2. 
     
 Returns:
-    return_type: Description of what is returned.
+    return_type (type): 
+        Description of what is returned.
     
 Example:
+
     ```python
+    
     # Example usage of your function
-    result = your_function_name(parameter1, parameter2)
+    adata = sm.ex.yourFunction(parameter1, parameter2, ...)
+    
     ```
     """
     
@@ -146,7 +150,7 @@ def adata():
     adata = ad.read(image_path)
     return adata
 
-# Example unit test for the phenotyping function
+# Example unit test for your function
 def test_yourFunction(adata):
 
     from scimap.external.yourFunction import yourFunction

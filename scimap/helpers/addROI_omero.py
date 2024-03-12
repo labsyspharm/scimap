@@ -79,14 +79,14 @@ Example:
         roi_df = pd.read_csv('path/to/roi.csv')
         
         # Add ROIs to a single image dataset
-        adata = sm.hl.add_roi_omero(adata, roi=roi_df, label='Sample_ROI')
+        adata = sm.hl.addROI_omero(adata, roi=roi_df, label='Sample_ROI')
     
         # Add ROIs to a specific image in a dataset containing multiple images
-        adata = sm.hl.add_roi_omero(adata, roi=roi_df, imageid='image_column', subset=['image_01'], label='Image1_ROI')
+        adata = sm.hl.addROI_omero(adata, roi=roi_df, imageid='image_column', subset=['image_01'], label='Image1_ROI')
     
         # Append multiple ROI datasets to the same column in AnnData without overwriting
-        adata = sm.hl.add_roi_omero(adata, roi=roi_df_first_set, label='Combined_ROI', overwrite=False)
-        adata = sm.hl.add_roi_omero(adata, roi=roi_df_second_set, label='Combined_ROI', overwrite=False)
+        adata = sm.hl.addROI_omero(adata, roi=roi_df_first_set, label='Combined_ROI', overwrite=False)
+        adata = sm.hl.addROI_omero(adata, roi=roi_df_second_set, label='Combined_ROI', overwrite=False)
         
         ```
     """
