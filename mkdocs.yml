@@ -32,7 +32,7 @@ theme:
 
 nav:
     - Home: 'index.md'
-    - Getting Started: 'Getting Started.md'
+    - Install: 'Getting Started.md'
     - Tools Shortcut: 'Tools Shortcut.md'
     - SCIMAP Functions:
         - Pre Processing:
@@ -84,6 +84,7 @@ nav:
         - CellType Proportion Exploration: 'tutorials/4-CellType_Proportion_Exploration.md'
         - Simple Spatial Analysis: 'tutorials/5-Simple_Spatial_Analysis.md'
         - Animate with scimap: 'tutorials/6_animate_with_scimap.md'
+    - Contributing: 'Contributing.md'
 
 plugins:
 - mkdocstrings:
