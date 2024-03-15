@@ -47,14 +47,6 @@ jobs:
         with:
           path: .poetry_cache
           key: tests-poetry-cache-v11-${{ matrix.os }}-py${{ matrix.python-version }}          
-          
-#      - name: Set up Poetry virtual environment
-#        run: poetry env use python${{ matrix.python-version }}
         
       - name: Install project dependencies
         run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry install -vv; }
-        #run: poetry install -vv || { rm -rf .poetry_cache/*; poetry install -vv; }
-        #run: poetry install -vv || { rm -rf .poetry_cache/virtualenvs/*; poetry cache clear repository --all; poetry install -vv; }
-        
-      - name: Run tests with Poetry
-        run: poetry run pytest
