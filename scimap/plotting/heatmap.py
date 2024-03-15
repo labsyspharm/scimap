@@ -102,13 +102,13 @@ Returns:
         Returns a plot, if `saveDir` and `fileName` are provided, the plot is saved in the given directory.
 
 Example:
-    ```python
+        ```python
     
-    Example 1: Basic usage with clustering and standard scale by column.
+        # Example 1: Basic usage with clustering and standard scale by column.
     
         sm.pl.heatmap(adata, groupBy='leiden', standardScale='column')
     
-    Example 2: Advanced usage with specified subset markers, custom grouping, and file saving.
+        # Example 2: Advanced usage with specified subset markers, custom grouping, and file saving.
     
         subsetMarkers = ['ELANE', 'CD57', 'CD45', 'CD11B', 'SMA', 'CD16', 'ECAD']
         subsetGroups = ['0', '1', '3', '6']
@@ -119,7 +119,7 @@ Example:
         
         sm.pl.heatmap(adata, groupBy='leiden', subsetMarkers=subsetMarkers, subsetGroups=subsetGroups, clusterRows=False, clusterColumns=False, standardScale='column', orderRow=orderRow, orderColumn=orderColumn, showPrevalence=True, figsize=(10, 5), saveDir=saveDir, fileName=fileName, vmin=0, vmax=1)
         
-    ```
+        ```
 """
     
     # load adata

@@ -50,6 +50,7 @@ import scimap as sm
 | [`sm.pl.image_viewer`](Functions/pl/image_viewer.md) | Integrates with `napari` to offer an interactive platform for enhanced image viewing and annotation with data overlays. |
 | [`sm.pl.addROI_image`](Functions/pl/addROI_image.md) | Facilitates the addition of Regions of Interest (ROIs) through `napari`, enriching spatial analyses with precise locational data. |
 | [`sm.pl.gate_finder`](Functions/pl/gate_finder.md) | Aids in the manual gating process by overlaying marker positivity on images, simplifying the identification and analysis of cellular subsets. |
+| [`sm.pl.heatmap`](Functions/pl/heatmap.md) | Creates heatmaps to visually explore marker expression or feature distributions across different groups. |
 | [`sm.pl.distPlot`](Functions/pl/distPlot.md) | Generates distribution plots for specific markers, allowing for the visual comparison of marker expression across different conditions or cell types. |
 | [`sm.pl.densityPlot2D`](Functions/pl/densityPlot2D.md) | Creates two-dimensional density plots of marker expressions, facilitating the visualization of expression patterns and densities in a spatial context. |
 | [`sm.pl.cluster_plots`](Functions/pl/cluster_plots.md) | Provides a meta-function that outputs a combination of UMAP, heatmap, and ranked markers for each group, offering a comprehensive view of clustering results. |
