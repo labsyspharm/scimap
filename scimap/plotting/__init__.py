@@ -13,3 +13,4 @@ from .umap import umap
 from .densityPlot2D import densityPlot2D
 from .distPlot import distPlot
 from .spatial_scatterPlot import spatial_scatterPlot
+from .heatmap import heatmap

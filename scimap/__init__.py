@@ -5,6 +5,8 @@ try:
 except DistributionNotFound:
     __version__ = '(local)'
 
+import scimap
+print(f"Running SCIMAP  {scimap.__version__}")
 
 from . import preprocessing as pp
 from . import plotting as pl
