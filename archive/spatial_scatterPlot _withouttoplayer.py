@@ -32,7 +32,6 @@ mpl.rcParams['pdf.fonttype'] = 42
 # Function
 def spatial_scatterPlot (adata, 
                          colorBy, 
-                         topLayer=None,
                          x_coordinate='X_centroid',
                          y_coordinate='Y_centroid',
                          imageid='imageid',
@@ -63,10 +62,6 @@ Parameters:
     colorBy (str):  
     The column name that will be used for color-coding the points. This can be 
     either markers (data stored in `adata.var`) or observations (data stored in `adata.obs`).
-    
-    topLayer (list, optional):  
-            A list of categories that should be plotted on the top layer. These categories
-            must be present in the `colorBy` data. Helps to highlight cell types or cluster that is of interest. 
 
     x_coordinate (str, optional):  
         The column name in `spatial feature table` that records the
@@ -204,10 +199,6 @@ Example:
     # isolate the meta data
     meta = bdata.obs
     
-    # toplayer logic
-    if isinstance (topLayer, str):
-        topLayer = [topLayer]  
-    
     # identify the things to color
     if isinstance (colorBy, str):
         colorBy = [colorBy]   
@@ -257,6 +248,7 @@ Example:
         axs = [axs]  # wrap single subplot in a list
     else:
         axs = axs.flatten()
+
     
     # Loop over the columns of the DataFrame
     for i, col in enumerate(colorColumns):
@@ -288,39 +280,27 @@ Example:
             
             # Map the categories to colors using either the custom colors or the categorical colormap
             if customColors:
-                colors = {cat: customColors[cat] for cat in categories if cat in customColors}
+                colors = [customColors.get(cat, cmap_cat(i)) for i, cat in enumerate(categories)]
             else:
-                colors = {cat: cmap_cat(i) for i, cat in enumerate(categories)}
+                colors = [cmap_cat(i) for i in np.linspace(0, 1, len(categories))]
             
-            # Ensure topLayer categories are plotted last
-            categories_to_plot_last = [cat for cat in topLayer if cat in categories] if topLayer else []
-            categories_to_plot_first = [cat for cat in categories if cat not in categories_to_plot_last]
+            # Map the categories to numeric codes for plotting
+            codes = [np.where(categories == cat)[0][0] for cat in colorColumns[col]]
+
             
-            # Plot non-topLayer categories first
-            for cat in categories_to_plot_first:
-                cat_mask = colorColumns[col] == cat
-                ax.scatter(x=x[cat_mask], y=y[cat_mask], 
-                           c=[colors.get(cat, cmap_cat(np.where(categories == cat)[0][0]))],
-                           s=s, linewidths=0, alpha=alpha, **kwargs)
-            
-            # Then plot topLayer categories
-            for cat in categories_to_plot_last:
-                cat_mask = colorColumns[col] == cat
-                ax.scatter(x=x[cat_mask], y=y[cat_mask], 
-                           c=[colors.get(cat, cmap_cat(np.where(categories == cat)[0][0]))],
-                           s=s, linewidths=0, alpha=alpha, **kwargs)
-            
+            # Plot the scatter plot with categorical colors
+            c = [colors[code] for code in codes]
+            scatter = ax.scatter(x=x, y=y, c=c, s=s, linewidths=0, alpha=alpha, **kwargs)
             if plotLegend is True:
-                # Adjust legend to include all categories
-                handles = [mpatches.Patch(color=colors.get(cat, cmap_cat(np.where(categories == cat)[0][0])), label=cat) for cat in categories]
+                # Create the categorical legend outside the plot
+                handles = [mpatches.Patch(color=colors[i], label=cat) for i, cat in enumerate(categories)]
                 ax.legend(handles=handles, bbox_to_anchor=(1.0, 1.0), loc='upper left', bbox_transform=ax.transAxes, fontsize=fontsize)
         
-        ax.set_title(col)  # fontsize=fontsize
+        ax.set_title(col) # fontsize=fontsize
         ax.set_yticklabels([])
         ax.set_xticklabels([])
         ax.set_xticks([])
         ax.set_yticks([])
-
     
     # Remove any empty subplots
     num_plots = len(colorColumns.columns)
