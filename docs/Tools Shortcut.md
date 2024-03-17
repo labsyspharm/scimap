@@ -18,6 +18,7 @@ import scimap as sm
 | Function | Detailed Description |
 |---|---|
 | [`sm.pp.mcmicro_to_scimap`](Functions/pp/mcmicro_to_scimap.md) | Facilitates the transformation of `mcmicro` outputs into `scimap`-compatible formats, enabling the integration of microscopy data for comprehensive analysis. |
+| [`sm.pp.log1p`](Functions/pp/log1p.md) | Applies a log1p transformation to the raw data within an AnnData object. |
 | [`sm.pp.rescale`](Functions/pp/rescale.md) | Employs both manual and automated gating-based strategies for data rescaling, enhancing measurement scale sensitivity and dynamic range for optimal data representation. |
 | [`sm.pp.combat`](Functions/pp/combat.md) | Implements an advanced batch correction algorithm to effectively neutralize batch-related variabilities, ensuring data consistency across different experimental batches. |
 
