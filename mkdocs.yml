@@ -37,6 +37,7 @@ nav:
     - SCIMAP Functions:
         - Pre Processing:
             - mcmicro_to_scimap: 'Functions/pp/mcmicro_to_scimap.md'
+            - log1p: 'Functions/pp/log1p.md'
             - rescale: 'Functions/pp/rescale.md'
             - combat: 'Functions/pp/combat.md'
         - Tools:
