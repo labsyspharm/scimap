@@ -127,18 +127,6 @@ Example:
         adata = ad.read_h5ad(adata)
     
     
-    # check for layers
-    if layer is not None:  # Checks if only one is None
-        try:
-            # Attempt to access the 'log' layer of the adata object
-            log_layer = adata.layers[layer]
-        except KeyError:
-            if layer == 'log':
-            # If the 'log' layer is not found, raise a new informative error
-                raise KeyError("LOG layer not found. Please run sm.pp.log1p(adata) to generate the log layer.")
-            else:
-                raise KeyError(str(layer) + " layer not found. Please check annData.layers")
-    
     # check if the location is provided if the user wishes to save the image
     if (saveDir is None and fileName is not None) or (saveDir is not None and fileName is None):
         raise ValueError("Both 'saveDir' and 'fileName' must be provided together or not at all.")
@@ -300,7 +288,7 @@ Example:
     
         # Setting the tick labels
         ax.set_xticks(np.arange(mean_data.shape[1]))
-        ax.set_xticklabels(marker_names, rotation=45, ha="right")
+        ax.set_xticklabels(marker_names, rotation=90, ha="right")
         ax.set_yticks(np.arange(mean_data.shape[0]))
         ax.set_yticklabels(unique_categories)
         

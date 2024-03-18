@@ -62,6 +62,8 @@ Example:
         if not adata_path.exists():
             raise FileNotFoundError(f"The file {adata} does not exist.")
         adata = ad.read_h5ad(adata_path)
+    else:
+        adata_path = None
     
     
     if layer in adata.layers:

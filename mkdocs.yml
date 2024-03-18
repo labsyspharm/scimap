@@ -59,6 +59,8 @@ nav:
             - addROI_image: 'Functions/pl/addROI_image.md'
             - gate_finder: 'Functions/pl/gate_finder.md'
             - heatmap: 'Functions/pl/heatmap.md'
+            - markerCorrelation: 'Functions/pl/markerCorrelation.md'
+            - groupCorrelation: 'Functions/pl/groupCorrelation.md'
             - distPlot: 'Functions/pl/distPlot.md'
             - densityPlot2D: 'Functions/pl/densityPlot2D.md'
             - cluster_plots: 'Functions/pl/cluster_plots.md'
