@@ -29,13 +29,16 @@ import matplotlib.colors as colors
 import seaborn as sns
 import matplotlib.patches as mpatches
 
-import matplotlib as mpl
-mpl.rcParams['pdf.fonttype'] = 42
+plt.rcParams['figure.dpi'] = 100
+plt.rcParams['savefig.dpi']=300
+plt.rcParams['font.family']='sans serif'
+plt.rcParams['font.sans-serif']='Arial'
+plt.rcParams['pdf.fonttype']=42
 
 # function
 def umap (adata, 
           color=None, 
-          use_layer=None, 
+          layer=None, 
           use_raw=False, 
           log=False, 
           label='umap',
@@ -57,7 +60,7 @@ Parameters:
             List of keys from `adata.obs.columns` or `adata.var.index` to color the plot. 
             Allows multiple keys for facetted plotting.
 
-        use_layer (str, optional):  
+        layer (str, optional):  
             Specifies the AnnData layer to use for UMAP calculations. Defaults to using `adata.X`.
 
         use_raw (bool, optional):  
@@ -138,14 +141,16 @@ Example:
         # organise the data
         if any(item in color for item in list(adata.obs.columns)):
             adataobs = adata.obs.loc[:, adata.obs.columns.isin(color)]
+            adataobs = adataobs.apply(lambda x: x.astype('category'))
+
         else:
             adataobs = None
             
         if any(item in color for item in list(adata.var.index)):
             # find the index of the marker
             marker_index = np.where(np.isin(list(adata.var.index), color))[0]
-            if use_layer is not None:
-                adatavar = adata.layers[use_layer][:, np.r_[marker_index]]
+            if layer is not None:
+                adatavar = adata.layers[layer][:, np.r_[marker_index]]
             elif use_raw is True:
                 adatavar = adata.raw.X[:, np.r_[marker_index]]
             else:

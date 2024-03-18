@@ -21,6 +21,13 @@ import warnings
 from scipy.stats import zscore
 import argparse
 
+
+plt.rcParams['figure.dpi'] = 100
+plt.rcParams['savefig.dpi']=300
+plt.rcParams['font.family']='sans serif'
+plt.rcParams['font.sans-serif']='Arial'
+plt.rcParams['pdf.fonttype']=42
+
 # function
 def groupCorrelation(adata, 
                      groupBy, 

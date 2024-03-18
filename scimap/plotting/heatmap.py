@@ -24,6 +24,13 @@ import anndata as ad
 import argparse
 
 
+plt.rcParams['figure.dpi'] = 100
+plt.rcParams['savefig.dpi']=300
+plt.rcParams['font.family']='sans serif'
+plt.rcParams['font.sans-serif']='Arial'
+plt.rcParams['pdf.fonttype']=42
+
+
 # function
 def heatmap (adata,
              groupBy,
@@ -299,7 +306,6 @@ Example:
         cbar_ax.xaxis.set_label_position('top')
         cbar.set_label('Mean expression in group')
         
-        ax.set_title('Heatmap of Marker Values by Category')
         ax.set_xlabel('Markers')
         ax.set_ylabel('Categories')
         
