@@ -375,9 +375,11 @@ Example:
         def add_roi_internal (roi_id):
             roi_mpatch = all_rois[all_rois['id'] == roi_id]['mpatch'][roi_id]
             inside = sub_data[roi_mpatch.contains_points(sub_data[[x_coordinate, y_coordinate]])]
-            inside['ROI_internal'] = all_rois[all_rois['id'] == roi_id]['ROI'][roi_id]
+            inside_copy = inside.copy()
+            inside_copy['ROI_internal'] = all_rois.loc[all_rois['id'] == roi_id, 'ROI'][roi_id]
+            #inside['ROI_internal'] = all_rois[all_rois['id'] == roi_id]['ROI'][roi_id]
             # return
-            return inside
+            return inside_copy
         
         print("Identifying cells within selected ROI's")
         # all ROI cells
@@ -419,7 +421,9 @@ Example:
             combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna('Other')     
         
         # Add to adata
-        adata.obs[label] = combined_roi['ROI_internal']    
+        adata.obs[label] = combined_roi['ROI_internal']   
+        
+        print("ROIs saved under adata.obs['" + str(label) + "']")
         
         # return
         return adata

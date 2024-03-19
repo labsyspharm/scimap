@@ -97,7 +97,8 @@ Example:
     
     # set color for heatmap
     #cmap_updated = copy.copy(matplotlib.cm.get_cmap(cmap))
-    cmap_updated = matplotlib.cm.get_cmap(cmap)
+    #cmap_updated = matplotlib.cm.get_cmap(cmap)
+    cmap_updated = matplotlib.colormaps[cmap]
     cmap_updated.set_bad(color=nonsig_color)
     
 
@@ -161,7 +162,7 @@ Example:
         mask = p_val_df.isnull() # identify the NAN's for masking 
         im = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
         # heatmap
-        sns.clustermap(im, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
+        sns.clustermap(im, cmap=cmap_updated, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
         
     else:
         if len(interaction_map.columns) < 2:
@@ -213,7 +214,7 @@ Example:
                 
         # covert the first two columns into index
         # Plot
-        sns.clustermap(im, cmap=cmap, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
+        sns.clustermap(im, cmap=cmap_updated, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
     
     if return_data is True:
         # perpare data for export

@@ -102,21 +102,30 @@ Example:
     from_data = data[data[imageid].isin(from_group)]
     if len(from_group) > 1:
         combined_name = '_'.join(from_group)
-        from_data[imageid] = combined_name
-    from_data[imageid] = from_data[imageid].astype('str').astype('category')
-    from_data[phenotype] = from_data[phenotype].astype('str').astype('category')
+        #from_data[imageid] = combined_name
+        from_data.loc[:, imageid] = combined_name
+
+    #from_data[imageid] = from_data[imageid].astype('str').astype('category')
+    #from_data[phenotype] = from_data[phenotype].astype('str').astype('category')
+    from_data.loc[:, imageid] = from_data[imageid].astype('str').astype('category')
+    from_data.loc[:, phenotype] = from_data[phenotype].astype('str').astype('category')
     if to_group is None:
         to_data = data[~data[imageid].isin(from_group)]
     else:
         to_data = data[data[imageid].isin(to_group)]
-    to_data[imageid] = to_data[imageid].astype('str').astype('category')
-    to_data[phenotype] = to_data[phenotype].astype('str').astype('category')
+    to_data.loc[:, imageid] = to_data[imageid].astype('str').astype('category')
+    to_data.loc[:, phenotype] = to_data[phenotype].astype('str').astype('category')
+    #to_data[imageid] = to_data[imageid].astype('str').astype('category')
+    #to_data[phenotype] = to_data[phenotype].astype('str').astype('category')
+    
+    if verbose:
+        print('calculating foldchange')
     
     # consolidated counts dataframe
-    from_data_consolidated = pd.DataFrame(from_data.groupby([imageid,phenotype]).size()).unstack().fillna(0)
+    from_data_consolidated = pd.DataFrame(from_data.groupby([imageid,phenotype],observed=False).size()).unstack().fillna(0)
     from_data_consolidated.columns = np.unique(from_data_consolidated.columns.get_level_values(1))
     
-    to_data_consolidated = pd.DataFrame(to_data.groupby([imageid,phenotype]).size()).unstack().fillna(0)
+    to_data_consolidated = pd.DataFrame(to_data.groupby([imageid,phenotype],observed=False).size()).unstack().fillna(0)
     to_data_consolidated.columns = np.unique(to_data_consolidated.columns.get_level_values(1))
     
     # make backup of the sample names
@@ -143,10 +152,13 @@ Example:
         print('calculating P values')
     p_vals = []
     for i in from_data_consolidated.columns:
-        a = from_data_consolidated[i][0]
-        c = from_data_total[i][0]
+        #a = from_data_consolidated[i][0]
+        a = from_data_consolidated[i].iloc[0]
+        #c = from_data_total[i][0]
+        c = from_data_total[i].iloc[0]
         for j in to_data_consolidated.index:
-            b = to_data_consolidated[i][j]
+            #b = to_data_consolidated[i][j]
+            b = to_data_consolidated[i].loc[j]
             d = to_data_total[i][j]
             oddsratio, pvalue = stats.fisher_exact([[a, b], [c, d]])
             p_vals.append(pvalue)

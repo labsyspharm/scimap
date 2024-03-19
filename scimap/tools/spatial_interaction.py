@@ -180,7 +180,7 @@ Example:
         def permutation_pval (data):
             data = data.assign(neighbour_phenotype=np.random.permutation(data['neighbour_phenotype']))
             #data['neighbour_phenotype'] = np.random.permutation(data['neighbour_phenotype'])
-            data_freq = data.groupby(['phenotype','neighbour_phenotype']).size().unstack()
+            data_freq = data.groupby(['phenotype','neighbour_phenotype'],observed=False).size().unstack()
             data_freq = data_freq.fillna(0).stack().values 
             return data_freq
         
@@ -193,7 +193,7 @@ Example:
             print('Consolidating the permutation results')
         # Calculate P value
         # real
-        n_freq = n.groupby(['phenotype','neighbour_phenotype']).size().unstack().fillna(0).stack() 
+        n_freq = n.groupby(['phenotype','neighbour_phenotype'],observed=False).size().unstack().fillna(0).stack() 
         # permutation
         mean = perm.mean(axis=1)
         std = perm.std(axis=1)
@@ -212,7 +212,7 @@ Example:
         direction = ((n_freq.values - mean) / abs(n_freq.values - mean)).fillna(1)
 
         # Normalize based on total cell count
-        k = n.groupby(['phenotype','neighbour_phenotype']).size().unstack().fillna(0)
+        k = n.groupby(['phenotype','neighbour_phenotype'],observed=False).size().unstack().fillna(0)
         # add neighbour phenotype that are not present to make k a square matrix
         columns_to_add = dict.fromkeys(np.setdiff1d(k.index,k.columns), 0)
         k = k.assign(**columns_to_add)

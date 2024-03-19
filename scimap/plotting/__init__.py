@@ -16,3 +16,4 @@ from .spatial_scatterPlot import spatial_scatterPlot
 from .heatmap import heatmap
 from .markerCorrelation import markerCorrelation
 from .groupCorrelation import groupCorrelation
+from .spatialInteractionNetwork import spatialInteractionNetwork

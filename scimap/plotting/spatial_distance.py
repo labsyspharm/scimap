@@ -160,7 +160,7 @@ Example:
             # create the necessary data
             data = pd.DataFrame({'phenotype': adata.obs[phenotype]})
             data = pd.merge(data, diatance_map, how='outer',left_index=True, right_index=True) # merge with the distance map
-            k = data.groupby(['phenotype']).mean() # collapse the whole dataset into mean expression
+            k = data.groupby(['phenotype'],observed=False).mean() # collapse the whole dataset into mean expression
             d = k[k.index]
         else:
             # create new naming scheme for the phenotypes
@@ -171,7 +171,7 @@ Example:
             # Merge distance map with phenotype
             data = pd.DataFrame(non_summary[['image_phenotype']])
             data = pd.merge(data, diatance_map, how='outer',left_index=True, right_index=True)
-            k = data.groupby(['image_phenotype']).mean()
+            k = data.groupby(['image_phenotype'],observed=False).mean()
             d = k.sort_index(axis=1)
         # Generate the heatmap
         mask = d.isnull() # identify the NAN's for masking 

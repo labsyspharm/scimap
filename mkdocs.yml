@@ -69,6 +69,7 @@ nav:
             - spatial_scatterPlot: 'Functions/pl/spatial_scatterPlot.md'
             - spatial_distance: 'Functions/pl/spatial_distance.md'
             - spatial_interaction: 'Functions/pl/spatial_interaction.md'
+            - spatialInteractionNetwork: 'Functions/pl/spatialInteractionNetwork.md'
             - spatial_pscore: 'Functions/pl/spatial_pscore.md'
             - stacked_barplot: 'Functions/pl/stacked_barplot.md'
             - pie: 'Functions/pl/pie.md'

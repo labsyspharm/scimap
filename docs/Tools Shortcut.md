@@ -62,6 +62,7 @@ import scimap as sm
 | [`sm.pl.spatial_scatterPlot`](Functions/pl/spatial_scatterPlot.md) | Produces scatter plots of spatially resolved data, illustrating the distribution and organization of cells within tissue sections. |
 | [`sm.pl.spatial_distance`](Functions/pl/spatial_distance.md) | Visualizes the spatial distances between phenotypes, providing insights into the physical separation and clustering of cell types. |
 | [`sm.pl.spatial_interaction`](Functions/pl/spatial_interaction.md) | Displays heatmaps of cell-cell interaction analyses, highlighting the complex interplay between different cellular populations. |
+| [`sm.pl.spatialInteractionNetwork`](Functions/pl/spatialInteractionNetwork.md) | Displays  cell-cell interaction analyses as a Network plot. |
 | [`sm.pl.spatial_pscore`](Functions/pl/spatial_pscore.md) | Generates bar plots of Spatial Proximity Scores, quantifying and visualizing the proximity between selected cell types within a spatial context. |
 | [`sm.pl.stacked_barplot`](Functions/pl/stacked_barplot.md) | Creates stacked barplots from any two columns of categorical data, offering a clear visualization of proportions and relationships between categories. |
 | [`sm.pl.pie`](Functions/pl/pie.md) | Produces pie charts to represent the proportions of cell types or any categorical data, facilitating the quick assessment of composition within datasets. |
