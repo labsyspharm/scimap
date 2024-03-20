@@ -82,7 +82,29 @@ nav:
             - merge_adata_obs: 'Functions/hl/merge_adata_obs.md'
             - animate: 'Functions/hl/animate.md'
             - scimap_to_csv: 'Functions/hl/scimap_to_csv.md'
-    - Tutorials:
+    - Tutorials:  'tutorials/md/spatial_biology_scimap.md'
+        - Setup:
+            - Install Scimap: 'tutorials/md/install_scimap.md'
+            - Demo Data: 'tutorials/md/demo_data_scimap.md'
+            - Prepare Demo: 'tutorials/md/anndata_scimap.md'
+        - Cell Phenotyping: 
+            - Unsupervised clustering: 'tutorials/md/clustering_scimap.md'
+            - Prior knowledge driven: 'tutorials/md/scimap_phenotyping.md'
+            - Add ROIs: 'tutorials/md/add_rois_scimap.md'
+            - Explore cell types: 'tutorials/md/cell_proportion_scimap.md'
+        - Spatial Analysis:
+            - Distance measurement: 'tutorials/md/spatial_analysis_scimap.md'
+            - Interaction analysis: 'tutorials/md/cell_interaction_scimap.md'
+            - Proximity scores: 'tutorials/md/proximity_scimap.md'
+            - Search patterns: 'tutorials/md/spatial_search_scimap.md'
+        - Cellular Neighbourhoods:
+            - Spatial LDA: 'tutorials/md/spatial_lda_scimap.md'
+            - Spatial Lag: 'tutorials/md/spatial_lag_scimap.md'
+        - Helper:
+            - Export data: 'tutorials/md/export_scimap.md'
+            - Animate: 'tutorials/md/animate_scimap.md'
+            - Other helpers: 'tutorials/md/scimap_helper_functions.md'
+        - Videos: 'tutorials/md/scimap_video.md'
         - Archive:
             - Getting Started with Scimap: 'tutorials/archive/1-scimap-tutorial-getting-started.md'
             - Cell-Phenotyping using Scimap: 'tutorials/archive/2-scimap-tutorial-cell-phenotyping.md'
