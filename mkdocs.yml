@@ -82,7 +82,8 @@ nav:
             - merge_adata_obs: 'Functions/hl/merge_adata_obs.md'
             - animate: 'Functions/hl/animate.md'
             - scimap_to_csv: 'Functions/hl/scimap_to_csv.md'
-    - Tutorials: 'tutorials/md/spatial_biology_scimap.md'
+    - Tutorials: 
+        - Index: 'tutorials/md/spatial_biology_scimap.md'
         - Setup:
             - Install Scimap: 'tutorials/md/install_scimap.md'
             - Demo Data: 'tutorials/md/demo_data_scimap.md'
