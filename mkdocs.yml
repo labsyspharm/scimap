@@ -83,13 +83,13 @@ nav:
             - animate: 'Functions/hl/animate.md'
             - scimap_to_csv: 'Functions/hl/scimap_to_csv.md'
     - Tutorials:
-      - Archive
-          - Getting Started with Scimap: 'archive/tutorials/1-scimap-tutorial-getting-started.md'
-          - Cell-Phenotyping using Scimap: 'archive/tutorials/2-scimap-tutorial-cell-phenotyping.md'
-          - Cell-Phenotyping and adding ROIs: 'archive/tutorials/3-Cell_Type_calling_and_adding_ROIs.md'
-          - CellType Proportion Exploration: 'archive/tutorials/4-CellType_Proportion_Exploration.md'
-          - Simple Spatial Analysis: 'archive/tutorials/5-Simple_Spatial_Analysis.md'
-          - Animate with scimap: 'archive/tutorials/6_animate_with_scimap.md'
+        - Archive
+            - Getting Started with Scimap: 'archive/tutorials/1-scimap-tutorial-getting-started.md'
+            - Cell-Phenotyping using Scimap: 'archive/tutorials/2-scimap-tutorial-cell-phenotyping.md'
+            - Cell-Phenotyping and adding ROIs: 'archive/tutorials/3-Cell_Type_calling_and_adding_ROIs.md'
+            - CellType Proportion Exploration: 'archive/tutorials/4-CellType_Proportion_Exploration.md'
+            - Simple Spatial Analysis: 'archive/tutorials/5-Simple_Spatial_Analysis.md'
+            - Animate with scimap: 'archive/tutorials/6_animate_with_scimap.md'
     - Contribute: 'contribute.md'
 
 plugins:
