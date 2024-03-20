@@ -210,7 +210,7 @@ Example:
             if verbose:
                 print('Kmeans clustering')
         
-        kmeans = KMeans(n_clusters=k, random_state=random_state).fit(data_subset)
+        kmeans = KMeans(n_clusters=k, random_state=random_state, n_init=10).fit(data_subset)
         
         # Rename the labels
         cluster_labels = list(map(str,kmeans.labels_))

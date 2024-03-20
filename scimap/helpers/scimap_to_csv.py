@@ -31,7 +31,7 @@ def main(argv=sys.argv):
         help='AnnData object loaded into memory or path to AnnData object.'
     )
     parser.add_argument(
-        '--data_type', type=str, required=False, default='raw',
+        '--layer', type=str, required=False, default='raw',
         help='Three options are available: 1) `raw` - The raw data will be returned; 2) `log` - The raw data converted to log scale using `np.log1p` will be returned; 3) `scaled` - If you have scaled the data using the `sm.pp.rescale`, that will be returned. Please note, if you have not scaled the data, whatever is within `adata.X` will be returned'
     )
     parser.add_argument(
@@ -53,7 +53,7 @@ def main(argv=sys.argv):
 
 # Function
 def scimap_to_csv (adata, 
-                   data_type='raw', 
+                   layer='raw', 
                    output_dir=None, 
                    file_name=None, 
                    CellID='CellID',
@@ -63,12 +63,11 @@ Parameters:
         adata (anndata.AnnData):  
             The annotated data matrix to export.
 
-        data_type (str, optional):  
-            Specifies the type of data to export. Options include:
+        layer (str, optional):  
+            Specifies the layer to export:
             - 'raw': Exports the raw data.
             - 'log': Exports the data after applying a log transformation with `np.log1p`.
-            - 'scaled': Exports the data if it has been scaled using `sm.pp.rescale`. 
-              If not scaled, the contents of `adata.X` are exported. 
+            - 'None': Exports the data  in `adata.X`
         
         output_dir (str, optional):  
             The directory where the CSV file will be saved. If not specified, the file is saved in the current working directory.
@@ -90,13 +89,13 @@ Example:
     ```python
         
         # Export raw data to CSV
-        sm.hl.scimap_to_csv(adata, data_type='raw', output_dir='/path/to/save', file_name='raw_data.csv')
+        sm.hl.scimap_to_csv(adata, layer='raw', output_dir='/path/to/save', file_name='raw_data.csv')
     
         # Export log-transformed data to CSV, with a custom CellID column name
-        sm.hl.scimap_to_csv(adata, data_type='log', output_dir='/path/to/save', file_name='log_data.csv', CellID='UniqueCellID')
+        sm.hl.scimap_to_csv(adata, layer='log', output_dir='/path/to/save', file_name='log_data.csv', CellID='UniqueCellID')
     
         # Export scaled data to Cobject
-        data = sm.hl.scimap_to_csv(adata, data_type='scaled')
+        data = sm.hl.scimap_to_csv(adata, layer='scaled')
         
     ```
     """
@@ -115,13 +114,25 @@ Example:
             imid = str(file_name)
         adata = adata
     
+    
     # Expression matrix
-    if data_type == 'raw':
+    if layer == 'raw':
         data = pd.DataFrame(adata.raw.X, index=adata.obs.index, columns=adata.var.index)
-    if data_type == 'log':
-        data = pd.DataFrame(np.log1p(adata.raw.X), index=adata.obs.index, columns=adata.var.index)
-    if data_type == 'scaled':
+    elif layer is None:
         data = pd.DataFrame(adata.X, index=adata.obs.index, columns=adata.var.index)
+    else:
+        data = pd.DataFrame(adata.layers[layer], index=adata.obs.index, columns=adata.var.index)
+        
+        
+# =============================================================================
+#     # Expression matrix
+#     if data_type == 'raw':
+#         data = pd.DataFrame(adata.raw.X, index=adata.obs.index, columns=adata.var.index)
+#     if data_type == 'log':
+#         data = pd.DataFrame(np.log1p(adata.raw.X), index=adata.obs.index, columns=adata.var.index)
+#     if data_type == 'scaled':
+#         data = pd.DataFrame(adata.X, index=adata.obs.index, columns=adata.var.index)
+# =============================================================================
     
     # Metadata
     meta = pd.DataFrame(adata.obs)

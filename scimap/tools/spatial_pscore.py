@@ -240,7 +240,7 @@ Example:
     whole_data = wh_d[[score_by, label, phenotype]]
     
     # proximity volume
-    p_v = whole_data.groupby([score_by, label]).size().unstack().fillna(0)
+    p_v = whole_data.groupby([score_by, label], observed=False).size().unstack().fillna(0)
     p_v ['All Cells'] = p_v[name] + p_v["other"]
     p_v['Proximity Volume'] = p_v[name] / p_v['All Cells']
     p_v = p_v.fillna(0) # replace NA
@@ -250,7 +250,7 @@ Example:
     # subset the phenotypes of interest
     w_d = whole_data[whole_data[phenotype].isin(proximity)]
     # proximity density
-    p_d = w_d.groupby([score_by, label]).size().unstack().fillna(0)
+    p_d = w_d.groupby([score_by, label], observed=False).size().unstack().fillna(0)
     p_d ['Celltype of interest'] = p_d[name] + p_d["other"]
     p_d['Proximity Density'] = p_d[name] / p_d['Celltype of interest']
     p_d = p_d.fillna(0) # replace NA

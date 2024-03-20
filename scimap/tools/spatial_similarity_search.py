@@ -188,10 +188,10 @@ Example:
                 print("Identifying neighbours within " + str(radius) + " pixels of every cell")
             if z_coordinate is not None:
                 kdt = BallTree(data, metric='euclidean') 
-                ind = kdt.query_radius(data, r=radius, return_distance=True)
+                dist, ind = kdt.query_radius(data, r=radius, return_distance=True)
             else:
                 kdt = BallTree(data, metric='euclidean') 
-                ind = kdt.query_radius(data, r=radius, return_distance=True)
+                dist, ind = kdt.query_radius(data, r=radius, return_distance=True)
 
 # =============================================================================
 #         
@@ -341,7 +341,7 @@ Example:
     
     # for each ROI calculate the median spatial lag
     median_spatial_lag = pd.merge(result.loc[query_neigh.index], query_neigh, left_index=True, right_index=True, how='outer')
-    median_spatial_lag = median_spatial_lag.groupby(ROI_column).median()
+    median_spatial_lag = median_spatial_lag.groupby(ROI_column, observed=False).median()
         
     # apply the distance function to each defined ROI's
     spatial_lag_array = np.array(result)

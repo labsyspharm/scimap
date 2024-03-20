@@ -89,7 +89,7 @@ Returns:
         plot (matplotlib): 
             Displays or saves a network plot visualizing the interactions between cell types.
 
-Examples:
+Example:
     ```python
     
     # Visualizes the network using the 'coolwarm' colormap.

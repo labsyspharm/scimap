@@ -198,7 +198,26 @@ Example:
         #    return phenotype_name
         # Apply the iteration function
         #aggregate_pheno = pd.DataFrame(k.apply(lambda x: col_name_mapper(row_data=x,purity=purity), axis=1))
-        aggregate_pheno = pd.DataFrame(k[k>=purity/100].idxmax(axis=1).fillna('non-significant'))
+
+
+        # Within the spatial_aggregate_internal function
+        # Create an empty DataFrame to hold the results
+        aggregate_pheno = pd.DataFrame(index=k.index, columns=[0])
+        
+        # Iterate over rows in DataFrame k
+        for idx, row in k.iterrows():
+            filtered_row = row[row >= purity / 100]  # Apply purity threshold
+            if not filtered_row.empty:  # Check if the filtered row is not empty
+                # If not empty, find the index of the maximum value
+                max_idx = filtered_row.idxmax()
+            else:
+                # If empty, set to 'non-significant'
+                max_idx = 'non-significant'
+            # Store the result
+            aggregate_pheno.at[idx, 0] = max_idx
+        
+        
+        #aggregate_pheno = pd.DataFrame(k[k>=purity/100].idxmax(axis=1).fillna('non-significant'))
         aggregate_pheno.columns = ['spatial_aggregate']
         
         # Return 
@@ -232,8 +251,8 @@ Example:
     result = pd.concat(result, join='outer')  
     
     # Reindex the cells
-    result = result.fillna(0)
     result = result.reindex(adata.obs.index)
+    result = result.fillna('non-significant')
     
     # Add to adata
     adata.obs[label] = result

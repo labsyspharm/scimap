@@ -196,8 +196,8 @@ Example:
     result = pd.concat(result, join='outer')  
     
     # Reindex the cells
-    result = result.fillna(0)
     result = result.reindex(adata.obs.index)
+    result = result.fillna(0)
     
     # Add to adata
     adata.uns[label] = result

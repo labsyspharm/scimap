@@ -20,15 +20,20 @@
 import seaborn as sns; sns.set_theme(style='white', color_codes=True)
 import matplotlib.pyplot as plt
 
-import matplotlib as mpl
-mpl.rcParams['pdf.fonttype'] = 42
+plt.rcParams['figure.dpi'] = 100
+plt.rcParams['savefig.dpi']=300
+plt.rcParams['font.family']='sans serif'
+plt.rcParams['font.sans-serif']='Arial'
+plt.rcParams['pdf.fonttype']=42
 
 # Function
 def spatial_pscore (adata, 
                     label='spatial_pscore', 
                     plot_score='both', 
                     order_xaxis = None,
-                    color='grey', **kwargs):
+                    color='grey',
+                    figsize=None,
+                    **kwargs):
     """
 Parameters:
         adata (anndata.AnnData):  
@@ -87,16 +92,28 @@ Example:
     y_pd = data['Proximity Density'].values
     y_pv = data['Proximity Volume'].values
     
+    if figsize is None:
+        # Dynamically calculate figsize based on the data size
+        figsize_width_scale = 1.0  # Adjust based on your preference and the expected data length
+        figsize_height_scale = 0.5  # Adjust this to change how tall the plots are
+        # For 'both', we might want a wider figure
+        figsize_width = max(12, len(x) * figsize_width_scale)
+        figsize_height = max(8, len(x) * figsize_height_scale)
+        figsize = (figsize_width, figsize_height)
+        
     # Plot what user requests
     if plot_score == 'Proximity Density':
+        plt.figure(figsize=figsize)
         ax = sns.barplot(x=x, y=y_pd, color=color, **kwargs).set_title('Proximity Density')
         ax = plt.xticks(rotation=90)
         plt.tight_layout()
     if plot_score == 'Proximity Volume':
+        plt.figure(figsize=figsize)
         ax = sns.barplot(x=x, y=y_pv, color=color, **kwargs).set_title('Proximity Volume')
         ax = plt.xticks(rotation=90)
         plt.tight_layout()
     if plot_score == 'both':
+        plt.figure(figsize=figsize)
         fig, ax = plt.subplots(1,2)
         sns.barplot(x=x, y=y_pd, color=color, ax=ax[0], **kwargs).set_title('Proximity Density')
         ax[0].tick_params(axis='x', rotation=90)

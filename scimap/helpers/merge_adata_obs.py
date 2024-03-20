@@ -46,7 +46,7 @@ def merge_adata_obs (adata,
     
     """
 Parameters:
-        adata_list (list of anndata.AnnData or list of str):  
+        adata (list of anndata.AnnData or list of str):  
             A list containing AnnData objects to be merged or paths to AnnData files. 
             Each item in the list should either be an AnnData object already loaded into memory 
             or a string representing the path to an AnnData file.
@@ -67,13 +67,13 @@ Example:
         ```python
         
         # Example 1: Merge AnnData objects already loaded in memory
-        combined_adata = sm.hl.merge_adata_obs(adata_list=[adata1, adata2])
+        combined_adata = sm.hl.merge_adata_obs(adata=[adata1, adata2])
     
         # Example 2: Merge AnnData objects from file paths
-        combined_adata = sm.hl.merge_adata_obs(adata_list=['./data/adata1.h5ad', './data/adata2.h5ad'])
+        combined_adata = sm.hl.merge_adata_obs(adata=['./data/adata1.h5ad', './data/adata2.h5ad'])
     
         # Example 3: Merge AnnData objects and save the combined object to a specified directory
-        combined_adata = sm.hl.merge_adata_obs(adata_list=[adata1, adata2], output_dir='./merged_data')
+        combined_adata = sm.hl.merge_adata_obs(adata=[adata1, adata2], output_dir='./merged_data')
         
         ```
     """

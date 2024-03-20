@@ -11,6 +11,7 @@
 """
 
 import pandas as pd
+import numpy as np
 import math
 import matplotlib.pyplot as plt
 import itertools
@@ -194,6 +195,7 @@ Example:
                 
         # Set the size of the figure
         fig, axes = plt.subplots(nrows=num_rows, ncols=num_cols, figsize=figsize, dpi=dpi)
+        axes = np.atleast_2d(axes)
         # Set the spacing between subplots
         #fig.subplots_adjust(bottom=0.1, hspace=0.1)
 
@@ -202,7 +204,7 @@ Example:
         for i, column in enumerate(data.columns):
             c = color.get(column, 'grey')
             row_idx = i // num_cols
-            col_idx = i % num_cols
+            col_idx = i % num_cols            
             data[column].plot.kde(ax=axes[row_idx, col_idx], label=column, color=c)
             axes[row_idx, col_idx].set_title(column)
             axes[row_idx, col_idx].tick_params(axis='both', which='major', width=1, labelsize=fontsize)
