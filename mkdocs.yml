@@ -19,13 +19,13 @@ theme:
     - search.highlight
   palette:
     - scheme: default
-      primary: teal
+      primary: white
       toggle:
-        primary: teal
+        primary: white
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
     - scheme: slate
-      primary: teal
+      primary: white
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode

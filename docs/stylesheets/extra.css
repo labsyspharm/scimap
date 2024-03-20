@@ -13,11 +13,15 @@
 
 .md-typeset h1 {
   font-weight: 700;
-  color: #ca6702;
+  color: #137b64;
 }
 
 .md-typeset .admonition.abstract, .md-typeset details.abstract {
   font-size: 1em;
+}
+
+md-ellipsis {
+  font-size: 2em;
 }
 
 .md-tabs__link {
