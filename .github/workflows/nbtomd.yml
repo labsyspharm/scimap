@@ -3,10 +3,10 @@ name: nbtomd
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 permissions:
   contents: write
@@ -44,7 +44,7 @@ jobs:
         run: |
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --global user.email "ajitjohnson@users.noreply.github.com"
-          git add docs/Tutorials/md/*
+          git add docs/tutorials/md/*
           if [ -z "$(git status --porcelain)" ]; then 
             echo "Nothing to commit, working tree is clean." 
             exit 0 
