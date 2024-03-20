@@ -59,7 +59,7 @@ pyqt6 = "^6.6.1"
 [tool.poetry.dev-dependencies]
 
 # Formatters
-black = "19.10b0"
+black = "24.3.0"
 isort = "4.3.21"
 
 # Linters
