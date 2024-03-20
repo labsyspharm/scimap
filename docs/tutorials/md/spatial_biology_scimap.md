@@ -10,9 +10,9 @@ This series is designed to equip researchers, data scientists, and enthusiasts w
 
 ## Set up
 
-    🤖 Install Scimap
-    📥 Download demo data
-    📁 Prepare demo data for analysis
+🤖 [Install Scimap](../md/install_scimap.md)  
+📥 Download demo data  
+📁 Prepare demo data for analysis  
 
 ## Cell Phenotyping
 
