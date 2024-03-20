@@ -28,7 +28,9 @@ pip install scimap
 Install jupyter notebook within the conda environment
 
 
+```
 pip install notebook ipywidgets
+```
 
 After installation, open Jupyter Notebook by typing the following command in the terminal, ensuring that the cspot environment is activated and you are within the environment before executing the jupyter notebook command.
 
@@ -37,8 +39,3 @@ jupyter notebook
 ```
 
 We will talk about how to run *SCIMAP* in the next tutorial.
-
-
-```python
-
-```
