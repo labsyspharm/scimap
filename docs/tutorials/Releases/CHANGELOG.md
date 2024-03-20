@@ -1,3 +1,8 @@
+
+# 1.3.14 (2024-03-20)
+
+ - Added tutorials
+
 # 0.21.0 (2022-05-29)
 
  - Added `sm.hl.animate` and `sm.pl.umap`
