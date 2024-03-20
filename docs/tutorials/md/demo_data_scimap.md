@@ -14,12 +14,26 @@ A short guide to downloading our demo data for trying out the **scimap toolbox**
 import scimap as sm
 ```
 
+    Running SCIMAP  1.3.16
+
+
 
 ```python
 # Provide a download directory
-download_directory = ''
+download_directory = '/Users/aj/Downloads'
 sm.hl.downloadDemoData (download_directory)
 ```
+
+    Downloading scimapExampleData.zip...
+
+
+    scimapExampleData.zip: 100%|███████████████████████████████████████████████████████████| 287M/287M [04:35<00:00, 1.09MiB/s]
+
+    Downloaded scimapExampleData.zip to /Users/aj/Downloads/scimapExampleData.zip
+
+
+    
+
 
 A zipped data folder will appear in the specified directory. Simply unzip it, and you'll be all set to start.
 
