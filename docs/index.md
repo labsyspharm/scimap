@@ -13,7 +13,6 @@ hide:
 [![Downloads](https://pepy.tech/badge/scimap)](https://pepy.tech/project/scimap)
 [![PyPI Version](https://img.shields.io/pypi/v/scimap.svg)](https://pypi.org/project/scimap)
 [![PyPI License](https://img.shields.io/pypi/l/scimap.svg)](https://pypi.org/project/scimap)
-[![Gitter chat](https://badges.gitter.im/scimap_io/community.png)](https://gitter.im/scimap_io/community)
 <br>
 <br>
 <img src="./assets/scimap_logo.jpg" style="" >

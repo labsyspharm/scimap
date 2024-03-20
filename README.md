@@ -6,7 +6,6 @@
 [![Downloads](https://pepy.tech/badge/scimap)](https://pepy.tech/project/scimap)
 [![PyPI Version](https://img.shields.io/pypi/v/scimap.svg)](https://pypi.org/project/scimap)
 [![PyPI License](https://img.shields.io/pypi/l/scimap.svg)](https://pypi.org/project/scimap)
-[![Gitter chat](https://badges.gitter.im/scimap_io/community.png)](https://gitter.im/scimap_io/community)
 [![DOI](https://zenodo.org/badge/271099296.svg)](https://zenodo.org/badge/latestdoi/271099296)
 
 <br>
