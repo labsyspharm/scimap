@@ -1,0 +1,53 @@
+name: nbtomd
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env: 
+      CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+      CI_COMMIT_AUTHOR: Continuous Integration
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v3
+        with:
+          key: ${{ github.ref }}
+          path: .cache
+      - run: pip install jupyter
+      - run: pip install nbconvert
+      - run: jupyter nbconvert --to markdown docs/tutorials/nbs/*.ipynb
+      #- run: mv docs/Tutorials/notebooks/*.md docs/Tutorials/
+      - run: |
+          for file in docs/tutorials/nbs/*; do
+              if [[ ! "$file" =~ \.ipynb$ ]]; then
+                  rsync -av --remove-source-files "$file" docs/tutorials/md/
+              fi
+          done
+      - run: ls docs/tutorials/
+
+      - name: GIT Commit 
+        # Only run on main branch push (e.g. after pull request merge).
+        if: github.event_name == 'push'
+        run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "ajitjohnson@users.noreply.github.com"
+          git add docs/Tutorials/md/*
+          if [ -z "$(git status --porcelain)" ]; then 
+            echo "Nothing to commit, working tree is clean." 
+            exit 0 
+          fi
+          git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
+          git push
