@@ -1,32 +1,34 @@
 # 📥 SCIMAP Demo Data
 
-A short guide to downloading our exemplar data for trying out the **scimap toolbox**.
+A short guide to downloading our demo data for trying out the **scimap toolbox**.
 
-Navigate to the Harvard Dataverse website and download the exemplar data (see screenshot below!)
+**You can download the data in two methods:**
 
-Data: https://doi.org/10.7910/DVN/C45JWT
+1. Utilize the built-in download function of scimap.
+2. Visit the website through your browser and manually download the data.
 
-
-```python
-
-```
-
-- Click on the "Access Dataset" → "Original Format ZIP" button.
-- Wait for the download to complete. The size of the file is approximately 40 MB.
-- Unzip the downloaded file to access the data.
-  
-To ensure that you can follow the tutorial correctly, please make sure that the following folder structure (screenshot below) is maintained:
-
-
+### 1. Built in function
 
 
 ```python
-
+import scimap as sm
 ```
+
+
+```python
+# Provide a download directory
+download_directory = ''
+sm.hl.downloadDemoData (download_directory)
+```
+
+A zipped data folder will appear in the specified directory. Simply unzip it, and you'll be all set to start.
+
+### 2. Download from Zonodo
+
+- Go to [Zonodo](https://zenodo.org/records/10845625)
+- Click on the download button
+- unzip the downloaded file
+
+DOI: [10.5281/zenodo.10845624](https://zenodo.org/records/10845625)
 
 If you have any questions or encounter any issues while following the tutorial, please don't hesitate to contact us for assistance.
-
-
-```python
-
-```
