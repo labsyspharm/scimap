@@ -13,11 +13,11 @@ authors:
       orcid: 0000-0002-3364-1838
       affiliation: "2, 3"
 affiliations:
-  - name: Department of Dermatology, Brigham and Women’s Hospital, Harvard Medical School, Boston, MA, USA
+  - name: Department of Dermatology, Brigham and Women’s Hospital, Harvard Medical School, Boston, MA, United States of America
     index: 1
-  - name: Ludwig Center for Cancer Research at Harvard, Harvard Medical School, Boston, MA, USA
+  - name: Ludwig Center for Cancer Research at Harvard, Harvard Medical School, Boston, MA, United States of America
     index: 2
-  - name: Laboratory of Systems Pharmacology, Harvard Medical School, Boston, MA, USA
+  - name: Laboratory of Systems Pharmacology, Harvard Medical School, Boston, MA, United States of America
     index: 3
 date: 1 April 2024
 bibliography: paper.bib
