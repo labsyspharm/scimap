@@ -27,8 +27,8 @@ from dask.cache import Cache
 import zarr
 import os
 
-cache = Cache(2e9)  # Leverage two gigabytes of memory
-cache.register()
+# cache = Cache(2e9)  # Leverage two gigabytes of memory
+# cache.register()
 
 
 def gate_finder(
@@ -52,84 +52,84 @@ def gate_finder(
     **kwargs,
 ):
     """
-Parameters:
-        image_path (str):
-            Path to the high-resolution image file (supports formats like TIFF, OME.TIFF).
+    Parameters:
+            image_path (str):
+                Path to the high-resolution image file (supports formats like TIFF, OME.TIFF).
 
-        adata (anndata.AnnData):
-            The annotated data matrix.
+            adata (anndata.AnnData):
+                The annotated data matrix.
 
-        marker_of_interest (str):
-            The target marker for which the gating threshold is to be determined.
+            marker_of_interest (str):
+                The target marker for which the gating threshold is to be determined.
 
-        layer (str, optional):
-            Specifies the layer in `adata` containing expression data. Defaults to 'raw' for `adata.raw.X`.
+            layer (str, optional):
+                Specifies the layer in `adata` containing expression data. Defaults to 'raw' for `adata.raw.X`.
 
-        log (bool, optional):
-            Applies log transformation to expression data if set to True. 
+            log (bool, optional):
+                Applies log transformation to expression data if set to True.
 
-        from_gate (int, optional):
-            Starting gate threshold value for the marker of interest. 
+            from_gate (int, optional):
+                Starting gate threshold value for the marker of interest.
 
-        to_gate (int, optional):
-            Ending gate threshold value for the marker of interest. 
+            to_gate (int, optional):
+                Ending gate threshold value for the marker of interest.
 
-        increment (float, optional):
-            Incremental step size between `from_gate` and `to_gate`. 
+            increment (float, optional):
+                Incremental step size between `from_gate` and `to_gate`.
 
-        markers (list, optional):
-            A list of additional markers to include in visualization for context.
+            markers (list, optional):
+                A list of additional markers to include in visualization for context.
 
-        channel_names (list or str, optional):
-            Names of the channels in the image, in order. Defaults to 'default', using `adata.uns['all_markers']`.
+            channel_names (list or str, optional):
+                Names of the channels in the image, in order. Defaults to 'default', using `adata.uns['all_markers']`.
 
-        flip_y (bool, optional):
-            Inverts the Y-axis to match image coordinates if set to True. Defaults to True.
+            flip_y (bool, optional):
+                Inverts the Y-axis to match image coordinates if set to True. Defaults to True.
 
-        x_coordinate, y_coordinate (str, optional):
-            Columns in `adata.obs` specifying cell coordinates. Defaults are 'X_centroid' and 'Y_centroid'.
+            x_coordinate, y_coordinate (str, optional):
+                Columns in `adata.obs` specifying cell coordinates. Defaults are 'X_centroid' and 'Y_centroid'.
 
-        point_size (int, optional):
-            Size of points in the visualization. 
+            point_size (int, optional):
+                Size of points in the visualization.
 
-        imageid (str, optional):
-            Column in `adata.obs` identifying images for datasets with multiple images. 
+            imageid (str, optional):
+                Column in `adata.obs` identifying images for datasets with multiple images.
 
-        subset (str, optional):
-            Specific image identifier for targeted analysis, typically an image ID. 
+            subset (str, optional):
+                Specific image identifier for targeted analysis, typically an image ID.
 
-        seg_mask (str, optional):
-            Path to a segmentation mask file to overlay.
+            seg_mask (str, optional):
+                Path to a segmentation mask file to overlay.
 
-        **kwargs:
-            Additional arguments passed to the visualization tool.
+            **kwargs:
+                Additional arguments passed to the visualization tool.
 
-Returns:
-        Image (napari): 
-            Displays the visualization using napari viewer.
+    Returns:
+            Image (napari):
+                Displays the visualization using napari viewer.
 
-Example:
-    ```python
-    
-    # Visualize gating thresholds for CD45 on a specific image
-    sm.pl.gate_finder(
-        image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD45',
-        from_gate=4, to_gate=10, increment=0.2, flip_y=False, point_size=12,
-        subset='Sample1', seg_mask='/path/to/seg_mask.tif')
+    Example:
+        ```python
 
-    # Log-transformed gating for a marker with additional markers and custom channel names
-    sm.pl.gate_finder(
-        image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD3',
-        log=True, from_gate=3, to_gate=7, increment=0.1, markers=['CD19', 'CD4'],
-        channel_names=['DAPI', 'CD3', 'CD19', 'CD4'], point_size=15)
+        # Visualize gating thresholds for CD45 on a specific image
+        sm.pl.gate_finder(
+            image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD45',
+            from_gate=4, to_gate=10, increment=0.2, flip_y=False, point_size=12,
+            subset='Sample1', seg_mask='/path/to/seg_mask.tif')
 
-    # Explore gating for multiple markers across different segments
-    sm.pl.gate_finder(
-        image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD8',
-        layer='expression', from_gate=5, to_gate=9, increment=0.05, markers=['CD8', 'PD1'],
-        subset='TumorRegion', seg_mask='/path/to/tumor_seg_mask.tif')
-    
-    ```
+        # Log-transformed gating for a marker with additional markers and custom channel names
+        sm.pl.gate_finder(
+            image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD3',
+            log=True, from_gate=3, to_gate=7, increment=0.1, markers=['CD19', 'CD4'],
+            channel_names=['DAPI', 'CD3', 'CD19', 'CD4'], point_size=15)
+
+        # Explore gating for multiple markers across different segments
+        sm.pl.gate_finder(
+            image_path='/path/to/image.ome.tif', adata=adata, marker_of_interest='CD8',
+            layer='expression', from_gate=5, to_gate=9, increment=0.05, markers=['CD8', 'PD1'],
+            subset='TumorRegion', seg_mask='/path/to/tumor_seg_mask.tif')
+
+        ```
     """
 
     # If no raw data is available make a copy

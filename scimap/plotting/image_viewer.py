@@ -27,8 +27,8 @@ from dask.cache import Cache
 import zarr
 import os
 
-cache = Cache(2e9)  # Leverage two gigabytes of memory
-cache.register()
+# cache = Cache(2e9)  # Leverage two gigabytes of memory
+# cache.register()
 
 
 def image_viewer(
@@ -49,64 +49,64 @@ def image_viewer(
     **kwargs,
 ):
     """
-Parameters:
-        image_path (str):  
-            Path to the image file. Supports TIFF, OME.TIFF, and ZARR formats.
+    Parameters:
+            image_path (str):
+                Path to the image file. Supports TIFF, OME.TIFF, and ZARR formats.
 
-        adata (anndata.AnnData):  
-            The annotated data matrix.
+            adata (anndata.AnnData):
+                The annotated data matrix.
 
-        overlay (str, optional):  
-            Column in `adata.obs` containing categorical data for visualization, such as phenotypes or clusters.
+            overlay (str, optional):
+                Column in `adata.obs` containing categorical data for visualization, such as phenotypes or clusters.
 
-        flip_y (bool, optional):  
-            If True, inverts the Y-axis to match image coordinates. 
+            flip_y (bool, optional):
+                If True, inverts the Y-axis to match image coordinates.
 
-        overlay_category (list, optional):  
-            Specific categories within `overlay` to display. If None, all categories are shown.
+            overlay_category (list, optional):
+                Specific categories within `overlay` to display. If None, all categories are shown.
 
-        markers (list, optional):  
-            List of markers to include in the visualization. If None, all available markers are displayed.
+            markers (list, optional):
+                List of markers to include in the visualization. If None, all available markers are displayed.
 
-        channel_names (list or str, optional):  
-            Specifies the order of channels in the image. Default uses all markers in `adata.uns['all_markers']`.
+            channel_names (list or str, optional):
+                Specifies the order of channels in the image. Default uses all markers in `adata.uns['all_markers']`.
 
-        x_coordinate, y_coordinate (str, optional):  
-            Columns in `adata.obs` specifying cell coordinates. Default to 'X_centroid' and 'Y_centroid'.
+            x_coordinate, y_coordinate (str, optional):
+                Columns in `adata.obs` specifying cell coordinates. Default to 'X_centroid' and 'Y_centroid'.
 
-        point_size (int, optional):  
-            Size of the points in the visualization. 
+            point_size (int, optional):
+                Size of the points in the visualization.
 
-        point_color (str or dict, optional):  
-            Color(s) for the points. Can specify a single color or a dictionary mapping categories to colors.
+            point_color (str or dict, optional):
+                Color(s) for the points. Can specify a single color or a dictionary mapping categories to colors.
 
-        imageid (str, optional):  
-            Column in `adata.obs` identifying different images in the dataset. Useful for datasets with multiple images.
+            imageid (str, optional):
+                Column in `adata.obs` identifying different images in the dataset. Useful for datasets with multiple images.
 
-        subset (str, optional):  
-            Identifier for a specific image to analyze, used in conjunction with `imageid`.
+            subset (str, optional):
+                Identifier for a specific image to analyze, used in conjunction with `imageid`.
 
-        seg_mask (str, optional):  
-            Path to a segmentation mask file to overlay.
+            seg_mask (str, optional):
+                Path to a segmentation mask file to overlay.
 
-        **kwargs:  
-            Additional arguments passed to the napari viewer.
+            **kwargs:
+                Additional arguments passed to the napari viewer.
 
-Returns:
-        Image (napari): 
-            Displays the visualization using napari viewer.
+    Returns:
+            Image (napari):
+                Displays the visualization using napari viewer.
 
-Example:
-    ```python
-    
-    # Basic visualization with phenotype overlay
-    sm.pl.image_viewer(image_path='/path/to/image.ome.tif', adata=adata, overlay='phenotype', point_size=5)
+    Example:
+        ```python
 
-    # Visualization with segmentation mask and custom point colors
-    sm.pl.image_viewer(image_path='/path/to/image.ome.tif', adata=adata, seg_mask='/path/to/mask.tif',
-                 overlay='phenotype', point_color={'T cell': 'green', 'B cell': 'blue'}, point_size=7)
+        # Basic visualization with phenotype overlay
+        sm.pl.image_viewer(image_path='/path/to/image.ome.tif', adata=adata, overlay='phenotype', point_size=5)
 
-    ```
+        # Visualization with segmentation mask and custom point colors
+        sm.pl.image_viewer(image_path='/path/to/image.ome.tif', adata=adata, seg_mask='/path/to/mask.tif',
+                     overlay='phenotype', point_color={'T cell': 'green', 'B cell': 'blue'}, point_size=7)
+
+        ```
     """
 
     # TODO
