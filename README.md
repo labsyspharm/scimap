@@ -29,7 +29,11 @@ conda activate scimap
 Install `scimap` directly into an activated virtual environment:
 
 ```python
-$ pip install scimap
+pip install scimap
+
+# Install scimap with napari for visualization
+# Please note that napari requires a GUI toolkit like PyQt. If you encounter any errors due to your operating system, you should install scimap and napari separately, following their own documentation, and make sure to add them into the same virtual environment, instead of using this command.
+pip install scimap[napari]
 ```
 
 After installation, the package can be imported as:

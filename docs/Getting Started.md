@@ -15,9 +15,22 @@ Begin your journey into the fascinating world of spatial single-cell analysis wi
 Kick off by installing Scimap through these simple commands:  
 We highly advise creating a separate environment for installing Scimap to ensure a smooth and conflict-free setup. For comprehensive guidance on this process, please refer to our tutorials.
 
+```
+# If you have conda installed
+conda create --name scimap python=3.10
+conda activate scimap
+```
+
+Install `scimap` directly into an activated virtual environment:
+
 ```python
 pip install scimap
-import scimap as sm
+
+# install scimap with napari for visualization
+# Please note that napari requires a GUI toolkit like PyQt. If you encounter any errors due to your operating system, you should install scimap and napari separately, following their own documentation, and make sure to add them into the same virtual environment, instead of using this command.
+pip install scimap[napari]
+
+>>> import scimap as sm
 ```
 
 This setup provides you with the foundational tools needed for your single-cell analysis endeavors.
