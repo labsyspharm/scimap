@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "SCIMAP"
-version = "2.0.3"
+version = "2.0.4"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"
@@ -54,6 +54,7 @@ llvmlite = "^0.41.1"
 combat = "^0.3.3"
 mpl-scatter-density = "^0.7"
 pyqt6 = {version = "^6.6.1", optional = true}
+scikit-learn = "^1.4.2"
 
 [tool.poetry.extras]
 napari = ["pyqt6", "napari-ome-zarr", "napari"]
