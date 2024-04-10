@@ -5872,4 +5872,4 @@ napari = ["napari", "napari-ome-zarr", "pyqt6"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "14a188b736e4b42fbe5c9053b7c9ad47d0cea720d954cef6e4114458e58aab71"
+content-hash = "824e75c9e78c43b0f8ca274b51cc364d13d59a564cf9c173b8ba60828429739a"
