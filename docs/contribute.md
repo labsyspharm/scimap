@@ -12,19 +12,21 @@ We are thrilled you're interested in contributing to our tool! To ensure a smoot
 If you are a new user, we recommend checking out the detailed Docs.  
   
 ## Setting up a development installation
-In order to make changes to napari, you will need to [fork](https://github.com/labsyspharm/scimap) the repository. If you are not familiar with git, we recommend reading up on this [guide](https://docs.github.com/en/get-started/using-git/about-git#basic-git-commands).
+In order to make changes to scimap, you will need to [fork](https://github.com/labsyspharm/scimap) the repository. If you are not familiar with git, we recommend reading up on this [guide](https://docs.github.com/en/get-started/using-git/about-git#basic-git-commands).
   
 Before we set up `SCIMAP`, we highly recommend using a environment manager like Conda. Using an environment manager like Conda allows you to create and manage isolated environments with specific package versions and dependencies.
 
 ```
 # use the terminal (mac/linux) and anaconda promt (windows) to run the following
-conda create --name scimap -y python=3.9
+conda create --name scimap -y python=3.10
 conda activate scimap
 ```
 
-We use [poetry](https://python-poetry.org/docs/) to manage scimap dependencies. Intall poetry and scimap into the environment.
+We use [poetry](https://python-poetry.org/docs/) to manage scimap dependencies. Intall poetry and scimap into the environment. Follow [poetry](https://python-poetry.org/docs/) documentation to install it depending on the OS of your system.
 
 ```
+# install pipx by following the documentation here: https://pipx.pypa.io/stable/installation/
+
 # install poetry within the environment
 pipx install poetry
 
