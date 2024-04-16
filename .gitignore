@@ -10,6 +10,9 @@ pip-wheel-metadata/
 Icon*
 .DS_Store
 
+#VS code
+.vscode/
+
 # Temporary virtual environment files
 /.cache/
 /.venv/
