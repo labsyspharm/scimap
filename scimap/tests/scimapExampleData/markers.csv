@@ -1,0 +1,13 @@
+channel_number,cycle_number,marker_name,Filter,excitation_wavelength,emission_wavelength,background,exposure,remove
+21,6,DNA_6,DAPI,395,431,,100,
+22,6,ELANE,FITC,485,525,,100,
+23,6,CD57,Sytox,555,590,,100,
+24,6,CD45,Cy5,640,690,,100,
+25,7,DNA_7,DAPI,395,431,,100,
+26,7,CD11B,FITC,485,525,,100,
+27,7,SMA,Sytox,555,590,,100,
+28,7,CD16,Cy5,640,690,,100,
+29,8,DNA_8,DAPI,395,431,,100,
+30,8,ECAD,FITC,485,525,,100,
+31,8,FOXP3,Sytox,555,590,,100,
+32,8,NCAM,Cy5,640,690,,100,

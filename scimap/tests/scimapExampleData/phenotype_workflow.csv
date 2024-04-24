@@ -1,0 +1,8 @@
+﻿,,ELANE,CD57,CD45,CD11B,SMA,CD16,ECAD,FOXP3,NCAM
+all,ECAD+,,,,,,,pos,,
+all,Immune,,,pos,,,,,,
+all,SMA+,,,,,pos,,,,
+Immune,NK cells,,allpos,,neg,,allpos,,,
+Immune,Other myeloid cells,,,,pos,,,,,
+Immune,Treg,,,,,,,,pos,
+Other myeloid cells,Dendritic cells,,allneg,,,,allneg,,,

@@ -92,7 +92,7 @@ Example:
         df = pd.DataFrame()
         uns_count = []
         for i in adata:
-            tmp = ad.read(i)
+            tmp = ad.read_h5ad(i)
             # OBS
             tmp_df = tmp.obs
             df = pd.concat([df, tmp_df], axis=1)
@@ -120,7 +120,7 @@ Example:
     # create the final anndata object
     # Load the data 
     if isinstance(adata[0], str):
-        final_adata = ad.read(adata[uns_index])
+        final_adata = ad.read_h5ad(adata[uns_index])
     else:
         final_adata = adata[uns_index]
         
@@ -129,15 +129,13 @@ Example:
     
     # replace obs
     final_adata.obs = df
-    
-    # Find name of file
-    image_path = pathlib.Path(adata[0])    
+     
     
     # Save data if requested
     if output_dir is not None:
         output_dir = pathlib.Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
-        final_adata.write(output_dir / image_path.name)
+        final_adata.write(output_dir / 'combined_adata.h5ad')
     else:    
         # Return data
         return final_adata

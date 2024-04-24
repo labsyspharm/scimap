@@ -29,6 +29,7 @@ import pandas as pd
 import argparse
 
 
+
 def phenotype_cells (adata, 
                      phenotype, 
                      gate = 0.5, 
@@ -81,7 +82,6 @@ Example:
     ```
 
     """
-
     # Create a dataframe from the adata object
     data = pd.DataFrame(adata.X, columns = adata.var.index, index= adata.obs.index)
 

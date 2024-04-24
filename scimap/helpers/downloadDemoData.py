@@ -9,7 +9,7 @@ import requests
 from tqdm import tqdm
 import os
 
-def downloadDemoData(directory):
+def downloadDemoData(directory, api_url=None):
     """
     Downloads all files from a Zenodo record into the specified directory,
     showing a progress bar for each file.
@@ -27,7 +27,9 @@ def downloadDemoData(directory):
         print(f"Created directory: {directory}")
 
     # Get record details from Zenodo API
-    api_url = "https://zenodo.org/api/records/10845625"
+    if api_url is None:
+        api_url = "https://zenodo.org/api/records/10845625"
+    
     response = requests.get(api_url)
     if response.status_code != 200:
         print(f"Failed to retrieve record details. HTTP status code: {response.status_code}")

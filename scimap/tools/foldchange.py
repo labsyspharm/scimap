@@ -105,8 +105,7 @@ Example:
         #from_data[imageid] = combined_name
         from_data.loc[:, imageid] = combined_name
 
-    #from_data[imageid] = from_data[imageid].astype('str').astype('category')
-    #from_data[phenotype] = from_data[phenotype].astype('str').astype('category')
+
     from_data.loc[:, imageid] = from_data[imageid].astype('str').astype('category')
     from_data.loc[:, phenotype] = from_data[phenotype].astype('str').astype('category')
     if to_group is None:
@@ -115,9 +114,8 @@ Example:
         to_data = data[data[imageid].isin(to_group)]
     to_data.loc[:, imageid] = to_data[imageid].astype('str').astype('category')
     to_data.loc[:, phenotype] = to_data[phenotype].astype('str').astype('category')
-    #to_data[imageid] = to_data[imageid].astype('str').astype('category')
-    #to_data[phenotype] = to_data[phenotype].astype('str').astype('category')
     
+
     if verbose:
         print('calculating foldchange')
     
