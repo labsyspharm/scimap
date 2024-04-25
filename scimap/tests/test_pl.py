@@ -9,7 +9,8 @@ Test plotting functions
 import pytest
 import os
 import anndata as ad
-import matplotlib.pyplot as plt
+import unittest
+
 
 # load data
 @pytest.fixture
@@ -22,7 +23,13 @@ def adata():
 # heatmap
 def test_heatmap (adata):
     from scimap.plotting.heatmap import heatmap
-    heatmap(adata, groupBy='phenotype', standardScale='column')
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'heatmap.png'
+    heatmap(adata, groupBy='phenotype', standardScale='column', saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+    
 
 
 

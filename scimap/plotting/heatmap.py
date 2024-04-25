@@ -317,6 +317,7 @@ Example:
                 os.makedirs(saveDir)
             full_path = os.path.join(saveDir, fileName)
             plt.savefig(full_path, dpi=300)
+            plt.close(fig)
             print(f"Saved heatmap to {full_path}")
         else:
             plt.show()
