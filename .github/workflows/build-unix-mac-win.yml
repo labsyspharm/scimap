@@ -30,6 +30,12 @@ jobs:
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v4
+
+      - name: Install dependencies on macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install gettext
+          brew link --force gettext
         
       - name: Install required version of Python
         uses: actions/setup-python@v5
