@@ -10,6 +10,11 @@ import pytest
 import os
 import anndata as ad
 import pandas as pd
+import pickle
+
+
+load_pickle = lambda filename: pickle.load(open(filename, 'rb'))
+#save_pickle(list(adata.obs['phenotype_renamed']), '/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/softwares/scimap/scimap/tests/expected_test_values/test_rename.pkl')
 
 # load data
 @pytest.fixture
@@ -23,14 +28,18 @@ def adata():
 def test_classify (adata):
     from scimap.helpers.classify import classify
     adata = classify(adata, pos=['FOXP3'], neg=['ECAD'], phenotype='phenotype')
-    assert adata.obs['classify'].value_counts()['passed_classify'] == 228
+    # load expected data
+    loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_classify.pkl')
+    assert loaded_data == list(adata.obs['classify']), "The lists do not match."
 
 # rename
 def test_rename (adata):
     from scimap.helpers.rename import rename
     name= {'renamed': ['Dendritic cells', 'NK cells']}
     adata = rename (adata, name, from_column='phenotype', to_column='phenotype_renamed')
-    assert adata.obs['phenotype_renamed'].value_counts()['renamed'] == 85
+    # load expected data
+    loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_rename.pkl')
+    assert loaded_data == list(adata.obs['phenotype_renamed']), "The lists do not match."
     
 # dropFeatures
 def test_dropFeatures (adata):
