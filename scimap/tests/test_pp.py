@@ -45,11 +45,11 @@ def test_rescale (adata):
     from scimap.preprocessing.rescale import rescale
     manual_gate = pd.read_csv(os.getcwd() + '/scimap/tests/scimapExampleData/manual_gates.csv')
     adata = rescale (adata, gate=manual_gate)
-    assert round(adata.X[0][0], 2) == 0.12
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_rescale.npz')['data']
+    assert np.allclose(loaded_data, adata.X), "The arrays do not match."
     
-    np.testing.assert_allclose(adata.X[0][0], 0.11828568543672713)
 
-    
 # combat
 def test_combat (adata):
     from scimap.preprocessing.combat import combat   
@@ -62,4 +62,10 @@ def test_combat (adata):
     adata = combat (adata, batch='ROI', layer='log', label='combat_log_layer')
     assert adata.layers['combat_log_layer'].shape == (11201, 9)
     adata = combat (adata, batch='ROI', replaceOriginal=True)
-    assert round(adata.X[0][0], 2) == 0.12
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_combat.npz')['data']
+    assert np.allclose(loaded_data, adata.X), "The arrays do not match."
+    
+    
+
+    
