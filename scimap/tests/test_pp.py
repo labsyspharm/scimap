@@ -10,9 +10,11 @@ import pytest
 import os
 import anndata as ad
 import pandas as pd
+import numpy as np
 
 
 #os.chdir ('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/softwares/scimap')
+# np.savez('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/softwares/scimap/scimap/tests/expected_test_values/test_log1p.npz', data=adata.layers['log_test'])
 
 # loading via mcmicro
 def test_mcmicro_to_scimap():
@@ -33,7 +35,9 @@ def adata():
 def test_log1p (adata):
     from scimap.preprocessing.log1p import log1p
     adata = log1p (adata, layer='log_test')
-    assert adata.layers['log_test'].shape == (11201, 9)
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_log1p.npz')['data']
+    assert np.allclose(loaded_data, adata.layers['log_test']), "The arrays do not match."
 
 
 # rescale
@@ -42,6 +46,8 @@ def test_rescale (adata):
     manual_gate = pd.read_csv(os.getcwd() + '/scimap/tests/scimapExampleData/manual_gates.csv')
     adata = rescale (adata, gate=manual_gate)
     assert round(adata.X[0][0], 2) == 0.12
+    
+    np.testing.assert_allclose(adata.X[0][0], 0.11828568543672713)
 
     
 # combat
