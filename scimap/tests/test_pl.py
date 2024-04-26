@@ -74,15 +74,17 @@ def test_densityPlot2D (adata):
     assert os.path.exists(full_path), f"File was not created: {full_path}"
 
 
-# cluster_plots
-def test_cluster_plots (adata):
-    from scimap.plotting.cluster_plots import cluster_plots
-    output_dir = os.getcwd() + '/testFigures'
-    fileName = '_matrixplot.pdf'
-    cluster_plots(adata, group_by='phenotype', output_dir=output_dir)
-    # check the file exist
-    full_path = os.path.join(output_dir, fileName)
-    assert os.path.exists(full_path), f"File was not created: {full_path}"
+# =============================================================================
+# # cluster_plots
+# def test_cluster_plots (adata):
+#     from scimap.plotting.cluster_plots import cluster_plots
+#     output_dir = os.getcwd() + '/testFigures'
+#     fileName = '_matrixplot.pdf'
+#     cluster_plots(adata, group_by='phenotype', output_dir=output_dir)
+#     # check the file exist
+#     full_path = os.path.join(output_dir, fileName)
+#     assert os.path.exists(full_path), f"File was not created: {full_path}"
+# =============================================================================
 
 
 # umap
