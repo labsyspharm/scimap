@@ -36,47 +36,47 @@ def test_phenotype (adata):
     assert loaded_data == list(adata.obs['phenotype']), "The lists do not match."
 
 
+#cluster
+def test_cluster (adata):
+    from scimap.tools.cluster import cluster
+    adata = cluster (adata,  method = 'kmeans', k= 5, use_raw = True)
+    # load expected data
+    loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_cluster.pkl')
+    assert loaded_data == list(adata.obs['kmeans']), "The lists do not match."
+    
+#umap
+def test_umap (adata):
+    from scimap.tools.umap import umap
+    adata = umap(adata, label='umap_test')
+    assert adata.obsm['umap_test'].shape == (11201, 2)
+
+
+#foldchange
+def test_foldchange (adata):
+    from scimap.tools.foldchange import foldchange
+    adata = foldchange(adata, from_group = 'ROI1', imageid='ROI')
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_foldchange.npz')['data']
+    assert np.allclose(loaded_data, adata.uns['foldchange_fc'].to_numpy() ), "The arrays do not match."
+
+
+#spatial_distance
+def test_spatial_distance (adata):
+    from scimap.tools.spatial_distance import spatial_distance
+    adata = spatial_distance (adata)
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_distance.npz')['data']
+    assert np.allclose(loaded_data, adata.uns['spatial_distance'].to_numpy()), "The arrays do not match."
+    
+
+#spatial_interaction
+def test_spatial_interaction (adata):
+    from scimap.tools.spatial_interaction import spatial_interaction
+    adata = spatial_interaction (adata,  method = 'knn', knn= 5, permutation = 10)
+    assert adata.uns['spatial_interaction'] is not None
+    
+
 # =============================================================================
-# #cluster
-# def test_cluster (adata):
-#     from scimap.tools.cluster import cluster
-#     adata = cluster (adata,  method = 'kmeans', k= 5, use_raw = True)
-#     # load expected data
-#     loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_cluster.pkl')
-#     assert loaded_data == list(adata.obs['kmeans']), "The lists do not match."
-#     
-# #umap
-# def test_umap (adata):
-#     from scimap.tools.umap import umap
-#     adata = umap(adata, label='umap_test')
-#     assert adata.obsm['umap_test'].shape == (11201, 2)
-# 
-# 
-# #foldchange
-# def test_foldchange (adata):
-#     from scimap.tools.foldchange import foldchange
-#     adata = foldchange(adata, from_group = 'ROI1', imageid='ROI')
-#     # load expected data
-#     loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_foldchange.npz')['data']
-#     assert np.allclose(loaded_data, adata.uns['foldchange_fc'].to_numpy() ), "The arrays do not match."
-# 
-# 
-# #spatial_distance
-# def test_spatial_distance (adata):
-#     from scimap.tools.spatial_distance import spatial_distance
-#     adata = spatial_distance (adata)
-#     # load expected data
-#     loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_distance.npz')['data']
-#     assert np.allclose(loaded_data, adata.uns['spatial_distance'].to_numpy()), "The arrays do not match."
-#     
-# 
-# #spatial_interaction
-# def test_spatial_interaction (adata):
-#     from scimap.tools.spatial_interaction import spatial_interaction
-#     adata = spatial_interaction (adata,  method = 'knn', knn= 5, permutation = 10)
-#     assert adata.uns['spatial_interaction'] is not None
-#     
-# 
 # #spatial_count &
 # #spatial_cluster
 # def test_spatial_count (adata):
@@ -141,9 +141,9 @@ def test_phenotype (adata):
 # 
 # 
 # 
-# 
-# 
 # =============================================================================
+
+
 
 
 
