@@ -76,8 +76,8 @@ def test_spatial_interaction (adata):
     assert adata.uns['spatial_interaction'] is not None
     
 
-#spatial_count &
-#spatial_cluster
+#spatial_count
+
 def test_spatial_count (adata):
     from scimap.tools.spatial_count import spatial_count
     adata = spatial_count (adata, phenotype='phenotype',method='knn',radius=5)
@@ -85,6 +85,11 @@ def test_spatial_count (adata):
     loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_count.npz')['data']
     assert np.allclose(loaded_data, adata.uns['spatial_count'].to_numpy()), "The arrays do not match."
     
+
+#spatial_cluster
+def test_spatial_cluster (adata):
+    from scimap.tools.spatial_count import spatial_count
+    adata = spatial_count (adata, phenotype='phenotype',method='knn',radius=5)    
     # test spatial cluster
     from scimap.tools.spatial_cluster import spatial_cluster
     adata = spatial_cluster(adata, df_name='spatial_count')
@@ -93,53 +98,51 @@ def test_spatial_count (adata):
     assert loaded_data == list(adata.obs['spatial_kmeans']), "The lists do not match."
     
 
-# =============================================================================
-# #spatial_lda
-# def test_spatial_lda (adata):
-#     from scimap.tools.spatial_lda import spatial_lda
-#     adata = spatial_lda (adata, num_motifs=10, radius=30)
-#     assert adata.uns['spatial_lda'] is not None
-# 
-# 
-# #spatial_expression
-# def test_spatial_expression (adata):
-#     from scimap.tools.spatial_expression import spatial_expression
-#     adata = spatial_expression (adata, method='radius', radius=30, use_raw=True, label='spatial_expression')
-#     # load expected data
-#     loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_expression.npz')['data']
-#     assert np.allclose(loaded_data, adata.uns['spatial_expression'].to_numpy()), "The arrays do not match."
-# 
-# 
-# #spatial_pscore
-# def test_spatial_pscore (adata):
-#     from scimap.tools.spatial_pscore import spatial_pscore
-#     adata = spatial_pscore (adata,  proximity= ['Immune', 'ECAD+'])
-#     # load expected data
-#     loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_pscore.npz')['data']
-#     assert np.allclose(loaded_data, adata.uns['spatial_pscore'].to_numpy()), "The arrays do not match."
-# 
-# 
-# #spatial_aggregate
-# def test_spatial_aggregate (adata):
-#     from scimap.tools.spatial_aggregate import spatial_aggregate
-#     adata = spatial_aggregate (adata, purity = 60, phenotype='phenotype', method='knn', radius=10)
-#     # load expected data
-#     loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_aggregate.pkl')
-#     assert loaded_data == list(adata.obs['spatial_aggregate']), "The lists do not match."
-#     
-# 
-# #spatial_similarity_search
-# def test_spatial_similarity_search (adata):
-#     from scimap.tools.spatial_similarity_search import spatial_similarity_search
-#     adata = spatial_similarity_search (adata, ROI_column='ROI', similarity_threshold=0.6,  method='knn', radius=10)
-#     # load expected data
-#     loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_similarity_search.pkl')
-#     assert loaded_data == list(adata.obs['spatial_similarity_search_ROI2']), "The lists do not match."
-#     
-# 
-# 
-# 
-# =============================================================================
+#spatial_lda
+def test_spatial_lda (adata):
+    from scimap.tools.spatial_lda import spatial_lda
+    adata = spatial_lda (adata, num_motifs=10, radius=30)
+    assert adata.uns['spatial_lda'] is not None
+
+
+#spatial_expression
+def test_spatial_expression (adata):
+    from scimap.tools.spatial_expression import spatial_expression
+    adata = spatial_expression (adata, method='radius', radius=30, use_raw=True, label='spatial_expression')
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_expression.npz')['data']
+    assert np.allclose(loaded_data, adata.uns['spatial_expression'].to_numpy()), "The arrays do not match."
+
+
+#spatial_pscore
+def test_spatial_pscore (adata):
+    from scimap.tools.spatial_pscore import spatial_pscore
+    adata = spatial_pscore (adata,  proximity= ['Immune', 'ECAD+'])
+    # load expected data
+    loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_pscore.npz')['data']
+    assert np.allclose(loaded_data, adata.uns['spatial_pscore'].to_numpy()), "The arrays do not match."
+
+
+#spatial_aggregate
+def test_spatial_aggregate (adata):
+    from scimap.tools.spatial_aggregate import spatial_aggregate
+    adata = spatial_aggregate (adata, purity = 60, phenotype='phenotype', method='knn', radius=10)
+    # load expected data
+    loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_aggregate.pkl')
+    assert loaded_data == list(adata.obs['spatial_aggregate']), "The lists do not match."
+    
+
+#spatial_similarity_search
+def test_spatial_similarity_search (adata):
+    from scimap.tools.spatial_similarity_search import spatial_similarity_search
+    adata = spatial_similarity_search (adata, ROI_column='ROI', similarity_threshold=0.6,  method='knn', radius=10)
+    # load expected data
+    loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_similarity_search.pkl')
+    assert loaded_data == list(adata.obs['spatial_similarity_search_ROI2']), "The lists do not match."
+    
+
+
+
 
 
 
