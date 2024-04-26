@@ -85,21 +85,16 @@ def test_spatial_count (adata):
     loaded_data = np.load( os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_count.npz')['data']
     assert np.allclose(loaded_data, adata.uns['spatial_count'].to_numpy()), "The arrays do not match."
     
+    
+#spatial_cluster
+def test_spatial_cluster (adata):
+    from scimap.tools.spatial_cluster import spatial_cluster
+    adata = spatial_cluster (adata, df_name='spatial_count_test')
+    # load expected data
+    loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_cluster.pkl')
+    assert loaded_data == list(adata.obs['spatial_kmeans']), "The lists do not match."
+    
 
-# =============================================================================
-# #spatial_cluster
-# def test_spatial_cluster (adata):
-#     from scimap.tools.spatial_count import spatial_count
-#     adata = spatial_count (adata, phenotype='phenotype',method='knn',radius=5)    
-#     # test spatial cluster
-#     from scimap.tools.spatial_cluster import spatial_cluster
-#     adata = spatial_cluster(adata, df_name='spatial_count')
-#     # load expected data
-#     loaded_data = load_pickle(os.getcwd() + '/scimap/tests/expected_test_values/test_spatial_cluster.pkl')
-#     assert loaded_data == list(adata.obs['spatial_kmeans']), "The lists do not match."
-#     
-# 
-# =============================================================================
 #spatial_lda
 def test_spatial_lda (adata):
     from scimap.tools.spatial_lda import spatial_lda
