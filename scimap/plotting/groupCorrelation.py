@@ -124,7 +124,7 @@ Example:
         adata = ad.read_h5ad(adata)
     
     # Calculate group counts
-    group_counts = adata.obs.groupby([condition, groupBy]).size().unstack(fill_value=0)
+    group_counts = adata.obs.groupby([condition, groupBy], observed=False).size().unstack(fill_value=0)
     
     # Subset groups if needed
     if subsetGroups:
@@ -190,13 +190,12 @@ Example:
     plt.tight_layout()
 
     # Save or show the figure
-    if saveDir and fileName:
+    if saveDir:
         if not os.path.exists(saveDir):
             os.makedirs(saveDir)
         full_path = os.path.join(saveDir, fileName)
         plt.savefig(full_path, dpi=300)
-        if not os.path.exists(saveDir):
-            os.makedirs(saveDir)
+        plt.close()
         print(f"Saved heatmap to {full_path}")
     else:
         plt.show()

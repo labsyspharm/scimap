@@ -22,6 +22,8 @@ import matplotlib as mpl
 import copy
 from matplotlib import cm
 from matplotlib.colors import LogNorm
+import os
+
 mpl.rcParams['pdf.fonttype'] = 42
 
 
@@ -38,8 +40,8 @@ def densityPlot2D (adata,
                    dpi=100, 
                    xticks=None,
                    yticks=None,
-                   outputDir=None, 
-                   outputFileName='densityPlot2D.pdf'):
+                   saveDir=None, 
+                   fileName='densityPlot2D.pdf'):
 
     """
 Parameters:
@@ -92,10 +94,10 @@ Parameters:
     yticks (list of float, optional):  
         Custom y-axis tick values.
 
-    outputDir (str, optional):  
+    saveDir (str, optional):  
         The directory to save the output plot.
 
-    outputFileName (str, optional):  
+    fileName (str, optional):  
         The name of the output file. Use desired file format as suffix (e.g. `.png` or `.pdf`).
 
 Returns:
@@ -226,9 +228,15 @@ Example:
     plt.tight_layout()
 
     # Save the figure to a file
-    # save figure
-    if outputDir is not None:
-        plt.savefig(pathlib.Path(outputDir) / outputFileName)
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plt.savefig(full_path, dpi=300)
+        plt.close(fig)
+        print(f"Saved heatmap to {full_path}")
+    else:
+        plt.show()
     
 
 

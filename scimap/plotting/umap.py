@@ -28,6 +28,7 @@ import itertools
 import matplotlib.colors as colors
 import seaborn as sns
 import matplotlib.patches as mpatches
+import os
 
 plt.rcParams['figure.dpi'] = 100
 plt.rcParams['savefig.dpi']=300
@@ -50,7 +51,9 @@ def umap (adata,
           ncols=None, 
           tight_layout=False, 
           return_data=False, 
-          save_figure=None, **kwargs):
+          saveDir=None, 
+          fileName = 'umap.pdf',
+          **kwargs):
     """
 Parameters:
         adata (anndata.AnnData):  
@@ -96,7 +99,7 @@ Parameters:
         return_data (bool, optional):  
             If True, returns the DataFrame containing data used for plotting instead of displaying the plot.
 
-        save_figure (str, optional):  
+        saveDir (str, optional):  
             Path and filename to save the figure. File extension determines the format (e.g., `.pdf`, `.png`).
 
         **kwargs:  
@@ -311,8 +314,15 @@ Example:
             k = k+1 # iterator
             
     # if save figure is requested
-    if save_figure is not None:
-        plt.savefig(save_figure)  
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plt.savefig(full_path, dpi=300)
+        plt.close(fig)
+        print(f"Saved heatmap to {full_path}")
+    else:
+        plt.show()
     
     # return data if needed
     if return_data is True:

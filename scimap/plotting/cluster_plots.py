@@ -67,7 +67,8 @@ def cluster_plots (adata,
                    subsample=100000, 
                    palette ='viridis', 
                    use_raw=False,
-                   size=None, output_dir=None):
+                   size=None, 
+                   output_dir=None):
     """
 Parameters:
         adata (anndata.AnnData):  

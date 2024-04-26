@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 import itertools
 import pathlib
 import matplotlib as mpl
+import os
+
 mpl.rcParams['pdf.fonttype'] = 42
 
 def distPlot(adata, 
@@ -32,8 +34,8 @@ def distPlot(adata,
              figsize=(5, 5), 
              fontsize=None, 
              dpi=200, 
-             outputDir=None, 
-             outputFileName='scimapDistPlot.png'):
+             saveDir=None, 
+             fileName='scimapDistPlot.png'):
 
     """
 Parameters:
@@ -79,10 +81,10 @@ Parameters:
     dpi (int, optional):  
         The DPI of the figure. Use this to control the point size. Lower the dpi, larger the point size.
     
-    outputDir (str, optional):  
+    saveDir (str, optional):  
         The directory to save the output plot.
 
-    outputFileName (str, optional):  
+    fileName (str, optional):  
         The name of the output file. Use desired file format as suffix (e.g. `.png` or `.pdf`).
 
 Returns:
@@ -233,8 +235,16 @@ Example:
         plt.tight_layout()
     
         # Save the figure to a file
-        # save figure
-        if outputDir is not None:
-            plt.savefig(pathlib.Path(outputDir) / outputFileName)
-        
+        if saveDir:
+            if not os.path.exists(saveDir):
+                os.makedirs(saveDir)
+            full_path = os.path.join(saveDir, fileName)
+            plt.savefig(full_path, dpi=300)
+            plt.close()
+            print(f"Saved heatmap to {full_path}")
+        else:
+            plt.show()
+            
+            
+
 

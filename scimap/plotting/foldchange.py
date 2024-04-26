@@ -20,6 +20,8 @@ import matplotlib
 import matplotlib.pyplot as plt 
 import numpy as np
 from pandas.plotting import parallel_coordinates
+import os
+
 sns.set_style("white")
 
 import matplotlib as mpl
@@ -42,6 +44,8 @@ def foldchange (adata,
                 matplotlib_legend_loc='upper left',
                 xticks_rotation=90,
                 return_data = False,
+                fileName='foldchange.pdf',
+                saveDir=None,
                 **kwargs):
     """
 Parameters:
@@ -165,9 +169,9 @@ Example:
     if method == 'heatmap':
         # heatmap of the foldchange
         #g= sns.clustermap(fold, cmap=cmap, mask=mask, center=center, col_cluster=False, row_cluster=False)
-        g= sns.clustermap(fold, cmap=cmap, mask=mask, center=center, **kwargs)
+        fig= sns.clustermap(fold, cmap=cmap, mask=mask, center=center, **kwargs)
         plt.suptitle('reference: '+ str(ref))
-        plt.setp(g.ax_heatmap.get_xticklabels(), rotation=xticks_rotation)
+        plt.setp(fig.ax_heatmap.get_xticklabels(), rotation=xticks_rotation)
         plt.tight_layout()
         
     
@@ -186,6 +190,17 @@ Example:
         plt.xticks(rotation = xticks_rotation)
         plt.suptitle('reference: '+ str(ref))
         fig.tight_layout()
+    
+    # save
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plt.savefig(full_path, dpi=300)
+        plt.close()
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
         
     # return data
     if return_data is True:

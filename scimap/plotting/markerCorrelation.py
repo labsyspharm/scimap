@@ -189,12 +189,13 @@ Example:
     plt.tight_layout()
     
     # Saving the figure if saveDir and fileName are provided
-    if saveDir and fileName:
+    if saveDir:
         if not os.path.exists(saveDir):
             os.makedirs(saveDir)
         full_path = os.path.join(saveDir, fileName)
         plt.savefig(full_path, dpi=300)
-        print(f"Saved heatmap to {full_path}")
+        plt.close()
+        print(f"Saved plot to {full_path}")
     else:
         plt.show()
 

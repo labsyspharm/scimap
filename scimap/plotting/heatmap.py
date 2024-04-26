@@ -46,7 +46,7 @@ def heatmap (adata,
              cmap='vlag',
              figsize=None,
              saveDir=None, 
-             fileName=None,
+             fileName='heatmap.pdf',
              verbose=True,
              **kwargs
              ):
@@ -312,7 +312,7 @@ Example:
         plt.tight_layout(rect=[0, 0, 0.9, 0.9]) # Adjust the layout
         
         # Saving the figure if saveDir and fileName are provided
-        if saveDir and fileName:
+        if saveDir:
             if not os.path.exists(saveDir):
                 os.makedirs(saveDir)
             full_path = os.path.join(saveDir, fileName)
