@@ -1,8 +1,8 @@
-from pkg_resources import get_distribution, DistributionNotFound
+import importlib.metadata
 
 try:
-    __version__ = get_distribution('scimap').version
-except DistributionNotFound:
+    __version__ = importlib.metadata.version('scimap')
+except importlib.metadata.PackageNotFoundError:
     __version__ = '(local)'
 
 import scimap

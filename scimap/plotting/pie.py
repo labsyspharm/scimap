@@ -155,15 +155,15 @@ Example:
 
     else:
         # if group_by is provided
-        prop = pd.DataFrame(data.groupby([group_by,phenotype]).size()).reset_index(inplace=False)
+        prop = pd.DataFrame(data.groupby([group_by,phenotype], observed=False).size()).reset_index(inplace=False)
         prop.columns = ['group_by',phenotype,'value']
         labels = np.unique(prop[phenotype])
         #
         if ncols is not None:
-            g = prop.groupby('group_by')
+            g = prop.groupby('group_by', observed=False)
             rows = int(np.ceil(len(g)/ncols))
         else:
-            g = prop.groupby('group_by')
+            g = prop.groupby('group_by', observed=False)
             rows = 1
             ncols = len(g)
     
@@ -193,6 +193,7 @@ Example:
         final_axes = list(set(total_axes) ^ set(required_axes))      
         # Plot
         fig, axes = plt.subplots(ncols=ncols, nrows=rows)
+        axes = np.atleast_1d(axes)  # This ensures axes is always an array, even if it's a single subplot
         for (c, grp), ax in zip(g, axes.flat):
             ax.pie(grp.value, labels=label, colors=colors, wedgeprops =wedgeprops)
             #ax.pie(grp.value, labels=label, colors=colors, wedgeprops = wedgeprops, **kwargs)

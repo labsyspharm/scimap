@@ -9,7 +9,6 @@ Test plotting functions
 import pytest
 import os
 import anndata as ad
-import unittest
 
 
 # load data
@@ -179,26 +178,26 @@ def test_stacked_barplot (adata):
     full_path = os.path.join(saveDir, fileName)
     assert os.path.exists(full_path), f"File was not created: {full_path}"
 
-
 # pie
-# =============================================================================
-# def test_pie (adata):
-#     from scimap.plotting.pie import pie
-#     saveDir = os.getcwd() + '/testFigures'
-#     fileName = 'pie.png'
-#     
-#     pie (adata)
-#     
-#     
-#     pie (adata, x_axis='imageid', y_axis='phenotype', saveDir=saveDir, fileName=fileName)
-#     # check the file exist
-#     full_path = os.path.join(saveDir, fileName)
-#     assert os.path.exists(full_path), f"File was not created: {full_path}"
-# =============================================================================
-
+def test_pie (adata):
+    from scimap.plotting.pie import pie
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'pie.png'
+    pie (adata, x_axis='imageid', y_axis='phenotype', saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
 
 # voronoi
-
+def test_voronoi (adata):
+    from scimap.plotting.voronoi import voronoi
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'voronoi.png'
+    voronoi(adata, imageid='ROI', subset='ROI1', color_by='phenotype', saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+    
 
 # image_viewer
 # addROI_image

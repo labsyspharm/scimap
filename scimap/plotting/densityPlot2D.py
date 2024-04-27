@@ -130,8 +130,12 @@ Example:
     
     
     # set color
-    cp = copy.copy(cm.get_cmap(cmap))
+    #cp = copy.copy(cm.get_cmap(cmap))
+    #cp.set_under(alpha=0)
+    
+    cp = copy.copy(plt.colormaps[cmap])
     cp.set_under(alpha=0)
+    
     
     # subset data if neede
     if subset is not None:

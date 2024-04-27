@@ -28,6 +28,7 @@
 """
 
 # import lib
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -129,6 +130,8 @@ def voronoi (adata,
              overlay_point_alpha= 1, 
              overlay_point_shape=".", 
              plot_legend=True, 
+             fileName='voronoi.pdf',
+             saveDir=None,
              legend_size = 6, **kwargs):
     """
 Parameters:
@@ -202,6 +205,12 @@ Parameters:
         plot_legend (bool, optional):  
             Whether to display a legend for the plot.
         
+        fileName (str, optional): 
+            Name of the file to save the plot. Relevant only if `saveDir` is not None.
+            
+        saveDir (str, optional): 
+            Directory to save the generated plot. If None, the plot is not saved.
+        
         legend_size (float, optional):  
             The font size of the legend text.
 
@@ -233,7 +242,7 @@ Example:
     
     
     # create the data frame needed
-    data = adata.obs
+    data = adata.obs.copy() 
         
     # Subset the image of interest
     if subset is not None:
@@ -253,13 +262,20 @@ Example:
             y2 = min(data[y_coordinate])
         else:
             y2 = y_lim [1]
+            
+    # do the actuall subsetting
+    #if x_lim is not None:
+    #    data = data[data[x_coordinate] >= x1]
+    #    data = data[data[x_coordinate] <= x2]
+    #if y_lim is not None:
+    #    data = data[data[y_coordinate] <= y1]
+    #    data = data[data[y_coordinate] >= y2]
+        
     # do the actuall subsetting
     if x_lim is not None:
-        data = data[data[x_coordinate] >= x1]
-        data = data[data[x_coordinate] <= x2]
+        data = data[(data[x_coordinate] >= x1) & (data[x_coordinate] <= x2)]
     if y_lim is not None:
-        data = data[data[y_coordinate] <= y1]
-        data = data[data[y_coordinate] >= y2]
+        data = data[(data[y_coordinate] >= y1) & (data[y_coordinate] <= y2)]
 
                     
     # create an extra column with index information
@@ -419,7 +435,12 @@ Example:
                 patchList.append(data_key)
     
         first_legend = plt.legend(handles=patchList, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., prop={'size': legend_size})
-        plt.tight_layout()
+        
+        try:
+            plt.tight_layout()
+        except:
+            pass
+        
         # Add the legend manually to the current Axes.
         ax = plt.gca().add_artist(first_legend)
         
@@ -432,5 +453,17 @@ Example:
         
             plt.legend(handles=patchList_scatter, bbox_to_anchor=(-0.05, 1), loc=1, borderaxespad=0., prop={'size': legend_size})
             #plt.tight_layout()
+    
+    # Saving the figure if saveDir and fileName are provided
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plt.savefig(full_path, dpi=300)
+        plt.close()
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
+    
     
     

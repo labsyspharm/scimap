@@ -270,7 +270,7 @@ Example:
             figsize_height = max(8, len(unique_categories) * base_size)
             figsize=(figsize_width, figsize_height)
         
-        fig, ax = plt.subplots(figsize=figsize)
+        fig, ax = plt.subplots(figsize=figsize, constrained_layout=True)
         
         
         # Heatmap
@@ -309,7 +309,7 @@ Example:
         ax.set_xlabel('Markers')
         ax.set_ylabel('Categories')
         
-        plt.tight_layout(rect=[0, 0, 0.9, 0.9]) # Adjust the layout
+        #plt.tight_layout(rect=[0, 0, 0.9, 0.9]) # Adjust the layout
         
         # Saving the figure if saveDir and fileName are provided
         if saveDir:
