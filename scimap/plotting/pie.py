@@ -17,6 +17,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 import matplotlib as mpl
 mpl.rcParams['pdf.fonttype'] = 42
@@ -35,6 +36,8 @@ def pie (adata,
          legend=False,
          legend_loc='upper right',
          wedgeprops = {'linewidth': 0}, 
+         fileName='pie.pdf',
+         saveDir=None,
          return_data=False, **kwargs):
     """
 Parameters:
@@ -82,6 +85,12 @@ Parameters:
 
         return_data (bool, optional):  
             If True, returns the data used for plotting instead of the pie chart(s).
+        
+        fileName (str, optional): 
+            Name of the file to save the plot. Relevant only if `saveDir` is not None.
+            
+        saveDir (str, optional): 
+            Directory to save the generated plot. If None, the plot is not saved.
 
         **kwargs:  
             Additional keyword arguments passed to `matplotlib.pyplot.pie`.
@@ -198,7 +207,17 @@ Example:
         if legend is True:
             plt.legend(labels, loc=legend_loc, framealpha=1)
             
-    plt.show()
+
+    # Saving the figure if saveDir and fileName are provided
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plt.savefig(full_path, dpi=300)
+        plt.close()
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
     
 
     # return data

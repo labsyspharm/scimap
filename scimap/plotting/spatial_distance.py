@@ -19,8 +19,11 @@
 # library
 import pandas as pd
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns; sns.set(color_codes=True)
+import os
+
 sns.set_style("white")
 
 import matplotlib as mpl
@@ -48,6 +51,8 @@ def spatial_distance (adata,
                       return_data = False, 
                       subset_col=None, 
                       subset_value=None,
+                      fileName='spatial_distance.pdf',
+                      saveDir=None,
                       **kwargs):
     """
 Parameters:
@@ -101,6 +106,12 @@ Parameters:
 
         subset_value (list, optional):  
             Values in `subset_col` to include in the plot.
+        
+        fileName (str, optional): 
+            Name of the file to save the plot. Relevant only if `saveDir` is not None.
+            
+        saveDir (str, optional): 
+            Directory to save the generated plot. If None, the plot is not saved.
 
         **kwargs:  
             Additional keyword arguments for plotting functions.
@@ -127,8 +138,10 @@ Example:
 
 
     # set color for heatmap
-    cmap_updated = matplotlib.cm.get_cmap(heatmap_cmap)
+    #cmap_updated = matplotlib.cm.get_cmap(heatmap_cmap)
+    cmap_updated = matplotlib.colormaps[heatmap_cmap]
     cmap_updated.set_bad(color=heatmap_na_color)
+
 
 
     # Copy the spatial_distance results from anndata object
@@ -177,7 +190,7 @@ Example:
         mask = d.isnull() # identify the NAN's for masking 
         d = d.fillna(0) # replace nan's with 0 so that clustering will work
         # Heatmap
-        sns.clustermap(d, cmap=heatmap_cmap, row_cluster=heatmap_row_cluster,
+        plot = sns.clustermap(d, cmap=heatmap_cmap, row_cluster=heatmap_row_cluster,
                        col_cluster=heatmap_col_cluster, mask=mask,
                        standard_scale=heatmap_standard_scale, **kwargs)
     else:
@@ -226,15 +239,28 @@ Example:
         # Plotting
         if method=='numeric':
             if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
-                sns.catplot(data=d, x="distance", y="group", col="imageid", kind="boxen", **kwargs)
+                plot = sns.catplot(data=d, x="distance", y="group", col="imageid", kind="boxen", **kwargs)
             else:
-                sns.catplot(data=d, x=x_axis, y=y_axis, col=facet_by, kind=plot_type, **kwargs)
+                plot = sns.catplot(data=d, x=x_axis, y=y_axis, col=facet_by, kind=plot_type, **kwargs)
 
         if method=='distribution':
             if x_axis is None and y_axis is None and facet_by is None and plot_type is None:
-                sns.displot(data=d, x="distance", hue="imageid",  col="group", kind="kde", **kwargs)
+                plot = sns.displot(data=d, x="distance", hue="imageid",  col="group", kind="kde", **kwargs)
             else:
-                sns.displot(data=d, x=x_axis, hue=y_axis, col=facet_by, kind=plot_type,**kwargs)
+                plot = sns.displot(data=d, x=x_axis, hue=y_axis, col=facet_by, kind=plot_type,**kwargs)
+        
+        
+    # Saving the figure if saveDir and fileName are provided
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plot.savefig(full_path, dpi=300)
+        plt.close()
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
+            
 
     # return
     if return_data is True:

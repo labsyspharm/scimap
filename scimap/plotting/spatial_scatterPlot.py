@@ -20,12 +20,13 @@
 import anndata as ad
 import pathlib
 import matplotlib.pyplot as plt
-import argparse
 import pandas as pd
 import math
 import numpy as np
 import matplotlib.patches as mpatches
 import matplotlib as mpl
+import os
+
 mpl.rcParams['pdf.fonttype'] = 42
 
 
@@ -51,8 +52,8 @@ def spatial_scatterPlot (adata,
                          customColors=None,
                          figsize=(5, 5),
                          invert_yaxis=True,
-                         outputDir=None,
-                         outputFileName='scimapScatterPlot.png',
+                         saveDir=None,
+                         fileName='scimapScatterPlot.png',
                          **kwargs):
     """
 Parameters:
@@ -126,10 +127,10 @@ Parameters:
     invert_yaxis (bool, optional):  
         Invert the Y-axis of the plot. 
         
-    outputDir (str or None, optional):   
+    saveDir (str or None, optional):   
         The directory to save the output plot. If None, the plot will not be saved. 
         
-    outputFileName (str, optional):   
+    fileName (str, optional):   
         The name of the output file. Use desired file format as 
         suffix (e.g. `.png` or `.pdf`). Default is 'scimapScatterPlot.png'.
         
@@ -139,8 +140,8 @@ Parameters:
 
 Returns:
     Plot (image):
-        If `outputDir` is provided the plot will saved within the
-        provided outputDir.
+        If `saveDir` is provided the plot will saved within the
+        provided saveDir.
 
 Example:
         ```python
@@ -165,8 +166,8 @@ Example:
                          vmin=0,
                          vmax=1,
                          customColors=customColors,
-                         outputFileName='scimapScatterPlot.svg',
-                         outputDir='/Users/aj/Downloads')
+                         fileName='scimapScatterPlot.svg',
+                         saveDir='/Users/aj/Downloads')
 
 
         ```
@@ -332,9 +333,16 @@ Example:
     plt.tick_params(axis='both', labelsize=fontsize)
     plt.tight_layout()
 
-    # save figure
-    if outputDir is not None:
-        plt.savefig(pathlib.Path(outputDir) / outputFileName, dpi=dpi)
+    # save figure    
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plt.savefig(full_path, dpi=dpi)
+        plt.close()
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
     
     #plt.show()
     

@@ -19,6 +19,7 @@
 # Library
 import seaborn as sns; sns.set_theme(style='white', color_codes=True)
 import matplotlib.pyplot as plt
+import os
 
 plt.rcParams['figure.dpi'] = 100
 plt.rcParams['savefig.dpi']=300
@@ -33,6 +34,8 @@ def spatial_pscore (adata,
                     order_xaxis = None,
                     color='grey',
                     figsize=None,
+                    fileName='spatial_pscore.pdf',
+                    saveDir=None,
                     **kwargs):
     """
 Parameters:
@@ -55,6 +58,12 @@ Parameters:
 
         color (str, optional):  
             Color to use for the bar plots. This can enhance plot readability or align with publication themes.
+        
+        fileName (str, optional): 
+            Name of the file to save the plot. Relevant only if `saveDir` is not None.
+            
+        saveDir (str, optional): 
+            Directory to save the generated plot. If None, the plot is not saved.
 
         **kwargs:  
             Additional keyword arguments passed directly to seaborn's barplot function, allowing for further customization of the plots.
@@ -103,21 +112,32 @@ Example:
         
     # Plot what user requests
     if plot_score == 'Proximity Density':
-        plt.figure(figsize=figsize)
-        ax = sns.barplot(x=x, y=y_pd, color=color, **kwargs).set_title('Proximity Density')
-        ax = plt.xticks(rotation=90)
+        fig, ax = plt.subplots(figsize=figsize)
+        sns.barplot(x=x, y=y_pd, color=color, **kwargs).set_title('Proximity Density')
+        plt.xticks(rotation=90)
         plt.tight_layout()
-    if plot_score == 'Proximity Volume':
-        plt.figure(figsize=figsize)
-        ax = sns.barplot(x=x, y=y_pv, color=color, **kwargs).set_title('Proximity Volume')
-        ax = plt.xticks(rotation=90)
+    elif plot_score == 'Proximity Volume':
+        fig, ax = plt.subplots(figsize=figsize)
+        sns.barplot(x=x, y=y_pv, color=color, **kwargs).set_title('Proximity Volume')
+        plt.xticks(rotation=90)
         plt.tight_layout()
-    if plot_score == 'both':
-        plt.figure(figsize=figsize)
-        fig, ax = plt.subplots(1,2)
-        sns.barplot(x=x, y=y_pd, color=color, ax=ax[0], **kwargs).set_title('Proximity Density')
-        ax[0].tick_params(axis='x', rotation=90)
-        sns.barplot(x=x, y=y_pv, color=color, ax=ax[1], **kwargs).set_title('Proximity Volume')
-        ax[1].tick_params(axis='x', rotation=90)
+    elif plot_score == 'both':
+        fig, axs = plt.subplots(1, 2, figsize=figsize)
+        sns.barplot(x=x, y=y_pd, color=color, ax=axs[0], **kwargs).set_title('Proximity Density')
+        axs[0].tick_params(axis='x', rotation=90)
+        sns.barplot(x=x, y=y_pv, color=color, ax=axs[1], **kwargs).set_title('Proximity Volume')
+        axs[1].tick_params(axis='x', rotation=90)
         plt.tight_layout()
-        fig.show()
+    
+    # Saving the figure if saveDir and fileName are provided
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        fig.savefig(full_path, dpi=300)
+        plt.close(fig)
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
+            
+

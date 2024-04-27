@@ -23,6 +23,9 @@ import seaborn as sns; sns.set(color_codes=True)
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
+import os
+
+
 pio.renderers.default = 'browser'
 sns.set(style="white")
 
@@ -43,6 +46,8 @@ def stacked_barplot (adata,
                      matplotlib_cmap=None, 
                      matplotlib_bbox_to_anchor=(1,1.02), 
                      matplotlib_legend_loc=2, 
+                     fileName='stacked_barplot.pdf',
+                     saveDir=None,
                      return_data=False, **kwargs):
     """
 Parameters:
@@ -84,6 +89,12 @@ Parameters:
 
         return_data (bool, optional):  
             If True, returns a DataFrame used for plotting instead of displaying the plot.
+        
+        fileName (str, optional): 
+            Name of the file to save the plot. Relevant only if `saveDir` is not None.
+            
+        saveDir (str, optional): 
+            Directory to save the generated plot. If None, the plot is not saved.
 
         **kwargs:  
             Additional arguments passed to the plotting function (matplotlib or plotly).
@@ -178,10 +189,28 @@ Example:
         except NameError:
             width=0.9
         # actual plotting   
-        p = pivot_df.plot.bar(stacked=True, cmap=matplotlib_cmap, width=width,  **kwargs)
-        handles, labels = p.get_legend_handles_labels() # for reversing the order of the legend
-        p.legend(reversed(handles), reversed(labels), bbox_to_anchor=matplotlib_bbox_to_anchor, loc=matplotlib_legend_loc)
-    
+        #p = pivot_df.plot.bar(stacked=True, cmap=matplotlib_cmap, width=width,  **kwargs)
+        #handles, labels = p.get_legend_handles_labels() # for reversing the order of the legend
+        #p.legend(reversed(handles), reversed(labels), bbox_to_anchor=matplotlib_bbox_to_anchor, loc=matplotlib_legend_loc)
+        
+        # Actual plotting   
+        ax = pivot_df.plot.bar(stacked=True, cmap=matplotlib_cmap, width=width, **kwargs)
+        fig = ax.get_figure()  # Get the Figure object to save
+        handles, labels = ax.get_legend_handles_labels() # for reversing the order of the legend
+        ax.legend(reversed(handles), reversed(labels), bbox_to_anchor=matplotlib_bbox_to_anchor, loc=matplotlib_legend_loc)
+        
+        # Saving the figure if saveDir and fileName are provided
+        if saveDir:
+            if not os.path.exists(saveDir):
+                os.makedirs(saveDir)
+            full_path = os.path.join(saveDir, fileName)
+            fig.savefig(full_path, dpi=300)  # Use fig.savefig instead of p.savefig
+            plt.close(fig)  # Close the figure properly
+            print(f"Saved plot to {full_path}")
+        else:
+            plt.show()
+        
+
     elif plot_tool == 'plotly':
         
         fig = px.bar(rg, x=x_axis, y="count", color=y_axis, **kwargs)

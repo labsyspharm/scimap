@@ -21,6 +21,10 @@ import seaborn as sns; sns.set(color_codes=True)
 import numpy as np
 import pandas as pd
 import matplotlib
+import matplotlib.pyplot as plt
+import os 
+
+
 sns.set_style("white")
 
 import matplotlib as mpl
@@ -38,7 +42,10 @@ def spatial_interaction (adata,
                          subset_phenotype=None, 
                          subset_neighbour_phenotype=None,
                          binary_view=False, 
-                         return_data=False, **kwargs):
+                         return_data=False, 
+                         fileName='spatial_interaction.pdf',
+                         saveDir=None,
+                         **kwargs):
     """
 Parameters:
         adata (anndata.AnnData):  
@@ -70,6 +77,12 @@ Parameters:
 
         return_data (bool, optional):  
             If True, returns the DataFrame used for plotting instead of the plot itself.
+        
+        fileName (str, optional): 
+            Name of the file to save the plot. Relevant only if `saveDir` is not None.
+            
+        saveDir (str, optional): 
+            Directory to save the generated plot. If None, the plot is not saved.
 
         **kwargs:  
             Additional keyword arguments for seaborn's clustermap function, such as `linecolor` and `linewidths`.
@@ -162,7 +175,7 @@ Example:
         mask = p_val_df.isnull() # identify the NAN's for masking 
         im = interaction_map.fillna(0) # replace nan's with 0 so that clustering will work
         # heatmap
-        sns.clustermap(im, cmap=cmap_updated, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
+        plot = sns.clustermap(im, cmap=cmap_updated, row_cluster=row_cluster, col_cluster=col_cluster,  mask=mask, **kwargs)
         
     else:
         if len(interaction_map.columns) < 2:
@@ -214,7 +227,18 @@ Example:
                 
         # covert the first two columns into index
         # Plot
-        sns.clustermap(im, cmap=cmap_updated, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
+        plot = sns.clustermap(im, cmap=cmap_updated, row_cluster=row_cluster, col_cluster=col_cluster, mask=mask, **kwargs)
+    
+    # Saving the figure if saveDir and fileName are provided
+    if saveDir:
+        if not os.path.exists(saveDir):
+            os.makedirs(saveDir)
+        full_path = os.path.join(saveDir, fileName)
+        plot.savefig(full_path, dpi=300)
+        plt.close()
+        print(f"Saved plot to {full_path}")
+    else:
+        plt.show()
     
     if return_data is True:
         # perpare data for export

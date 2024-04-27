@@ -112,16 +112,91 @@ def test_foldchange (adata):
     assert os.path.exists(full_path), f"File was not created: {full_path}"
 
 
-
-
-
 # spatial_scatterPlot
+def test_spatial_scatterPlot (adata):
+    from scimap.plotting.spatial_scatterPlot import spatial_scatterPlot
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'spatial_scatterPlot.png'
+    spatial_scatterPlot (adata, colorBy='phenotype', saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+
+
 # spatial_distance
+def test_spatial_distance (adata):
+    from scimap.plotting.spatial_distance import spatial_distance
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'spatial_distance.png'
+    spatial_distance (adata,  saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+
+
 # spatial_interaction
-# spatialInteractionNetwork
+def test_spatial_interaction (adata):
+    from scimap.tools.spatial_interaction import spatial_interaction
+    adata = spatial_interaction (adata,  method = 'knn', knn= 5, permutation = 10)
+    # plot
+    from scimap.plotting.spatial_interaction import spatial_interaction
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'spatial_interaction.png'
+    spatial_interaction(adata, saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+    # spatialInteractionNetwork
+    from scimap.plotting.spatialInteractionNetwork import spatialInteractionNetwork
+    fileName = 'spatialInteractionNetwork.png'
+    spatialInteractionNetwork(adata, cmap='coolwarm',  saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+
+
 # spatial_pscore
+def test_spatial_pscore (adata):
+    from scimap.tools.spatial_pscore import spatial_pscore
+    adata = spatial_pscore (adata,  proximity= ['Immune', 'ECAD+'])
+    # plot
+    from scimap.plotting.spatial_pscore import spatial_pscore
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'spatial_pscore.png'
+    spatial_pscore(adata, plot_score='both', saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+
+
 # stacked_barplot
+def test_stacked_barplot (adata):
+    from scimap.plotting.stacked_barplot import stacked_barplot
+    saveDir = os.getcwd() + '/testFigures'
+    fileName = 'stacked_barplot.png'
+    stacked_barplot(adata, x_axis='imageid', y_axis='phenotype', saveDir=saveDir, fileName=fileName)
+    # check the file exist
+    full_path = os.path.join(saveDir, fileName)
+    assert os.path.exists(full_path), f"File was not created: {full_path}"
+
+
 # pie
+# =============================================================================
+# def test_pie (adata):
+#     from scimap.plotting.pie import pie
+#     saveDir = os.getcwd() + '/testFigures'
+#     fileName = 'pie.png'
+#     
+#     pie (adata)
+#     
+#     
+#     pie (adata, x_axis='imageid', y_axis='phenotype', saveDir=saveDir, fileName=fileName)
+#     # check the file exist
+#     full_path = os.path.join(saveDir, fileName)
+#     assert os.path.exists(full_path), f"File was not created: {full_path}"
+# =============================================================================
+
+
 # voronoi
 
 
