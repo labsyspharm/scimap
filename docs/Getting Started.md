@@ -28,7 +28,7 @@ Install `scimap` directly into an activated virtual environment:
 Here's how you can install both using pip:
 
 ```python
-pip install scimap[napari]
+pip install "scimap[napari]"
 ```
 
 **If you encounter a problem with PyQt6 during the installation, you can install `scimap` alone first. Later on, if you find you need `napari`, you can go ahead and install it by itself.**
