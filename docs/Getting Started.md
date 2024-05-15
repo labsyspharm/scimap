@@ -49,6 +49,8 @@ This setup provides you with the foundational tools needed for your single-cell 
 
 ## Data Loading and Integration 🔄
 
+SCIMAP operates on segmented single-cell data derived from imaging data using tools such as cellpose or MCMICRO. The essential inputs for SCIMAP are: (a) a single-cell expression matrix and (b) the X and Y coordinates for each cell. Additionally, multi-stack OME-TIFF or TIFF images can be optionally provided to enable visualization of the data analysis on the original raw images.
+
 Scimap champions the interoperability of single-cell analysis tools by embracing the `AnnData` data structure. This strategic choice allows seamless use of numerous single-cell analysis utilities alongside `AnnData`.
 
 ### The AnnData Framework 🧬
