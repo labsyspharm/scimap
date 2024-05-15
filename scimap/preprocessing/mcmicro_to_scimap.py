@@ -34,7 +34,7 @@ def mcmicro_to_scimap(
     verbose=True,
     output_dir=None,
 ):
-    """The function allows users to directly import the output from MCMICRO into `scimap`.
+    """
     Parameters:
         feature_table_path (list of str):
             A list containing file paths to single-cell spatial feature tables. Each path corresponds to a unique image's feature table.
