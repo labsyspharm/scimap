@@ -131,7 +131,7 @@ Example:
 
         classify_idx=data.index
         classified = pd.DataFrame(non_summary.loc[data.index]) #subsets phenotype rows to only classified cells
-        if showPhenotypeLabel:
+        if showPhenotypeLabel is True:
             classified[phenotype_label] = classified[phenotype]+"_"+classify_label # add phenotype_label col
         classified[label]=pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx) # add label col
         classified.drop([phenotype], axis='columns', inplace=True) # drop phenotype col, for merge        
