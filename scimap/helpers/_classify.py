@@ -131,7 +131,7 @@ Example:
     else:
         # create new naming scheme for label and phenotype_label cols in classified
         classify_idx=data.index
-        if showPhenotypeLabel:
+        if showPhenotypeLabel is True:
             non_summary = pd.DataFrame({phenotype: adata.obs[phenotype]}) # gets the index and phenotype
             non_summary[phenotype] = non_summary[phenotype].astype(str)
 
@@ -145,7 +145,7 @@ Example:
 
 
     if collapse_failed is True: 
-        if showPhenotypeLabel:
+        if showPhenotypeLabel is True:
             meta = non_summary # has index and phenotype col
         else:
             meta = pd.DataFrame(index= adata.obs.index)
