@@ -101,7 +101,7 @@ Example:
             subclassify_phenotype = [subclassify_phenotype]
         if (showPhenotypeLabel):
             phenotype_label=phenotype+"_"+label
-    elif phenotype==None:
+    elif phenotype is None:
          if isinstance(subclassify_phenotype, str) or (showPhenotypeLabel): 
             raise TypeError("You must pass a column name to the PHENOTYPE argument in order to use `subclassify_phenotype` or to set `showPhenotypeLabel = True`")
     
