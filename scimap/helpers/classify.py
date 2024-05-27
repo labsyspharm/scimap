@@ -65,7 +65,8 @@ Parameters:
             Key under which classification results are stored in `adata.obs`.
             
         showPhenotypeLabel (bool, optional):  
-            If True, appends classification status to existing phenotype labels in the results.
+            If True, appends classification status to existing phenotype labels in the results. If True, classification
+              results will instead be stored under "[phenotype]_[label]" key in  `adata.obs`
             
         verbose (bool, optional):  
             If True, prints progress and informational messages during the classification process.
@@ -90,16 +91,19 @@ Example:
     
     ```
     """
-    
     # clean the input
     if isinstance(pos, str):
         pos = [pos]
     if isinstance(neg, str):
         neg = [neg]
-    if isinstance(subclassify_phenotype, str):
-        subclassify_phenotype = [subclassify_phenotype]
-    if (showPhenotypeLabel):
-        phenotype_label=phenotype+"_"+label
+    if phenotype is not None:
+        if isinstance(subclassify_phenotype, str):
+            subclassify_phenotype = [subclassify_phenotype]
+        if (showPhenotypeLabel):
+            phenotype_label=phenotype+"_"+label
+    elif phenotype is None:
+         if isinstance(subclassify_phenotype, str) or (showPhenotypeLabel): 
+            raise TypeError("You must pass a column name to the PHENOTYPE argument in order to use `subclassify_phenotype` or to set `showPhenotypeLabel = True`")
     
     
     # Create a dataFrame with the necessary inforamtion
@@ -126,21 +130,28 @@ Example:
         raise TypeError("No cells were found to satisfy your `classify` criteria")
     else:
         # create new naming scheme for label and phenotype_label cols in classified
-        non_summary = pd.DataFrame({phenotype: adata.obs[phenotype]}) # gets the index and phenotype
-        non_summary[phenotype] = non_summary[phenotype].astype(str)
-
         classify_idx=data.index
-        classified = pd.DataFrame(non_summary.loc[data.index]) #subsets phenotype rows to only classified cells
-        if showPhenotypeLabel:
+        if showPhenotypeLabel is True:
+            non_summary = pd.DataFrame({phenotype: adata.obs[phenotype]}) # gets the index and phenotype
+            non_summary[phenotype] = non_summary[phenotype].astype(str)
+
+            classified = pd.DataFrame(non_summary.loc[data.index]) #subsets phenotype rows to only classified cells
+        
             classified[phenotype_label] = classified[phenotype]+"_"+classify_label # add phenotype_label col
-        classified[label]=pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx) # add label col
-        classified.drop([phenotype], axis='columns', inplace=True) # drop phenotype col, for merge        
+            classified.drop([phenotype], axis='columns', inplace=True) # drop phenotype col, for merge        
+        else:
+            classified=pd.DataFrame(np.repeat(classify_label, len(classify_idx)),index= classify_idx, columns=[label]) # add label col
 
 
 
     if collapse_failed is True: 
-        meta = non_summary # has index and phenotype col
+        if showPhenotypeLabel is True:
+            meta = non_summary # has index and phenotype col
+        else:
+            meta = pd.DataFrame(index= adata.obs.index)
+
         meta = meta.merge(classified, how='outer', left_index=True, right_index=True) # gain classified col(s) and NaNs for non-matches
+
         if showPhenotypeLabel is True:
             meta[phenotype_label]= meta[phenotype_label].fillna(meta[phenotype].astype(str)+"_"+failed_label)
             meta=meta[phenotype_label]
@@ -159,7 +170,9 @@ Example:
             meta.update(classified) # updates with phenotype_label for only the classified cells
         else:
             meta= pd.DataFrame(adata.obs[phenotype])
+            meta = meta[phenotype].astype("object")
             classified = pd.DataFrame(np.repeat(classify_label, len(classify_idx)), index = classify_idx, columns = [phenotype])
+            classified = classified[phenotype].astype("object")
             meta.update(classified) # updates with label for only the classified cells
         
             
@@ -169,7 +182,5 @@ Example:
         adata.obs[phenotype_label]=meta
     else:
         adata.obs[label]=meta 
-            
     # return
     return adata
-
