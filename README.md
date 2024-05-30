@@ -1,4 +1,4 @@
-# Single-Cell Image Analysis Package
+# SCIMAP: A Python Toolkit for Integrated Spatial Analysis of Multiplexed Imaging Data
 <br>
 
 [![build: Unix-Mac-Win](https://github.com/ajitjohnson/scimap/actions/workflows/build-unix-mac-win.yml/badge.svg)](https://github.com/ajitjohnson/scimap/actions/workflows/build-unix-mac-win.yml)
