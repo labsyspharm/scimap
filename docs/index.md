@@ -24,11 +24,12 @@ Scimap is a scalable toolkit for analyzing spatial molecular data. The underlyin
 SCIMAP operates on segmented single-cell data derived from imaging data using tools such as cellpose or MCMICRO. The essential inputs for SCIMAP are: (a) a single-cell expression matrix and (b) the X and Y coordinates for each cell. Additionally, multi-stack OME-TIFF or TIFF images can be optionally provided to enable visualization of the data analysis on the original raw images.
 <br>
 
-## Citing scimap
-Nirmal et al., (2024). SCIMAP: A Python Toolkit for Integrated Spatial Analysis of Multiplexed Imaging Data. Journal of Open Source Software, 9(97), 6604, [https://doi.org/10.21105/joss.06604](https://joss.theoj.org/papers/10.21105/joss.06604#)
-
 *SCIMAP* development was led by [Ajit Johnson Nirmal](https://ajitjohnson.com/), Harvard Medical School.  
 Check out other tools from the [Nirmal Lab](https://nirmallab.com/tools/). 
+
+### Citing scimap
+Nirmal et al., (2024). SCIMAP: A Python Toolkit for Integrated Spatial Analysis of Multiplexed Imaging Data. Journal of Open Source Software, 9(97), 6604, [https://doi.org/10.21105/joss.06604](https://joss.theoj.org/papers/10.21105/joss.06604#)
+
 
 ### Funding
 This work was supported by the following NIH grant K99-CA256497
