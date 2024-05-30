@@ -59,7 +59,7 @@ $ python
 
 #### Detailed documentation of `scimap` functions and tutorials are available [here](http://scimap.xyz/).
 
-*SCIMAP* development was led by [Ajit Johnson Nirmal](https://ajitjohnson.com/), Harvard Medical School.  
+*Scimap* development was led by [Ajit Johnson Nirmal](https://ajitjohnson.com/), Harvard Medical School.  
 Check out other tools from the [Nirmal Lab](https://nirmallab.com/tools/). 
 
 
