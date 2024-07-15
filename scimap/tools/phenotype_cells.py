@@ -309,7 +309,7 @@ Example:
                 fail = list(x.loc[x['val'] < x['val'].sum() * pheno_threshold_percent/100].index)
             if pheno_threshold_abs is not None:
                 fail = list(x.loc[x['val'] < pheno_threshold_abs].index)
-            d[label] = d[label].replace(dict(zip(fail, np.repeat('Unknown',len(fail)))))
+            d[label] = d[label].replace(dict(zip(fail, ['Unknown'] * len(fail) )))
             # Return
             return d
 
