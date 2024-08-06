@@ -19,115 +19,117 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-import matplotlib as mpl
-mpl.rcParams['pdf.fonttype'] = 42
+plt.rcParams['pdf.fonttype'] = 42
+
 
 # Function
-def pie (adata, 
-         phenotype='phenotype', 
-         group_by='imageid', 
-         ncols=None,
-         subset_phenotype=None, 
-         subset_groupby=None,
-         label='auto', 
-         title='auto', 
-         colors=None, 
-         autopct='%1.1f%%',
-         legend=False,
-         legend_loc='upper right',
-         wedgeprops = {'linewidth': 0}, 
-         fileName='pie.pdf',
-         saveDir=None,
-         return_data=False, **kwargs):
+def pie(
+    adata,
+    phenotype='phenotype',
+    group_by='imageid',
+    ncols=None,
+    subset_phenotype=None,
+    subset_groupby=None,
+    label='auto',
+    title='auto',
+    colors=None,
+    autopct='%1.1f%%',
+    legend=False,
+    legend_loc='upper right',
+    wedgeprops={'linewidth': 0},
+    fileName='pie.pdf',
+    saveDir=None,
+    return_data=False,
+    **kwargs,
+):
     """
-Parameters:
-        adata (anndata.AnnData):  
-            The annotated data matrix.
+    Parameters:
+            adata (anndata.AnnData):
+                The annotated data matrix.
 
-        phenotype (str, optional):  
-            Column in `adata.obs` containing the categorical data for pie chart visualization. 
+            phenotype (str, optional):
+                Column in `adata.obs` containing the categorical data for pie chart visualization.
 
-        group_by (str, optional):  
-            Column in `adata.obs` for defining groups. Each group will have its own pie chart. 
-            Default is 'imageid'. Pass None to treat all data as a single group.
+            group_by (str, optional):
+                Column in `adata.obs` for defining groups. Each group will have its own pie chart.
+                Default is 'imageid'. Pass None to treat all data as a single group.
 
-        ncols (int, optional):  
-            Number of columns in the grid layout when displaying multiple pie charts. 
-            Only applicable if `group_by` is used.
+            ncols (int, optional):
+                Number of columns in the grid layout when displaying multiple pie charts.
+                Only applicable if `group_by` is used.
 
-        subset_phenotype (list, optional):  
-            List of categories within `phenotype` to include in the visualization.
+            subset_phenotype (list, optional):
+                List of categories within `phenotype` to include in the visualization.
 
-        subset_groupby (list, optional):  
-            List of groups within `group_by` to include in the visualization.
+            subset_groupby (list, optional):
+                List of groups within `group_by` to include in the visualization.
 
-        label (list, optional):  
-            Labels for each wedge in the pie charts. If 'auto', labels are automatically 
-            derived from `phenotype` categories.
+            label (list, optional):
+                Labels for each wedge in the pie charts. If 'auto', labels are automatically
+                derived from `phenotype` categories.
 
-        title (str, optional):  
-            Title for the pie chart(s). If 'auto', titles are derived from `group_by` categories.
+            title (str, optional):
+                Title for the pie chart(s). If 'auto', titles are derived from `group_by` categories.
 
-        colors (list, optional):  
-            Custom color sequence for the pie chart wedges.
+            colors (list, optional):
+                Custom color sequence for the pie chart wedges.
 
-        autopct (str or callable, optional):  
-            String or function used to label wedges with their numeric value. Default is '%1.1f%%'.
+            autopct (str or callable, optional):
+                String or function used to label wedges with their numeric value. Default is '%1.1f%%'.
 
-        legend (bool, optional):  
-            Whether to display a legend for the pie chart. Default is False.
+            legend (bool, optional):
+                Whether to display a legend for the pie chart. Default is False.
 
-        legend_loc (str, optional):  
-            Location of the legend. Default is 'upper right'.
+            legend_loc (str, optional):
+                Location of the legend. Default is 'upper right'.
 
-        wedgeprops (dict, optional):  
-            Properties passed to the wedge objects, such as `{'linewidth': 3}`.
+            wedgeprops (dict, optional):
+                Properties passed to the wedge objects, such as `{'linewidth': 3}`.
 
-        return_data (bool, optional):  
-            If True, returns the data used for plotting instead of the pie chart(s).
-        
-        fileName (str, optional): 
-            Name of the file to save the plot. Relevant only if `saveDir` is not None.
-            
-        saveDir (str, optional): 
-            Directory to save the generated plot. If None, the plot is not saved.
+            return_data (bool, optional):
+                If True, returns the data used for plotting instead of the pie chart(s).
 
-        **kwargs:  
-            Additional keyword arguments passed to `matplotlib.pyplot.pie`.
+            fileName (str, optional):
+                Name of the file to save the plot. Relevant only if `saveDir` is not None.
 
-Returns:
-    plot and dataFrame (matplotlib, pandas DF):
-        If `return_data` is True, returns a pandas DataFrame used for plotting.
+            saveDir (str, optional):
+                Directory to save the generated plot. If None, the plot is not saved.
 
-Example:
-    ```python
-    
-    # Basic pie chart visualization of cell phenotypes
-    sm.pl.pie(adata, phenotype='cell_type', group_by='sample_id', ncols=3)
+            **kwargs:
+                Additional keyword arguments passed to `matplotlib.pyplot.pie`.
 
-    # Advanced visualization with custom colors and pie chart properties
-    sm.pl.pie(adata, phenotype='cell_type', group_by='condition', ncols=4, colors=['#ff9999','#66b3ff','#99ff99'],
-              wedgeprops={'edgecolor': 'black', 'linewidth': 2}, autopct='%1.1f%%', legend=True, legend_loc='best')
+    Returns:
+        plot and dataFrame (matplotlib, pandas DF):
+            If `return_data` is True, returns a pandas DataFrame used for plotting.
 
-    # Subsetted visualization focusing on specific phenotypes and groups
-    sm.pl.pie(adata, phenotype='cell_type', group_by='treatment', subset_phenotype=['T cells', 'B cells'],
-              subset_groupby=['Control', 'Treated'], ncols=2, legend=True, legend_loc='lower left')
-    
-    ```
+    Example:
+        ```python
+
+        # Basic pie chart visualization of cell phenotypes
+        sm.pl.pie(adata, phenotype='cell_type', group_by='sample_id', ncols=3)
+
+        # Advanced visualization with custom colors and pie chart properties
+        sm.pl.pie(adata, phenotype='cell_type', group_by='condition', ncols=4, colors=['#ff9999','#66b3ff','#99ff99'],
+                  wedgeprops={'edgecolor': 'black', 'linewidth': 2}, autopct='%1.1f%%', legend=True, legend_loc='best')
+
+        # Subsetted visualization focusing on specific phenotypes and groups
+        sm.pl.pie(adata, phenotype='cell_type', group_by='treatment', subset_phenotype=['T cells', 'B cells'],
+                  subset_groupby=['Control', 'Treated'], ncols=2, legend=True, legend_loc='lower left')
+
+        ```
     """
-    
-    
+
     # convert subset into list
     if subset_phenotype is not None:
-        if isinstance (subset_phenotype, str): 
+        if isinstance(subset_phenotype, str):
             subset_phenotype = [subset_phenotype]
     if subset_groupby is not None:
-        if isinstance (subset_groupby, str):
+        if isinstance(subset_groupby, str):
             subset_groupby = [subset_groupby]
-    
+
     # create copy of the required data
     if group_by is not None:
-        data = adata.obs[[phenotype,group_by]]
+        data = adata.obs[[phenotype, group_by]]
     else:
         data = adata.obs[[phenotype]]
 
@@ -139,13 +141,12 @@ Example:
         data = data.sort_values(group_by)
     if subset_phenotype is not None:
         data = data[data[phenotype].isin(subset_phenotype)]
-        data[phenotype] = data[phenotype].astype('str').astype('category')      
+        data[phenotype] = data[phenotype].astype('str').astype('category')
         data[phenotype] = data[phenotype].cat.reorder_categories(subset_phenotype)
         data = data.sort_values(phenotype)
     if group_by and phenotype is not None:
         data = data.sort_values([phenotype, group_by])
-        
-        
+
     # calculate the proportion
     if group_by is None:
         prop = data[phenotype].value_counts().reset_index(inplace=False)
@@ -155,32 +156,33 @@ Example:
 
     else:
         # if group_by is provided
-        prop = pd.DataFrame(data.groupby([group_by,phenotype], observed=False).size()).reset_index(inplace=False)
-        prop.columns = ['group_by',phenotype,'value']
+        prop = pd.DataFrame(
+            data.groupby([group_by, phenotype], observed=False).size()
+        ).reset_index(inplace=False)
+        prop.columns = ['group_by', phenotype, 'value']
         labels = np.unique(prop[phenotype])
         #
         if ncols is not None:
             g = prop.groupby('group_by', observed=False)
-            rows = int(np.ceil(len(g)/ncols))
+            rows = int(np.ceil(len(g) / ncols))
         else:
             g = prop.groupby('group_by', observed=False)
             rows = 1
             ncols = len(g)
-    
-    # remove label if requested 
+
+    # remove label if requested
     if label == 'auto':
         label = labels
     elif label is None:
         label = None
     else:
         label = label
-    
-    
+
     # plot
     if group_by is None:
         fig, ax = plt.subplots()
-        ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops)
-        #ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops, **kwargs)
+        ax.pie(prop.value, labels=label, colors=colors, wedgeprops=wedgeprops)
+        # ax.pie(prop.value, labels=label,colors=colors, wedgeprops = wedgeprops, **kwargs)
         if title is None:
             pass
         else:
@@ -190,24 +192,25 @@ Example:
         # Ground work for removing unwanted axes
         total_axes = list(range(ncols * rows))
         required_axes = list(range(len(np.unique(prop['group_by']))))
-        final_axes = list(set(total_axes) ^ set(required_axes))      
+        final_axes = list(set(total_axes) ^ set(required_axes))
         # Plot
         fig, axes = plt.subplots(ncols=ncols, nrows=rows)
-        axes = np.atleast_1d(axes)  # This ensures axes is always an array, even if it's a single subplot
+        axes = np.atleast_1d(
+            axes
+        )  # This ensures axes is always an array, even if it's a single subplot
         for (c, grp), ax in zip(g, axes.flat):
-            ax.pie(grp.value, labels=label, colors=colors, wedgeprops =wedgeprops)
-            #ax.pie(grp.value, labels=label, colors=colors, wedgeprops = wedgeprops, **kwargs)
+            ax.pie(grp.value, labels=label, colors=colors, wedgeprops=wedgeprops)
+            # ax.pie(grp.value, labels=label, colors=colors, wedgeprops = wedgeprops, **kwargs)
             if title is None:
                 pass
             else:
-                ax.set_title(c)        
+                ax.set_title(c)
         # removing unwanted axis
         for i in final_axes:
             fig.delaxes(axes.flatten()[i])
-        
+
         if legend is True:
             plt.legend(labels, loc=legend_loc, framealpha=1)
-            
 
     # Saving the figure if saveDir and fileName are provided
     if saveDir:
@@ -219,10 +222,7 @@ Example:
         print(f"Saved plot to {full_path}")
     else:
         plt.show()
-    
 
     # return data
     if return_data is True:
         return prop
-    
-    
