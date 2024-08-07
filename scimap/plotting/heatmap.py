@@ -323,7 +323,8 @@ def heatmap(
         ax.set_yticklabels(unique_categories)
 
         # Move the colorbar to the top left corner
-        cbar_ax = fig.add_axes([0.125, 0.92, 0.2, 0.02])  # x, y, width, height
+        # cbar_ax = fig.add_axes([0.125, 0.92, 0.2, 0.02])  # x, y, width, height
+        cbar_ax = ax.inset_axes([-0.5, -1.5, 4, 0.5], transform=ax.transData)
         cbar = plt.colorbar(c, cax=cbar_ax, orientation='horizontal')
         cbar_ax.xaxis.set_ticks_position('top')
         cbar_ax.xaxis.set_label_position('top')

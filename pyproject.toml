@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "SCIMAP"
-version = "2.1.2"
+version = "2.1.3"
 description = "Spatial Single-Cell Analysis Toolkit"
 
 license = "MIT"

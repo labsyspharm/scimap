@@ -22,8 +22,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns; sns.set(color_codes=True)
 sns.set_style("white")
 
-import matplotlib as mpl
-mpl.rcParams['pdf.fonttype'] = 42
+plt.rcParams['pdf.fonttype'] = 42
 
 def main(argv=sys.argv):
     parser = argparse.ArgumentParser(
@@ -179,9 +178,7 @@ Example:
     except Exception as exc:
         print('Finding differential markers per group cannot be completed')
         print (exc)
-        
-    
+
 
 if __name__ == '__main__':
     main()  
-
