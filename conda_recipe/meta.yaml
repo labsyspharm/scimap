@@ -1,0 +1,67 @@
+package:
+  name: scimap
+  version: "2.1.3"  # Update as appropriate
+
+source:
+  git_url: https://github.com/FNLCR-DMAP/scimap.git
+  git_rev: "v2.1.3"
+
+channels:
+  - conda-forge
+  - leej3
+  - anaconda
+
+build:
+  number: 0
+  script: python -m pip install . -vv # Pip install to handle `pyproject.toml`
+
+requirements:
+  build:
+    - python ==3.10.13
+    - pip
+    - setuptools
+    - poetry
+
+  run:
+    - python ==3.10.13
+    - pytest
+    - anndata
+    - pandas
+    - scipy
+    - seaborn
+    - tifffile
+    - numpy
+    - pytest-xvfb
+    - matplotlib
+    - phenograph
+    - scanpy
+    - mkdocs
+    - plotly
+    - tifffile
+    - dask[array]
+    - zarr
+    - napari
+    - numba
+    - shapely
+    - gensim
+    - mkdocs-material
+    - napari-ome-zarr
+    - llvmlite
+    - mpl-scatter-density
+    - scikit-learn
+
+test:
+  imports:
+    - scimap
+
+about:
+  home: https://github.com/labsyspharm/scimap
+  license: MIT  # Update as needed
+  summary: "Spatially resolved single-cell analysis in Python."
+
+extra:
+  recipe-maintainers:
+    - georgezakinih
+    - ruiheesi
+    - fangliu117
+  
