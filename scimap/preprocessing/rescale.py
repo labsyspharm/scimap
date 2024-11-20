@@ -180,11 +180,22 @@ Example:
             
     # Find GMM based gates
     def gmm_gating (marker, data):
-        if verbose:
-            print('Finding the optimal gate by GMM for ' + str(marker))
+        """Internal function to identify gates using GMM"""
+        # Prepare data for GMM
         data_gm = data[marker].values.reshape(-1, 1)
-        gmm = GaussianMixture(n_components=2, random_state=random_state).fit(data_gm)
-        gate = np.mean(gmm.means_)
+        data_gm = data_gm[~np.isnan(data_gm)]
+        
+        # Fit GMM with 3 components
+        gmm = GaussianMixture(n_components=3, random_state=random_state).fit(data_gm)
+        
+        # Sort components by their means
+        means = gmm.means_.flatten()
+        sorted_idx = np.argsort(means)
+        sorted_means = means[sorted_idx]
+        
+        # Calculate gate as midpoint between middle and high components
+        gate = np.mean([sorted_means[1], sorted_means[2]])
+        
         return gate
     
     # Running gmm_gating on the dataset

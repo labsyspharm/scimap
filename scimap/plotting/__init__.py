@@ -17,3 +17,4 @@ from .heatmap import heatmap
 from .markerCorrelation import markerCorrelation
 from .groupCorrelation import groupCorrelation
 from .spatialInteractionNetwork import spatialInteractionNetwork
+from .napariGater import napariGater

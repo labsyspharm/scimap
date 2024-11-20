@@ -13,6 +13,15 @@
 ## Function
 """
 
+import warnings
+
+warnings.warn(
+    "gate_finder() is deprecated and will be removed in a future version. "
+    "Please use sm.pl.napariGater() instead.",
+    FutureWarning,
+    stacklevel=2,
+)
+
 try:
     import napari
 except:

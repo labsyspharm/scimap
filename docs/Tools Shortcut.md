@@ -51,6 +51,7 @@ import scimap as sm
 | [`sm.pl.image_viewer`](Functions/pl/image_viewer.md) | Integrates with `napari` to offer an interactive platform for enhanced image viewing and annotation with data overlays. |
 | [`sm.pl.addROI_image`](Functions/pl/addROI_image.md) | Facilitates the addition of Regions of Interest (ROIs) through `napari`, enriching spatial analyses with precise locational data. |
 | [`sm.pl.gate_finder`](Functions/pl/gate_finder.md) | Aids in the manual gating process by overlaying marker positivity on images, simplifying the identification and analysis of cellular subsets. |
+| [`sm.pl.napariGater`](Functions/pl/napariGater.md) | Modified version of gate_finder and soon to replace it. |
 | [`sm.pl.heatmap`](Functions/pl/heatmap.md) | Creates heatmaps to visually explore marker expression or feature distributions across different groups. |
 | [`sm.pl.markerCorrelation`](Functions/pl/markerCorrelation.md) | Computes and visualizes the correlation among selected markers. |
 | [`sm.pl.groupCorrelation`](Functions/pl/groupCorrelation.md) | Calculates and displays the correlation between the abundances of groups across user defined conditions. |
