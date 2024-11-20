@@ -269,9 +269,9 @@ def napariGater(
 
     # Show warning when function is called
     warnings.warn(
-        "\nNOTE: napariGater() is currently in beta testing. "
+        "NOTE: napariGater() is currently in beta testing. "
         "If you encounter any issues, please report them at: "
-        "https://github.com/labsyspharm/scimap/issues\n",
+        "https://github.com/labsyspharm/scimap/issues",
         UserWarning,
         stacklevel=2,
     )
