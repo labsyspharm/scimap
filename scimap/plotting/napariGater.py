@@ -489,7 +489,7 @@ def napariGater(
     # Initialize gates with GMM if needed
     adata = initialize_gates(adata, imageid)
 
-    # Handle channel names
+    # Handle channel names#
     if channel_names == 'default':
         channel_names = adata.uns['all_markers']
     else:
