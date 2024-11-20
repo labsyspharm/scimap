@@ -25,6 +25,7 @@ import tifffile as tiff
 import numpy as np
 
 import dask.array as da
+from dask import delayed
 from dask.cache import Cache
 import zarr
 import os
@@ -119,67 +120,268 @@ def initialize_gates(adata, imageid):
     return adata
 
 
-def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0.1):
-    # """Calculate contrast limits using histogram analysis with padding"""
-    # If image is dask or zarr array, compute on smallest pyramid if available
+def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0.2, sample_size=100000):
+    # """Calculate contrast limits using efficient sampling strategies.
+    
+    # Args:
+    #     img: Input image (numpy array, dask array, or zarr array)
+    #     percentile_low: Lower percentile for contrast (default: 1)
+    #     percentile_high: Upper percentile for contrast (default: 99)
+    #     padding: Padding factor for contrast range (default: 0.1)
+    #     sample_size: Target number of pixels to sample (default: 100000)
+    # """
+    # Handle different array types
     if isinstance(img, (da.Array, zarr.Array)):
-        # Get smallest pyramid level if available
+        # Get smallest pyramid if available
         if hasattr(img, 'shape') and len(img.shape) > 2:
-            img = img[-1]  # Use smallest pyramid level
-        # Compute statistics on a subset of data
-        sample = img[::10, ::10]  # Sample every 10th pixel
+            img = img[-1]  # Use smallest pyramid
+        
+        # Calculate stride to achieve target sample size
+        total_pixels = np.prod(img.shape[-2:])  # Only consider spatial dimensions
+        stride = max(1, int(np.sqrt(total_pixels / sample_size)))
+        
+        # Sample the data efficiently
+        sample = img[..., ::stride, ::stride]  # Use ellipsis for any leading dimensions
+        
+        # Compute only the sampled data
         if hasattr(sample, 'compute'):
             sample = sample.compute()
     else:
-        sample = img
+        # For numpy arrays, use similar strided sampling
+        total_pixels = np.prod(img.shape[-2:])
+        stride = max(1, int(np.sqrt(total_pixels / sample_size)))
+        sample = img[..., ::stride, ::stride]
 
-    # Calculate percentiles for contrast
-    low = np.percentile(sample, percentile_low)
-    high = np.percentile(sample, percentile_high)
-
-    # Add padding
+    # Flatten the sample while preserving only finite values
+    sample_flat = sample[np.isfinite(sample)].ravel()
+    
+    # Calculate robust statistics
+    low = np.percentile(sample_flat, percentile_low)
+    high = np.percentile(sample_flat, percentile_high)
+    
+    # Add padding with bounds checking
     range_val = high - low
-    low = max(0, low - (range_val * padding))  # Ensure we don't go below 0
+    low = max(0, low - (range_val * padding))
     high = high + (range_val * padding)
+    
+    if high == low:  # Handle edge case of uniform values
+        high = low + 1
 
-    return low, high
+    return float(low), float(high)
 
 
-def initialize_contrast_settings(
-    adata, img, channel_names, imageid='imageid', subset=None
-):
-    #  """Initialize contrast settings if they don't exist"""
+
+
+def initialize_contrast_settings(adata, img_data, channel_names, imageid='imageid', subset=None):
+    #"""Initialize contrast settings for all channels"""
     if 'image_contrast_settings' not in adata.uns:
-        print("Initializing contrast settings...")
+        #print("Initializing contrast settings...")
         adata.uns['image_contrast_settings'] = {}
 
     current_image = adata.obs[imageid].iloc[0] if subset is None else subset
 
     if current_image not in adata.uns['image_contrast_settings']:
-        tiff_file = img._store._source
         contrast_settings = {}
 
-        # Use tqdm for contrast calculation progress
-        for i, channel in enumerate(
-            tqdm(channel_names, desc="Calculating contrast", leave=False)
-        ):
-            try:
-                channel_data = tiff_file.series[0].pages[i].asarray()
-                low, high = calculate_auto_contrast(channel_data)
-                contrast_settings[channel] = {
-                    'low': float(low),
-                    'high': float(high),
-                }
-            except Exception as e:
-                # Set default contrast values if calculation fails
-                contrast_settings[channel] = {
-                    'low': 0.0,
-                    'high': 1.0,
-                }
+        with tqdm(total=len(channel_names), desc="Calculating contrast", leave=False) as pbar:
+            for i, channel in enumerate(channel_names):
+                try:
+                    # Handle pyramidal vs non-pyramidal data
+                    if isinstance(img_data, list):  # Pyramidal
+                        # Use the smallest pyramid level for contrast calculation
+                        channel_data = img_data[-1][i]  # Last level is smallest
+                    else:  # Non-pyramidal
+                        channel_data = img_data[i]
+                    
+                    # Calculate contrast limits
+                    low, high = calculate_auto_contrast(
+                        channel_data,
+                        percentile_low=1,
+                        percentile_high=99,
+                        sample_size=100000
+                    )
+                    
+                    contrast_settings[channel] = {
+                        'low': low,
+                        'high': high,
+                    }
+                except Exception as e:
+                    print(f"Warning: Failed to calculate contrast for {channel}: {str(e)}")
+                    contrast_settings[channel] = {'low': 0.0, 'high': 1.0}
+                finally:
+                    pbar.update(1)
 
         adata.uns['image_contrast_settings'][current_image] = contrast_settings
 
     return adata
+
+
+def check_pyramid_levels(tiff_file):
+    #"""Check if the TIFF file has pyramid levels"""
+    try:
+        series = tiff_file.series[0]
+        return hasattr(series, 'levels')
+    except Exception:
+        return False
+
+
+def add_channel_to_viewer(viewer, img, channel_idx, channel_name, contrast_limits, colormap):
+    #"""Add a channel to viewer with proper pyramid handling"""
+    try:
+        # Store current view state if any layer exists
+        if len(viewer.layers) > 0:
+            current_zoom = viewer.camera.zoom
+            current_center = viewer.camera.center
+        else:
+            current_zoom = None
+            current_center = None
+            
+        # Get the data shape from the series
+        tiff_file = img._store._source
+        series = tiff_file.series[0]
+        
+        # Check if we have pyramid levels
+        has_pyramids = check_pyramid_levels(tiff_file)
+        
+        if has_pyramids:
+            # Load pyramid levels
+            pyramid_data = []
+            for level in series.levels:
+                level_data = level.pages[channel_idx].asarray()
+                pyramid_data.append(level_data)
+            
+            # Add to viewer as multiscale
+            viewer.add_image(
+                pyramid_data,
+                name=channel_name,
+                visible=False,
+                colormap=colormap,
+                blending='additive',
+                contrast_limits=contrast_limits,
+                multiscale=True,
+                rendering='mip',
+                interpolation2d='nearest'
+            )
+        else:
+            # Fallback to single resolution
+            channel_data = series.pages[channel_idx].asarray()
+            viewer.add_image(
+                channel_data,
+                name=channel_name,
+                visible=False,
+                colormap=colormap,
+                blending='additive',
+                contrast_limits=contrast_limits,
+                multiscale=False,
+                rendering='mip',
+                interpolation2d='nearest'
+            )
+
+        # After adding the new layer, restore view state if it existed
+        if current_zoom is not None:
+            viewer.camera.zoom = current_zoom
+            viewer.camera.center = current_center
+            
+        return True
+        
+    except Exception as e:
+        print(f"Warning: Channel {channel_name} could not be loaded")
+        return False
+
+
+def load_image_efficiently(image_path):
+    #"""Efficiently load image with proper lazy loading"""
+    if isinstance(image_path, str):
+        if image_path.endswith(('.tiff', '.tif')):
+            tiff_file = tiff.TiffFile(image_path, is_ome=False)
+            series = tiff_file.series[0]
+            
+            if hasattr(series, 'levels'):
+                # For pyramidal images, create a list of dask arrays
+                data = []
+                for level in series.levels:
+                    shape = (len(level.pages),) + level.pages[0].shape
+                    chunks = (1,) + level.pages[0].shape  # Chunk by channel
+                    
+                    @delayed
+                    def get_page(i, level=level):
+                        return level.pages[i].asarray()
+                    
+                    # Create lazy dask array for this level
+                    level_data = da.stack([
+                        da.from_delayed(
+                            get_page(i),
+                            shape=level.pages[0].shape,
+                            dtype=level.pages[0].dtype
+                        )
+                        for i in range(len(level.pages))
+                    ])
+                    data.append(level_data)
+                
+                return data, tiff_file
+            else:
+                # For non-pyramidal images, create single dask array
+                shape = (len(series.pages),) + series.pages[0].shape
+                chunks = (1,) + series.pages[0].shape
+                
+                @delayed
+                def get_page(i):
+                    return series.pages[i].asarray()
+                
+                data = da.stack([
+                    da.from_delayed(
+                        get_page(i),
+                        shape=series.pages[0].shape,
+                        dtype=series.pages[0].dtype
+                    )
+                    for i in range(len(series.pages))
+                ])
+                
+                return data, tiff_file
+    
+    return None, None
+
+def add_channels_to_viewer(viewer, img_data, channel_names, contrast_settings, colormaps):
+    #"""Add all channels to viewer efficiently"""
+    if isinstance(img_data, list):  # Pyramidal
+        # Add all channels at once with multiscale
+        for channel_idx, channel_name in enumerate(channel_names):
+            contrast_limits = (
+                contrast_settings[channel_name]['low'],
+                contrast_settings[channel_name]['high']
+            )
+            
+            # Extract this channel's data across all pyramid levels
+            channel_data = [level[channel_idx] for level in img_data]
+            
+            viewer.add_image(
+                channel_data,
+                name=channel_name,
+                visible=False,
+                colormap=colormaps[channel_idx % len(colormaps)],
+                blending='additive',
+                contrast_limits=contrast_limits,
+                multiscale=True,
+                rendering='mip',
+                interpolation2d='nearest'
+            )
+    else:  # Non-pyramidal
+        # Add all channels at once
+        viewer.add_image(
+            img_data,
+            channel_axis=0,
+            name=channel_names,
+            visible=False,
+            colormap=colormaps,
+            blending='additive',
+            contrast_limits=[
+                (contrast_settings[name]['low'], contrast_settings[name]['high'])
+                for name in channel_names
+            ],
+            multiscale=False,
+            rendering='mip',
+            interpolation2d='nearest'
+        )
 
 
 def napariGater(
@@ -194,6 +396,7 @@ def napariGater(
     flip_y=True,
     channel_names='default',
     point_size=10,
+    calculate_contrast=True,
 ):
     """
     Parameters:
@@ -227,6 +430,10 @@ def napariGater(
         point_size (int, optional):
             Size of points in the visualization. Defaults to 10.
 
+        calculate_contrast (bool, optional):
+            Whether to calculate contrast limits automatically. If False, uses full data range.
+            Defaults to True.
+
     Returns:
         None:
             Updates `adata.uns['gates']` with the gating thresholds.
@@ -245,7 +452,7 @@ def napariGater(
             adata=adata,
             x_coordinate='X_position',
             y_coordinate='Y_position',
-            channel_names=['DAPI', 'CD45', 'CD3', 'CD8'],
+            channel_names=['DAPI', 'CD45', 'CD3', 'CD8'], # note this much include all channels in the image but also match the names in `adata.var.index`
             point_size=15
         )
 
@@ -276,115 +483,67 @@ def napariGater(
         stacklevel=2,
     )
 
+    print("Initializing...")
     start_time = time.time()
 
     # Initialize gates with GMM if needed
     adata = initialize_gates(adata, imageid)
 
-    print(f"Opening napari viewer...")
-
-    # Recover the channel names from adata
+    # Handle channel names
     if channel_names == 'default':
         channel_names = adata.uns['all_markers']
     else:
-        channel_names = channel_names
+        channel_names = channel_names 
 
-    # Load the image
-    if isinstance(image_path, str):
-        if image_path.endswith(('.tiff', '.tif')):
-            image = tiff.TiffFile(image_path, is_ome=False)
-            store = image.aszarr()
-            img = zarr.open(store, mode='r')
-            # Store the TiffFile object for later use
-            img._store._source = image
 
-            # Get shape from the TiffFile object
-            shape = image.series[0].shape
-            ndim = len(shape)
-            is_multichannel = ndim > 2
-            num_channels = shape[0] if is_multichannel else 1
-
-            # print(f"Image shape: {shape}")
-            # print(f"Number of channels: {num_channels}")
-
-        elif image_path.endswith(('.zarr', '.zr')):
-            img = zarr.open(image_path, mode='r')
-            shape = img.shape
-            ndim = len(shape)
-            is_multichannel = ndim > 2
-            num_channels = shape[0] if is_multichannel else 1
-    else:
-        img = image_path
-        shape = img.shape
-        ndim = len(shape)
-        is_multichannel = ndim > 2
-        num_channels = shape[0] if is_multichannel else 1
-
+    # Load image efficiently
+    print("Loading image data...")
+    img_data, tiff_file = load_image_efficiently(image_path)
+    if img_data is None:
+        raise ValueError("Failed to load image data")
+    
+    
     # Initialize contrast settings if needed
-    adata = initialize_contrast_settings(
-        adata,
-        img,
-        channel_names,
-        imageid=imageid,
-        subset=subset,
-    )
-
-    # Create the viewer and add the image
-    viewer = napari.Viewer()
-
-    # Define a list of colormaps to cycle through
-    colormaps = ['magenta', 'cyan', 'yellow', 'red', 'green', 'blue']
-
-    # Add each channel as a separate layer with saved contrast settings
     current_image = adata.obs[imageid].iloc[0] if subset is None else subset
-
-    # Get the TiffFile object
-    tiff_file = img._store._source
-
-    # Suppress progress bar output
-    with tqdm(total=len(channel_names), desc="Loading channels", leave=False) as pbar:
-        for i, channel_name in enumerate(channel_names):
-            try:
-                contrast_limits = (
-                    adata.uns['image_contrast_settings'][current_image][channel_name][
-                        'low'
-                    ],
-                    adata.uns['image_contrast_settings'][current_image][channel_name][
-                        'high'
-                    ],
-                )
-
-                try:
-                    # Try direct page access first
-                    channel_data = tiff_file.series[0].pages[i].asarray()
-                except:
-                    # Fallback to zarr array if direct access fails
-                    channel_data = img[i]
-                    if isinstance(channel_data, zarr.core.Array):
-                        channel_data = channel_data[:]
-
-                viewer.add_image(
-                    channel_data,
-                    name=channel_name,
-                    visible=False,
-                    colormap=colormaps[i % len(colormaps)],
-                    blending='additive',
-                    contrast_limits=contrast_limits,
-                )
-                pbar.update(1)
-            except Exception as e:
-                print(f"Failed to load channel {channel_name}: {type(e).__name__}")
-                pbar.update(1)
-                continue
-
-    # Verify loaded channels
-    loaded_channels = [
-        layer.name for layer in viewer.layers if isinstance(layer, napari.layers.Image)
-    ]
-    if len(loaded_channels) != len(channel_names):
-        print(
-            f"\nWarning: Only loaded {len(loaded_channels)}/{len(channel_names)} channels"
+    
+    if calculate_contrast:
+        print("Calculating contrast settings...")
+        adata = initialize_contrast_settings(
+            adata,
+            img_data,
+            channel_names,
+            imageid=imageid,
+            subset=subset,
         )
+    else:
+        # Initialize with full data range if contrast calculation is disabled
+        if 'image_contrast_settings' not in adata.uns:
+            adata.uns['image_contrast_settings'] = {}
+        
+        if current_image not in adata.uns['image_contrast_settings']:
+            contrast_settings = {}
+            for channel in channel_names:
+                contrast_settings[channel] = {'low': 0.0, 'high': 1.0}
+            adata.uns['image_contrast_settings'][current_image] = contrast_settings
+
+    print(f"Initialization completed in {time.time() - start_time:.2f} seconds")
+    print("Opening napari viewer...")
+    
+    # Create the viewer and add all channels efficiently
+    viewer = napari.Viewer()
+    
+    add_channels_to_viewer(
+        viewer,
+        img_data,
+        channel_names,
+        adata.uns['image_contrast_settings'][current_image],
+        colormaps=['magenta', 'cyan', 'yellow', 'red', 'green', 'blue']
+    )
+    
+    # Verify loaded channels
+    loaded_channels = [layer.name for layer in viewer.layers if isinstance(layer, napari.layers.Image)]
+    if len(loaded_channels) != len(channel_names):
+        print(f"\nWarning: Only loaded {len(loaded_channels)}/{len(channel_names)} channels")
         missing = set(channel_names) - set(loaded_channels)
         if missing:
             print(f"Missing channels: {', '.join(missing)}")
@@ -423,7 +582,7 @@ def napariGater(
             'min': min_val,
             'max': max_val,
             'value': initial_gate,
-            'step': 0.1,
+            'step': 0.01,
         },
         confirm_gate={'widget_type': 'PushButton', 'text': 'Confirm Gate'},
         finish={'widget_type': 'PushButton', 'text': 'Finish Gating'},
@@ -456,6 +615,12 @@ def napariGater(
     # Add a separate handler for marker changes
     @gate_controls.marker.changed.connect
     def _on_marker_change(marker: str):
+        # Store current view state
+        current_state = {
+            'zoom': viewer.camera.zoom,
+            'center': viewer.camera.center
+        }
+        
         # Calculate min/max from expression values
         marker_data = pd.DataFrame(adata.raw.X, columns=adata.var.index)[marker]
         if log:
@@ -476,16 +641,20 @@ def napariGater(
         gate_controls.gate.max = max_val
         gate_controls.gate.value = value
 
-        # Update layer visibility
+        # Update layer visibility and selection
         for layer in viewer.layers:
             if isinstance(layer, napari.layers.Image):
                 if layer.name == marker:
                     layer.visible = True
+                    viewer.layers.selection.active = layer  # Select the layer
+                    viewer.layers.selection.clear()
+                    viewer.layers.selection.add(layer)
                 else:
                     layer.visible = False
 
-        # Force viewer update
-        viewer.reset_view()
+        # Restore view state
+        viewer.camera.zoom = current_state['zoom']
+        viewer.camera.center = current_state['center']
 
     @gate_controls.confirm_gate.clicked.connect
     def _on_confirm():
@@ -493,7 +662,6 @@ def napariGater(
         gate = gate_controls.gate.value
         current_image = adata.obs[imageid].iloc[0] if subset is None else subset
         adata.uns['gates'].loc[marker, current_image] = float(gate)
-        # print(f"Gate for {marker} in image {current_image} set to {gate}")
 
     # Add handler for finish button
     @gate_controls.finish.clicked.connect

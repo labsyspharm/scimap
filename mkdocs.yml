@@ -58,6 +58,7 @@ nav:
             - image_viewer: 'Functions/pl/image_viewer.md'
             - addROI_image: 'Functions/pl/addROI_image.md'
             - gate_finder: 'Functions/pl/gate_finder.md'
+            - napariGater: 'Functions/pl/napariGater.md'
             - heatmap: 'Functions/pl/heatmap.md'
             - markerCorrelation: 'Functions/pl/markerCorrelation.md'
             - groupCorrelation: 'Functions/pl/groupCorrelation.md'
