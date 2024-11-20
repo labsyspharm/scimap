@@ -144,7 +144,7 @@ def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0
 def initialize_contrast_settings(
     adata, img, channel_names, imageid='imageid', subset=None
 ):
-    """Initialize contrast settings if they don't exist"""
+    # """Initialize contrast settings if they don't exist"""
     if 'image_contrast_settings' not in adata.uns:
         print("Initializing contrast settings...")
         adata.uns['image_contrast_settings'] = {}
