@@ -186,13 +186,6 @@ def napariGater(
     point_size=10,
 ):
     """
-    !!! abstract "Short Description"
-        `sm.pl.napariGater`: This function provides an interactive interface using Napari to visualize and set
-        gating thresholds for markers in imaging data. It features automatic gate initialization using Gaussian
-        Mixture Models (GMM), real-time visualization of gated cells, and the ability to save gate settings.
-        The function supports both single and multi-channel images, with automatic contrast adjustment and
-        customizable display options.
-
     Parameters:
         image_path (str):
             Path to the high-resolution image file (supports formats like TIFF, OME.TIFF, ZARR).
