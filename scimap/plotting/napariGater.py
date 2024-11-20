@@ -13,6 +13,8 @@
 ## Function
 """
 
+import warnings
+
 try:
     import napari
 except:
@@ -62,7 +64,7 @@ def get_marker_data(marker, adata, layer, log, verbose=False):
 
 
 def initialize_gates(adata, imageid):
-    """Initialize gates DataFrame if it doesn't exist"""
+    # """Initialize gates DataFrame if it doesn't exist"""
     from sklearn.mixture import GaussianMixture
     from sklearn.preprocessing import StandardScaler
 
@@ -146,7 +148,7 @@ def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0
 def initialize_contrast_settings(
     adata, img, channel_names, imageid='imageid', subset=None
 ):
-    """Initialize contrast settings if they don't exist"""
+    #  """Initialize contrast settings if they don't exist"""
     if 'image_contrast_settings' not in adata.uns:
         print("Initializing contrast settings...")
         adata.uns['image_contrast_settings'] = {}
@@ -259,6 +261,20 @@ def napariGater(
     import napari
     from magicgui import magicgui
     import time
+    import warnings
+    import os
+
+    # Suppress macOS-specific warnings
+    os.environ['QT_MAC_WANTS_LAYER'] = '1'
+
+    # Show warning when function is called
+    warnings.warn(
+        "\nNOTE: napariGater() is currently in beta testing. "
+        "If you encounter any issues, please report them at: "
+        "https://github.com/labsyspharm/scimap/issues\n",
+        UserWarning,
+        stacklevel=2,
+    )
 
     start_time = time.time()
 
@@ -288,8 +304,8 @@ def napariGater(
             is_multichannel = ndim > 2
             num_channels = shape[0] if is_multichannel else 1
 
-            print(f"Image shape: {shape}")
-            print(f"Number of channels: {num_channels}")
+            # print(f"Image shape: {shape}")
+            # print(f"Number of channels: {num_channels}")
 
         elif image_path.endswith(('.zarr', '.zr')):
             img = zarr.open(image_path, mode='r')
