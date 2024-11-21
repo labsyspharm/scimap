@@ -10,6 +10,8 @@
     Subsequently, the identified gating parameters can be applied to the dataset using `sm.pp.rescale`, 
     enabling precise control over data segmentation and analysis based on marker expression levels.
 
+    `gate_finder()` is deprecated and will be removed in a future version. Please use `sm.pl.napariGater()` instead.
+
 ## Function
 """
 
