@@ -142,7 +142,7 @@ def initialize_gates(adata, imageid):
     return adata
 
 
-def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0.2, sample_size=100000):
+def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0.4, sample_size=100000):
     # """Calculate contrast limits using efficient sampling strategies.
     
     # Args:
@@ -197,20 +197,30 @@ def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0
 def initialize_contrast_settings(adata, img_data, channel_names, imageid='imageid', subset=None):
     #"""Initialize contrast settings for all channels"""
     if 'image_contrast_settings' not in adata.uns:
-        #print("Initializing contrast settings...")
         adata.uns['image_contrast_settings'] = {}
 
     current_image = adata.obs[imageid].iloc[0] if subset is None else subset
-
+    
+    # Create a new entry for this image if it doesn't exist
+    # or if we're loading it with a different set of channels
+    should_initialize = False
     if current_image not in adata.uns['image_contrast_settings']:
-        contrast_settings = {}
+        should_initialize = True
+    else:
+        # Check if the channels match the existing ones
+        existing_channels = set(adata.uns['image_contrast_settings'][current_image].keys())
+        new_channels = set(channel_names)
+        if existing_channels != new_channels:
+            print(f"New channel configuration detected for {current_image}. Updating contrast settings.")
+            should_initialize = True
 
-        with tqdm(total=len(channel_names), desc="Calculating contrast", leave=False) as pbar:
+    if should_initialize:
+        contrast_settings = {}
+        with tqdm(total=len(channel_names), desc=f"Calculating contrast for {current_image}", leave=False) as pbar:
             for i, channel in enumerate(channel_names):
                 try:
                     # Handle pyramidal vs non-pyramidal data
                     if isinstance(img_data, list):  # Pyramidal
-                        # Use the smallest pyramid level for contrast calculation
                         channel_data = img_data[-1][i]  # Last level is smallest
                     else:  # Non-pyramidal
                         channel_data = img_data[i]
@@ -228,18 +238,20 @@ def initialize_contrast_settings(adata, img_data, channel_names, imageid='imagei
                         'high': high,
                     }
                 except Exception as e:
-                    print(f"Warning: Failed to calculate contrast for {channel}: {str(e)}")
+                    print(f"Warning: Failed to calculate contrast for {channel} in {current_image}: {str(e)}")
                     contrast_settings[channel] = {'low': 0.0, 'high': 1.0}
                 finally:
                     pbar.update(1)
 
+        # Save settings for this specific image
         adata.uns['image_contrast_settings'][current_image] = contrast_settings
+        print(f"Saved contrast settings for {current_image} with {len(channel_names)} channels")
 
     return adata
 
 
 def load_image_efficiently(image_path):
-    """Efficiently load image using zarr conversion"""
+    #"""Efficiently load image using zarr conversion"""
     if isinstance(image_path, str):
         if image_path.endswith(('.tiff', '.tif')):
             image = tiff.TiffFile(image_path, is_ome=False)
@@ -260,9 +272,20 @@ def load_image_efficiently(image_path):
     return None, None, False
 
 def add_channels_to_viewer(viewer, img_data, channel_names, contrast_settings, colormaps):
-    """Add channels maintaining pyramid structure if available"""
+    #"""Add channels maintaining pyramid structure if available"""
     n_channels = len(channel_names)
     extended_colormaps = [colormaps[i % len(colormaps)] for i in range(n_channels)]
+    
+    # Get contrast limits for each channel
+    contrast_limits = []
+    for channel in channel_names:
+        if channel in contrast_settings:
+            contrast_limits.append(
+                (contrast_settings[channel]['low'], contrast_settings[channel]['high'])
+            )
+        else:
+            print(f"Warning: Missing contrast settings for channel {channel}. Using defaults.")
+            contrast_limits.append((0.0, 1.0))
     
     viewer.add_image(
         img_data,
@@ -271,11 +294,8 @@ def add_channels_to_viewer(viewer, img_data, channel_names, contrast_settings, c
         visible=False,
         colormap=extended_colormaps,
         blending='additive',
-        contrast_limits=[
-            (contrast_settings[name]['low'], contrast_settings[name]['high'])
-            for name in channel_names
-        ],
-        multiscale=isinstance(img_data, list),  # True if pyramidal
+        contrast_limits=contrast_limits,
+        multiscale=isinstance(img_data, list),
         rendering='mip',
         interpolation2d='nearest'
     )
@@ -413,15 +433,56 @@ def napariGater(
             subset=subset,
         )
     else:
-        # Initialize with full data range if contrast calculation is disabled
+        # Initialize contrast settings structure if it doesn't exist
         if 'image_contrast_settings' not in adata.uns:
             adata.uns['image_contrast_settings'] = {}
         
+        current_image = adata.obs[imageid].iloc[0] if subset is None else subset
+        
+        # Check if we need to initialize or update settings for this image
+        should_initialize = False
         if current_image not in adata.uns['image_contrast_settings']:
-            contrast_settings = {}
+            should_initialize = True
+        else:
+            # Check if we have settings for all current channels
+            existing_channels = set(adata.uns['image_contrast_settings'][current_image].keys())
+            new_channels = set(channel_names)
+            missing_channels = new_channels - existing_channels
+            if missing_channels:
+                print(f"Adding default contrast settings for new channels: {missing_channels}")
+                should_initialize = True
+        
+        if should_initialize:
+            # Keep existing settings if any
+            contrast_settings = adata.uns['image_contrast_settings'].get(current_image, {})
+            
+            # Add default settings for new channels
             for channel in channel_names:
-                contrast_settings[channel] = {'low': 0.0, 'high': 1.0}
+                if channel not in contrast_settings:
+                    # Try to get data range from the image if possible
+                    try:
+                        if isinstance(img_data, list):  # Pyramidal
+                            channel_idx = channel_names.index(channel)
+                            channel_data = img_data[-1][channel_idx]
+                            if hasattr(channel_data, 'compute'):
+                                min_val = float(channel_data.min().compute())
+                                max_val = float(channel_data.max().compute())
+                            else:
+                                min_val = float(channel_data.min())
+                                max_val = float(channel_data.max())
+                        else:  # Non-pyramidal
+                            channel_idx = channel_names.index(channel)
+                            min_val = float(img_data[channel_idx].min())
+                            max_val = float(img_data[channel_idx].max())
+                    except Exception as e:
+                        print(f"Warning: Could not determine data range for {channel}, using defaults. Error: {str(e)}")
+                        min_val, max_val = 0.0, 1.0
+                    
+                    contrast_settings[channel] = {'low': min_val, 'high': max_val}
+            
+            # Save settings for this image
             adata.uns['image_contrast_settings'][current_image] = contrast_settings
+            print(f"Initialized contrast settings for {current_image} with {len(channel_names)} channels")
 
     print(f"Initialization completed in {time.time() - start_time:.2f} seconds")
     print("Opening napari viewer...")
@@ -514,6 +575,11 @@ def napariGater(
     ):
         # Get data using helper function
         data = get_marker_data(marker, adata, layer, log)
+        
+        # Filter data for subset if specified
+        if subset is not None:
+            mask = adata.obs[imageid] == subset
+            data = data[mask]
 
         # Apply gate
         mask = data.values >= gate
@@ -604,14 +670,32 @@ def napariGater(
         # Update gate value
         adata.uns['gates'].loc[marker, current_image] = float(gate)
         
-        # Update provenance with shorter timestamp
+        # Update provenance tracking
         from datetime import datetime
-        timestamp = datetime.now().strftime("%y-%m-%d %H:%M")  # Shorter format
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Ensure all necessary dictionaries exist
+        if current_image not in adata.uns['napariGaterProvenance']['manually_adjusted']:
+            adata.uns['napariGaterProvenance']['manually_adjusted'][current_image] = {}
+        if current_image not in adata.uns['napariGaterProvenance']['timestamp']:
+            adata.uns['napariGaterProvenance']['timestamp'][current_image] = {}
+        if current_image not in adata.uns['napariGaterProvenance']['original_values']:
+            adata.uns['napariGaterProvenance']['original_values'][current_image] = {}
+        
+        # Store the adjustment
         adata.uns['napariGaterProvenance']['manually_adjusted'][current_image][marker] = float(gate)
         adata.uns['napariGaterProvenance']['timestamp'][current_image][marker] = timestamp
         
+        # Store original value if not already stored
+        if marker not in adata.uns['napariGaterProvenance']['original_values'][current_image]:
+            original_value = float(adata.uns['gates'].loc[marker, current_image])
+            adata.uns['napariGaterProvenance']['original_values'][current_image][marker] = original_value
+        
         # Update status with confirmation message
-        gate_controls.marker_status.value = f"✓ ADJUSTED ({timestamp})"
+        short_timestamp = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S").strftime("%y-%m-%d %H:%M")
+        gate_controls.marker_status.value = f"✓ ADJUSTED ({short_timestamp})"
+        
+        print(f"Gate confirmed for {marker} at {gate:.2f}")
 
     # Add handler for finish button
     @gate_controls.finish.clicked.connect
