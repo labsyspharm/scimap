@@ -160,7 +160,7 @@ def addROI_image(
         if isinstance(subset, str):
             subset = [subset]
         # subset data
-        sub_data = data[data['imageid'].isin(subset)]
+        sub_data = data[data[imageid].isin(subset)]
     else:
         sub_data = data
 
