@@ -37,15 +37,15 @@ def rescale(
 ):
     """
     Parameters:
-        adata (AnnData Object, required):  
+        adata (AnnData Object, required):
             An annotated data object that contains single-cell expression data.
 
-        gate (DataFrame, optional):  
-            A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values 
-            for each image in the dataset. Column names must correspond to unique `imageid` identifiers, and the marker column must be named "markers". 
-            If a single column of gate values is provided for a dataset with multiple images, the same gate will be uniformly applied to all images. 
-            In this case, ensure that the columns are named exactly "markers" and "gates". 
-            If no gates are provided for specific markers, the function attempts to automatically determine gates using a Gaussian Mixture Model (GMM).
+        gate (DataFrame, optional):
+            A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values
+            for each image in the dataset. Column names must correspond to unique `imageid` identifiers.
+            If a single column of gate values is provided for a dataset with multiple images, the same gate
+            will be uniformly applied to all. If no gates are provided for specific markers, the function
+            attempts to automatically determine gates using a Gaussian Mixture Model (GMM).
 
             Note: If you have used `napariGater()`, the gates are stored within `adata.uns['gates']`.
             You can directly pass `adata.uns['gates']` to use these pre-defined gates.
@@ -107,42 +107,31 @@ def rescale(
     m = pd.DataFrame(index=dataset_markers, columns=dataset_images).reset_index()
     m = pd.melt(m, id_vars=[m.columns[0]])
     m.columns = ['markers', 'imageid', 'gate']
-
-    # Manipulate m with and without provided manual gates
+    
+    # Manipulate m with and without provided manual fates
     if gate is None:
         gate_mapping = m.copy()
+    elif bool(set(list(gate.columns)) & set(dataset_images)) is False:
+        global_manual_m = pd.melt(gate, id_vars=[gate.columns[0]])
+        global_manual_m.columns = ['markers', 'imageid', 'm_gate']
+        gate_mapping = m.copy()
+        gate_mapping.gate = gate_mapping.gate.fillna(
+            gate_mapping.markers.map(
+                dict(zip(global_manual_m.markers, global_manual_m.m_gate))
+            )
+        )
     else:
-        # Check overlap between gate columns and dataset images
-        matching_images = set(gate.columns) & set(dataset_images)
-        
-        # link to make sure index name is markers as we use reset_index later
-        if gate.index.name != 'markers' and 'markers' not in gate.columns:
-            gate.index.name = 'markers'
-
-        if len(matching_images) == 0 and len(gate.columns) > 0:
-            # Case 1: No matching images and single value column - apply globally
-            gate = gate.reset_index()  # Convert index to column
-            gate_mapping = m.copy()
-            gate_mapping.gate = gate_mapping.gate.fillna(
-                gate_mapping.markers.map(
-                    dict(zip(gate['markers'], gate['gates'])) # these columns are hardcoded in CSV
-                )
-            )
-        else:
-            # Case 2: handles both if all imageid matches with gate columns or if they partially match
-            gate = gate.reset_index()
-            manual_m = pd.melt(gate, id_vars=gate[['markers']])
-            manual_m.columns = ['markers', 'imageid', 'm_gate']
-            gate_mapping = pd.merge(
-                m,
-                manual_m,
-                how='left',
-                left_on=['markers', 'imageid'],
-                right_on=['markers', 'imageid'],
-            )
-            gate_mapping['gate'] = gate_mapping['gate'].fillna(gate_mapping['m_gate'])
-            gate_mapping = gate_mapping.drop(columns='m_gate')
-
+        manual_m = pd.melt(gate, id_vars=[gate.columns[0]])
+        manual_m.columns = ['markers', 'imageid', 'm_gate']
+        gate_mapping = pd.merge(
+            m,
+            manual_m,
+            how='left',
+            left_on=['markers', 'imageid'],
+            right_on=['markers', 'imageid'],
+        )
+        gate_mapping['gate'] = gate_mapping['gate'].fillna(gate_mapping['m_gate'])
+        gate_mapping = gate_mapping.drop(columns='m_gate')
 
     # Addressing failed markers
     def process_failed(adata_subset, foramted_failed_markers):
