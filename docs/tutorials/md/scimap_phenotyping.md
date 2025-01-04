@@ -8,7 +8,7 @@ import anndata as ad
 import pandas as pd
 ```
 
-    Running SCIMAP  1.3.14
+    Running SCIMAP  2.2.8
 
 
 
@@ -28,7 +28,7 @@ To successfully execute the method, you will need:
 
 The execution of the algorithm is structured into three primary steps:
 
-1. **Gate Identification**: Utilize `sm.pl.gate_finder` to identify the gates.
+1. **Gate Identification**: Utilize `sm.pl.napariGater` to identify the gates.
 2. **Data Rescaling**: Apply `sm.pp.rescale` to adjust the data based on the identified gates.
 3. **Phenotyping**: Process the rescaled data using `sm.tl.phenotype` to run the phenotyping algorithm.
 
@@ -44,18 +44,40 @@ This method will launch a napari window displaying several layers, each represen
 
 ```python
 image_path = '/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exemplarData/scimapExampleData/registration/exemplar-001.ome.tif'
-marker_of_interest = 'CD45'
 ```
 
 
 ```python
-sm.pl.gate_finder (image_path, adata, marker_of_interest, from_gate = 5, to_gate = 9, increment = 0.1, point_size=6)
+sm.pl.napariGater (image_path, adata) # new method
 ```
+
+    /var/folders/k5/3pb7tmfn0551jy0cf67ljdf00000gq/T/ipykernel_5984/2797518974.py:1: UserWarning:
+    
+    NOTE: napariGater() is currently in beta testing. If you encounter any issues, please report them at: https://github.com/labsyspharm/scimap/issues
+    
+
+
+    Initializing...
+    Loading image data...
+    Calculating contrast settings...
+    Initialization completed in 0.02 seconds
+    Opening napari viewer...
+    Napari viewer initialized in 1.03 seconds
+    Gate confirmed for CD57 at 7.20
+    Gate confirmed for CD45 at 6.44
+    Gate confirmed for CD11B at 7.30
+    Gate confirmed for SMA at 7.20
+    Gate confirmed for CD16 at 6.50
+    Gate confirmed for ECAD at 7.35
+    Gate confirmed for FOXP3 at 7.10
+    Gate confirmed for NCAM at 7.09
+    Gate confirmed for ELANE at 7.84
+
 
 
 ```python
-# Do the above step for each marker and then create a `.csv` file like below:
-pd.read_csv('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exemplarData/scimapExampleData/manual_gates.csv')
+# check the gates
+adata.uns['gates']
 ```
 
 
@@ -79,7 +101,113 @@ pd.read_csv('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exempl
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>marker</th>
+      <th>exemplar-001--unmicst_cell</th>
+    </tr>
+    <tr>
+      <th>markers</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>CD11B</th>
+      <td>7.30</td>
+    </tr>
+    <tr>
+      <th>CD16</th>
+      <td>6.50</td>
+    </tr>
+    <tr>
+      <th>CD45</th>
+      <td>6.44</td>
+    </tr>
+    <tr>
+      <th>CD57</th>
+      <td>7.20</td>
+    </tr>
+    <tr>
+      <th>ECAD</th>
+      <td>7.35</td>
+    </tr>
+    <tr>
+      <th>ELANE</th>
+      <td>7.84</td>
+    </tr>
+    <tr>
+      <th>FOXP3</th>
+      <td>7.10</td>
+    </tr>
+    <tr>
+      <th>NCAM</th>
+      <td>7.09</td>
+    </tr>
+    <tr>
+      <th>SMA</th>
+      <td>7.20</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+### Importing Gates via a CSV File 📄✨
+
+If you’re not using **`napariGater()`**, you can also import gates using a CSV file. Here are two important points to keep in mind:
+
+1️⃣ The **marker column** must be named exactly as `"markers"` 🏷️.  
+2️⃣ The remaining columns should contain the **gates** for each image in the dataset. 🖼️ Ensure the column names precisely match the `'imageid'` column in the `adata` object. 🧬 You can retrieve it by typing:  
+   ```python
+   adata.obs['imageid']
+   ```
+
+---
+
+### Multiple Images and Uniform Gates 🛠️  
+If you have multiple images and want to apply the **same gate** to all of them, you have two options:
+
+1️⃣ Copy-paste the same gate values across all columns in your CSV file. 🖋️  
+2️⃣ Alternatively, use just one column named **"gates"** (with no additional columns). In this case, the same gate will be applied to all images in your dataset, provided there is more than one image. ✅  
+
+---
+
+### A Final Note 📝  
+When you run the `rescale` function without specifying anything for the `gate` parameter, it will try to auto-identify gates using a **GMM (Gaussian Mixture Model)** function. ⚠️ **However, this method is generally not very accurate**, and we discourage relying on it. 🚫  
+
+If gates are missing for some images or markers, the GMM will be automatically applied. 🔄 **Be cautious** when interpreting results for those images or markers! 🧐  
+
+--- 
+
+With these tips, you’ll have more control over your gating process! 🚀
+
+
+```python
+# Do the above step for each marker and then create a `.csv` file like below:
+pd.read_csv('/Users/aj/Partners HealthCare Dropbox/Ajit Nirmal/nirmal lab/softwares/scimap/scimap/tests/scimapExampleData/manual_gates.csv')
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>markers</th>
       <th>exemplar-001--unmicst_cell</th>
     </tr>
   </thead>
@@ -107,7 +235,7 @@ pd.read_csv('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exempl
     <tr>
       <th>4</th>
       <td>SMA</td>
-      <td>7.50</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>5</th>
@@ -122,7 +250,7 @@ pd.read_csv('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exempl
     <tr>
       <th>7</th>
       <td>FOXP3</td>
-      <td>7.40</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>8</th>
@@ -135,7 +263,7 @@ pd.read_csv('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exempl
 
 
 
-You'll observe that the first column lists the markers present in the dataset, while the second column specifies the gate, named after the specific image's ID found in `adata.obs['imageid']`. This  is especially useful when dealing with datasets containing multiple images, as it allows for a distinct column for each image.
+You'll observe that the first column lists the markers present in the dataset, while the second column specifies the gate, named after the specific image's ID found in `adata.obs['imageid']`. This  is especially useful when dealing with datasets containing multiple images, as it allows for a distinct column for each image. I have also intentionally left out 2 markers (SMA and FOXP3) where GMM will be applied automatically. You can control the GMM using the `gmm_components` parameter.
 
 Although visual gating has proven to be the most sensitive method for us, you can also apply single and bi-marker gating approaches, similar to FACS, to assist in determining a threshold.
 
@@ -147,7 +275,7 @@ sm.pl.distPlot(adata, layer='log', markers=['CD45','ECAD','FOXP3'], ncols=3, fon
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_14_0.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_16_0.png)
     
 
 
@@ -171,23 +299,31 @@ sm.pl.densityPlot2D(adata, markerA='SMA', markerB='CD45', layer='log')
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_16_1.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_18_1.png)
     
 
 
 ### Step 2: Rescale the data
 
-Here, we input a `manual_gates.csv` file into the gate parameter. This file contains gates determined visually with the help of the `sm.pl.gate_finder` function. For the markers specified in the `manual_gates.csv` file, the function will adjust the data so that cells exhibiting expression levels above the gate threshold are classified as positive for that marker, while those with expression levels below the threshold are deemed negative.
+You can provide gating information by either inputting a `manual_gates.csv` file into the `gate` parameter or, if you used **`napariGater`**, directly using `adata.uns['gates']`. 
 
-For markers not listed in the `manual_gates.csv` file, the function will employ an automatic approach to identify suitable gates by applying a Gaussian mixture model algorithm to the data.
+For markers **not included** in the `manual_gates.csv` file, the function automatically identifies gates using a **Gaussian Mixture Model (GMM)** algorithm. This provides thresholds for markers where manual gates are unavailable. 🎯  
 
 
 ```python
-# Load the manual gates and rescale the data based on the gates
-manual_gate = pd.read_csv('/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exemplarData/scimapExampleData/manual_gates.csv')
+# Load the manual gates from CSV and rescale the data based on the gates
+manual_gate = pd.read_csv('/Users/aj/Partners HealthCare Dropbox/Ajit Nirmal/nirmal lab/softwares/scimap/scimap/tests/scimapExampleData/manual_gates.csv')
 adata = sm.pp.rescale (adata, gate=manual_gate)
 ```
 
+    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/preprocessing/rescale.py:132: FutureWarning:
+    
+    Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+    
+
+
+    GMM for ['exemplar-001--unmicst_cell']
+    Categories (1, object): ['exemplar-001--unmicst_cell']
     Scaling Image exemplar-001--unmicst_cell
     Scaling ELANE
     Scaling CD57
@@ -200,11 +336,10 @@ adata = sm.pp.rescale (adata, gate=manual_gate)
     Scaling NCAM
 
 
-    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/preprocessing/rescale.py:105: FutureWarning:
-    
-    Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
-    
 
+```python
+As you can see GMM was automatically applied to SMA and FOXP3
+```
 
 ### Step 3: Run the phenotyping algorithm
 
@@ -448,7 +583,7 @@ sm.pl.heatmap(adata, groupBy='phenotype', standardScale=None, figsize=(5,3), sho
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_28_1.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_31_1.png)
     
 
 
@@ -478,7 +613,7 @@ sm.pl.umap(adata, color=['phenotype'])
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_30_1.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_33_1.png)
     
 
 
@@ -490,7 +625,7 @@ sm.pl.spatial_scatterPlot (adata, colorBy = ['phenotype'],figsize=(2.75,2), s=0.
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_31_0.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_34_0.png)
     
 
 
