@@ -8,7 +8,7 @@ import anndata as ad
 import pandas as pd
 ```
 
-    Running SCIMAP  2.2.8
+    Running SCIMAP  2.2.9
 
 
 
@@ -51,7 +51,7 @@ image_path = '/Users/aj/Dropbox (Partners HealthCare)/nirmal lab/resources/exemp
 sm.pl.napariGater (image_path, adata) # new method
 ```
 
-    /var/folders/k5/3pb7tmfn0551jy0cf67ljdf00000gq/T/ipykernel_5984/2797518974.py:1: UserWarning:
+    /var/folders/k5/3pb7tmfn0551jy0cf67ljdf00000gq/T/ipykernel_8388/1794404260.py:1: UserWarning:
     
     NOTE: napariGater() is currently in beta testing. If you encounter any issues, please report them at: https://github.com/labsyspharm/scimap/issues
     
@@ -60,18 +60,18 @@ sm.pl.napariGater (image_path, adata) # new method
     Initializing...
     Loading image data...
     Calculating contrast settings...
-    Initialization completed in 0.02 seconds
+    Initialization completed in 0.01 seconds
     Opening napari viewer...
-    Napari viewer initialized in 1.03 seconds
-    Gate confirmed for CD57 at 7.20
-    Gate confirmed for CD45 at 6.44
-    Gate confirmed for CD11B at 7.30
-    Gate confirmed for SMA at 7.20
+    Napari viewer initialized in 0.91 seconds
+    Gate confirmed for CD57 at 7.00
+    Gate confirmed for ELANE at 7.80
+    Gate confirmed for CD45 at 6.40
+    Gate confirmed for CD11B at 7.60
+    Gate confirmed for SMA at 7.50
     Gate confirmed for CD16 at 6.50
     Gate confirmed for ECAD at 7.35
-    Gate confirmed for FOXP3 at 7.10
-    Gate confirmed for NCAM at 7.09
-    Gate confirmed for ELANE at 7.84
+    Gate confirmed for FOXP3 at 7.36
+    Gate confirmed for NCAM at 7.00
 
 
 
@@ -111,7 +111,7 @@ adata.uns['gates']
   <tbody>
     <tr>
       <th>CD11B</th>
-      <td>7.30</td>
+      <td>7.60</td>
     </tr>
     <tr>
       <th>CD16</th>
@@ -119,11 +119,11 @@ adata.uns['gates']
     </tr>
     <tr>
       <th>CD45</th>
-      <td>6.44</td>
+      <td>6.40</td>
     </tr>
     <tr>
       <th>CD57</th>
-      <td>7.20</td>
+      <td>7.00</td>
     </tr>
     <tr>
       <th>ECAD</th>
@@ -131,25 +131,27 @@ adata.uns['gates']
     </tr>
     <tr>
       <th>ELANE</th>
-      <td>7.84</td>
+      <td>7.80</td>
     </tr>
     <tr>
       <th>FOXP3</th>
-      <td>7.10</td>
+      <td>7.36</td>
     </tr>
     <tr>
       <th>NCAM</th>
-      <td>7.09</td>
+      <td>7.00</td>
     </tr>
     <tr>
       <th>SMA</th>
-      <td>7.20</td>
+      <td>7.50</td>
     </tr>
   </tbody>
 </table>
 </div>
 
 
+
+Remember to save the `adata` object to ensure that the gates are preserved. 🖴 You can perform partial gating and return later to complete the rest. The function keeps track of the markers and images you’ve already gated and will display this information in the interface when you return. 🔄🎯
 
 ### Importing Gates via a CSV File 📄✨
 
@@ -183,7 +185,7 @@ With these tips, you’ll have more control over your gating process! 🚀
 
 ```python
 # Do the above step for each marker and then create a `.csv` file like below:
-pd.read_csv('/Users/aj/Partners HealthCare Dropbox/Ajit Nirmal/nirmal lab/softwares/scimap/scimap/tests/scimapExampleData/manual_gates.csv')
+pd.read_csv('/Users/aj/Partners HealthCare Dropbox/Ajit Nirmal/nirmal lab/resources/exemplarData/scimapExampleData/manual_gates.csv')
 ```
 
 
@@ -275,7 +277,7 @@ sm.pl.distPlot(adata, layer='log', markers=['CD45','ECAD','FOXP3'], ncols=3, fon
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_16_0.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_17_0.png)
     
 
 
@@ -299,7 +301,7 @@ sm.pl.densityPlot2D(adata, markerA='SMA', markerB='CD45', layer='log')
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_18_1.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_19_1.png)
     
 
 
@@ -312,28 +314,29 @@ For markers **not included** in the `manual_gates.csv` file, the function automa
 
 ```python
 # Load the manual gates from CSV and rescale the data based on the gates
-manual_gate = pd.read_csv('/Users/aj/Partners HealthCare Dropbox/Ajit Nirmal/nirmal lab/softwares/scimap/scimap/tests/scimapExampleData/manual_gates.csv')
+manual_gate = pd.read_csv('/Users/aj/Partners HealthCare Dropbox/Ajit Nirmal/nirmal lab/resources/exemplarData/scimapExampleData/manual_gates.csv')
 adata = sm.pp.rescale (adata, gate=manual_gate)
 ```
 
-    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/preprocessing/rescale.py:132: FutureWarning:
+    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/preprocessing/rescale.py:145: FutureWarning:
     
     Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
     
 
 
-    GMM for ['exemplar-001--unmicst_cell']
-    Categories (1, object): ['exemplar-001--unmicst_cell']
-    Scaling Image exemplar-001--unmicst_cell
-    Scaling ELANE
-    Scaling CD57
-    Scaling CD45
-    Scaling CD11B
-    Scaling SMA
-    Scaling CD16
-    Scaling ECAD
-    Scaling FOXP3
-    Scaling NCAM
+    Running GMM for image: exemplar-001--unmicst_cell
+    Applying GMM to markers: SMA, FOXP3
+    
+    Scaling Image: exemplar-001--unmicst_cell
+    Scaling ELANE (gate: 7.800)
+    Scaling CD57 (gate: 8.900)
+    Scaling CD45 (gate: 6.400)
+    Scaling CD11B (gate: 7.600)
+    Scaling SMA (gate: 6.597)
+    Scaling CD16 (gate: 6.500)
+    Scaling ECAD (gate: 7.350)
+    Scaling FOXP3 (gate: 6.307)
+    Scaling NCAM (gate: 7.000)
 
 
 As you can see GMM was automatically applied to SMA and FOXP3
@@ -353,121 +356,121 @@ phenotype.style.format(na_rep='')
 
 <style type="text/css">
 </style>
-<table id="T_eb6ba">
+<table id="T_4f6d0">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_eb6ba_level0_col0" class="col_heading level0 col0" >Unnamed: 0</th>
-      <th id="T_eb6ba_level0_col1" class="col_heading level0 col1" >Unnamed: 1</th>
-      <th id="T_eb6ba_level0_col2" class="col_heading level0 col2" >ELANE</th>
-      <th id="T_eb6ba_level0_col3" class="col_heading level0 col3" >CD57</th>
-      <th id="T_eb6ba_level0_col4" class="col_heading level0 col4" >CD45</th>
-      <th id="T_eb6ba_level0_col5" class="col_heading level0 col5" >CD11B</th>
-      <th id="T_eb6ba_level0_col6" class="col_heading level0 col6" >SMA</th>
-      <th id="T_eb6ba_level0_col7" class="col_heading level0 col7" >CD16</th>
-      <th id="T_eb6ba_level0_col8" class="col_heading level0 col8" >ECAD</th>
-      <th id="T_eb6ba_level0_col9" class="col_heading level0 col9" >FOXP3</th>
-      <th id="T_eb6ba_level0_col10" class="col_heading level0 col10" >NCAM</th>
+      <th id="T_4f6d0_level0_col0" class="col_heading level0 col0" >Unnamed: 0</th>
+      <th id="T_4f6d0_level0_col1" class="col_heading level0 col1" >Unnamed: 1</th>
+      <th id="T_4f6d0_level0_col2" class="col_heading level0 col2" >ELANE</th>
+      <th id="T_4f6d0_level0_col3" class="col_heading level0 col3" >CD57</th>
+      <th id="T_4f6d0_level0_col4" class="col_heading level0 col4" >CD45</th>
+      <th id="T_4f6d0_level0_col5" class="col_heading level0 col5" >CD11B</th>
+      <th id="T_4f6d0_level0_col6" class="col_heading level0 col6" >SMA</th>
+      <th id="T_4f6d0_level0_col7" class="col_heading level0 col7" >CD16</th>
+      <th id="T_4f6d0_level0_col8" class="col_heading level0 col8" >ECAD</th>
+      <th id="T_4f6d0_level0_col9" class="col_heading level0 col9" >FOXP3</th>
+      <th id="T_4f6d0_level0_col10" class="col_heading level0 col10" >NCAM</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_eb6ba_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_eb6ba_row0_col0" class="data row0 col0" >all</td>
-      <td id="T_eb6ba_row0_col1" class="data row0 col1" >ECAD+</td>
-      <td id="T_eb6ba_row0_col2" class="data row0 col2" ></td>
-      <td id="T_eb6ba_row0_col3" class="data row0 col3" ></td>
-      <td id="T_eb6ba_row0_col4" class="data row0 col4" ></td>
-      <td id="T_eb6ba_row0_col5" class="data row0 col5" ></td>
-      <td id="T_eb6ba_row0_col6" class="data row0 col6" ></td>
-      <td id="T_eb6ba_row0_col7" class="data row0 col7" ></td>
-      <td id="T_eb6ba_row0_col8" class="data row0 col8" >pos</td>
-      <td id="T_eb6ba_row0_col9" class="data row0 col9" ></td>
-      <td id="T_eb6ba_row0_col10" class="data row0 col10" ></td>
+      <th id="T_4f6d0_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_4f6d0_row0_col0" class="data row0 col0" >all</td>
+      <td id="T_4f6d0_row0_col1" class="data row0 col1" >ECAD+</td>
+      <td id="T_4f6d0_row0_col2" class="data row0 col2" ></td>
+      <td id="T_4f6d0_row0_col3" class="data row0 col3" ></td>
+      <td id="T_4f6d0_row0_col4" class="data row0 col4" ></td>
+      <td id="T_4f6d0_row0_col5" class="data row0 col5" ></td>
+      <td id="T_4f6d0_row0_col6" class="data row0 col6" ></td>
+      <td id="T_4f6d0_row0_col7" class="data row0 col7" ></td>
+      <td id="T_4f6d0_row0_col8" class="data row0 col8" >pos</td>
+      <td id="T_4f6d0_row0_col9" class="data row0 col9" ></td>
+      <td id="T_4f6d0_row0_col10" class="data row0 col10" ></td>
     </tr>
     <tr>
-      <th id="T_eb6ba_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_eb6ba_row1_col0" class="data row1 col0" >all</td>
-      <td id="T_eb6ba_row1_col1" class="data row1 col1" >Immune</td>
-      <td id="T_eb6ba_row1_col2" class="data row1 col2" ></td>
-      <td id="T_eb6ba_row1_col3" class="data row1 col3" ></td>
-      <td id="T_eb6ba_row1_col4" class="data row1 col4" >pos</td>
-      <td id="T_eb6ba_row1_col5" class="data row1 col5" ></td>
-      <td id="T_eb6ba_row1_col6" class="data row1 col6" ></td>
-      <td id="T_eb6ba_row1_col7" class="data row1 col7" ></td>
-      <td id="T_eb6ba_row1_col8" class="data row1 col8" ></td>
-      <td id="T_eb6ba_row1_col9" class="data row1 col9" ></td>
-      <td id="T_eb6ba_row1_col10" class="data row1 col10" ></td>
+      <th id="T_4f6d0_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_4f6d0_row1_col0" class="data row1 col0" >all</td>
+      <td id="T_4f6d0_row1_col1" class="data row1 col1" >Immune</td>
+      <td id="T_4f6d0_row1_col2" class="data row1 col2" ></td>
+      <td id="T_4f6d0_row1_col3" class="data row1 col3" ></td>
+      <td id="T_4f6d0_row1_col4" class="data row1 col4" >pos</td>
+      <td id="T_4f6d0_row1_col5" class="data row1 col5" ></td>
+      <td id="T_4f6d0_row1_col6" class="data row1 col6" ></td>
+      <td id="T_4f6d0_row1_col7" class="data row1 col7" ></td>
+      <td id="T_4f6d0_row1_col8" class="data row1 col8" ></td>
+      <td id="T_4f6d0_row1_col9" class="data row1 col9" ></td>
+      <td id="T_4f6d0_row1_col10" class="data row1 col10" ></td>
     </tr>
     <tr>
-      <th id="T_eb6ba_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_eb6ba_row2_col0" class="data row2 col0" >all</td>
-      <td id="T_eb6ba_row2_col1" class="data row2 col1" >SMA+</td>
-      <td id="T_eb6ba_row2_col2" class="data row2 col2" ></td>
-      <td id="T_eb6ba_row2_col3" class="data row2 col3" ></td>
-      <td id="T_eb6ba_row2_col4" class="data row2 col4" ></td>
-      <td id="T_eb6ba_row2_col5" class="data row2 col5" ></td>
-      <td id="T_eb6ba_row2_col6" class="data row2 col6" >pos</td>
-      <td id="T_eb6ba_row2_col7" class="data row2 col7" ></td>
-      <td id="T_eb6ba_row2_col8" class="data row2 col8" ></td>
-      <td id="T_eb6ba_row2_col9" class="data row2 col9" ></td>
-      <td id="T_eb6ba_row2_col10" class="data row2 col10" ></td>
+      <th id="T_4f6d0_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_4f6d0_row2_col0" class="data row2 col0" >all</td>
+      <td id="T_4f6d0_row2_col1" class="data row2 col1" >SMA+</td>
+      <td id="T_4f6d0_row2_col2" class="data row2 col2" ></td>
+      <td id="T_4f6d0_row2_col3" class="data row2 col3" ></td>
+      <td id="T_4f6d0_row2_col4" class="data row2 col4" ></td>
+      <td id="T_4f6d0_row2_col5" class="data row2 col5" ></td>
+      <td id="T_4f6d0_row2_col6" class="data row2 col6" >pos</td>
+      <td id="T_4f6d0_row2_col7" class="data row2 col7" ></td>
+      <td id="T_4f6d0_row2_col8" class="data row2 col8" ></td>
+      <td id="T_4f6d0_row2_col9" class="data row2 col9" ></td>
+      <td id="T_4f6d0_row2_col10" class="data row2 col10" ></td>
     </tr>
     <tr>
-      <th id="T_eb6ba_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_eb6ba_row3_col0" class="data row3 col0" >Immune</td>
-      <td id="T_eb6ba_row3_col1" class="data row3 col1" >NK cells</td>
-      <td id="T_eb6ba_row3_col2" class="data row3 col2" ></td>
-      <td id="T_eb6ba_row3_col3" class="data row3 col3" >allpos</td>
-      <td id="T_eb6ba_row3_col4" class="data row3 col4" ></td>
-      <td id="T_eb6ba_row3_col5" class="data row3 col5" >neg</td>
-      <td id="T_eb6ba_row3_col6" class="data row3 col6" ></td>
-      <td id="T_eb6ba_row3_col7" class="data row3 col7" >allpos</td>
-      <td id="T_eb6ba_row3_col8" class="data row3 col8" ></td>
-      <td id="T_eb6ba_row3_col9" class="data row3 col9" ></td>
-      <td id="T_eb6ba_row3_col10" class="data row3 col10" ></td>
+      <th id="T_4f6d0_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_4f6d0_row3_col0" class="data row3 col0" >Immune</td>
+      <td id="T_4f6d0_row3_col1" class="data row3 col1" >NK cells</td>
+      <td id="T_4f6d0_row3_col2" class="data row3 col2" ></td>
+      <td id="T_4f6d0_row3_col3" class="data row3 col3" >allpos</td>
+      <td id="T_4f6d0_row3_col4" class="data row3 col4" ></td>
+      <td id="T_4f6d0_row3_col5" class="data row3 col5" >neg</td>
+      <td id="T_4f6d0_row3_col6" class="data row3 col6" ></td>
+      <td id="T_4f6d0_row3_col7" class="data row3 col7" >allpos</td>
+      <td id="T_4f6d0_row3_col8" class="data row3 col8" ></td>
+      <td id="T_4f6d0_row3_col9" class="data row3 col9" ></td>
+      <td id="T_4f6d0_row3_col10" class="data row3 col10" ></td>
     </tr>
     <tr>
-      <th id="T_eb6ba_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_eb6ba_row4_col0" class="data row4 col0" >Immune</td>
-      <td id="T_eb6ba_row4_col1" class="data row4 col1" >Other myeloid cells</td>
-      <td id="T_eb6ba_row4_col2" class="data row4 col2" ></td>
-      <td id="T_eb6ba_row4_col3" class="data row4 col3" ></td>
-      <td id="T_eb6ba_row4_col4" class="data row4 col4" ></td>
-      <td id="T_eb6ba_row4_col5" class="data row4 col5" >pos</td>
-      <td id="T_eb6ba_row4_col6" class="data row4 col6" ></td>
-      <td id="T_eb6ba_row4_col7" class="data row4 col7" ></td>
-      <td id="T_eb6ba_row4_col8" class="data row4 col8" ></td>
-      <td id="T_eb6ba_row4_col9" class="data row4 col9" ></td>
-      <td id="T_eb6ba_row4_col10" class="data row4 col10" ></td>
+      <th id="T_4f6d0_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_4f6d0_row4_col0" class="data row4 col0" >Immune</td>
+      <td id="T_4f6d0_row4_col1" class="data row4 col1" >Other myeloid cells</td>
+      <td id="T_4f6d0_row4_col2" class="data row4 col2" ></td>
+      <td id="T_4f6d0_row4_col3" class="data row4 col3" ></td>
+      <td id="T_4f6d0_row4_col4" class="data row4 col4" ></td>
+      <td id="T_4f6d0_row4_col5" class="data row4 col5" >pos</td>
+      <td id="T_4f6d0_row4_col6" class="data row4 col6" ></td>
+      <td id="T_4f6d0_row4_col7" class="data row4 col7" ></td>
+      <td id="T_4f6d0_row4_col8" class="data row4 col8" ></td>
+      <td id="T_4f6d0_row4_col9" class="data row4 col9" ></td>
+      <td id="T_4f6d0_row4_col10" class="data row4 col10" ></td>
     </tr>
     <tr>
-      <th id="T_eb6ba_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_eb6ba_row5_col0" class="data row5 col0" >Immune</td>
-      <td id="T_eb6ba_row5_col1" class="data row5 col1" >Treg</td>
-      <td id="T_eb6ba_row5_col2" class="data row5 col2" ></td>
-      <td id="T_eb6ba_row5_col3" class="data row5 col3" ></td>
-      <td id="T_eb6ba_row5_col4" class="data row5 col4" ></td>
-      <td id="T_eb6ba_row5_col5" class="data row5 col5" ></td>
-      <td id="T_eb6ba_row5_col6" class="data row5 col6" ></td>
-      <td id="T_eb6ba_row5_col7" class="data row5 col7" ></td>
-      <td id="T_eb6ba_row5_col8" class="data row5 col8" ></td>
-      <td id="T_eb6ba_row5_col9" class="data row5 col9" >pos</td>
-      <td id="T_eb6ba_row5_col10" class="data row5 col10" ></td>
+      <th id="T_4f6d0_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_4f6d0_row5_col0" class="data row5 col0" >Immune</td>
+      <td id="T_4f6d0_row5_col1" class="data row5 col1" >Treg</td>
+      <td id="T_4f6d0_row5_col2" class="data row5 col2" ></td>
+      <td id="T_4f6d0_row5_col3" class="data row5 col3" ></td>
+      <td id="T_4f6d0_row5_col4" class="data row5 col4" ></td>
+      <td id="T_4f6d0_row5_col5" class="data row5 col5" ></td>
+      <td id="T_4f6d0_row5_col6" class="data row5 col6" ></td>
+      <td id="T_4f6d0_row5_col7" class="data row5 col7" ></td>
+      <td id="T_4f6d0_row5_col8" class="data row5 col8" ></td>
+      <td id="T_4f6d0_row5_col9" class="data row5 col9" >pos</td>
+      <td id="T_4f6d0_row5_col10" class="data row5 col10" ></td>
     </tr>
     <tr>
-      <th id="T_eb6ba_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_eb6ba_row6_col0" class="data row6 col0" >Other myeloid cells</td>
-      <td id="T_eb6ba_row6_col1" class="data row6 col1" >Dendritic cells</td>
-      <td id="T_eb6ba_row6_col2" class="data row6 col2" ></td>
-      <td id="T_eb6ba_row6_col3" class="data row6 col3" >allneg</td>
-      <td id="T_eb6ba_row6_col4" class="data row6 col4" ></td>
-      <td id="T_eb6ba_row6_col5" class="data row6 col5" ></td>
-      <td id="T_eb6ba_row6_col6" class="data row6 col6" ></td>
-      <td id="T_eb6ba_row6_col7" class="data row6 col7" >allneg</td>
-      <td id="T_eb6ba_row6_col8" class="data row6 col8" ></td>
-      <td id="T_eb6ba_row6_col9" class="data row6 col9" ></td>
-      <td id="T_eb6ba_row6_col10" class="data row6 col10" ></td>
+      <th id="T_4f6d0_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_4f6d0_row6_col0" class="data row6 col0" >Other myeloid cells</td>
+      <td id="T_4f6d0_row6_col1" class="data row6 col1" >Dendritic cells</td>
+      <td id="T_4f6d0_row6_col2" class="data row6 col2" ></td>
+      <td id="T_4f6d0_row6_col3" class="data row6 col3" >allneg</td>
+      <td id="T_4f6d0_row6_col4" class="data row6 col4" ></td>
+      <td id="T_4f6d0_row6_col5" class="data row6 col5" ></td>
+      <td id="T_4f6d0_row6_col6" class="data row6 col6" ></td>
+      <td id="T_4f6d0_row6_col7" class="data row6 col7" >allneg</td>
+      <td id="T_4f6d0_row6_col8" class="data row6 col8" ></td>
+      <td id="T_4f6d0_row6_col9" class="data row6 col9" ></td>
+      <td id="T_4f6d0_row6_col10" class="data row6 col10" ></td>
     </tr>
   </tbody>
 </table>
@@ -547,14 +550,14 @@ adata.obs['phenotype'].value_counts()
 
 
     phenotype
-    Immune                 4746
-    ECAD+                  3015
-    Unknown                2278
-    SMA+                    602
-    Treg                    282
-    Other myeloid cells     193
-    NK cells                 66
-    Dendritic cells          19
+    Immune                 3977
+    ECAD+                  2873
+    SMA+                   1947
+    Unknown                1496
+    Treg                    657
+    Other myeloid cells     170
+    NK cells                 64
+    Dendritic cells          17
     Name: count, dtype: int64
 
 
@@ -572,15 +575,9 @@ adata.obs['phenotype'].value_counts()
 sm.pl.heatmap(adata, groupBy='phenotype', standardScale=None, figsize=(5,3), showPrevalence=True, vmin=0, vmax=1)
 ```
 
-    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/plotting/heatmap.py:312: UserWarning:
-    
-    This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
-    
-
-
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_31_1.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_32_0.png)
     
 
 
@@ -599,10 +596,10 @@ adata = sm.tl.umap(adata)
 
 
 ```python
-sm.pl.umap(adata, color=['phenotype'])
+sm.pl.umap(adata, color=['phenotype'], s=1)
 ```
 
-    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/plotting/umap.py:267: UserWarning:
+    /Users/aj/miniconda3/envs/scimap/lib/python3.10/site-packages/scimap/plotting/umap.py:304: UserWarning:
     
     No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
     
@@ -610,7 +607,7 @@ sm.pl.umap(adata, color=['phenotype'])
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_33_1.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_34_1.png)
     
 
 
@@ -622,7 +619,7 @@ sm.pl.spatial_scatterPlot (adata, colorBy = ['phenotype'],figsize=(2.75,2), s=0.
 
 
     
-![png](scimap_phenotyping_files/scimap_phenotyping_34_0.png)
+![png](scimap_phenotyping_files/scimap_phenotyping_35_0.png)
     
 
 
