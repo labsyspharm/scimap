@@ -336,10 +336,7 @@ adata = sm.pp.rescale (adata, gate=manual_gate)
     Scaling NCAM
 
 
-
-```python
 As you can see GMM was automatically applied to SMA and FOXP3
-```
 
 ### Step 3: Run the phenotyping algorithm
 
