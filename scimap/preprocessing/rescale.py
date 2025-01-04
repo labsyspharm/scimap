@@ -37,14 +37,14 @@ def rescale(
 ):
     """
     Parameters:
-        adata (AnnData Object, required):  
+        adata (AnnData Object, required):
             An annotated data object that contains single-cell expression data.
 
-        gate (DataFrame, optional):  
-            A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values 
-            for each image in the dataset. Column names must correspond to unique `imageid` identifiers, and the marker column must be named "markers". 
-            If a single column of gate values is provided for a dataset with multiple images, the same gate will be uniformly applied to all images. 
-            In this case, ensure that the columns are named exactly "markers" and "gates". 
+        gate (DataFrame, optional):
+            A pandas DataFrame where the first column lists markers, and subsequent columns contain gate values
+            for each image in the dataset. Column names must correspond to unique `imageid` identifiers, and the marker column must be named "markers".
+            If a single column of gate values is provided for a dataset with multiple images, the same gate will be uniformly applied to all images.
+            In this case, ensure that the columns are named exactly "markers" and "gates".
             If no gates are provided for specific markers, the function attempts to automatically determine gates using a Gaussian Mixture Model (GMM).
 
             Note: If you have used `napariGater()`, the gates are stored within `adata.uns['gates']`.
@@ -114,7 +114,7 @@ def rescale(
     else:
         # Check overlap between gate columns and dataset images
         matching_images = set(gate.columns) & set(dataset_images)
-        
+
         # link to make sure index name is markers as we use reset_index later
         if gate.index.name != 'markers' and 'markers' not in gate.columns:
             gate.index.name = 'markers'
@@ -125,7 +125,9 @@ def rescale(
             gate_mapping = m.copy()
             gate_mapping.gate = gate_mapping.gate.fillna(
                 gate_mapping.markers.map(
-                    dict(zip(gate['markers'], gate['gates'])) # these columns are hardcoded in CSV
+                    dict(
+                        zip(gate['markers'], gate['gates'])
+                    )  # these columns are hardcoded in CSV
                 )
             )
         else:
@@ -142,7 +144,6 @@ def rescale(
             )
             gate_mapping['gate'] = gate_mapping['gate'].fillna(gate_mapping['m_gate'])
             gate_mapping = gate_mapping.drop(columns='m_gate')
-
 
     # Addressing failed markers
     def process_failed(adata_subset, foramted_failed_markers):
@@ -274,7 +275,9 @@ def rescale(
     # Running gmm_gating on the dataset
     def gmm_gating_internal(adata_subset, gate_mapping, method):
         if verbose:
-            print('GMM for ' + str(adata_subset.obs[imageid].unique()))
+            print(
+                'Running GMM for image: ' + str(adata_subset.obs[imageid].unique()[0])
+            )
         data_subset = pd.DataFrame(
             adata_subset.raw.X,
             columns=adata_subset.var.index,
@@ -291,6 +294,10 @@ def rescale(
                 gate_mapping['imageid'].isin(adata_subset.obs[imageid].unique())
             ]
             marker_to_gate = image_specific[image_specific.gate.isnull()].markers.values
+
+        if verbose and len(marker_to_gate) > 0:
+            print('Applying GMM to markers: ' + ', '.join(marker_to_gate))
+
         # Apply clipping
         data_subset_clipped = data_subset.apply(clipping)
         # log transform data
@@ -315,7 +322,6 @@ def rescale(
 
     # Check if any image needs to pass through the GMM protocol
     if len(gmm_images) > 0:
-        print("Running GMM")
         # Create a list of adata that need to go through the GMM
         if method == 'all':
             adata_list = [adata]
@@ -340,7 +346,7 @@ def rescale(
     # Rescaling function
     def data_scaler(adata_subset, gate_mapping):
         if verbose:
-            print('Scaling Image ' + str(adata_subset.obs[imageid].unique()[0]))
+            print('\nScaling Image: ' + str(adata_subset.obs[imageid].unique()[0]))
         # Organise data
         data_subset = pd.DataFrame(
             adata_subset.raw.X,
@@ -357,7 +363,10 @@ def rescale(
         # organise gates
         def data_scaler_internal(marker, gate_mapping_sub):
             if verbose:
-                print('Scaling ' + str(marker))
+                gate_value = gate_mapping_sub[gate_mapping_sub.markers == marker][
+                    'gate'
+                ].values[0]
+                print(f'Scaling {marker} (gate: {gate_value:.3f})')
             # find the gate
             moi = gate_mapping_sub[gate_mapping_sub.markers == marker]['gate'].values[0]
 
