@@ -177,7 +177,7 @@ def spatial_scatterPlot(
 
     # Load the andata object
     if isinstance(adata, str):
-        adata = ad.read(adata)
+        adata = ad.read_h5ad(adata)
     else:
         adata = adata.copy()
 
