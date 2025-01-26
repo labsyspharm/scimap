@@ -65,9 +65,14 @@ def mcmicro_wrap(argv=sys.argv):
     # Run merge if we have more than one method
     if len(methods) > 1:
         merge_args = [None, args.output, '-o', args.output]
-        if args.csv:
-            merge_args.append('--csv')  # Pass the csv flag to merge
-        merge(merge_args)
+        print("Running merge operation...")
+        merge_result = merge(merge_args)  # Run merge first
+        if merge_result != 0:
+            print("Merge operation failed")
+            return merge_result
+
+        # Give filesystem time to sync after merge
+        time.sleep(2)
 
         # move pdf files to output / plots
         output_dir = pathlib.Path(args.output)
@@ -89,8 +94,35 @@ def mcmicro_wrap(argv=sys.argv):
     if args.csv:
         output_dir = pathlib.Path(args.output)
         try:
-            # First check method directories
             csv_generated = False
+
+            # For default/all methods case, check merged file first
+            if 'all' in args.method or len(methods) > 1:
+                merged_file = output_dir / 'combined_adata.h5ad'  # Updated filename
+                print(f"\nLooking for merged file:")
+                print(f"  Expected merged file: {merged_file}")
+                print(f"  Directory contents:")
+                for f in output_dir.glob('*'):
+                    print(f"    {f}")
+                if merged_file.exists():
+                    print(
+                        f"Found merged file, size: {merged_file.stat().st_size} bytes"
+                    )
+                    print(f"Generating CSV for merged file: {merged_file}")
+                    try:
+                        hl.scimap_to_csv(adata=str(merged_file), output_dir=output_dir)
+                        csv_file = output_dir / f'{merged_file.stem}.csv'
+                        if csv_file.exists():
+                            print(f"Successfully created merged CSV: {csv_file}")
+                            csv_generated = True
+                        else:
+                            print(f"Failed to create CSV for merged file")
+                    except Exception as e:
+                        print(f"Error generating CSV for merged file: {str(e)}")
+                else:
+                    print(f"Merged file not found at: {merged_file}")
+
+            # Then check individual method directories
             for method in methods:
                 method_dir = output_dir / method
                 h5ad_files = list(method_dir.glob('*.h5ad'))
@@ -99,13 +131,6 @@ def mcmicro_wrap(argv=sys.argv):
                         print(f"Generating CSV for {h5ad_file}")
                         hl.scimap_to_csv(adata=str(h5ad_file), output_dir=method_dir)
                         csv_generated = True
-
-            # Then check for merged file
-            merged_file = output_dir / f'{pathlib.Path(args.input_csv).stem}.h5ad'
-            if merged_file.exists():
-                print(f"Generating CSV for merged file: {merged_file}")
-                hl.scimap_to_csv(adata=str(merged_file), output_dir=output_dir)
-                csv_generated = True
 
             if not csv_generated:
                 print("Warning: No h5ad files found to convert to CSV")
@@ -219,6 +244,15 @@ def merge(argv=sys.argv):
     print(f"output_csv flag value: {output_csv}")  # Debug print
 
     input_files = sorted(input_dir.rglob('*.h5ad'))
+    print(f"\nFound input files:")
+    for f in input_files:
+        print(f"  {f}")
+
+    output_file = output_dir / 'combined_adata.h5ad'
+    print(f"\nExpected output file path: {output_file}")
+    print(f"Output directory contents:")
+    for f in output_dir.glob('*'):
+        print(f"  {f}")
 
     if len(input_files) == 0:
         print(f'No .h5ad files found in {str(input_dir)}')
@@ -231,21 +265,6 @@ def merge(argv=sys.argv):
         for f in missing_files:
             print(f"  {f}")
         return 1
-
-    output_file = output_dir / input_files[0].name
-
-    print_text = '''
-        Merging:
-
-        {}
-
-        Writing:
-
-        {}'''
-    print_text = textwrap.dedent(print_text).format(
-        "\n".join([str(p) for p in input_files]), str(output_file)
-    )
-    print(textwrap.indent(print_text, '    '))
 
     try:
         # Merge data
@@ -262,16 +281,48 @@ def merge(argv=sys.argv):
 
         # Perform merge operation
         print("Merging h5ad files...")
-        hl.merge_adata_obs(adata=[str(p) for p in input_files], output_dir=output_dir)
+        try:
+            # Store the result from merge_adata_obs
+            merged_adata = hl.merge_adata_obs(
+                adata=[str(p) for p in input_files], output_dir=output_dir
+            )
+            print(f"Merge operation completed. Result type: {type(merged_adata)}")
 
-        # Wait a moment and verify the merged file exists
-        time.sleep(1)  # Give filesystem time to sync
+            # Update output file path to use correct filename
+            output_file = output_dir / 'combined_adata.h5ad'
 
-        if not output_file.exists():
-            print(f"Error: Failed to create merged file: {output_file}")
-            return 1
+            print("\nChecking for merged file:")
+            print(f"  Looking for: {output_file}")
+            print(f"  Exists: {output_file.exists()}")
 
-        print(f"Successfully created merged file: {output_file}")
+            print("\nFull directory contents after merge:")
+            for f in output_dir.rglob('*'):
+                print(f"  {f}")
+
+        except Exception as merge_error:
+            print(f"Error during merge_adata_obs: {str(merge_error)}")
+            import traceback
+
+            traceback.print_exc()
+
+        # Wait and check for file with retries
+        max_retries = 5
+        retry_delay = 5  # seconds
+        for attempt in range(max_retries):
+            if output_file.exists():
+                print(f"Merged file created successfully: {output_file}")
+                break
+            else:
+                if attempt < max_retries - 1:
+                    print(
+                        f"Waiting for file to appear (attempt {attempt + 1}/{max_retries})..."
+                    )
+                    time.sleep(retry_delay)
+                else:
+                    print(
+                        f"Error: Failed to create merged file after {max_retries} attempts"
+                    )
+                    return 1
 
         # Generate CSV if requested
         if output_csv:
@@ -295,7 +346,9 @@ def merge(argv=sys.argv):
             for f in input_files:
                 f.unlink()
             print()
-        return 0
+
+        return 0  # Success
+
     except Exception as e:
         print(f"Error during merge: {str(e)}")
         import traceback
