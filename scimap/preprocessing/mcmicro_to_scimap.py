@@ -195,7 +195,11 @@ def mcmicro_to_scimap(
     if log is True:
         adata.raw = adata
         adata.X = np.log1p(adata.X)
+        adata.layers['log'] = adata.X
+    else: 
         adata.layers['log'] = np.log1p(adata.X)
+        
+
 
     # Save data if requested
     if output_dir is not None:

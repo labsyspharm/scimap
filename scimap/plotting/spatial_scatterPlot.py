@@ -58,15 +58,15 @@ def spatial_scatterPlot(
 ):
     """
     Parameters:
-        adata (anndata.AnnData):
+        adata (anndata.AnnData):  
             Pass the `adata` loaded into memory or a path to the `adata`
             file (.h5ad).
 
-        colorBy (str):
-        The column name that will be used for color-coding the points. This can be
-        either markers (data stored in `adata.var`) or observations (data stored in `adata.obs`).
+        colorBy (str):  
+                The column name that will be used for color-coding the points. This can be
+                either markers (data stored in `adata.var`) or observations (data stored in `adata.obs`).
 
-        topLayer (list, optional):
+        topLayer (list, optional):  
                 A list of categories that should be plotted on the top layer. These categories
                 must be present in the `colorBy` data. Helps to highlight cell types or cluster that is of interest.
 
