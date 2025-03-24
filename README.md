@@ -1,8 +1,8 @@
 # SCIMAP: A Python Toolkit for Integrated Spatial Analysis of Multiplexed Imaging Data
 <br>
 
-[![build: Unix-Mac-Win](https://github.com/ajitjohnson/scimap/actions/workflows/build-unix-mac-win.yml/badge.svg)](https://github.com/ajitjohnson/scimap/actions/workflows/build-unix-mac-win.yml)
-[![Docs](https://github.com/ajitjohnson/scimap/actions/workflows/docs.yml/badge.svg)](https://github.com/ajitjohnson/scimap/actions/workflows/docs.yml)
+[![build-unix-mac-win](https://github.com/labsyspharm/scimap/actions/workflows/build-unix-mac-win.yml/badge.svg)](https://github.com/labsyspharm/scimap/actions/workflows/build-unix-mac-win.yml)
+[![docs](https://github.com/labsyspharm/scimap/actions/workflows/docs.yml/badge.svg)](https://github.com/labsyspharm/scimap/actions/workflows/docs.yml)
 [![Downloads](https://pepy.tech/badge/scimap)](https://pepy.tech/project/scimap)
 [![PyPI Version](https://img.shields.io/pypi/v/scimap.svg)](https://pypi.org/project/scimap)
 [![PyPI License](https://img.shields.io/pypi/l/scimap.svg)](https://pypi.org/project/scimap)
