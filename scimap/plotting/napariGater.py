@@ -4,7 +4,7 @@
 # @author: Ajit Johnson Nirmal
 """
 !!! abstract "Short Description"
-    `sm.pl.gate_finder`: This function leverages Napari to display OME-TIFF images, 
+    `sm.pl.napariGater()`: This function leverages Napari to display OME-TIFF images, 
     overlaying points that assist in manually determining gating thresholds for specific markers. 
     By visualizing marker expression spatially, users can more accurately define gates. 
     Subsequently, the identified gating parameters can be applied to the dataset using `sm.pp.rescale`, 
@@ -252,6 +252,65 @@ def napariGater(
     calculate_contrast=True,
     verbose=False
 ):
+    
+    """    
+    Parameters:
+        image_path (str):
+            Path to the high-resolution multi-channel image (TIFF or OME-TIFF supported).
+    
+        adata (anndata.AnnData):
+            Annotated data matrix containing single-cell expression and spatial metadata.
+    
+        layer (str, optional):
+            Specifies which layer in `adata` to use for expression data (e.g., 'raw' or a named layer). Defaults to 'raw'.
+    
+        log (bool, optional):
+            If True, applies a log1p transformation to expression values before visualization. Defaults to True.
+    
+        x_coordinate, y_coordinate (str, optional):
+            Keys in `adata.obs` specifying X and Y spatial coordinates of cells. Defaults are 'X_centroid' and 'Y_centroid'.
+    
+        imageid (str, optional):
+            Column name in `adata.obs` indicating the image source (used for filtering and metadata grouping). Defaults to 'imageid'.
+    
+        subset (str, optional):
+            Specific image ID or sample name to filter and visualize. If None, uses the first available entry in `adata.obs[imageid]`.
+    
+        flip_y (bool, optional):
+            If True, inverts the Y-axis to match image coordinate system. Defaults to True.
+    
+        channel_names (list or str, optional):
+            List of marker/channel names corresponding to the order in the image. 
+            Defaults to 'default', which uses `adata.uns['all_markers']`.
+    
+        point_size (int, optional):
+            Size of the points representing gated cells. Defaults to 10.
+    
+        calculate_contrast (bool, optional):
+            If True, contrast settings are estimated automatically for each channel. If False, existing settings in `adata.uns` are reused or defaulted. Defaults to True.
+    
+        verbose (bool, optional):
+            If True, prints detailed information about data ranges and transformations.
+    
+    Returns:
+        None:
+            Launches an interactive napari viewer for manual gate threshold adjustment.
+            The gating values are stored in `adata.uns['gates']`, and user edits are tracked under `adata.uns['napariGaterProvenance']`.
+    
+    Example:
+        ```python
+        # Launch napariGater with default settings
+        sm.pl.napariGater('/path/to/image.ome.tif', adata=adata)
+    
+        # Use expression layer, flip Y-axis off, and focus on a specific sample
+        sm.pl.napariGater('/path/to/image.tif', adata=adata, layer='expression',
+                          flip_y=False, subset='Sample_A')
+    
+        # Specify custom channels and disable contrast calculation
+        sm.pl.napariGater('/path/to/image.tif', adata=adata,
+                          channel_names=['DAPI', 'CD45', 'CD3'], calculate_contrast=False)
+        ```
+"""
 
     os.environ['QT_MAC_WANTS_LAYER'] = '1'
 
