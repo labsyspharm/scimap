@@ -32,6 +32,9 @@ import zarr
 import os
 from tqdm.auto import tqdm
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+from qtpy.QtWidgets import QWidget, QVBoxLayout
 
 import time
 
@@ -490,6 +493,43 @@ def napariGater(
             )
         points_layer.data = coordinates.values
 
+    # Create histogram widget
+    hist_fig = Figure(figsize=(3, 3))
+    hist_canvas = FigureCanvas(hist_fig)
+    hist_ax = hist_fig.add_subplot(111)
+
+    # Add to layout manually using QWidget wrapper
+    hist_widget = QWidget()
+    hist_layout = QVBoxLayout()
+    hist_layout.addWidget(hist_canvas)
+    hist_widget.setLayout(hist_layout)
+    hist_widget.setMinimumHeight(250)
+
+    def update_histogram(marker: str, gate_value: float = None):
+        hist_ax.clear()
+        data = get_marker_data(marker, adata, layer, log, verbose)
+        if subset is not None:
+            data = data[adata.obs[imageid] == subset]
+        flat_data = data.values.flatten()
+        hist_ax.hist(flat_data, bins=80, color='gray', edgecolor='black')
+    
+        if gate_value is None:
+            gate_value = adata.uns['gates'].loc[marker, current_image]
+        if pd.notna(gate_value):
+            hist_ax.axvline(gate_value, color='red', linestyle='--', label=f'Gate: {gate_value:.2f}')
+            hist_ax.legend(loc='upper right', fontsize=8)
+   
+        title = f'{marker}'
+        if log: 
+            title = f'{marker} (log scale)'
+        hist_ax.set_title(title)
+        hist_ax.set_xlabel('Expression')
+        hist_ax.set_ylabel('Cell Count')
+        hist_canvas.draw()
+
+    # Initial histogram
+    update_histogram(initial_marker, initial_gate)
+
     @gate_controls.marker.changed.connect
     def _on_marker_change(marker: str):
         current_state = {
@@ -531,6 +571,12 @@ def napariGater(
         else:
             status_text = "⚪ NOT ADJUSTED"
         gate_controls.marker_status.value = status_text
+        update_histogram(marker, gate_controls.gate.value)
+
+    @gate_controls.gate.changed.connect
+    def _on_gate_change(gate: float):
+        marker = gate_controls.marker.value
+        update_histogram(marker, gate)
 
     @gate_controls.confirm_gate.clicked.connect
     def _on_confirm():
@@ -561,7 +607,8 @@ def napariGater(
         viewer.close()
 
     points_layer.data = np.zeros((0, 2))
-    viewer.window.add_dock_widget(gate_controls)
+    viewer.window.add_dock_widget(gate_controls, name='Gate Controls')
+    viewer.window.add_dock_widget(hist_widget, name='Marker Histogram')
     napari.run()
 
     print(f"Napari viewer initialized in {time.time() - start_time:.2f} seconds")
