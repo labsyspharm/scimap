@@ -18,6 +18,8 @@ import warnings
 try:
     import napari
     from magicgui import magicgui
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from qtpy.QtWidgets import QWidget, QVBoxLayout
 except ImportError:
     pass
 
@@ -32,9 +34,7 @@ import zarr
 import os
 from tqdm.auto import tqdm
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from qtpy.QtWidgets import QWidget, QVBoxLayout
 
 import time
 
