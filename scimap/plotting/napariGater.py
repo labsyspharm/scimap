@@ -20,6 +20,8 @@ try:
     from magicgui import magicgui
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from qtpy.QtWidgets import QWidget, QVBoxLayout
+    from PyQt5.QtWidgets import  QLabel
+    from PyQt5.QtCore import Qt
 except ImportError:
     pass
 
@@ -509,43 +511,78 @@ def napariGater(
                 {'x': coordinates.obs[x_coordinate], 'y': coordinates.obs[y_coordinate]}
             )
         points_layer.data = coordinates.values
+        
+        
 
-    # Create histogram widget
-    hist_fig = Figure(figsize=(3, 3))
+    
+    # Create the histogram figure and canvas
+    hist_fig = Figure()
     hist_canvas = FigureCanvas(hist_fig)
     hist_ax = hist_fig.add_subplot(111)
-
-    # Add to layout manually using QWidget wrapper
+    
+    # QLabel to show the gate threshold outside the plot
+    gate_label = QLabel("Gate Threshold: N/A")
+    gate_label.setAlignment(Qt.AlignCenter)
+    gate_label.setStyleSheet("color: white; font-size: 15pt; padding-top: 1px;")
+    
+    # Create and configure the Qt layout
     hist_widget = QWidget()
     hist_layout = QVBoxLayout()
     hist_layout.addWidget(hist_canvas)
+    hist_layout.addWidget(gate_label)
     hist_widget.setLayout(hist_layout)
-    hist_widget.setMinimumHeight(250)
-
+    hist_widget.setMinimumHeight(350)
+    hist_widget.setMinimumWidth(350)
+    
+    # Define the histogram update function
     def update_histogram(marker: str, gate_value: float = None):
         hist_ax.clear()
         data = get_marker_data(marker, adata, layer, log, verbose)
         if subset is not None:
             data = data[adata.obs[imageid] == subset]
         flat_data = data.values.flatten()
-        hist_ax.hist(flat_data, bins=80, color='gray', edgecolor='black')
     
+        # Exclude outliers using 0.1–99th percentile
+        p_low, p_high = np.percentile(flat_data, [1, 99.99])
+        flat_data = flat_data[(flat_data >= p_low) & (flat_data <= p_high)]
+    
+        # Plot histogram
+        hist_ax.hist(flat_data, bins=100, color='#2a9d8f')
+    
+        # Gate line
         if gate_value is None:
             gate_value = adata.uns['gates'].loc[marker, current_image]
         if pd.notna(gate_value):
-            hist_ax.axvline(gate_value, color='red', linestyle='--', label=f'Gate: {gate_value:.2f}')
-            hist_ax.legend(loc='upper right', fontsize=8)
-   
-        title = f'{marker}'
-        if log: 
-            title = f'{marker} (log scale)'
-        hist_ax.set_title(title)
-        hist_ax.set_xlabel('Expression')
-        hist_ax.set_ylabel('Cell Count')
+            hist_ax.axvline(gate_value, color='#582f0e', linewidth=0.75)
+            gate_label.setText(f"Gate Threshold: {gate_value:.2f}")
+        else:
+            gate_label.setText("Gate Threshold: N/A")
+    
+        # Dynamic font scaling (clamped)
+        canvas_width = hist_canvas.width() / hist_canvas.devicePixelRatioF()
+        font_size = min(10, max(6, int(canvas_width / 45)))
+    
+        # Axis and title labels
+        title = f'{marker} (log scale)' if log else marker
+        hist_ax.set_title(title, fontsize=font_size)
+        hist_ax.set_xlabel('Expression', fontsize=font_size)
+        hist_ax.set_ylabel('Cell Count', fontsize=font_size)
+        hist_ax.tick_params(axis='both', labelsize=font_size)
+    
+        hist_fig.tight_layout()
         hist_canvas.draw()
-
-    # Initial histogram
-    update_histogram(initial_marker, initial_gate)
+    
+    # Redraw on resize
+    def _resize_event(event):
+        update_histogram(gate_controls.marker.value, gate_controls.gate.value)
+        return super(FigureCanvas, hist_canvas).resizeEvent(event)
+    
+    hist_canvas.resizeEvent = _resize_event
+    
+    
+    
+    
+    
 
     @gate_controls.marker.changed.connect
     def _on_marker_change(marker: str):
