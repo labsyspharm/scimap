@@ -77,52 +77,69 @@ def initialize_gates(adata, imageid, layer, log, verbose):
     from sklearn.preprocessing import StandardScaler
 
     if 'gates' not in adata.uns:
-        print("Initializing gates with GMM...")
-        adata.uns['gates'] = pd.DataFrame(
-            index=adata.var.index, columns=adata.obs[imageid].unique(), dtype=float
-        )
-        adata.uns['gates'].iloc[:, :] = np.nan
-
+        print("Initializing gates with GMM (per image)...")
+        image_ids = adata.obs[imageid].unique()
         markers = list(adata.var.index)
-        with tqdm(total=len(markers), desc="Computing gates", leave=False) as pbar:
-            for marker in markers:
-                data = get_marker_data(marker, adata, layer, log, verbose)
-                values = data.values.flatten()
-                values = values[~np.isnan(values)]
-                p01, p99 = np.percentile(values, [0.1, 99.9])
-                values = values[(values >= p01) & (values <= p99)]
-                scaler = StandardScaler()
-                values_scaled = scaler.fit_transform(values.reshape(-1, 1))
-                gmm = GaussianMixture(n_components=3, random_state=42)
-                gmm.fit(values_scaled)
-                means = scaler.inverse_transform(gmm.means_)
-                sorted_idx = np.argsort(means.flatten())
-                sorted_means = means[sorted_idx]
-                gate_value = np.mean([sorted_means[1], sorted_means[2]])
-                min_val = float(data.min().iloc[0])
-                max_val = float(data.max().iloc[0])
-                gate_value = np.clip(gate_value, min_val, max_val)
-                adata.uns['gates'].loc[marker, :] = gate_value
-                pbar.update(1)
 
+        # Create gates matrix
+        adata.uns['gates'] = pd.DataFrame(index=markers, columns=image_ids, dtype=float)
+
+        with tqdm(total=len(markers) * len(image_ids), desc="Computing gates", leave=False) as pbar:
+            for img_id in image_ids:
+                mask = adata.obs[imageid] == img_id
+                for marker in markers:
+                    try:
+                        data = get_marker_data(marker, adata[mask], layer, log, verbose)
+                        values = data.values.flatten()
+                        values = values[~np.isnan(values)]
+
+                        # Robust percentile clipping
+                        p01, p99 = np.percentile(values, [0.1, 99.9])
+                        values = values[(values >= p01) & (values <= p99)]
+
+                        # Scale and fit GMM
+                        scaler = StandardScaler()
+                        values_scaled = scaler.fit_transform(values.reshape(-1, 1))
+                        gmm = GaussianMixture(n_components=3, random_state=42)
+                        gmm.fit(values_scaled)
+                        means = scaler.inverse_transform(gmm.means_)
+                        sorted_means = np.sort(means.flatten())
+
+                        # Use average of top 2 components for gate
+                        gate_value = np.mean([sorted_means[1], sorted_means[2]])
+
+                        # Clip to valid range
+                        min_val = float(data.min().iloc[0])
+                        max_val = float(data.max().iloc[0])
+                        gate_value = np.clip(gate_value, min_val, max_val)
+
+                        adata.uns['gates'].loc[marker, img_id] = gate_value
+                    except Exception as e:
+                        if verbose:
+                            print(f"GMM failed for marker {marker} in {img_id}: {str(e)}")
+                        adata.uns['gates'].loc[marker, img_id] = np.nan
+                    pbar.update(1)
+
+    # Track provenance
     if 'napariGaterProvenance' not in adata.uns:
         adata.uns['napariGaterProvenance'] = {
             'manually_adjusted': {},
             'timestamp': {},
             'original_values': {},
         }
-    
-    current_image = adata.obs[imageid].iloc[0]
-    if current_image not in adata.uns['napariGaterProvenance']['manually_adjusted']:
-        adata.uns['napariGaterProvenance']['manually_adjusted'][current_image] = {}
-        adata.uns['napariGaterProvenance']['timestamp'][current_image] = {}
-        adata.uns['napariGaterProvenance']['original_values'][current_image] = {}
-        
+
+    # Initialize tracking for each image/marker pair
+    for img_id in adata.obs[imageid].unique():
+        if img_id not in adata.uns['napariGaterProvenance']['manually_adjusted']:
+            adata.uns['napariGaterProvenance']['manually_adjusted'][img_id] = {}
+            adata.uns['napariGaterProvenance']['timestamp'][img_id] = {}
+            adata.uns['napariGaterProvenance']['original_values'][img_id] = {}
         for marker in adata.var.index:
-            adata.uns['napariGaterProvenance']['original_values'][current_image][marker] = \
-                float(adata.uns['gates'].loc[marker, current_image])
-    
+            adata.uns['napariGaterProvenance']['original_values'][img_id][marker] = \
+                float(adata.uns['gates'].loc[marker, img_id])
+
     return adata
+
 
 
 def calculate_auto_contrast(img, percentile_low=1, percentile_high=99, padding=0.4, sample_size=100000):

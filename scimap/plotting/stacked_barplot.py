@@ -213,8 +213,8 @@ def stacked_barplot(
             ax.get_legend_handles_labels()
         )  # for reversing the order of the legend
         ax.legend(
-            reversed(handles),
-            reversed(labels),
+            list(reversed(handles)),
+            list(reversed(labels)),
             bbox_to_anchor=matplotlib_bbox_to_anchor,
             loc=matplotlib_legend_loc,
         )
