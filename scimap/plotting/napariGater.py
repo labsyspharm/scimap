@@ -547,7 +547,7 @@ def napariGater(
         flat_data = flat_data[(flat_data >= p_low) & (flat_data <= p_high)]
     
         # Plot histogram
-        hist_ax.hist(flat_data, bins=100, color='#2a9d8f')
+        hist_ax.hist(flat_data, bins=100, color='#264653', edgecolor='#2a9d8f')
     
         # Gate line
         if gate_value is None:
