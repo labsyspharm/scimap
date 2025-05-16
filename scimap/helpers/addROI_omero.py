@@ -233,30 +233,54 @@ Example:
         border_df = border_df.groupby(border_df.index).agg(
             {'ROI_internal': lambda x: '_'.join(sorted(set(x)))}
         )
-        result = pd.merge(data, final_roi, left_index=True, right_index=True, how='outer')
-        result = result.merge(border_df, left_index=True, right_index=True, how='outer', suffixes=('', '_border'))
-        # Prefer main ROI; if missing, fill with border ROI.
-        result['ROI_internal'] = result['ROI_internal'].fillna(result['ROI_internal_border'])
-        result = result.reindex(adata.obs.index)
-    else:
-        result = pd.merge(data, final_roi, left_index=True, right_index=True, how='outer')
-        result = result.reindex(adata.obs.index)
-        result['ROI_internal'] = result['ROI_internal'].fillna('Other')
+        
 
-    # Handle the case where the label already exists in adata.obs.
-    if label in adata.obs.columns:
-        if not overwrite:
-            old_roi = adata.obs[label]
-            combined_roi = pd.merge(result, old_roi, left_index=True, right_index=True, how='outer')
-            combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna(combined_roi[label])
-        else:
-            combined_roi = result.copy()
-            combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna('Other')
-    else:
-        combined_roi = result.copy()
-        combined_roi['ROI_internal'] = combined_roi['ROI_internal'].fillna('Other')
+    # -------------------------------
+    # Handle label assignment
+    # -------------------------------
 
-    adata.obs[label] = combined_roi['ROI_internal']
+    # 1) Normalize subset
+    if subset is not None:
+        subset_ids = [subset] if isinstance(subset, str) else list(subset)
+    else:
+        subset_ids = adata.obs[imageid].unique().tolist()
+    subset_idx = adata.obs.index[adata.obs[imageid].isin(subset_ids)]
+
+    # 2) Ensure label column exists
+    if label not in adata.obs.columns:
+        adata.obs[label] = pd.NA
+
+    # 3) Build a combined mapping: main ROIs + border ROIs (border overrides)
+    mapping_main = final_roi['ROI_internal']
+    if buffer_roi > 0:
+        mapping_border = border_df['ROI_internal']
+        # concat then keep last (border) where overlapping
+        mapping = pd.concat([mapping_main, mapping_border])
+        mapping = mapping[~mapping.index.duplicated(keep='last')]
+    else:
+        mapping = mapping_main
+
+    # 4) Restrict to this subset and drop NAs
+    mapping = mapping.reindex(subset_idx).dropna()
+
+    if overwrite:
+        # -- your existing overwrite=True code --
+        adata.obs[label] = pd.NA
+        new_labels = pd.Series("Other", index=subset_idx)
+        new_labels.update(mapping)
+        adata.obs.loc[subset_idx, label] = new_labels
+    else:
+        # *** now correctly append both ROI and ROI_border labels ***
+        adata.obs.loc[mapping.index, label] = mapping.values
+
+    if verbose:
+        total = len(subset_idx)
+        n_roi = mapping.size
+        action = "Overwrote" if overwrite else "Appended"
+        print(f"[INFO] {action} ROI labels in {n_roi}/{total} cells of {subset_ids}.")
+
+    
+
 
     # Generate summary statistics on ROI assignments.
     roi_counts = adata.obs[label].value_counts()
