@@ -46,6 +46,7 @@ def stacked_barplot(
     method='percent',
     plot_tool='matplotlib',
     matplotlib_cmap=None,
+    tightlayout=True,
     matplotlib_bbox_to_anchor=(1, 1.02),
     matplotlib_legend_loc=2,
     fileName='stacked_barplot.pdf',
@@ -209,6 +210,10 @@ def stacked_barplot(
             stacked=True, cmap=matplotlib_cmap, width=width, **kwargs
         )
         fig = ax.get_figure()  # Get the Figure object to save
+        
+        if tightlayout is True:
+            fig.set_constrained_layout(True)
+
         handles, labels = (
             ax.get_legend_handles_labels()
         )  # for reversing the order of the legend
@@ -237,7 +242,20 @@ def stacked_barplot(
             {'plot_bgcolor': 'rgba(0, 0, 0, 0)', 'paper_bgcolor': 'rgba(0, 0, 0, 0)'},
             xaxis=dict(tickmode='linear'),  # type = 'category'
         )
-        fig.show()
+        if saveDir:
+            if not os.path.exists(saveDir):
+                os.makedirs(saveDir)
+            full_path = os.path.join(saveDir, fileName)
+
+            if fileName.endswith('.html'):
+                fig.write_html(full_path)
+            elif fileName.endswith(('.png', '.jpg', '.jpeg', '.pdf', '.svg')):
+                fig.write_image(full_path)
+            else:
+                raise ValueError("Unsupported file format for Plotly. Use .html, .png, .svg, etc.")
+            print(f"Saved plot to {full_path}")
+        else:
+            fig.show()
 
     else:
 

@@ -192,6 +192,11 @@ Example:
             matches &= (neighbours == v).any(axis=1)
         neighbours = neighbours[matches]
         
+        # If no cells satisfy the condition, print warning
+        if len(neighbours) == 0:
+            print(f"[WARNING] No cells satisfy proximity criteria {proximity} in imageid: {adata_subset.obs[imageid].unique()[0]}")
+
+        
 
         # Identify all the cells that was part of the neighbourhood in this analysis
         neighbours_ind = neighbours_ind.loc[neighbours.index]

@@ -80,7 +80,8 @@ Example:
         # find the index of the given markers
         idx_markers = [adata.var.index.get_loc(x) for x in drop_markers]
         # remove from adata
-        keep_markes = list(set(adata.var.index).difference(drop_markers))
+        #keep_markes = list(set(adata.var.index).difference(drop_markers)) # returns unordered list
+        keep_markes = [m for m in adata.var.index if m not in drop_markers]
         adata = adata[:, keep_markes]
         # remove from raw
         if subset_raw is True:
@@ -92,23 +93,25 @@ Example:
     if drop_cells is not None:
         if isinstance(drop_cells, str):
             drop_cells = [drop_cells]
-        # find the index of the given markers
-        idx_markers = [adata.obs.index.get_loc(x) for x in drop_cells]
+        # find the index of the given cells
+        idx_cells = [adata.obs.index.get_loc(x) for x in drop_cells]
         # remove from adata
-        keep_markes = list(set(adata.obs.index).difference(drop_cells))
-        adata = adata[keep_markes, :]
+        keep_cells = [x for x in adata.obs.index if x not in drop_cells]
+        adata = adata[keep_cells, :]
         # remove from raw
         if subset_raw is True:
-            raw = np.delete(adata.raw.X, idx_markers, axis=1)
+            raw = np.delete(adata.raw.X, idx_cells, axis=0)
             del adata.raw
-            adata.raw = ad.AnnData (raw)
+            adata.raw = ad.AnnData(raw, var=adata.var)
+
     
     # Drop meta columns
     if drop_meta_columns is not None:
         if isinstance(drop_meta_columns, str):
             drop_meta_columns = [drop_meta_columns]
         # remove from adata
-        adata.obs = adata.obs.drop(drop_meta_columns, axis=1)
+        drop_meta_columns = [col for col in drop_meta_columns if col in adata.obs.columns]
+        adata.obs = adata.obs.drop(columns=drop_meta_columns)
     
     # Drop specific categories of cells
     if drop_groups is not None:
@@ -116,6 +119,8 @@ Example:
             drop_groups = [drop_groups]
         if isinstance(groups_column, list):
             groups_column = groups_column[0]
+        assert groups_column in adata.obs.columns, f"{groups_column} not found in adata.obs"
+        
         # find the index of the given markers
         idx = adata[adata.obs[groups_column].isin(drop_groups)].obs.index
         idx_markers = [adata.obs.index.get_loc(x) for x in idx]

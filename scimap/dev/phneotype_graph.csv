@@ -1,0 +1,21 @@
+﻿Parent,Node,Marker
+Cell,Tumor cells,MELANA⁺ or SOX10⁺ 
+Cell,Immune cells,CD45⁺
+Cell,Keratinocytes,PANCK⁺
+Cell,Stromal cells,VIMENTIN⁺ CD45⁻ PANCK⁻
+Cell,Endothelial cells,CD31⁺ CD45⁻
+Immune cells,T cells,CD3E⁺
+T cells,CD8⁺ T cells,CD8A⁺
+T cells,CD4⁺ T cells,CD4⁺
+T cells,Exhausted T cells,PD1⁺ and/or TIM3⁺
+Immune cells,B cells,CD20⁺
+Immune cells,NK cells,NKG2A⁺ CD3E⁻
+Immune cells,Myeloid cells,CD45⁺ CD3E⁻ CD20⁻ NKG2A⁻
+Myeloid cells,Monocytes,CD14⁺ CD11B⁺ CD68⁻ CD163⁻
+Myeloid cells,Macrophages,CD68⁺ and/or CD163⁺
+Macrophages,M2-like Macrophages,CD206⁺ and/or IDO1⁺
+Macrophages,Suppressive Macrophages,PDL1⁺ or IDO1⁺
+Myeloid cells,cDC2-like DCs,CD11C⁺ HLADR⁺ CD1C⁺
+Myeloid cells,Langerhans-like DCs,Langerin⁺ CD1C⁺
+Myeloid cells,Neutrophils,MPO⁺ CD66B⁺ and/or CD15⁺ CD16⁺
+Myeloid cells,Mast cells,Mast Cell Tryptase⁺
