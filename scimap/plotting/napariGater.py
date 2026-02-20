@@ -18,10 +18,9 @@ import warnings
 try:
     import napari
     from magicgui import magicgui
-    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-    from qtpy.QtWidgets import QWidget, QVBoxLayout
-    from PyQt5.QtWidgets import  QLabel
-    from PyQt5.QtCore import Qt
+    from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    from qtpy.QtWidgets import QWidget, QVBoxLayout, QLabel
+    from qtpy.QtCore import Qt
 except ImportError:
     pass
 
@@ -522,7 +521,7 @@ def napariGater(
     
     # QLabel to show the gate threshold outside the plot
     gate_label = QLabel("Gate Threshold: N/A")
-    gate_label.setAlignment(Qt.AlignCenter)
+    gate_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
     gate_label.setStyleSheet("color: white; font-size: 15pt; padding-top: 1px;")
     
     # Create and configure the Qt layout
