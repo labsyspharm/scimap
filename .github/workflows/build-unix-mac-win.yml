@@ -17,6 +17,7 @@ env:
   # Absolute path is necessary to avoid this issue:
   # https://github.com/python-poetry/poetry/issues/3049
   POETRY_CACHE_DIR: ${{ github.workspace }}/.poetry_cache
+  MPLBACKEND: Agg
 
 jobs:
   ci:
