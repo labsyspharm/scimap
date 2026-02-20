@@ -1,0 +1,3977 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Single-Cell Image Analysis Package">
+      
+      
+        <meta name="author" content="Ajit Johnson Nirmal">
+      
+      
+      
+        <link rel="prev" href="../../md/scimap_video/">
+      
+      
+        <link rel="next" href="../2-scimap-tutorial-cell-phenotyping/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>Getting Started with Scimap - scimap</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22X9HCL4YP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22X9HCL4YP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22X9HCL4YP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#getting-started-with-scimap" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="scimap" class="md-header__button md-logo" aria-label="scimap" data-md-component="logo">
+      
+  <img src="../../../assets/favicon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            scimap
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting Started with Scimap
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ajitjohnson/scimap" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Getting%20Started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Install
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../Tools%20Shortcut/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Index
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Functions/pp/mcmicro_to_scimap/" class="md-tabs__link">
+          
+  
+  
+  Functions
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../md/spatial_biology_scimap/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../contribute/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contribute
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="scimap" class="md-nav__button md-logo" aria-label="scimap" data-md-component="logo">
+      
+  <img src="../../../assets/favicon.png" alt="logo">
+
+    </a>
+    scimap
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ajitjohnson/scimap" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Getting%20Started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tools%20Shortcut/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Functions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pre Processing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pre Processing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pp/mcmicro_to_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mcmicro_to_scimap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pp/log1p/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    log1p
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pp/rescale/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rescale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pp/combat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/phenotype_cells/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    phenotype_cells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/cluster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cluster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/umap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    umap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/foldchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    foldchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_distance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_distance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_interaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_interaction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_count/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_count
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_lda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_lda
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_expression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_expression
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_cluster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_cluster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_pscore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_pscore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_aggregate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_aggregate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/tl/spatial_similarity_search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_similarity_search
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plotting Functions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Plotting Functions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/image_viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    image_viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/addROI_image/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    addROI_image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/gate_finder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gate_finder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/napariGater/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    napariGater
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/heatmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    heatmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/markerCorrelation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    markerCorrelation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/groupCorrelation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    groupCorrelation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/distPlot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    distPlot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/densityPlot2D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    densityPlot2D
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/cluster_plots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cluster_plots
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/umap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    umap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/foldchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    foldchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/spatial_scatterPlot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_scatterPlot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/spatial_distance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_distance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/spatial_interaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_interaction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/spatialInteractionNetwork/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatialInteractionNetwork
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/spatial_pscore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spatial_pscore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/stacked_barplot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stacked_barplot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/pie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/pl/voronoi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    voronoi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helper Functions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Helper Functions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/classify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    classify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/rename/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rename
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/addROI_omero/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    addROI_omero
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/dropFeatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dropFeatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/merge_adata_obs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    merge_adata_obs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/animate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    animate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Functions/hl/scimap_to_csv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    scimap_to_csv
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/spatial_biology_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/install_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Scimap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/demo_data_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/anndata_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prepare Demo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cell Phenotyping
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cell Phenotyping
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/clustering_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unsupervised clustering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/scimap_phenotyping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prior knowledge driven
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/add_rois_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Add ROIs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/cell_proportion_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explore cell types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial Analysis
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spatial Analysis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/spatial_analysis_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distance measurement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/cell_interaction_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interaction analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/proximity_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proximity scores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/spatial_search_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Search patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cellular Neighbourhoods
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cellular Neighbourhoods
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/spatial_lda_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial LDA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/spatial_lag_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial Lag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helper
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Helper
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/export_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Export data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/animate_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Animate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/scimap_helper_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Other helpers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../md/scimap_video/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Videos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started with Scimap
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started with Scimap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-material" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tutorial material
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-video" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tutorial video
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-data-using-anndata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load data using AnnData
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-data-using-scimaps-helper-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load data using scimap's helper function
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Load data using scimap&#39;s helper function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#we-can-use-scanpy-package-to-explore-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        We can use scanpy package to explore the data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2-scimap-tutorial-cell-phenotyping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cell-Phenotyping using Scimap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3-Cell_Type_calling_and_adding_ROIs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cell-Phenotyping and adding ROIs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4-CellType_Proportion_Exploration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CellType Proportion Exploration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5-Simple_Spatial_Analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple Spatial Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_animate_with_scimap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Animate with scimap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contribute/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-material" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tutorial material
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-video" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tutorial video
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-data-using-anndata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load data using AnnData
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-data-using-scimaps-helper-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load data using scimap's helper function
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Load data using scimap&#39;s helper function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#we-can-use-scanpy-package-to-explore-the-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        We can use scanpy package to explore the data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="getting-started-with-scimap">Getting Started with Scimap</h1>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Fri Jun 26 23:11:32 2020</span>
+<span class="sd">@author: Ajit Johnson Nirmal</span>
+<span class="sd">Scimap Getting Started tutorial</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code><span class="s1">&#39;\nCreated on Fri Jun 26 23:11:32 2020\n@author: Ajit Johnson Nirmal\nScimap Getting Started tutorial\n&#39;</span>
+</code></pre></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Before you start make sure you have installed the following packages</span>
+<span class="c1"># pip install scimap</span>
+<span class="c1"># pip install scanpy</span>
+<span class="c1"># pip install leidenalg</span>
+<span class="c1"># pip install PyQt5</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="tutorial-material">Tutorial material</h2>
+<p>You can download the material for this tutorial from the following <a href="https://www.dropbox.com/s/rra13zir52o9hio/getting_started%20and%20phenotyping.zip?dl=0">link:</a><br />
+The presentation files are available <a href="https://github.com/ajitjohnson/Jupyter-Notebooks/blob/master/tutorials/scimap_tutorial/getting_started%20and%20phenotyping/scimap_tutorial.pdf">here:</a></p>
+<h2 id="tutorial-video">Tutorial video</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;iframe width=&quot;450&quot; height=&quot;250&quot; src=&quot;https://www.youtube.com/embed/knh5elRksUk&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<iframe width="450" height="250" src="https://www.youtube.com/embed/knh5elRksUk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Load necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">anndata</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ad</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scanpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span><span class="p">;</span> <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">color_codes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Import Scimap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scimap</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Set the working directory</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span> <span class="p">(</span><span class="s2">&quot;/Users/aj/Desktop/scimap_tutorial/&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="load-data-using-anndata">Load data using AnnData</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Load data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span> <span class="p">(</span><span class="s1">&#39;counts_table.csv&#39;</span><span class="p">)</span> <span class="c1"># Counts matrix</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span> <span class="p">(</span><span class="s1">&#39;meta_data.csv&#39;</span><span class="p">)</span> <span class="c1"># Meta data like x and y coordinates </span>
+
+<span class="c1"># combine the data and metadata file to generate the AnnData object</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">ad</span><span class="o">.</span><span class="n">AnnData</span> <span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span> <span class="o">=</span> <span class="n">meta</span>
+</code></pre></div></td></tr></table></div>
+<p>Print adata to check for it's content</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code><span class="n">AnnData</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">n_obs</span><span class="w"> </span><span class="err">×</span><span class="w"> </span><span class="n">n_vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4825</span><span class="w"> </span><span class="err">×</span><span class="w"> </span><span class="mi">48</span>
+<span class="w">    </span><span class="n">obs</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;X_centroid&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Y_centroid&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Area&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;MajorAxisLength&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;MinorAxisLength&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Eccentricity&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Solidity&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Extent&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Orientation&#39;</span>
+</code></pre></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span><span class="o">.</span><span class="n">obs</span> <span class="c1"># prints the meta data</span>
+</code></pre></div></td></tr></table></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X_centroid</th>
+      <th>Y_centroid</th>
+      <th>Area</th>
+      <th>MajorAxisLength</th>
+      <th>MinorAxisLength</th>
+      <th>Eccentricity</th>
+      <th>Solidity</th>
+      <th>Extent</th>
+      <th>Orientation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>511.555556</td>
+      <td>9.846154</td>
+      <td>117</td>
+      <td>14.532270</td>
+      <td>10.273628</td>
+      <td>0.707261</td>
+      <td>0.959016</td>
+      <td>0.750000</td>
+      <td>-0.695369</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>579.330097</td>
+      <td>9.398058</td>
+      <td>103</td>
+      <td>16.056286</td>
+      <td>8.776323</td>
+      <td>0.837396</td>
+      <td>0.903509</td>
+      <td>0.613095</td>
+      <td>1.115707</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>630.958333</td>
+      <td>12.883333</td>
+      <td>120</td>
+      <td>15.222005</td>
+      <td>10.310756</td>
+      <td>0.735653</td>
+      <td>0.975610</td>
+      <td>0.681818</td>
+      <td>0.151616</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>745.194631</td>
+      <td>16.275168</td>
+      <td>149</td>
+      <td>14.380200</td>
+      <td>13.404759</td>
+      <td>0.362027</td>
+      <td>0.967532</td>
+      <td>0.662222</td>
+      <td>-0.270451</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>657.173653</td>
+      <td>18.035928</td>
+      <td>167</td>
+      <td>17.675831</td>
+      <td>12.110106</td>
+      <td>0.728428</td>
+      <td>0.943503</td>
+      <td>0.695833</td>
+      <td>-0.810890</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4820</th>
+      <td>559.597403</td>
+      <td>1091.577922</td>
+      <td>154</td>
+      <td>18.150307</td>
+      <td>11.683288</td>
+      <td>0.765281</td>
+      <td>0.900585</td>
+      <td>0.570370</td>
+      <td>-0.342315</td>
+    </tr>
+    <tr>
+      <th>4821</th>
+      <td>619.983871</td>
+      <td>1092.959677</td>
+      <td>248</td>
+      <td>21.734414</td>
+      <td>15.565820</td>
+      <td>0.697912</td>
+      <td>0.864111</td>
+      <td>0.551111</td>
+      <td>1.432242</td>
+    </tr>
+    <tr>
+      <th>4822</th>
+      <td>583.317073</td>
+      <td>1093.573171</td>
+      <td>82</td>
+      <td>12.060039</td>
+      <td>9.539789</td>
+      <td>0.611784</td>
+      <td>0.964706</td>
+      <td>0.630769</td>
+      <td>0.203023</td>
+    </tr>
+    <tr>
+      <th>4823</th>
+      <td>607.064394</td>
+      <td>1101.583333</td>
+      <td>264</td>
+      <td>22.549494</td>
+      <td>15.905321</td>
+      <td>0.708858</td>
+      <td>0.882943</td>
+      <td>0.661654</td>
+      <td>0.691838</td>
+    </tr>
+    <tr>
+      <th>4824</th>
+      <td>641.592486</td>
+      <td>1100.132948</td>
+      <td>346</td>
+      <td>23.149806</td>
+      <td>19.375564</td>
+      <td>0.547257</td>
+      <td>0.945355</td>
+      <td>0.791762</td>
+      <td>-1.390516</td>
+    </tr>
+  </tbody>
+</table>
+<p>4825 rows × 9 columns</p>
+</div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="c1"># prints the counts table</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code><span class="nx">array</span><span class="p">([[</span><span class="m m-Double">16640.564</span><span class="w">  </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">719.6325</span><span class="w"> </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">527.7094</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">1085.735</span><span class="w">  </span><span class="p">,</span>
+<span class="w">          </span><span class="m m-Double">218.54701</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">3170.47</span><span class="w">   </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">16938.3</span><span class="w">    </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">686.5534</span><span class="w"> </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">469.30096</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">1075.6407</span><span class="w"> </span><span class="p">,</span>
+<span class="w">          </span><span class="m m-Double">164.48544</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">3116.767</span><span class="w">  </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">16243.542</span><span class="w">  </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">819.4167</span><span class="w"> </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">604.39166</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">1164.3917</span><span class="w"> </span><span class="p">,</span>
+<span class="w">          </span><span class="m m-Double">227.74167</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">3156.1084</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="o">...</span><span class="p">,</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">28656.256</span><span class="w">  </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">878.2561</span><span class="w"> </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">585.3293</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">1233.183</span><span class="w">  </span><span class="p">,</span>
+<span class="w">         </span><span class="m m-Double">1243.5488</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">3194.195</span><span class="w">  </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">22054.818</span><span class="w">  </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">685.8485</span><span class="w"> </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">424.85226</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">1031.2424</span><span class="w"> </span><span class="p">,</span>
+<span class="w">          </span><span class="m m-Double">313.32574</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">3038.8105</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">23992.854</span><span class="w">  </span><span class="p">,</span><span class="w">   </span><span class="m m-Double">850.25146</span><span class="p">,</span><span class="w">   </span><span class="m m-Double">529.89886</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">1000.5578</span><span class="w"> </span><span class="p">,</span>
+<span class="w">          </span><span class="m m-Double">285.98267</span><span class="p">,</span><span class="w">  </span><span class="m m-Double">3087.3005</span><span class="w"> </span><span class="p">]],</span><span class="w"> </span><span class="nx">dtype</span><span class="p">=</span><span class="nx">float32</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="c1"># prints the first 5 channel or marker names</span>
+</code></pre></div></td></tr></table></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>DNA1</th>
+    </tr>
+    <tr>
+      <th>BG1</th>
+    </tr>
+    <tr>
+      <th>BG2</th>
+    </tr>
+    <tr>
+      <th>BG3</th>
+    </tr>
+    <tr>
+      <th>DNA2</th>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>You would have noticed that
+- the data is not in log scale
+- All the DNA channels are there
+- The background channels are there
+If we diretly perform clustering or any other type of analysis, the above mentioned factors may affect the results and so it is recommended to remove them.</p>
+<h2 id="load-data-using-scimaps-helper-function">Load data using scimap's helper function</h2>
+<p>Use this if the single-cell data was generated using <strong>mcmicro pipeline</strong>. With this function though many of the above limitations can be imediately addressed. By default it removes DNA channels and you can pass any channel name into <code>drop_markers</code> parameter inorder to not import them.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">image_path</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;/Users/aj/Desktop/scimap_tutorial/mcmicro_output.csv&#39;</span><span class="p">]</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">mcmicro_to_scimap</span> <span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">drop_markers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PERK&quot;</span><span class="p">,</span> <span class="s2">&quot;NOS2&quot;</span><span class="p">,</span><span class="s2">&quot;BG1&quot;</span><span class="p">,</span><span class="s2">&quot;BG2&quot;</span><span class="p">,</span><span class="s2">&quot;BG3&quot;</span><span class="p">,</span><span class="s2">&quot;ACTIN&quot;</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code>Loading mcmicro_output.csv
+</code></pre></div>
+
+<p>Check adata contents now as we did previously</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code><span class="n">AnnData</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">n_obs</span><span class="w"> </span><span class="err">×</span><span class="w"> </span><span class="n">n_vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4825</span><span class="w"> </span><span class="err">×</span><span class="w"> </span><span class="mi">30</span>
+<span class="w">    </span><span class="n">obs</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;X_centroid&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Y_centroid&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Area&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;MajorAxisLength&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;MinorAxisLength&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Eccentricity&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Solidity&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Extent&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Orientation&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;imageid&#39;</span>
+<span class="w">    </span><span class="n">uns</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;all_markers&#39;</span>
+</code></pre></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="c1"># Will now contain log normalized data</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code><span class="nx">array</span><span class="p">([[</span><span class="m m-Double">6.3674684</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.4287267</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.3826084</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.990933</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">5.3915663</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">8.061951</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">6.340171</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.094227</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.339796</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.981601</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">5.1088834</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">8.044872</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">6.503502</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.3549495</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.4734573</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.0608125</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">5.4325933</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">8.057412</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="o">...</span><span class="p">,</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">6.5583014</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.660794</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.4199724</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.1181645</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.1265283</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">8.069404</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">6.3370404</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.281594</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.2397914</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.939489</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">5.7504296</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">8.01955</span><span class="w">  </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="m m-Double">6.3805585</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.180567</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">7.2547846</span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">6.909312</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">5.659422</span><span class="w"> </span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">8.035377</span><span class="w"> </span><span class="p">]],</span><span class="w"> </span><span class="nx">dtype</span><span class="p">=</span><span class="nx">float32</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">X</span> <span class="c1"># contains the raw data</span>
+</code></pre></div></td></tr></table></div>
+<div class="codehilite"><pre><span></span><code><span class="nx">array</span><span class="p">([[</span><span class="w"> </span><span class="m m-Double">581.5812</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">618.38464</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1606.7778</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1085.735</span><span class="w">  </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">218.54701</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">3170.47</span><span class="w">   </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="w"> </span><span class="m m-Double">565.8932</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">442.29126</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1539.3981</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1075.6407</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">164.48544</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">3116.767</span><span class="w">  </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="w"> </span><span class="m m-Double">666.475</span><span class="w">  </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">574.3333</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1759.6833</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1164.3917</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">227.74167</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">3156.1084</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="o">...</span><span class="p">,</span>
+<span class="w">       </span><span class="p">[</span><span class="w"> </span><span class="m m-Double">704.0732</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">780.1707</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1667.9878</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1233.183</span><span class="w">  </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1243.5488</span><span class="w"> </span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">3194.195</span><span class="w">  </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="w"> </span><span class="m m-Double">564.1212</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">533.64014</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1392.803</span><span class="w">  </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1031.2424</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">313.32574</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">3038.8105</span><span class="w"> </span><span class="p">],</span>
+<span class="w">       </span><span class="p">[</span><span class="w"> </span><span class="m m-Double">589.2572</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">482.2659</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1413.8584</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">...</span><span class="p">,</span><span class="w"> </span><span class="m m-Double">1000.5578</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="m m-Double">285.98267</span><span class="p">,</span>
+<span class="w">        </span><span class="m m-Double">3087.3005</span><span class="w"> </span><span class="p">]],</span><span class="w"> </span><span class="nx">dtype</span><span class="p">=</span><span class="nx">float32</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">adata</span><span class="o">.</span><span class="n">obs</span> <span class="c1"># prints the meta data</span>
+</code></pre></div></td></tr></table></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X_centroid</th>
+      <th>Y_centroid</th>
+      <th>Area</th>
+      <th>MajorAxisLength</th>
+      <th>MinorAxisLength</th>
+      <th>Eccentricity</th>
+      <th>Solidity</th>
+      <th>Extent</th>
+      <th>Orientation</th>
+      <th>imageid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mcmicro_output_1</th>
+      <td>511.555556</td>
+      <td>9.846154</td>
+      <td>117</td>
+      <td>14.532270</td>
+      <td>10.273628</td>
+      <td>0.707261</td>
+      <td>0.959016</td>
+      <td>0.750000</td>
+      <td>-0.695369</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_2</th>
+      <td>579.330097</td>
+      <td>9.398058</td>
+      <td>103</td>
+      <td>16.056286</td>
+      <td>8.776323</td>
+      <td>0.837396</td>
+      <td>0.903509</td>
+      <td>0.613095</td>
+      <td>1.115707</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_3</th>
+      <td>630.958333</td>
+      <td>12.883333</td>
+      <td>120</td>
+      <td>15.222005</td>
+      <td>10.310756</td>
+      <td>0.735653</td>
+      <td>0.975610</td>
+      <td>0.681818</td>
+      <td>0.151616</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_4</th>
+      <td>745.194631</td>
+      <td>16.275168</td>
+      <td>149</td>
+      <td>14.380200</td>
+      <td>13.404759</td>
+      <td>0.362027</td>
+      <td>0.967532</td>
+      <td>0.662222</td>
+      <td>-0.270451</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_5</th>
+      <td>657.173653</td>
+      <td>18.035928</td>
+      <td>167</td>
+      <td>17.675831</td>
+      <td>12.110106</td>
+      <td>0.728428</td>
+      <td>0.943503</td>
+      <td>0.695833</td>
+      <td>-0.810890</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_4821</th>
+      <td>559.597403</td>
+      <td>1091.577922</td>
+      <td>154</td>
+      <td>18.150307</td>
+      <td>11.683288</td>
+      <td>0.765281</td>
+      <td>0.900585</td>
+      <td>0.570370</td>
+      <td>-0.342315</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_4822</th>
+      <td>619.983871</td>
+      <td>1092.959677</td>
+      <td>248</td>
+      <td>21.734414</td>
+      <td>15.565820</td>
+      <td>0.697912</td>
+      <td>0.864111</td>
+      <td>0.551111</td>
+      <td>1.432242</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_4823</th>
+      <td>583.317073</td>
+      <td>1093.573171</td>
+      <td>82</td>
+      <td>12.060039</td>
+      <td>9.539789</td>
+      <td>0.611784</td>
+      <td>0.964706</td>
+      <td>0.630769</td>
+      <td>0.203023</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_4824</th>
+      <td>607.064394</td>
+      <td>1101.583333</td>
+      <td>264</td>
+      <td>22.549494</td>
+      <td>15.905321</td>
+      <td>0.708858</td>
+      <td>0.882943</td>
+      <td>0.661654</td>
+      <td>0.691838</td>
+      <td>mcmicro_output</td>
+    </tr>
+    <tr>
+      <th>mcmicro_output_4825</th>
+      <td>641.592486</td>
+      <td>1100.132948</td>
+      <td>346</td>
+      <td>23.149806</td>
+      <td>19.375564</td>
+      <td>0.547257</td>
+      <td>0.945355</td>
+      <td>0.791762</td>
+      <td>-1.390516</td>
+      <td>mcmicro_output</td>
+    </tr>
+  </tbody>
+</table>
+<p>4825 rows × 10 columns</p>
+</div>
+
+<h3 id="we-can-use-scanpy-package-to-explore-the-data">We can use scanpy package to explore the data</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">highest_expr_genes</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">n_top</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="p">)</span> <span class="c1"># Most expressing proteins</span>
+</code></pre></div></td></tr></table></div>
+<p><img alt="png" src="../scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_26_0.png" /></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">sc</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="s1">&#39;arpack&#39;</span><span class="p">)</span> <span class="c1"># peform PCA</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;KI67&#39;</span><span class="p">)</span> <span class="c1"># scatter plot in the PCA coordinates</span>
+</code></pre></div></td></tr></table></div>
+<p><img alt="png" src="../scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_27_0.png" /></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">pca_variance_ratio</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="c1"># PCs to the total variance in the data</span>
+</code></pre></div></td></tr></table></div>
+<p><img alt="png" src="../scimap-tutorial-getting-started_files/scimap-tutorial-getting-started_28_0.png" /></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Save the results</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;tutorial_data.h5ad&#39;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p><strong>This concludes the <code>getting started</code> tutorial, continue with the <code>phenotyping</code> tutorial.</strong></p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 | Nirmal Lab | www.nirmallab.com
+    </div>
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://twitter.com/nirmallab" target="_blank" rel="noopener" title="Twitter" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M459.4 151.7c.3 4.5.3 9.1.3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53C87.4 130.8 165 172.4 252.1 176.9c-1.6-7.8-2.6-15.9-2.6-24C249.5 95.1 296.3 48 354.4 48c30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top", "search.highlight"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
