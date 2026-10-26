@@ -271,11 +271,13 @@ def spatial_interaction(
             p_val_df = p_val_df.set_index(['phenotype', 'neighbour_phenotype'])
 
         # Plotting heatmap
-        mask = p_val_df.isnull()  # identify the NAN's for masking
         im = interaction_map.fillna(
             0
         )  # replace nan's with 0 so that clustering will work
-        mask.columns = im.columns
+        # Match p-values to images by name, not their input column position.
+        mask = p_val_df.rename(
+            columns={f'pvalue_{image}': image for image in im.columns}
+        ).reindex(index=im.index, columns=im.columns).isnull()
 
         # covert the first two columns into index
         # Plot

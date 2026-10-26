@@ -265,6 +265,46 @@ def test_spatial_interaction_covers_summary_per_image_and_validation(monkeypatch
         )
 
 
+@pytest.mark.parametrize("image_order", [["image_B", "image_A"], ["image_A", "image_B"]])
+@pytest.mark.parametrize("pvalue_order", [["image_B", "image_A"], ["image_A", "image_B"]])
+def test_spatial_interaction_aligns_pvalues_by_image(
+    monkeypatch, image_order, pvalue_order
+):
+    module = importlib.import_module("scimap.plotting.spatial_interaction")
+    data = pd.DataFrame({
+        "phenotype": ["T_cell", "B_cell"],
+        "neighbour_phenotype": ["Macrophage", "Macrophage"],
+        "image_B": [0.8, -0.5],
+        "image_A": [1.5, 0.6],
+        "pvalue_image_B": [0.9, 0.01],
+        "pvalue_image_A": [0.001, 0.9],
+    })
+    data = data[["phenotype", "neighbour_phenotype"] + image_order
+                + [f"pvalue_{name}" for name in pvalue_order]]
+    adata = AnnData(np.zeros((2, 1)))
+    adata.uns["spatial_interaction"] = data.copy()
+    monkeypatch.setattr(module.plt, "show", Mock())
+    clustermap = Mock(return_value=Mock())
+    monkeypatch.setattr(module.sns, "clustermap", clustermap)
+
+    result = module.spatial_interaction(
+        adata, summarize_plot=False, p_val=0.05,
+        row_cluster=False, col_cluster=False, return_data=True,
+    )
+
+    expected = pd.DataFrame(
+        {"image_A": [np.nan, 1.5], "image_B": [-0.5, np.nan]},
+        index=pd.MultiIndex.from_tuples(
+            [("B_cell", "Macrophage"), ("T_cell", "Macrophage")],
+            names=["phenotype", "neighbour_phenotype"],
+        ),
+    )
+    expected = expected.reindex(result.index)
+    pd.testing.assert_frame_equal(result, expected)
+    pd.testing.assert_frame_equal(clustermap.call_args.kwargs["mask"], expected.isna())
+    pd.testing.assert_frame_equal(adata.uns["spatial_interaction"], data)
+
+
 def test_spatial_distance_covers_heatmap_numeric_distribution_and_validation(
     monkeypatch,
 ):
